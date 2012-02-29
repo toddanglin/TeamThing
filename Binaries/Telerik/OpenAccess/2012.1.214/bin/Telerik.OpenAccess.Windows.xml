@@ -1,0 +1,1090 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.OpenAccess.Windows</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.OpenAccess.ObjectProvider">
+            <summary>
+             Visual Studio designer component that provides persistent objects.
+            </summary>
+            <remarks>
+            <para>
+            The ObjectProvider class and the <see cref="T:Telerik.OpenAccess.ObjectView"/> class
+            are the major components to bind persistent objects to data bound controls
+            like the <see cref="T:System.Windows.Forms.DataGrid"/>.
+            </para>
+            <para>The ObjectProvider component is used to determine the objects by specifying
+            the selection criteria. The ObjectView component is used to bind the provided
+            objects to data bound controls and GUI elements.
+            </para>
+            <para>
+            Dragging the ObjectProvider component from the Telerik.OpenAccess .NET Toolbox to a 
+            Designer window will trigger the initialization dialog. After completing
+            the dialog, all properties can be set using the Visual Studio properties
+            window.
+            </para>
+            <para>The ObjectProvider component is also used during creation of a Telerik.OpenAccess .NET
+            Data Form using the <see href="ms-help://openaccess/VS-Wizards/html/DataForm/DataForm_Intro.htm">
+            'Data Form Wizard'.</see>
+            For details about Telerik.OpenAccess .NET Wizards, refer to the
+            'Visual Studio Integration' documentation.
+            </para>
+            <para>
+            Instances of this class are for example used at the 
+            <see cref="P:Telerik.OpenAccess.ObjectView.ObjectProvider">ObjectView.ObjectProvider</see> property.
+            </para>
+            </remarks>
+            <seealso cref="T:Telerik.OpenAccess.ObjectView"/>
+            <seealso href="ms-help://openaccess/VS-Wizards/html/DataForm/DataForm_Intro.htm">
+            Data Form Wizard</seealso>
+            <seealso href="ms-help://openaccess/VS-Wizards/html/Introduction.htm">
+            Visual Studio Integration</seealso>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectProvider.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectProvider.parent_components">
+            <summary></summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectProvider.objectContext">
+            <summary></summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectProvider.masterOP">
+            <summary>in case of sharing the objectscope, the one who is responsible for the transaction</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.#ctor(System.ComponentModel.IContainer)">
+            <overloads>Constructs a new instance.</overloads>
+            <summary>
+            Constructs a new instance in the parent container.
+            </summary>
+            <remarks>
+            Required for Windows.Forms Class Composition Designer support.
+            </remarks>
+            <param name="container">Parent container</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.#ctor">
+            <summary>
+            Constructs a new instance.
+            </summary>
+            <remarks>
+            Required for Windows.Forms Class Composition Designer support.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">Rollback transaction if <c>true</c>, otherwise 
+            do not perform Rollback.
+            </param>
+            <remarks>
+            When <paramref name="disposing"/> is <c>true</c>, this might affect other
+            ObjectProvider instances sharing the same IObjectContext instance.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.InitUseImplicitTransaction">
+            <summary>
+            Check if another ObjectProvider of this dialog shares the same ObjectContext.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.SetObjectContext(Telerik.OpenAccess.IObjectContext)">
+            <summary>
+            Sets a specific instance of an IObjectContext to be used.
+            </summary>
+            <param name="context">An explicit ObjectContext</param>
+            <remarks>
+            The Objectprovider does not get a responsibility for the transaction
+            handling as well as no responsibility for disposing the IObjectContext
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.GetObjects``1">
+            <summary>
+            Request the list with objects of the specified type.
+            </summary>
+            <remarks>
+            A call might for example execute the query to build a query result.
+            Used by the <see cref="T:Telerik.OpenAccess.ObjectView"/> to get its content.
+            </remarks>
+            <typeparam name="T">Type of the instances returned in the list</typeparam>
+            <value>The list with requested objects.</value>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.SaveAll">
+            <summary>
+            Saves all changes in general into the database.
+            </summary>
+            <remarks>This method checkpoints the transaction. If the transaction
+            is not nested the changes will made public in the database.
+            Will do nothing if no context is set.
+            <seealso cref="M:Telerik.OpenAccess.ObjectProvider.CancelAll"/>
+            <seealso cref="T:Telerik.OpenAccess.ITransaction"/>
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.CancelAll">
+            <summary>
+            Reverts the changes since the last SaveAll.
+            </summary>
+            <remarks>
+            Will do nothing if no context is set.
+            <seealso cref="M:Telerik.OpenAccess.ObjectProvider.SaveAll"/>
+            <seealso cref="T:Telerik.OpenAccess.ITransaction"/>
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.Refresh">
+            <summary>
+            Recalculates the result.
+            </summary>
+            <remarks>Recalculates the result so that changes made by other
+            transactions will be visible.</remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.GetService1(System.Type)">
+            <summary>
+            internal used method.
+            </summary>
+            <returns>
+            An System.Object that represents a service provided by the
+            System.ComponentModel.Component,<br/>
+            or null if the System.ComponentModel.Component does not provide the specified<br/>
+            service.
+            </returns>
+            <param name="service">A service provided by the System.ComponentModel.Component.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.System#ComponentModel#ISupportInitialize#BeginInit">
+            <summary>
+            Signals the object that initialization is starting. 
+            </summary>
+            <remarks>
+            See <see cref="M:System.ComponentModel.ISupportInitialize.BeginInit"/> for more information.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectProvider.System#ComponentModel#ISupportInitialize#EndInit">
+            <summary>
+            Signals the object that initialization is complete.
+            </summary>
+            <remarks>
+            See <see cref="M:System.ComponentModel.ISupportInitialize.EndInit"/> for more information.
+            </remarks>
+        </member>
+        <member name="E:Telerik.OpenAccess.ObjectProvider.Refreshed">
+            <summary>
+            Event handler for the Refreshed event triggered by a Refresh() method call.
+            </summary>
+            <remarks>
+            When not <c>null</c>, the event handler is called after the list has been refreshed.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.ObjectContext">
+            <summary>
+            Controls the used IObjectContext instance
+            </summary>
+            <remarks>
+            <para><bold>Gets</bold>the used IObjectContext.
+            If no context is set, it will
+            be requested from the ObjectContextProvider as described by the 
+            <see cref="P:Telerik.OpenAccess.ObjectProvider.ObjectContextProviderTypeName"/>
+            and the <see cref="P:Telerik.OpenAccess.ObjectProvider.UsePrivateObjectContext"/> properties. 
+            If <see cref="F:Telerik.OpenAccess.ObjectProvider.useImplicitTransaction"/> is <c>true</c>,
+            the transaction of the context will be started.
+            </para>
+            <para><bold>Sets</bold> an instance of <see cref="T:Telerik.OpenAccess.IObjectContext"/> and 
+            starts the transaction of the context if <see cref="F:Telerik.OpenAccess.ObjectProvider.useImplicitTransaction"/> is 
+            <c>true</c>.
+            </para>
+            </remarks>
+            <value>The IObjectContext used by this ObjectProvider instance.</value>
+            <seealso cref="M:Telerik.OpenAccess.ObjectProvider.InitUseImplicitTransaction"/>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.ObjectContextProviderTypeName">
+            <summary>Controls the type name of a class that implements the IObjectContextProvider interface
+            </summary>
+            <remarks>An ObjectContextProvider class might be generated by the Visual Studio Integration Wizards.</remarks>
+            <value>The type name</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.HelperTypeName">
+            <summary>Obsolete</summary>
+            <value>Obsolete</value>
+            <remarks>Obsolete</remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.UsePrivateObjectContext">
+            <summary>Controls if a private or sharable IObjectContext will be get from 
+            the ObjectContextProvider as specified in 'ObjectContextProviderTypeName'.
+            </summary>
+            <remarks>Sharing a context means that the same physical objects are used and changes are immediately visible</remarks>
+            <value>
+            <c>true</c> changes are not visible by other until they are saved.
+            <c>false</c> changes are visible by other that uses the same IObjectContext.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.BaseType">
+            <summary>Controls the type of the persistent objects in the result.
+            </summary>
+            <remarks>
+            <para>
+            All objects delivered by this instance will be of
+            the given type or of a derived type.
+            </para>
+            The specified type must be attributed with <see cref="T:Telerik.OpenAccess.PersistentAttribute">
+            [Persistent]</see> and must have been enhanced.
+            </remarks>
+            <value>
+            The base type; must be [Persistent].
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.ResultMethod">
+            <summary>
+            Controls how the ObjectProvider gets the result.
+            </summary>
+            <remarks>
+            <para>
+            There are various ways an ObjectProvider might get the set of objects, that
+            he provides (the 'ObjectSource').
+            </para>
+            <para>In case of Manual, the ObjectSource is explicitely set.</para>
+            <para>In case of Query, the ObjectSource is set by executing a Query,
+             specified by the <seealso cref="P:Telerik.OpenAccess.ObjectProvider.OQLStatement"/>.</para>
+            <para>In case of Request, an ObjectContainer will be filled by
+            		calling RequestName.
+            </para>
+            </remarks>
+            <value>
+            A ResultMethodType value.
+            </value>
+             <seealso cref="T:Telerik.OpenAccess.ObjectProvider.ResultMethodType"/>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.OQLStatement">
+            <summary>
+            Controls the OQL select statement used to filter/query the objects.
+            </summary>
+            <remarks>Will be used if the <see cref="P:Telerik.OpenAccess.ObjectProvider.ResultMethod"/> is ResultMethodType.Query
+            </remarks>
+            <value>The OQL query string</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.RequestName">
+            <summary>
+            Controls the name of a webmethod that provide container data.
+            </summary>
+            <remarks>Will be used if the <see cref="P:Telerik.OpenAccess.ObjectProvider.ResultMethod"/> is ResultMethodType.Request
+            </remarks>
+            <value>The full name of the webmethod</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.ResultName">
+            <summary>
+            Controls the name for the result to identify it.
+            </summary>
+            <remarks>The name can useful when using an <see cref="T:Telerik.OpenAccess.ObjectContainer"/>.</remarks>
+            <value>Name of the result set.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.FetchGroup">
+            <summary>
+            Controls which fetch group will be used while getting the result
+            or filling the ObjectContainer.
+            </summary>
+            <value>Name of the fetch group.</value>
+            <remarks><c>Null</c> is an allowed value.</remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.PrefetchValue">
+            <summary>
+            Controls the number of objects that should be prefetched.
+            </summary>
+            <remarks>
+            This value might be used to optimize the fetching of objects.
+            </remarks>
+            <value>
+            The number of objects to be prefetched; default is 30.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.ObjectSource">
+            <summary>
+            Set an object or collection of objects to be provided.
+            </summary>
+            <remarks>
+            For explicit setting of data to be managed.
+            The object has to be in the same IObjectContext as the one of the ObjectProvider.</remarks>
+            <value>
+            An object of a persistent capable class or
+            an IEnumerable/IEnumerator containing these objects.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.Objects">
+            <summary>
+            Request the list with objects.
+            </summary>
+            <remarks>
+            A call might for example execute the query to build a query result.
+            Used by the <see cref="T:Telerik.OpenAccess.ObjectView"/> to get its content.
+            </remarks>
+            <value>The list with requested objects.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.Context">
+            <summary>
+            Gets the used IObjectContext.
+            </summary>
+            <remarks>
+            The same IObjectContext instance can be used by more than one ObjectProvider.
+            <seealso cref="T:Telerik.OpenAccess.IObjectContext"/>
+            </remarks>
+            <value>The used IObjectContext</value>
+            
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectProvider.Tag">
+            <summary>
+            Gets or sets the object that contains data about the control.
+            </summary>
+            <remarks>
+            See <see cref="P:System.Windows.Forms.Control.Tag"/> for more information.
+            </remarks>
+            <value>
+            An object that contains data about the control. The default is a null reference (Nothing in Visual Basic). 
+            </value>
+        </member>
+        <member name="T:Telerik.OpenAccess.ObjectProvider.ResultMethodType">
+            <summary>
+            Description of the result method of an ObjectProvider.
+            </summary>
+            <remarks>
+            Results can be calculated with different methods and 
+            values of <see cref="T:Telerik.OpenAccess.ObjectProvider.ResultMethodType"/> are used to distinguish
+            those methods.
+            <seealso cref="T:Telerik.OpenAccess.ObjectProvider"/> 
+            </remarks>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectProvider.ResultMethodType.Manual">
+            <summary>Explicit result list used.</summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectProvider.ResultMethodType.Query">
+            <summary>Query result controlled by 'ObjectProvider.OQLStatement' used.</summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectProvider.ResultMethodType.Request">
+            <summary>A request that provides an ObjectContainer content.</summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.ObjectView">
+             <summary>
+             A Visual Studio Designer component that allows binding of persistent
+             objects to data bound controls.
+             </summary>
+             <remarks>
+            <para>The ObjectView class and the <see cref="P:Telerik.OpenAccess.ObjectView.ObjectProvider"/> class
+            are the major components to bind 'persistent objects' to data bound controls
+            like the <see cref="T:System.Windows.Forms.DataGrid"/>.
+            </para>
+            <para>
+            The ObjectView component is used to bind persistent objects
+            to data bound controls and GUI elements, 
+            the ObjectProvider component can be used to determine the objects
+            by specifying the selection criteria. 
+            </para>
+            <para>
+            Dragging the ObjectView component from the Telerik.OpenAccess .NET Toolbox to a 
+            Designer window will trigger the initialization dialog. After completing
+            the dialog, all properties can be set using the Visual Studio properties
+            window.
+            </para>
+            <para>The ObjectView component is also used during creation of a Telerik.OpenAccess .NET
+            Data Form using the <see href="ms-help://openaccess/VS-Wizards/html/DataForm/DataForm_Intro.htm">
+            'Data Form Wizard'.</see>
+            For details about Telerik.OpenAccess .NET Wizards, refer to the
+            'Visual Studio Integration' documentation.
+            </para>
+            <para>
+             There are three ways to specify the persistent objects that should be bound to the GUI:
+             <list type="bullet">
+             <item>
+             <description>An ObjectProvider instance is bound to the <see cref="P:Telerik.OpenAccess.ObjectView.ObjectProvider"/> Property</description>
+             </item>
+             <item>
+             <description>A persistent object or an enumeration of persistent objects is passed
+             to the ObjectView using the <see cref="M:Telerik.OpenAccess.ObjectView.SetObjectSource(Telerik.OpenAccess.IObjectContext,System.Collections.IList)"/> method.
+             </description>
+             </item>
+             <item>
+             <description>A persistent object or an enumeration of persistent objects (like a query result) is passed
+             to the ObjectView using the DataSource (.Net2 only) property.
+             </description>
+             </item>
+             </list>
+             </para>
+             <para>
+             The ObjectView handles single references to other persistent types as collections with 0 or 1 
+             allowed entry. You can use this behavior in a master detail view to allow the detail grid to add
+             exactly one new object to the reference or remove it. To switch back to the normal behavior you
+             have to specify <see cref="T:System.ComponentModel.TypeConverter"/> on the reference property.
+             </para>
+             <code>
+             [System.ComponentModel.TypeConverter]
+             public Person Parent
+             {
+                 get { return parent; }
+                 set { parent = value; }
+             }
+             </code>
+             </remarks>
+             <seealso cref="T:System.Windows.Forms.DataGrid"/>
+             <seealso cref="P:Telerik.OpenAccess.ObjectView.ObjectProvider"/>
+             <seealso cref="T:System.ComponentModel.ITypedList"/>
+             <seealso cref="T:System.ComponentModel.IBindingList"/>
+            <seealso href="ms-help://openaccess/VS-Wizards/html/DataForm/DataForm_Intro.htm">
+            Data Form Wizard</seealso>
+            <seealso href="ms-help://openaccess/VS-Wizards/html/Introduction.htm">
+            Visual Studio Integration</seealso>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.#ctor">
+            <summary>
+            Constructs a new view without specifying a collection.
+            This constructor is used by the Visual Studio .NET designer
+            when dragging the ObjectView as component to a Windows Form.
+            </summary>
+            <remarks>
+            Before being useful, the RootType must be set and the collection
+            must be specified with DataSource.
+            The RootType can be specified using the PropertyView in the designer
+            whereas the DataSource must be specified in source code.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.#ctor(System.ComponentModel.IContainer)">
+            <summary>
+            Constructs a new view without specifying a collection.
+            This constructor is used by the Visual Studio .NET designer
+            when dragging the ObjectView as component to a Windows Form.
+            </summary>
+            <remarks>
+            Before being useful, the RootType must be set and the collection
+            must be specified with DataSource.
+            The RootType can be specified using the PropertyView in the designer
+            whereas the DataSource must be specified in source code.
+            </remarks>
+            <param name="container">The container to use.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.#ctor(Telerik.OpenAccess.IObjectContext,System.Collections.IList,System.Type)">
+            <summary>
+            Constructs a new view for the passed list, for example an IQueryResult.
+            </summary>
+            <remarks>
+            Constructs a new instance.
+            <seealso cref="M:Telerik.OpenAccess.IQuery.Execute"/>
+            <seealso cref="M:Telerik.OpenAccess.IObjectScope.GetOqlQuery(System.String)"/>
+            </remarks>
+            <param name="context">IObjectContext to use.</param>
+            <param name="list">Any list with 'persistent objects'.</param>
+            <param name="basetype">Base type of the objects in the list.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.#ctor(Telerik.OpenAccess.IObjectContext,System.Collections.IEnumerable,System.Type)">
+            <summary>
+            Constructs a new view for the objects contained in the IEnumerable.
+            </summary>
+            <remarks>
+            <para>
+            All elements are copied from the 
+            IEnumerable into a list.
+            </para>
+            </remarks>
+            <param name="context">IObjectContext to use.</param>
+            <param name="list">
+            The IEnumerable that contains the objects to be viewed.
+            </param>
+            <param name="type">
+            The Type that should be assumed for the objects to be viewed.
+            </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.#ctor(Telerik.OpenAccess.IObjectContext,System.Object,System.Type)">
+            <summary>
+            Constructs a new view for the passed persistent object.
+            </summary>
+            <remarks>
+            Constructs a new instance.
+            <seealso cref="M:Telerik.OpenAccess.IQuery.Execute"/>
+            <seealso cref="M:Telerik.OpenAccess.IObjectScope.GetOqlQuery(System.String)"/>
+            </remarks>
+            <param name="context">IObjectContext to use for add/remove.</param>
+            <param name="persistentObject">The object to be viewed.</param>
+            <param name="basetype">Base type of the objects in the list.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.Dispose(System.Boolean)">
+            <summary> 
+            Cleans up any resources being used.
+            </summary>
+            <remarks>
+            See <see cref="M:System.IDisposable.Dispose"/> for more information.
+            </remarks>
+            <param name="disposing">Transactions might be rolled back if <c>true</c> is passed.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.GetRootType">
+            <summary>
+            Gets the name of the RootType.
+            </summary>
+            <remarks>
+            Using this method the name of the root type of this ObjectView can be retrieved.
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.RootType"/>
+            </remarks>
+            <returns>
+            FullName of the RootType
+            </returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.SetRootType(System.String)">
+            <summary>
+            Sets the RootType.
+            </summary>
+            <remarks>
+            Using this method the root type of the ObjectView can be altered by using the types full name.
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.RootType"/>
+            </remarks>
+            <param name="fullClassName">The System.Type.FullName of the persistent root type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.SetObjectSource(Telerik.OpenAccess.IObjectContext,System.Collections.IList)">
+            <summary>
+            Set a collection of objects to be viewed.
+            </summary>
+            <remarks>
+            The ObjectView can be used over objects provided programatically using this method
+            or by specifying an <see cref="P:Telerik.OpenAccess.ObjectView.ObjectProvider"/>.
+            <seealso cref="M:Telerik.OpenAccess.IQuery.Execute"/>
+            <seealso cref="M:Telerik.OpenAccess.IObjectScope.GetOqlQuery(System.String)"/>
+            </remarks>
+            <param name="context">If not null, Add/Remove will also add/remove the object from the context.</param>
+            <param name="list">Any list with objects of type 'RootType' or derived.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.SetObjectSource(Telerik.OpenAccess.IObjectContext,System.Collections.IEnumerable)">
+            <summary>
+            Set a collection of objects to be viewed.
+            Constructs a new view for the objects contained in the IEnumerable.
+            </summary>
+            <remarks>
+            The ObjectView can be used over objects provided programatically using this method
+            or by specifying an <see cref="P:Telerik.OpenAccess.ObjectView.ObjectProvider"/>.
+            <para>
+            All elements are copied from the IEnumerable into a list.
+            </para>
+            </remarks>
+            <param name="context">If not null, Add/Remove will also add/remove the object from the context.</param>
+            <param name="list">
+            The IEnumerable that contains the objects to be viewed.
+            </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.SetObjectSource(Telerik.OpenAccess.IObjectContext,System.Object)">
+            <summary>
+            Set an object or collection of objects to be viewed.
+            Constructs a new view for the passed list, for example an IQueryResult.
+            </summary>
+            <remarks>
+            The ObjectView can be used over objects provided programatically using this method
+            or by specifying an <see cref="P:Telerik.OpenAccess.ObjectView.ObjectProvider"/>.
+            <seealso cref="M:Telerik.OpenAccess.IQuery.Execute"/>
+            <seealso cref="M:Telerik.OpenAccess.IObjectScope.GetOqlQuery(System.String)"/>
+            </remarks>
+            <param name="context">If not null, Add/Remove will also add/remove the object from the context.</param>
+            <param name="anObject">The object to be viewed of type 'RootType' or derived.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.GetItemProperties(System.ComponentModel.PropertyDescriptor[])">
+            <summary>
+            Returns the PropertyDescriptorCollection that represents 
+            the properties on each item used to bind data.
+            </summary>
+            <param name="listAccessors">
+             An array of System.ComponentModel.PropertyDescriptor objects 
+             to find in the collection as bindable. This can be null .
+            </param>
+            <returns>
+            The System.ComponentModel.PropertyDescriptorCollection 
+            that represents the properties on each item used to bind data.
+            </returns>
+            <remarks>
+            This method uses database schema information.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.GetListName(System.ComponentModel.PropertyDescriptor[])">
+            <summary>
+            Returns the name of the list.
+            </summary>
+            <param name="listAccessors">
+            An array of System.ComponentModel.PropertyDescriptor objects, 
+            the list name for which is returned. This can be null .
+            </param>
+            <returns>Name of the list.</returns>
+            <remarks>The name is composed by concatenating the names of the
+            properties.</remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.RemoveAt(System.Int32)">
+            <summary>
+            Removes the persistent object at the specified position.
+            </summary>
+            <param name="index">Zero-based position.</param>
+            <remarks>
+            Modifying the ObjectView might cause changes to the used
+            database.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.Insert(System.Int32,System.Object)">
+            <summary>
+            Inserts the persistent object at the specified position.
+            </summary>
+            <param name="index">Zero-based position.</param>
+            <param name="persistentObject">The object to be inserted.</param>
+            <remarks>
+            Modifying the ObjectView might cause changes to the used
+            database.
+            Depending on the PersistenceBehavior, the object will be marked for
+            adding to the context.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.Remove(System.Object)">
+            <summary>
+            Removes the persistent object from the ObjectView.
+            </summary>
+            <param name="persistentObject">The object to be removed.</param>
+            <remarks>
+            Modifying the ObjectView might cause changes to the used
+            database.
+            Depending on the PersistenceBehavior, the object will be marked for
+            deletion from the context.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.Contains(System.Object)">
+            <summary>
+            Indicates whether the specified object is contained in this
+            ObjectView.
+            </summary>
+            <param name="persistentObject">The object to find.</param>
+            <returns><c>true</c> if object was found, <c>false</c>
+            otherwise.</returns>
+            <remarks>
+            Modifying the ObjectView might cause changes to the used
+            database.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.Clear">
+            <summary>
+            Clears the ObjectView, removing all persistent objects from the list.
+            </summary>
+            <remarks>
+            Does not remove the objects from the context.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.IndexOf(System.Object)">
+            <summary>
+            Returns the numerical position of a persistent object 
+            within the ObjectView.
+            </summary>
+            <param name="persistentObject">The object to find.</param>
+            <returns>Numerical position, zero-based.</returns>
+            <remarks>The position returned does not correspond with the
+            position in the underlying database/container.</remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.Add(System.Object)">
+            <summary>
+            Adds an object of a persistence-capable class to the
+            ObjectView.
+            </summary>
+            <param name="persistentObject">The object to add.</param>
+            <returns>The numerical position of the added object in this
+            ObjectView (zero-based).</returns>
+            <remarks>
+            Modifying the ObjectView might cause changes to the used
+            database.
+            Depending on the PersistenceBehavior, the object will be marked for
+            adding to the context.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies the persistent objects of this ObjectView to a 
+            one-dimensional Array instance at the specified index.
+            </summary>
+            <remarks>
+            Copies the objects of this ObjectView to an Array, starting at a particular Array index.
+            </remarks>
+            <param name="array">The target array.</param>
+            <param name="index">The zero-based index in 
+            <paramref name="array"/> at which the copy operation begins.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.GetEnumerator">
+            <summary>Return an enumerator for the ObjectView.</summary>
+             <returns>New enumerator instance.</returns>
+             <remarks>
+             Enumerators just allow reading the elements from the collection. 
+             Enumerators cannot be used to modify the underlying collection.
+             </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.AddNew">
+            <summary>
+            Adds a new item to the list.
+            </summary>
+            <returns>
+            Newly inserted object.
+            </returns>
+            <remarks>
+            The created instance will be of the base type as specified in the constructor.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.ApplySort(System.ComponentModel.PropertyDescriptor,System.ComponentModel.ListSortDirection)">
+            <summary>
+            This method is not supported.
+            </summary>
+            <param name="property">
+            A System.ComponentModel.PropertyDescriptor that describes the property by<br/>
+            which to sort the data source.
+            </param>
+            <param name="direction">
+            A System.ComponentModel.ListSortDirection indicating how the list should<br/>
+            be sorted.
+            </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.Find(System.ComponentModel.PropertyDescriptor,System.Object)">
+            <summary>
+            This method is not supported.
+            </summary>
+            <param name="key">The System.ComponentModel.PropertyDescriptor to search for.</param>
+            <param name="property">The value of property to match.</param>
+            <returns>The zero-based index of the item that has the given value for System.ComponentModel.PropertyDescriptor.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.RemoveSort">
+            <summary>
+            This method is not supported.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.ObjectView.PerformRefresh(System.Object,System.EventArgs)">
+            <summary>Called on Refresh events</summary>
+            <remarks>This method simply erforms OnListChanged.</remarks>
+            <param name="sender">The sender of the event.</param>
+            <param name="args">The event args.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.RootType">
+            <summary>
+            Controls the root type of this ObjectView.
+            </summary>
+            <remarks>
+            The root type is the type of the objects that are visible
+            directly from this ObjectView.
+            </remarks>
+            <value>
+            The root type of the objects in this view.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.DataSource">
+            <summary>Sets the data source that the ObjectView binds to.</summary>
+            <remarks>
+            You can use the setter to bind a single persistence capable object or a 
+            list of persistent objects (or an enumerable of such objects) to the
+            ObjectView. If possible, the ObjectView will infer the object context 
+            from the passed instance (when using the result of a query or a single
+            persistent object).
+            <para>
+            The getter will return <c>null</c>.
+            </para>
+            </remarks>
+            <value>
+            A single persistent object or a query result or a list of objects or 
+            objects retrieved from an ObjectProvider or an enumerable. 
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.DataMember">
+            <summary>hidden</summary>
+            <value>The DataMember of the ObjectView</value> 
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.Filter">
+            <summary>hidden</summary>
+            <value>The Filter of the ObjectView</value> 
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.Sort">
+            <summary>hidden</summary>
+            <value>The sort property of the ObjectView</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.ObjectProvider">
+            <summary>
+            Controls the ObjectProvider that delivers the objects to be viewed.
+            </summary>
+            <remarks>
+            The ObjectView exposes the objects an ObjectProvider can deliver upon
+            request. 
+            </remarks>
+            <value>
+            The currently used provider for persistent objects.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.AllowUpdates">
+            <summary>
+            Controls if a control like a grid will allow editing of cells.
+            </summary>
+            <remarks>
+            Does not prevent modifying of the objects but influences the IBindingList.AllowEdit
+            property that will be queried from controls.
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.Modifiable"/>
+            </remarks>
+            <value>
+            <c>true</c> when updates are allowed.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.PersistenceBehavior">
+            <summary>
+            Controls if new objects will also be marked for adding to the context
+            or marked for deletion from the context.
+            </summary>
+            <remarks>
+            The default is to mark for add and for delete.
+            </remarks>
+            <value>
+            Context action controlling value.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.AllowListChanges">
+            <summary>
+            Controls if a control like a grid will allow add/remove of rows.
+            </summary>
+            <remarks>
+            Does not prevent add/remove of objects but influences the IBindingList.AllowNew
+            and IBindingList.AllowRemove property that will be queried from controls.
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.Modifiable"/>
+            </remarks>
+            <value><c>true</c> when list changes are allowed.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.IsReadOnly">
+            <summary>
+            Gets whether this ObjectView is read-only.
+            </summary>
+            <value>
+            <c>true</c> if permitted access is read-only.
+            </value>
+            <remarks>
+            Modifying the ObjectView might cause changes to the used
+            <see cref="T:Telerik.OpenAccess.IObjectContext"/>.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.Item(System.Int32)">
+            <summary>
+            Gets the object associated at the specified position. 
+            </summary>
+            <value>Object at position <paramref name="index"/>
+            </value>
+            <param name="index">The numerical position (zero-based).</param>
+            <remarks>
+            Modifying the ObjectView might cause changes to the used
+            <see cref="T:Telerik.OpenAccess.IObjectContext"/>.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.IsFixedSize">
+            <summary>
+            Indicates whether the ObjectView has a fixed size.
+            </summary>
+            <value><c>true</c> if the object view is of fixed size.</value>
+            <remarks>
+            Beeing of fixed size does not imply read-only access.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.IsSynchronized">
+            <summary>
+            Indicates whether access to the ObjectView 
+            is synchronized (thread-safe).
+            </summary>
+            <value><c>true</c> if access is thread-safe, usually <c>false</c>.
+            </value>
+            <remarks>
+            Per default, access to the ObjectView is not synchronized.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.Count">
+            <summary>
+            Gets the number of objects in this ObjectView.
+            </summary>
+            <value>Number of objects in this object view.</value>
+            <remarks>
+            This property will reflect the number of objects in the
+            underlying list.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.SyncRoot">
+            <summary>
+            Gets an object that can be used to synchronize access.
+            </summary>
+            <value>An object that can be used to synchronize access this
+            collection.</value>
+            <remarks>
+            An ObjectView does not synchronize accessing threads.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.AllowEdit">
+            <summary>Indicates whether modifications are allowed.</summary>
+            <remarks>
+            Indicates whether you can update items. It is true, if IsReadOnly is false and AllowUpdates is true.
+            </remarks>
+            <value>Modification is allowed.</value>
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.AllowUpdates"/>
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.IsReadOnly"/>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.AllowNew">
+            <summary>
+            Indicates whether you can add items. 
+            </summary>
+            <value>True, if new items can be added</value>
+            <remarks>Is true, if AllowRemove is true and AllowUpdates is true and RootType is not abstract.
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.AllowListChanges"/>
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.AllowUpdates"/>
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.AllowRemove">
+            <summary>
+            Indicates whether you can remove items. 
+            </summary>
+            <value>True, if items can be removed</value>
+            <remarks>
+            Is true, if not IsReadOnly and not IsFixedSize and AllowListChanges is true.
+            <seealso cref="P:Telerik.OpenAccess.ObjectView.AllowListChanges"/>
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.SupportsChangeNotification">
+            <summary>
+            Indicates whether a ListChanged event is raised when the list changes or 
+            an item in the list changes; is always true.
+            </summary>
+            <value>True</value>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.SupportsSearching">
+            <summary>
+            Indicates whether the list supports searching; is always false.
+            </summary>
+            <value>False</value>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.SupportsSorting">
+            <summary>
+            Indicates whether the items are sorted; is always false.
+            </summary>
+            <value>False</value>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.IsSorted">
+            <summary>
+            This property is not supported.
+            </summary>
+            <value>true if System.ComponentModel.IBindingList.ApplySort(System.ComponentModel.PropertyDescriptor,System.ComponentModel.ListSortDirection)
+            has been called and System.ComponentModel.IBindingList.RemoveSort() has not
+            been called; otherwise, false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.SortDirection">
+            <summary>
+            This property is not supported.
+            </summary>
+             <value>Specifies the direction of a sort operation.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.SortProperty">
+            <summary>
+            This property is not supported.
+            </summary>
+             <value>The sort property of the ObjectView</value>        
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.TxnAllowsModification">
+            <summary>Gets the currency manager instance.</summary>
+            <remarks>Please see <see cref="T:System.Windows.Forms.CurrencyManager">here</see>
+            for more information about the CurrencyManager type.
+            </remarks>
+            <value>The associated currency manager instance.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.Modifiable">
+            <summary>
+            Indicates whether the underlying context allows modification or not.
+            </summary>
+            <remarks>
+            The <see cref="T:Telerik.OpenAccess.IObjectContext"/> used by the ObjectView is checked for an
+            <see cref="P:Telerik.OpenAccess.ITransaction.IsActive">active transaction</see>.
+            <seealso cref="T:Telerik.OpenAccess.ITransaction"/>
+            </remarks>
+            <value>
+            <c>true</c> if the ObjectView allows modifications.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.GenerateIEditableObjectWrapperForNewObjects">
+            <summary>
+            Indicates whether the EditableObject wrapper will be generated or not.
+            </summary>
+            <remarks>
+            If set to <c>false</c> new objects are wrapped with an EditableObject 
+             Wrapper, <c>true</c> will give out concreate object.
+            </remarks>
+            <value>
+            <c>false</c> if the ObjectView should generate wrapper.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.StarRowSupport">
+            <summary>
+            Generate new objects with an IEditableObject wrapper
+            </summary>
+            <remarks>
+             <para>
+             Some UI elements like the Binding Navigator or some 3rd party grids do not support the IEditableObject protocol. 
+             To get those UI elements working set this property to <c>false</c>.
+             </para>
+             <para>
+            Attention: <c>false</c> might lead to problems with grids having star rows.
+             </para>
+            </remarks>
+            <value>
+            If set to <c>true</c> new objects are wrapped with an IEditableObject 
+             wrapper; <c>false</c> will give out the unwrapped object.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.ReferencesAsCollections">
+            <summary>
+            Provide all references as collections to the UI elements.
+            </summary>
+            <remarks>
+             <para>
+             References can be presented as collections with 0 or 1 element. This makes it possible to have Master/Detail Views also with simple references.
+             </para>
+            </remarks>
+            <value>
+             If set to <c>true</c> references are presented as a collection to the UI elements. 
+             <c>false</c> will give out the normal reference.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.ObjectView.Tag">
+            <summary>
+            Gets or sets the object that contains data about the control.
+            </summary>
+            <remarks>
+            See <see cref="P:System.Windows.Forms.Control.Tag"/> for more information.
+            </remarks>
+            <value>
+            An object that contains data about the control. The default is a null reference (Nothing in Visual Basic). 
+            </value>
+        </member>
+        <member name="T:Telerik.OpenAccess.ObjectView.PersistenceBehaviorValues">
+            <summary>
+            Specification of the behavior while adding new or deleting objects from the ObjectView.
+            </summary>
+            <remarks>
+            Lets you specify for example if adding a new line in a datagrid will add the object to
+            the database and if deleting a row will remove the object from the database.
+            </remarks>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectView.PersistenceBehaviorValues.none">
+            <summary>
+            Adding or Removing only affects the list but not the database.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectView.PersistenceBehaviorValues.markForAdd">
+            <summary>
+            Added new objects will be marked for adding to the database.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectView.PersistenceBehaviorValues.markForDelete">
+            <summary>
+            Removed objects will be marked for deletion from the database.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.ObjectView.PersistenceBehaviorValues.markForAddAndDelete">
+            <summary>
+            Added new objects will be marked for adding and
+            removed objects will be marked for deletion from the database.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.OpenAccess.ServiceHost</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.OpenAccess.ServiceHost.IProfilerService">
+            <summary>
+            Web service interface to be used by the OpenAccess profiler
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.IProfilerService.GetServiceVersion">
+            <summary>
+            Returns the version of the web service definition.
+            </summary>
+            <remarks>
+            The version number will be incremented whenever the service contract changes.
+            </remarks>
+            <returns>A version number to detect if client and server can work together.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.IProfilerService.GetOpenAccessVersion">
+            <summary>
+            Returns the OpenAccess version number.
+            </summary>
+            <returns>OpenAccess version number of the server side used OpenAccess version.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.IProfilerService.GetServerTimeUTC">
+            <summary>
+            Returns the UTC time of the server machine. Should be used to sync the client and server time.
+            </summary>
+            <returns>UTC time of the server machine.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.IProfilerService.GetDatabaseNames">
+            <summary>
+            Returns all alias names for all opened databases in the process.
+            </summary>
+            <returns>Alias names for all opened databases in the process.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.IProfilerService.GetMetrics(System.String,System.DateTime)">
+            <summary>
+            Returns a list of OpenAccess metrics.
+            </summary>
+            <param name="databaseName">The name of the database instance generating these metrics</param>
+            <param name="from">Timestamp to restrict the history of metrics.</param>
+            <returns>List of OpenAccess metrics.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.IProfilerService.GetEventsById(System.String,System.Int32)">
+            <summary>
+            Returns a list of OpenAccess log events.
+            </summary>
+            <param name="databaseName">The name of the database instance generating these metrics</param>
+            <param name="fromId">Integer value to restrict the history of the log events.</param>
+            <returns>List of OpenAccess log events.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.IProfilerService.GetEventsByDate(System.String,System.DateTime)">
+            <summary>
+            Returns a list of OpenAccess log events.
+            </summary>
+            <param name="databaseName">The name of the database instance generating these metrics</param>
+            <param name="from">Timestamp to restrict the history of log events.</param>
+            <returns>List of OpenAccess log events.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.ServiceHost.ProfilerService">
+            <summary>
+            Web service implementation to be used by the OpenAccess profiler
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ProfilerService.GetServiceVersion">
+            <summary>Returns the version of the web service definition.</summary>
+            <remarks>The version number will be incremented whenever the service contract changes.</remarks>
+            <returns>A version number to detect if client and server can work together.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ProfilerService.GetOpenAccessVersion">
+            <summary>Returns the OpenAccess version number.</summary>
+            <returns>OpenAccess version number of the server side used OpenAccess version.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ProfilerService.GetServerTimeUTC">
+            <summary>
+            Returns the UTC time of the server machine. Should be used to sync the client and server time.
+            </summary>
+            <returns>UTC time of the server machine.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ProfilerService.GetDatabaseNames">
+            <summary>
+            Returns all alias names for all opened databases in the process.
+            </summary>
+            <returns>Alias names for all opened databases in the process.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ProfilerService.GetMetrics(System.String,System.DateTime)">
+            <summary>
+            Returns a list of OpenAccess metrics.
+            </summary>
+            <param name="databaseName">The name of the database instance generating these metrics</param>
+            <param name="from">Timestamp to restrict the history of metrics.</param>
+            <returns>List of OpenAccess metrics.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ProfilerService.GetEventsById(System.String,System.Int32)">
+            <summary>
+            Returns a list of OpenAccess log events.
+            </summary>
+            <param name="databaseName">The name of the database instance generating these metrics</param>
+            <param name="fromId">Integer value to restrict the history of the log events.</param>
+            <returns>List of OpenAccess log events.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ProfilerService.GetEventsByDate(System.String,System.DateTime)">
+            <summary>
+            Returns a list of OpenAccess log events.
+            </summary>
+            <param name="databaseName">The name of the database instance generating these metrics</param>
+            <param name="from">Timestamp to restrict the history of log events.</param>
+            <returns>List of OpenAccess log events.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.ServiceHost.ServiceHostManager">
+             <summary>
+             Manager for the OpenAccess profiler web service.
+             </summary>
+             <example>
+             In a web application the HttpApplication can be used to start and stop the web server.
+             The port can be specified hard coded:
+             <code>
+             public partial class Global : System.Web.HttpApplication
+             {
+                 protected void Application_Start(object sender, EventArgs e)
+                 {
+                     Telerik.OpenAccess.ServiceHost.ServiceHostManager.StartProfilerService(15555);
+                 }
+            
+                 protected void Application_End(object sender, EventArgs e)
+                 {
+                     Telerik.OpenAccess.ServiceHost.ServiceHostManager.StopProfilerService();
+                 }
+             }
+             </code>
+             The port can also be read from the application configuration file. The appSettings section is used.
+             
+             app.config or web.config:
+             <code>
+             &lt;appSettings&gt;
+               &lt;add key="ProfilerPort" value ="15555"/&gt;
+             &lt;/appSettings&gt;
+             </code>
+             
+             Class in code:
+             <code>
+             public partial class Global : System.Web.HttpApplication
+             {
+                 protected void Application_Start(object sender, EventArgs e)
+                 {
+                     Telerik.OpenAccess.ServiceHost.ServiceHostManager.StartProfilerService("ProfilerPort");
+                 }
+            
+                 protected void Application_End(object sender, EventArgs e)
+                 {
+                     Telerik.OpenAccess.ServiceHost.ServiceHostManager.StopProfilerService();
+                 }
+             }
+             </code>
+             </example>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ServiceHostManager.StartProfilerService(System.String)">
+            <summary>
+            Starts the web service if the configuration file contains settings.
+            </summary>
+            <remarks>
+            The applications configuration file (app.config ore web.config) has to contain a port setting to start the server.
+            If no port setting has been found, the server is not started. 
+            </remarks>
+            <param name="name">The name of the key in the application settings in the configuration file.</param>
+            <returns>Null if the server has been started or no configuration could be found, an exception if the server could not be started.</returns>
+            <seealso cref="T:Telerik.OpenAccess.ServiceHost.ServiceHostManager"/>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ServiceHostManager.StartProfilerService(System.Int32)">
+            <summary>
+            Starts the web service on a specific port.
+            </summary>
+            <param name="port">The tcp port the server should use.</param>
+            <returns>Null if the server has been started, an exception if the server could not be started.</returns>
+            <seealso cref="T:Telerik.OpenAccess.ServiceHost.ServiceHostManager"/>
+        </member>
+        <member name="M:Telerik.OpenAccess.ServiceHost.ServiceHostManager.StopProfilerService">
+            <summary>
+            Stops the running service host.
+            </summary>
+            <seealso cref="T:Telerik.OpenAccess.ServiceHost.ServiceHostManager"/>
+        </member>
+    </members>
+</doc>

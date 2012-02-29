@@ -1,0 +1,1044 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.OpenAccess.Web.40</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.OpenAccess.DynamicData.OpenAccessAssociationProvider">
+            <summary>
+            Association provider for Dynamic Data.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.DynamicData.OpenAccessAssociationProvider.#ctor(Telerik.OpenAccess.DynamicData.OpenAccessColumnProvider,Telerik.OpenAccess.Metadata.MetaNavigationMember)">
+            <summary>
+            Initializes a new instance of the OpenAccessAssociationProvider class.
+            </summary>
+            <param name="fromColumnProvider">Source column provider of the association.</param>
+            <param name="fromMetaNavigationMember">Source navigation member of the association.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.DynamicData.OpenAccessColumnProvider">
+            <summary>
+            Column provider for Dynamic Data.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.DynamicData.OpenAccessColumnProvider.#ctor(System.Web.DynamicData.ModelProviders.TableProvider,Telerik.OpenAccess.Metadata.MetaMember,System.Boolean)">
+            <summary>
+            Initializes a new instance of the OpenAccessColumnProvider class.
+            </summary>
+            <param name="tableProvider">The table provider.</param>
+            <param name="metaMember">The meta member.</param>
+            <param name="isPrimaryKey">Indicates whether the column is part of the primary key for the table.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.DynamicData.OpenAccessColumnProvider.MetaMember">
+            <summary>
+            Gets or sets the meta member.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.DynamicData.OpenAccessColumnProvider.IsAssociation">
+            <summary>
+            Indicates whether the column is part of association,
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.DynamicData.OpenAccessColumnProvider.Association">
+            <summary>
+            Gets the provider for the table that a column represents.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.DynamicData.OpenAccessColumnProvider.EntityTypeProperty">
+            <summary>
+            Gets or sets the System.Reflection.PropertyInfo value of the property that represents the column in the entity type.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.DynamicData.OpenAccessDataModelProvider">
+            <summary>
+            Data model provider for Dynamic Data.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.DynamicData.OpenAccessDataModelProvider.#ctor(System.Object,System.Func{System.Object})">
+            <summary>
+            Initializes a new instance of the OpenAccessDataModelProvider class.
+            </summary>
+            <param name="contextInstance">The OpenAccessContext instance.</param>
+            <param name="contextFactory">The context factory.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.DynamicData.OpenAccessDataModelProvider.CreateContext">
+            <summary>
+            Returns the domain context for the table.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.DynamicData.OpenAccessDataModelProvider.Tables">
+            <summary>
+            Gets the list of tables that are exposed by the data model.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.DynamicData.OpenAccessTableProvider">
+            <summary>
+            Table provider for Dynamic Data
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.DynamicData.OpenAccessTableProvider.#ctor(Telerik.OpenAccess.DynamicData.OpenAccessDataModelProvider,Telerik.OpenAccess.Metadata.MetaPersistentType,System.Type)">
+            <summary>
+            Initializes a new instance of the OpenAccessTableProvider class.
+            </summary>
+            <param name="openAccessDataModelProvider">The data model provider.</param>
+            <param name="metaPersistentType">The persistent type.</param>
+            <param name="entityType">The entity type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.DynamicData.OpenAccessTableProvider.GetQuery(System.Object)">
+            <summary>
+            Returns the IQueryable object that returns the elements of the table.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.DynamicData.OpenAccessTableProvider.Columns">
+            <summary>
+            Gets the collection of columns in this table.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource">
+            <summary>
+            Enables the use of Language-Integrated Query (LINQ) in an ASP.NET Web
+            page through markup text to retrieve and modify data from a data object.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            class. 
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.CreateQueryableView">
+            <summary>Returns a queryable view.</summary>
+            <returns>A queryable view.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.CreateView">
+            <summary>Creates a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            class that is associated with this control.</summary>
+            <returns>An object that acts as the interface for data-bound controls.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Delete(System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>Performs a delete operation.</summary>
+            <returns>The number of records affected by the delete operation.</returns>
+            <param name="keys">The row key values for the records to be deleted.</param>
+            <param name="oldValues">The row values that are evaluated to detect data conflicts.
+            </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Insert(System.Collections.IDictionary)">
+            <summary>Performs an insert operation.</summary>
+            <returns>The number of rows affected by the insert operation.</returns>
+            <param name="values">The row values to be inserted into the data source.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.OnInit(System.EventArgs)">
+            <summary>Initializes the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            object.</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.OnUnload(System.EventArgs)">
+            <summary>Raises the <see cref="E:System.Web.UI.Control.Unload"/> event.</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Update(System.Collections.IDictionary,System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>Performs an update operation.</summary>
+            <returns>The number of records affected by the update operation.</returns>
+            <param name="keys">The row key values for the records to be updated.</param>
+            <param name="values">The row values to be updated in the data source.</param>
+            <param name="oldValues">The row values that are evaluated to detect data conflicts.
+            </param>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ContextCreated">
+            <summary>
+            Occurs after an instance of the context type object is created.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ContextCreating">
+            <summary>
+            Occurs before an instance of the context type object is created.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ContextDisposing">
+            <summary>
+            Occurs before disposing the context type object.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Deleted">
+            <summary>
+            Occurs when a delete operation has finished.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Deleting">
+            <summary>
+            Occurs before a delete operation.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Inserted">
+            <summary>
+            Occurs when an insert operation has finished.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Inserting">
+            <summary>
+            Occurs before an insert operation.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Selected">
+            <summary>
+            Occurs when a data retrieval operation has finished.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Selecting">
+            <summary>
+            Occurs before a data-retrieval operation.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Updated">
+            <summary>
+            Occurs when an update operation has finished.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Updating">
+            <summary>
+            Occurs before an update operation.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.AutoGenerateOrderByClause">
+            <summary>Gets or sets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control dynamically creates an Order By clause based on values in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.OrderByParameters"/>
+            collection.</summary>
+            <returns>true if the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control creates the Order By clause; otherwise, false. The default is false.
+            </returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.AutoGenerateWhereClause">
+            <summary>Gets or sets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control dynamically creates a Where clause based on values defined in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.WhereParameters"/>
+            collection.</summary>
+            <returns>true if the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control will create the Where clause; otherwise, false. The default is false.
+            </returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.AutoPage">
+            <summary>Gets or sets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports navigation through sections of the data at run time.</summary>
+            <returns>true if the user can page through the data; otherwise, false. The default
+            value is true.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.AutoSort">
+            <summary>Gets or sets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports sorting the data at run time.</summary>
+            <returns>true if the user can sort the data; otherwise, false. The default value
+            is true.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ContextTypeName">
+            <summary>Gets or sets the name of the type that contains the property whose value
+            has the data that you want to retrieve.</summary>
+            <returns>The name of the class to retrieve data from.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.DeleteParameters">
+            <summary>Gets the collection of parameters that are used during a delete operation.
+            </summary>
+            <returns>The parameters that are used during a delete operation.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.EnableDelete">
+            <summary>Gets or sets a value that indicates whether data records can be deleted
+            through the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/> control.
+            </summary>
+            <returns>true if automatic delete operations are enabled; otherwise, false. The
+            default value is false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.EnableInsert">
+            <summary>Gets or sets a value that indicates whether data records can be inserted
+            through the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/> control.
+            </summary>
+            <returns>true if automatic insert operations are enabled; otherwise, false. The
+            default value is false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.EnableUpdate">
+            <summary>Gets or sets a value that indicates whether data records can be updated
+            through the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/> control.
+            </summary>
+            <returns>true if automatic update operations are enabled; otherwise, false. The
+            default value is false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.GroupBy">
+            <summary>Gets or sets a value that specifies which properties are used for grouping
+            the retrieved data.</summary>
+            <returns>A string that is used to create the Group By clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.GroupByParameters">
+            <summary>Gets the collection of parameters that are used to create the Group By
+            clause.</summary>
+            <returns>The parameters that are used to create the Group By clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.InsertParameters">
+            <summary>Gets the collection of parameters that are used during an insert operation.
+            </summary>
+            <returns>The parameters that are used during an insert operation.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.OrderBy">
+            <summary>Gets or sets a value that specifies which fields are used for ordering
+            the retrieved data.</summary>
+            <returns>A string that is used to create the Order By clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.OrderByParameters">
+            <summary>Gets the collection of parameters that are used to create the Order By
+            clause.</summary>
+            <returns>The parameters that are used for creating the Order By clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.OrderGroupsBy">
+            <summary>Gets or sets the fields that are used for ordering grouped data.</summary>
+            <returns>A string that is used to create the Order Groups By clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.OrderGroupsByParameters">
+            <summary>Gets the collection of parameters that are used to create the Order Groups By
+            clause.</summary>
+            <returns>The parameters that are used to create the Order Groups By clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Select">
+            <summary>Gets or sets the properties and calculated values that are included
+            in the retrieved data.</summary>
+            <returns>A string that is used to create the Select clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.SelectParameters">
+            <summary>Gets the collection of parameters that are used during a data-retrieval
+            operation.</summary>
+            <returns>The parameters that are used to create the Select clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.StoreOriginalValuesInViewState">
+            <summary>Gets or sets a value that indicates whether the data from the data source
+            should be stored in view state to make sure that the data has not been changed
+            by another process before it is updated or deleted.</summary>
+            <returns>true if the values will be stored in view state; otherwise, false. The
+            default value is true.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ResourceSetName">
+            <summary>Gets or sets the name of the property or field in the domain context class
+            that represents a data collection.</summary>
+            <returns>A string that contains the name of the property that contains the data
+            collection.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.UpdateParameters">
+            <summary>Gets the collection of parameters that are used during an update operation.
+            </summary>
+            <returns>A collection of the parameters that are used during an update operation.
+            </returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Where">
+            <summary>Gets or sets a value that specifies what conditions must be true for
+            a record to be included in the retrieved data.</summary>
+            <returns>A string that is used to create the Where clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.WhereParameters">
+            <summary>Gets the collection of parameters that is used to create the Where clause.
+            </summary>
+            <returns>A collection of the parameters that are used to create the Where clause
+            in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Where"/> property.
+            </returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDisposeEventArgs">
+            <summary>
+            Provides data for the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ContextDisposing"/>
+            event.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDisposeEventArgs.#ctor(System.Object)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDisposeEventArgs"/>
+            class. </summary>
+            <param name="instance">The domain context object to dispose.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDisposeEventArgs.ObjectInstance">
+            <summary>Gets the domain context object to dispose.</summary>
+            <returns>An object that represents the domain context.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs">
+            <summary>Provides data for the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ContextCreating"/>
+            event. </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs"/>
+            class. </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs.#ctor(System.Web.UI.DataSourceOperation)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs"/>
+            class for the specified data operation. </summary>
+            <param name="operation">The data operation that is being performed.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs.ObjectInstance">
+            <summary>Gets or sets the domain context object to create.</summary>
+            <returns>The domain context object that you have set to the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs.ObjectInstance"/>
+            property; otherwise, null. The default is null. </returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs.Operation">
+            <summary>Gets the data operation that is being performed.</summary>
+            <returns>A value that represents the type of data operation that is being performed.
+            </returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs">
+            <summary>
+            Provides data for the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Deleting"/>
+            event.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs.#ctor(System.Object)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs"/>
+            class. </summary>
+            <param name="originalObject">An object of the type specified in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ResourceSetName"/>
+            property that contains the data to delete.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs.#ctor(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs"/>
+            class with the specified exception. </summary>
+            <param name="exception">The exception that occurred when validating the data
+            to delete.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs.Exception">
+            <summary>Gets the exception that was thrown while the data was being validated
+            before the delete operation.</summary>
+            <returns>The exception, if an error occurred; otherwise, null.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs.ExceptionHandled">
+            <summary>Gets or sets a value that indicates whether the exception was handled
+            and that it should not be thrown again.</summary>
+            <returns>true if the exception was handled; otherwise, false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs.OriginalObject">
+            <summary>Gets the object that represents the data to delete.</summary>
+            <returns>An object of the type specified in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ResourceSetName"/>
+            property that contains the data to delete.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs">
+            <summary>Provides data for the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Updating"/>
+            event. </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs.#ctor(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs"/>
+            class with the specified exception. </summary>
+            <param name="exception">The exception that occurred when validating the data
+            to update.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs.#ctor(System.Object,System.Object)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs"/>
+            class. </summary>
+            <param name="originalObject">An object of the type specified in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ResourceSetName"/>
+            property that contains the initial values that were retrieved from the data source.
+            </param>
+            <param name="newObject">An object of the type specified in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ResourceSetName"/>
+            property that contains the values that will be saved in the data source.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs.Exception">
+            <summary>Gets the exception that was thrown while the data was being validated
+            before the update operation.</summary>
+            <returns>The exception, if an error occurred; otherwise, null.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs.ExceptionHandled">
+            <summary>Gets or sets a value that indicates whether the exception was handled
+            and that it should not be thrown again.</summary>
+            <returns>true if the exception was handled; otherwise, false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs.NewObject">
+            <summary>Gets the object that contains the values that will be saved in the data
+            source.</summary>
+            <returns>An object of the type specified in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ResourceSetName"/>
+            property that contains the data to save.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs.OriginalObject">
+            <summary>Gets the object that contains the values that were originally retrieved
+            from the data source.</summary>
+            <returns>An object of the type specified in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ResourceSetName"/>
+            property that contains the data that was retrieved from the data source.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs">
+            <summary>Provides data for the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Selecting"/>
+            event.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.#ctor(System.Web.UI.DataSourceSelectArguments,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Specialized.IOrderedDictionary,System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs"/>
+            class.
+            </summary>
+            <param name="arguments">
+            The values that are passed from the data-bound control that determine how
+            the data is paged and sorted. For more information, see the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.Arguments"/>
+            property.</param>
+            <param name="whereParameters">
+            The collection of parameters that is used to create the Where clause. For
+            more information, see the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.WhereParameters"/>
+            property.
+            </param>
+            <param name="orderByParameters">
+            The collection of parameters that is used to create the Order By clause.
+            For more information, see the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.OrderByParameters"/>
+            property.
+            </param>
+            <param name="groupByParameters">
+            The collection of parameters that is used to create the Group By clause.
+            For more information, see the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.GroupByParameters"/>
+            property.
+            </param>
+            <param name="orderGroupsByParameters">
+            The collection of parameter that is used to create the clause that is used
+            for sorting grouped data. For more information, see the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.OrderGroupsByParameters"/>
+            property.
+            </param>
+            <param name="selectParameters">
+            The collection of parameters that is used to create the Select clause. For
+            more information, see the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.SelectParameters"/>
+            property.
+            </param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.Arguments">
+            <summary>Gets values that determine how the data is returned.</summary>
+            <returns>An object that contains values for determining how the data is returned.
+            </returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.GroupByParameters">
+            <summary>Gets the collection of parameters that is used to create the GroupBy
+            clause.</summary>
+            <returns>An object that contains the parameters for the GroupBy clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.OrderByParameters">
+            <summary>Gets the collection of parameters that is used to create the OrderBy
+            clause.</summary>
+            <returns>An object that contains the parameters for the OrderBy clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.OrderGroupsByParameters">
+            <summary>Gets the collection of parameters that are used to create the clause
+            that specifies how grouped data is sorted.</summary>
+            <returns>An object that contains the parameters for the clause that specifies
+            how grouped data is sorted.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.Result">
+            <summary>Gets or sets the data object that is used in the data query.</summary>
+            <returns>An object that represents the data for the query.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.SelectParameters">
+            <summary>Gets the collection of parameters that is used to create the Select
+            clause.</summary>
+            <returns>An object that contains the parameters for the Select clause.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs.WhereParameters">
+            <summary>Gets the collection of parameters that is used to create the Where clause.
+            </summary>
+            <returns>An object that contains the parameters for the Where clause.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs">
+            <summary>Provides data for the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Inserting"/>
+            event.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs.#ctor(System.Object)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs"/>
+            class. </summary>
+            <param name="newObject">An object that contains the data to insert.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs.#ctor(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs"/>
+            class and specifies the provided exception. </summary>
+            <param name="exception">The exception that occurred when the data to insert was
+            being validated.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs.Exception">
+            <summary>Gets the exception that was thrown while the data was being validated
+            before the insert operation.</summary>
+            <returns>The exception, if an error occurred; otherwise, null.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs.ExceptionHandled">
+            <summary>Gets or sets a value that indicates whether the exception was handled
+            and that it should not be thrown again.</summary>
+            <returns>true if the exception was handled; otherwise, false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs.NewObject">
+            <summary>Gets the object that contains the data to insert.</summary>
+            <returns>An object that contains the data to insert.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs">
+            <summary>Provides data for the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.ContextCreated"/>,
+            <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Deleted"/>, <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Inserted"/>,
+            <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Selected"/>, and <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.Updated"/>
+            events.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs.#ctor(System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs"/>
+            class by using an exception that occurred as a result of the data operation.
+            </summary>
+            <param name="exception">The error that occurred during the data operation.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs.#ctor(System.Object)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs"/>
+            class by using an object that contains the data from the data operation. </summary>
+            <param name="result">An object that contains the data that results from a data
+            operation.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs.#ctor(System.Object,System.Int32)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs"/>
+            class with an object that contains the data from the data operation and the number
+            of rows returned.</summary>
+            <param name="result">An object that contains the data that results from a data
+            operation.</param>
+            <param name="totalRowCount">The number of rows that were returned from a data
+            retrieval operation.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs.Exception">
+            <summary>Gets the exception that was thrown during the data operation.</summary>
+            <returns>An <see cref="T:System.Exception"/> object that represents the exception,
+            if an error occurred; otherwise, null.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs.ExceptionHandled">
+            <summary>Gets or sets a value that indicates whether the exception was handled
+            and that it should not be thrown again.</summary>
+            <returns>true if the exception was handled; otherwise, false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs.Result">
+            <summary>Gets the object that represents the result of a data operation.</summary>
+            <returns>An object that contains the data from the data operation.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs.TotalRowCount">
+            <summary>Gets the total number of rows in a data set from a data-retrieval operation.
+            </summary>
+            <returns>The total number of rows in a data set from the data retrieval operation;
+            -1 if the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs"/>
+            object was created during a data modification operation; -1 if you enabled customized
+            paging by setting <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSource.AutoPage"/>
+            to true and by setting <see cref="P:System.Web.UI.DataSourceSelectArguments.RetrieveTotalRowCount"/>
+            to false.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException">
+            <summary>Describes an exception that occurred during validation of new or modified
+            values before values are inserted, updated, or deleted by a <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException"/>
+            class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException"/>
+            class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException"/>
+            class with serialized data.</summary>
+            <param name="info">The object that holds the serialized object data. </param>
+            <param name="context">Context information about the source or destination. </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException.#ctor(System.String,System.Collections.Generic.IDictionary{System.String,System.Exception})">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException"/>
+            class with a specified error message and a reference to the inner exception.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerExceptions">The exception that are the cause of the current exception.
+            </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException.#ctor(System.String,System.Exception)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException"/>
+            class with a specified error message and a reference to the inner exception.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Gets information about the exception and adds it to the <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
+            object.</summary>
+            <param name="info">The object that holds the serialized object data for the exception
+            that is being thrown. </param>
+            <param name="context">Context information about the source or destination. </param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceValidationException.InnerExceptions">
+            <summary>Gets one or more exceptions that occurred when new or modified data
+            was being validated.</summary>
+            <returns>A collection that contains the exceptions.</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.#ctor(Telerik.OpenAccess.Web.OpenAccessLinqDataSource,System.String,System.Web.HttpContext)">
+            <summary>Initializes a new instance of the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            class, setting the specified <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control as the owner of the current view.</summary>
+            <param name="owner">The data source control that the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            object is associated with. </param>
+            <param name="name">A unique name for the data source view within the scope of
+            the data source control that owns it. </param>
+            <param name="context">The current <see cref="T:System.Web.HttpContext"/> instance.
+            </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnContextCreated(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextCreated"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnContextCreating(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceContextEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextCreating"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnContextDisposing(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDisposeEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextDisposing"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnDeleted(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Deleted"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnDeleting(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceDeleteEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Deleting"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnException(System.Web.DynamicData.DynamicValidatorEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Exception"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnInserted(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Inserted"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnInserting(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceInsertEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Inserting"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnSelected(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Selected"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnSelecting(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceSelectEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Selecting"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnUpdated(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceStatusEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Updated"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.OnUpdating(Telerik.OpenAccess.Web.OpenAccessLinqDataSourceUpdateEventArgs)">
+            <summary>Raises the <see cref="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Updating"/>
+            event</summary>
+            <param name="e">The event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.HandleValidationErrors(System.Collections.Generic.IDictionary{System.String,System.Exception},System.Web.UI.DataSourceOperation)">
+            <summary>
+            Handles the errors produced by the validation for an Insert, Update or Delete operation.
+            </summary>
+            <param name="errors">The collection of validation errors.</param>
+            <param name="operation">The operation that was executed when the errors were produced.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.GetSource(System.Web.UI.WebControls.QueryContext)">
+            <summary>Retrieves the source of the query context.</summary>
+            <returns>The data source to apply the query to.</returns>
+            <param name="context">The current query context.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Select(System.Web.UI.DataSourceSelectArguments)">
+            <summary>Performs a data-retrieval operation.</summary>
+            <returns>The result of the requested operation.</returns>
+            <param name="arguments">A collection of objects that are used to request operations
+            on the data beyond basic data retrieval.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ExecuteSelect(System.Web.UI.DataSourceSelectArguments)">
+            <summary>Performs a data-retrieval operation.</summary>
+            <returns>The result of the requested operation.</returns>
+            <param name="arguments">A collection of objects that are used to request operations
+            on the data beyond basic data retrieval.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.StoreOriginalValues(System.Collections.IList)">
+            <summary>Stores the original values from the Select operation in the control's
+            view state.</summary>
+            <param name="results">The result of the operations.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.GetOriginalValues(System.Collections.IDictionary)">
+            <summary>Retrieves the original values for the specified keys that were stored
+            during the Select operation.</summary>
+            <returns>The original values for the specified keys that were stored during the
+            Select operation.</returns>
+            <param name="keys">The keys of the rows to update.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.SaveViewState">
+            <summary>Saves changes to view state for the <see cref="T:System.Web.UI.WebControls.QueryableDataSourceView"/>
+            object since the time that the page was posted to the server.</summary>
+            <returns>The object that contains the changes to the <see cref="T:System.Web.UI.WebControls.QueryableDataSourceView"/>
+            control's view state.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.LoadViewState(System.Object)">
+            <summary>Restores the previously saved view state for the data source view.</summary>
+            <param name="savedState">The <see cref="T:System.Web.UI.WebControls.QueryableDataSourceView"/>
+            control state to restore.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CreateContext(System.Web.UI.DataSourceOperation)">
+            <summary>Creates an instance of the domain context and entity-set type for the
+            specified operation.</summary>
+            <returns>An instance of the domain context and entity-set type for the specified
+            operation.</returns>
+            <param name="operation">The type of data operation to perform.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CreateContext(System.Type)">
+            <summary>Creates an instance of the domain context type.</summary>
+            <returns>An instance of the domain context type.</returns>
+            <param name="contextType">The type of the domain context to create.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ExecuteInsert(System.Collections.IDictionary)">
+            <summary>Performs an insert operation by using the values specified in a collection.
+            </summary>
+            <returns>The number of objects or rows that were inserted into the data source.
+            </returns>
+            <param name="values">A dictionary of name/value pairs that represent data elements
+            and their new values.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ValidateInsertSupported(System.Collections.IDictionary)">
+            <summary>Validates that the conditions exist to perform an insert operation.
+            </summary>
+            <param name="values">A dictionary that contains row values to insert.</param>
+            <exception cref="T:System.InvalidOperationException">The <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.GroupBy"/>
+            or <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.SelectNew"/> property
+            contains a value or the <paramref name="values"/> parameter does not contain
+            any items.</exception>
+            <exception cref="T:System.NotSupportedException">
+            <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanInsert"/> is false.
+            </exception>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.InsertObject(System.Object)">
+            <summary>Inserts data objects into a <see cref="T:System.Web.UI.WebControls.QueryableDataSourceView"/>
+            object.</summary>
+            <returns>The number of objects that were inserted into the data source view.
+            </returns>
+            <param name="newEntity">The data object to insert.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ExecuteDelete(System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>Performs a delete operation using the specified keys and using row values
+            that are used to detect conflicts.</summary>
+            <returns>The number of objects or rows that were deleted from the data source.
+            </returns>
+            <param name="keys">A dictionary of row-key values for the records to delete.
+            </param>
+            <param name="oldValues">A dictionary of name/value pairs that represent data
+            elements and their original values, which is used to detect data conflicts.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ValidateDeleteSupported(System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>Validates that the conditions exist to perform a delete operation.</summary>
+            <param name="keys">A dictionary of key values for the data records to delete.
+            </param>
+            <param name="oldValues">A dictionary that contains row values to delete.</param>
+            <exception cref="T:System.InvalidOperationException">The <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.GroupBy"/>
+            or <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.SelectNew"/> property
+            contains a value.</exception>
+            <exception cref="T:System.NotSupportedException">
+            <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanDelete"/> is false.
+            </exception>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ExecuteUpdate(System.Collections.IDictionary,System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>Performs an update operation by using the specified row-key values,
+            the row values, and the row values that are used to detect conflicts.</summary>
+            <returns>The number of rows that were updated in the data source.</returns>
+            <param name="keys">A dictionary of row-key values for the records to update.
+            </param>
+            <param name="values">A dictionary of name/value pairs that represent data elements
+            and their new values. </param>
+            <param name="oldValues">A dictionary of name/value pairs that represent data
+            elements and their original values, which is used to detect data conflicts.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ValidateUpdateSupported(System.Collections.IDictionary,System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>Validates that the conditions exist to perform an update operation.
+            </summary>
+            <param name="keys">A dictionary of key values for the data records to update.
+            </param>
+            <param name="values">A dictionary that contains new row values for the update
+            operation.</param>
+            <param name="oldValues">A dictionary that contains the old row values for the
+            update operation.</param>
+            <exception cref="T:System.NotSupportedException">The update operation is not
+            supported.</exception>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ValidateEditSupported">
+            <summary>Validates that the conditions exist to perform an edit operation.</summary>
+            <exception cref="T:System.InvalidOperationException">The validation failed or
+            was canceled.</exception>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.UpdateObject(System.Object,System.Object)">
+            <summary>
+            Updates a data object.
+            </summary>
+            <param name="oldEntity">The object to update.</param>
+            <param name="newEntity">The updated object.</param>
+            <returns>The number of rows that were updated in the data object.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.UpdateDataObject(System.Object,System.Object)">
+            <summary>Updates a data object.</summary>
+            <param name="oldDataObject">The object to be updated.</param>
+            <param name="newDataObject">The updated object.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.DeleteObject(System.Object)">
+            <summary>
+            Deletes a data object from the database.
+            </summary>
+            <param name="oldEntity">The data object to delete.</param>
+            <returns>The number of data objects that were deleted.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.GetTableMemberInfo(System.Type)">
+            <summary>Retrieves metadata about the data collection.</summary>
+            <returns>An object that contains type metadata for the data collection. </returns>
+            <param name="contextType">An object that represents the domain context class.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ValidateContextType(System.Type,System.Boolean)">
+            <summary>Checks whether the domain context class derives from <see cref="T:Telerik.OpenAccess.OpenAccessContext"/>.
+            </summary>
+            <param name="contextType">The type of the domain context class to validate.</param>
+            <param name="selecting">Specifies whether the method has been called when a select
+            operation starts.</param>
+            <exception cref="T:System.InvalidOperationException">An insert, update, or delete
+            operation is being performed and the domain context class does not derive from
+            <see cref="T:Telerik.OpenAccess.OpenAccessContext"/>.</exception>
+        </member>
+        <member name="M:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ValidateTableType(System.Type,System.Boolean)">
+            <summary>Checks whether the type of the class that represents the data table
+            is a generic type.</summary>
+            <param name="tableType">The table type to validate.</param>
+            <param name="selecting">Specifies whether the method has been called when a select
+            operation starts.</param>
+            <exception cref="T:System.InvalidOperationException">The type of the table is
+            not generic.</exception>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextCreated">
+            <summary>
+            Occurs after an instance of the context type object has been created.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextCreating">
+            <summary>
+            Occurs before an instance of the context type object is created.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextDisposing">
+            <summary>
+            Occurs before disposing the context type object.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Deleted">
+            <summary>
+            Occurs when a delete operation has finished.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Deleting">
+            <summary>
+            Occurs before a delete operation.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Inserted">
+            <summary>
+            Occurs when an insert operation has finished.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Inserting">
+            <summary>
+            Occurs before an insert operation.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Selected">
+            <summary>
+            Occurs when a data-retrieval operation has completed.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Selecting">
+            <summary>
+            Occurs before a data-retrieval operation.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Updated">
+            <summary>
+            Occurs when an update operation has finished.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.Updating">
+            <summary>
+            Occurs before an update operation.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanDelete">
+            <summary>Gets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            object that is associated with the current <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports the delete operation.</summary>
+            <returns>true if the operation is supported; otherwise, false. The default is
+            false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanInsert">
+            <summary>Gets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            object that is associated with the current <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports the insert operation.</summary>
+            <returns>true if the operation is supported; otherwise, false. The default is
+            false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanPage">
+            <summary>Gets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            object that is associated with the current <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports paging of retrieved data.</summary>
+            <returns>true.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanRetrieveTotalRowCount">
+            <summary>Gets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            object that is associated with the current <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports retrieving the total number of data rows, in addition to retrieving
+            the data.</summary>
+            <returns>true.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanSort">
+            <summary>Gets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            object that is associated with the current <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports a sorted view of the retrieved data.</summary>
+            <returns>true.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.CanUpdate">
+            <summary>Gets a value that indicates whether the <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView"/>
+            object that is associated with the current <see cref="T:Telerik.OpenAccess.Web.OpenAccessLinqDataSource"/>
+            control supports the update operation.</summary>
+            <returns>true if the operation is supported; otherwise, false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextType">
+            <summary>Gets the type of the domain context class.</summary>
+            <returns>The type that is associated with the domain context class specified in
+            the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextTypeName"/>
+            property.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ContextTypeName">
+            <summary>Gets or sets the name of the domain context class that contains the field
+            or property specified in the <see cref="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ResourceSetName"/>
+            property.</summary>
+            <returns>The name of the domain context class.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.EnableDelete">
+            <summary>Gets or sets a value that indicates whether the data source view supports
+            deleting rows.</summary>
+            <returns>true if the data source view supports deleting rows; otherwise, false.
+            The default is false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.EnableInsert">
+            <summary>Gets or sets a value that indicates whether the data source view supports
+            adding new rows.</summary>
+            <returns>true if the view supports inserting rows; otherwise, false. The default
+            is false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.EnableUpdate">
+            <summary>Gets or sets a value that indicates whether the data source view supports
+            updating rows.</summary>
+            <returns>true if the view supports updating rows; otherwise, false. The default
+            is false.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.StoreOriginalValuesInViewState">
+            <summary>Gets or sets a value that indicates that original values from the select
+            operation will be stored in view state when delete or update operations are enabled.
+            </summary>
+            <returns>true if original values are saved in view state; otherwise, false. The
+            default value is true.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Web.OpenAccessLinqDataSourceView.ResourceSetName">
+            <summary>Gets or sets the name of a property or field of the domain context class
+            that contains the data collection.</summary>
+            <returns>The name of the property that represents the data collection.</returns>
+        </member>
+    </members>
+</doc>

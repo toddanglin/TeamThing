@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.Data", "Mercury.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.Console", "Mercury.Console\Mercury.Console\Mercury.Console.csproj", "{E129752D-6DE0-469A-B74D-66AB678FCDD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomFormat", "CustomFormat\CustomFormat\CustomFormat.csproj", "{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.Data.Tests", "Mercury.Data.Tests\Mercury.Data.Tests.csproj", "{3B75343F-5D83-4201-A845-6DF1A880BE71}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B49A9FC-5E26-4513-B097-BB415C8A5534}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -19,6 +15,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.Dash.Mvc", "Mercury.Dash.Mvc\Mercury.Dash.Mvc\Mercury.Dash.Mvc.csproj", "{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Binaries", "Binaries", "{C1257430-2F2A-4DC6-BE94-A249EF89B08C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenSource", "OpenSource", "{E0C22445-7D88-4447-B4A5-0C3810F589DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telerik", "Telerik", "{445FBD21-339A-402E-A347-45C357C89372}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenAccess", "OpenAccess", "{6614E320-A0B0-47F0-A1CD-680CBF395362}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2012.1.214", "2012.1.214", "{B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}"
+	ProjectSection(SolutionItems) = preProject
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.35.Extensions.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.35.Extensions.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.40.Extensions.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.40.Extensions.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Config.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Config.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Runtime.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Runtime.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.40.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.40.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{1D549C3C-0039-44EC-8C1A-810C97A70D2C}"
+	ProjectSection(SolutionItems) = preProject
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\CecilLicense.txt = Binaries\Telerik\OpenAccess\2012.1.214\sdk\CecilLicense.txt
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe = Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe.config = Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe.config
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets = Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.CommonPackage.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.CommonPackage.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.AddinInstaller.exe = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.AddinInstaller.exe
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Intellitrace.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Intellitrace.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.AddIn.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.AddIn.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.Design.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.Design.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.VSPackage.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.VSPackage.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Upgrade.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Upgrade.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe = Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe.config = Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -63,26 +98,6 @@ Global
 		{E129752D-6DE0-469A-B74D-66AB678FCDD7}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E129752D-6DE0-469A-B74D-66AB678FCDD7}.Release|x86.ActiveCfg = Release|x86
 		{E129752D-6DE0-469A-B74D-66AB678FCDD7}.Release|x86.Build.0 = Release|x86
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F71D9DFE-E464-40A3-8B48-8E6A95A3DB3C}.Release|x86.ActiveCfg = Release|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3B75343F-5D83-4201-A845-6DF1A880BE71}.Release|x86.ActiveCfg = Release|Any CPU
 		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -97,10 +112,17 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E0C22445-7D88-4447-B4A5-0C3810F589DA} = {C1257430-2F2A-4DC6-BE94-A249EF89B08C}
+		{445FBD21-339A-402E-A347-45C357C89372} = {C1257430-2F2A-4DC6-BE94-A249EF89B08C}
+		{6614E320-A0B0-47F0-A1CD-680CBF395362} = {445FBD21-339A-402E-A347-45C357C89372}
+		{B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A} = {6614E320-A0B0-47F0-A1CD-680CBF395362}
+		{1D549C3C-0039-44EC-8C1A-810C97A70D2C} = {B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VersionFieldUsingAttrib = True
-		FetchGroupUsingAttrib = True
-		IndexUsingAttrib = False
 		ShowOldMenu = True
+		IndexUsingAttrib = False
+		FetchGroupUsingAttrib = True
+		VersionFieldUsingAttrib = True
 	EndGlobalSection
 EndGlobal

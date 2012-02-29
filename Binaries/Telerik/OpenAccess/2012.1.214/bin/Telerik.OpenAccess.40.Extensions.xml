@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.OpenAccess.40.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.OpenAccess.OpenAccessUpdatableContext">
+            <summary>
+            OpenAccess context class compatible with Microsoft.Data.Services, Version 3.5.0.0
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.#ctor(System.String,Telerik.OpenAccess.BackendConfiguration,Telerik.OpenAccess.Metadata.MetadataSource)">
+            <summary>
+            OpenAccessUpdatableContext Constructor with MetadataSource
+            </summary>
+            <param name="connectionString">The connection string name or the connection string. This is a required parameter</param>
+            <param name="backendConfiguration">
+            A backend configuration instance. If the parameter is null the default settings are used.
+            For some backends the backend type cannot be derived from the connection string, the backend type must be set.
+            </param>
+            <param name="metadataSource">A metadata source. If non is specified the metadata is derived from the context itself.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.#ctor(System.String,Telerik.OpenAccess.BackendConfiguration,Telerik.OpenAccess.Metadata.MetadataContainer)">
+            <summary>
+            OpenAccessUpdatableContext Constructor with MetadataContainer
+            </summary>
+            <param name="connectionString">The connection string name or the connection string. This is a required parameter</param>
+            <param name="backendConfiguration">
+            A backend configuration instance. If the parameter is null the default settings are used.
+            For some backends the backend type cannot be derived from the connection string. The backend type must be set then.
+            </param>
+            <param name="metadataContainer">A metadata container. If non is specified the metadata is derived from the context itself.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.AddReferenceToCollection(System.Object,System.String,System.Object)">
+            <summary>
+            Adds the specified value to the collection.
+            </summary>
+            <param name="targetResource">Target object that defines the property.</param>
+            <param name="propertyName">The name of the collection property to which the resource should be added.</param>
+            <param name="resourceToBeAdded">The opaque object representing the resource to be added.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.CreateResource(System.String,System.String)">
+            <summary>
+            Creates the resource of the specified type and that belongs to the specified container.
+            </summary>
+            <param name="containerName">The name of the entity set to which the resource belongs.</param>
+            <param name="fullTypeName">The full namespace-qualified type name of the resource.</param>
+            <returns>The object representing a resource of specified type and belonging to the specified container.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.DeleteResource(System.Object)">
+            <summary>
+            Deletes the specified resource.
+            </summary>
+            <param name="targetResource">The resource to be deleted.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.GetResource(System.Linq.IQueryable,System.String)">
+            <summary>
+            Gets the resource of the specified type identified by a query and type name.
+            </summary>
+            <param name="query">Language integratee query(LINQ) pointing to a particular resource.</param>
+            <param name="fullTypeName">The fully qualified type name of resource.</param>
+            <returns>An opaque object representing a resource of the specified type, referenced by the specified query.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.GetValue(System.Object,System.String)">
+            <summary>
+            Gets the value of the specified property on the target object.
+            </summary>
+            <param name="targetResource">An opaque object that represents a resource.</param>
+            <param name="propertyName">The name of the property whose value needs to be retrieved.</param>
+            <returns>The value of the specified property on the target object.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.RemoveReferenceFromCollection(System.Object,System.String,System.Object)">
+            <summary>
+            Removes the specified value from the collection.
+            </summary>
+            <param name="targetResource">The target object that defines the property.</param>
+            <param name="propertyName">The name of the property whose value needs to be updated.</param>
+            <param name="resourceToBeRemoved">The property value that needs to be removed.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.ResetResource(System.Object)">
+            <summary>
+            Updates the resource identified by the parameter resource.
+            </summary>
+            <param name="resource">The resource to be updated</param>
+            <returns>The updated resource</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.ResolveResource(System.Object)">
+            <summary>
+            Returns the instance of the resource represented by the specified resource object.
+            </summary>
+            <param name="resource">The object representing the resource whose instance needs to be retrieved.</param>
+            <returns>Returns the instance of the resource represented by the specified resource object.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.SetReference(System.Object,System.String,System.Object)">
+            <summary>
+            Sets the value of the specified reference property on the target object.
+            </summary>
+            <param name="targetResource">The target object that defines the property.</param>
+            <param name="propertyName">The name of the property whose value needs to be updated.</param>
+            <param name="propertyValue">The property value to be updated.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessUpdatableContext.SetValue(System.Object,System.String,System.Object)">
+            <summary>
+            Sets the value of the property with the specified name on the target resource to the specified property value.
+            </summary>
+            <param name="targetResource">The target object that defines the property.</param>
+            <param name="propertyName">The name of the property whose value needs to be updated.</param>
+            <param name="propertyValue">The property value for update.</param>
+        </member>
+    </members>
+</doc>

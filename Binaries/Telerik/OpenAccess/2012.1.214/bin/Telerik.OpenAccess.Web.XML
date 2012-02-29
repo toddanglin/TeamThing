@@ -1,0 +1,794 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.OpenAccess.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSource">
+            <summary>
+            The Data Source implementation for Telerik.OpenAccess
+            </summary>
+            <remarks>
+            An ObjectScopeProvider is requiered to connect the datasource to the database.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.#ctor">
+            <summary>
+            Constructor used from the Visual Studio designer.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.GetHierarchicalView(System.String)">
+            <summary>
+            Gets the data source view object for the OpenAccessDataSource. The viewPath parameter can be a valid OQL query.
+            </summary>
+            <param name="viewPath">An OQL query that identifies a node from which the current hierarchical view is built.</param>
+            <returns>Returns an HierarchicalDataSourceView object that represents a single view of the data starting with the data node identified by the viewPath parameter.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.GetView(System.String)">
+            <summary>
+            Returns the data source view that is associated with the OpenAccessDataSource object. 
+            </summary>
+            <param name="viewName">The name of the view to retrieve, which must be "DefaultView".</param>
+            <returns>The data source view that is associated with the OpenAccessDataSource object.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.GetViewNames">
+            <summary>
+            Returns a collection of names that represents the list of view objects that are associated with the OpenAccessDataSource control. 
+            </summary>
+            <returns>A collection with one element that contains the name "DefaultView".</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.OnInit(System.EventArgs)">
+            <summary>
+            Adds a LoadComplete event handler to the Page control that contains the OpenAccessDataSource control. 
+            </summary>
+            <param name="e">An EventArgs object that contains event data.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.OnUnload(System.EventArgs)">
+            <summary>
+            Raises the Unload event.
+            </summary>
+            <param name="e">An EventArgs object that contains event data. </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.CreateView">
+            <summary>
+            Returns the default implementation of the DataSourceView used. Override to provide custom implementation.
+            </summary>
+            <returns>The OpenAccessDataSourceView that was created in the method</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.LoadControlState(System.Object)">
+            <summary>
+            Loads the state of the properties in the OpenAccessDataSource control that need to be persisted. 
+            </summary>
+            <param name="savedState">The Object that contains state information.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDataSource.SaveControlState">
+            <summary>
+            Saves the state of the properties in the OpenAccessDataSource control that need to be persisted. 
+            </summary>
+            <returns>The Object that contains state information.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.AutoGenerateOrderByClause">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSource control dynamically creates an ORDER BY clause 
+            based on values in the OrderByParameters collection. 
+            </summary>
+            <value>true if the OpenAccessDataSource control creates the ORDER BY clause; otherwise false. The default value is false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.AutoGenerateWhereClause">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSource control dynamically creates a WHERE clause 
+            based on values defined in the WhereParameters collection. 
+            </summary>
+            <value>true if the OpenAccessDataSource control creates the WHERE clause; otherwise, false. The default value is false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.StoreOriginalValuesInViewState">
+            <summary>
+            Gets or sets a value that indicates whether the data from the data source should be stored in view state to make sure that 
+            the data has not been changed by another process before it is updated or deleted.
+            </summary>
+            <value>true if the values will be stored in view state; otherwise, false. The default value is true.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.EnablePaging">
+            <summary>
+            Controls weather the DataSource should use database paging.
+            </summary>
+            <value>true if the user can page through the data; otherwise, false. The default value is true.</value> 
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.AutoPage">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSource control supports navigation through sections of the data at run time. 
+            </summary>
+            <value>true if the user can page through the data; otherwise, false. The default value is true.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.AutoSort">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSource control supports sorting the data at run time. 
+            </summary>
+            <value>true if the user can sort the data; otherwise, false. The default value is true.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.ContextTypeName">
+            <summary>
+            Gets or sets the fully qualified name of the typed IObjectScope context used by the OpenAccessDataSource control. 
+            </summary>
+            <value>A String that is the fully qualified name of the type.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.ObjectContextProvider">
+            <summary>
+            Gets or sets the fully qualified name of the typed IObjectContextProvider class used by the OpenAccessDataSource control. 
+            </summary>
+            <remarks>An ObjectContextProvider class might be generated by the Visual Studio Integration Wizards.</remarks>
+            <value>A String that is the fully qualified name of the type.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.ContextType">
+            <summary>
+            Gets or sets the typed IObjectScope context used by the OpenAccessDataSource control.
+            </summary>
+            <value>The type that is associated with the data context class specified in the ContextTypeName property.</value>        
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.Extent">
+            <summary>
+            Gets or sets the name of the entity set used by the OpenAccessDataSource control. 
+            </summary>
+            <value>The entity set name.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.TypeName">
+            <summary>
+            Gets or sets the type name that limits the query to only results of a specific derived type.
+            </summary>
+            <value>
+            The filter expression.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.Where">
+            <summary>
+            Gets or sets a value that specifies which filter is used 
+            for retrieving data.
+            </summary>
+            <value>
+            A string that is used to create the Filter Expressions.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.WhereParameters">
+             <summary>
+             Gets the collection of parameters that are used to create the WHERE clause.
+             </summary>
+            <value>
+             Represents a collection of System.Web.UI.WebControls.Parameter and
+             System.Web.UI.WebControls.Parameter-derived<br/>
+             objects that are used by data source controls in advanced data-binding
+             scenarios.
+             </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.CommandText">
+            <summary>
+            Gets or sets an OQL command that defines the query.
+            </summary>
+            <value>A string value that is the OQL query.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.CommandParameters">
+            <summary>
+            Gets the parameter collection for the query. 
+            </summary>
+            <value>A ParameterCollection that contains the parameters that are passed to the query command. </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.DeleteParameters">
+            <summary>
+            Gets the collection of parameters that are used during a delete operation.
+            </summary>
+            <value>The parameters that are used during a delete operation.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.UpdateParameters">
+            <summary>
+            Gets the collection of parameters that are used during an update operation.
+            </summary>
+            <value>The parameters that are used during an update operation.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.SelectParameters">
+            <summary>
+            Gets the collection of parameters that are used to create the projection.
+            </summary>
+            <value>The parameters that are used for creating the projection.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.Select">
+            <summary>
+            Gets or sets the projection that defines the properties to include in the query results.
+            </summary>
+            <value>The parameters that are used for creating the ORDER BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.OrderBy">
+            <summary>
+            Gets or sets the OQL expression that specifies how to order the query results.
+            </summary>
+            <value>The ORDER BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.OrderByParameters">
+            <summary>
+            Gets the collection of parameters that are used to create the ORDER BY clause.
+            </summary>
+            <value>The parameters that are used for creating the ORDER BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.InsertParameters">
+            <summary>
+            Gets the collection of parameters that are used during an insert operation.
+            </summary>
+            <value>The parameters that are used during an insert operation.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.GroupBy">
+            <summary>
+            Gets or sets the OQL expression that specifies how to group the query results. 
+            </summary>
+            <value>The GROUP BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.EnableDelete">
+            <summary>
+            Gets or sets a value that indicates whether data records can be deleted through the OpenAccessDataSource control. 
+            </summary>
+            <value>true if automatic delete operations are enabled; otherwise, false. The default value is true. </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.EnableUpdate">
+            <summary>
+            Gets or sets a value that indicates whether objects can be modified through the OpenAccessDataSource control. 
+            </summary>
+            <value>true if automatic update operations are enabled; otherwise, false. The default value is true.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSource.EnableInsert">
+            <summary>
+            Gets or sets a value that indicates whether the data source view supports adding new rows. 
+            </summary>
+            <value>true if the view supports inserting rows; otherwise, false. The default is true.</value>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.ContextCreated">
+            <summary>
+            Occurs when the OpenAccessDataSource has finished creating the IObjectScope context instance used to work with data objects. 
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.ContextCreating">
+            <summary>
+            Occurs when the OpenAccessDataSource creates the IObjectScope context instance used to work with data objects.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.ContextDisposing">
+            <summary>
+            Occurs before an IObjectScope context instance is disposed. 
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Deleted">
+            <summary>
+            The Deleted event enables you to access an object that was deleted from the data source. 
+            The Entity property of the OpenAccessDataSourceChangedEventArgs object is used to access the deleted object.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Deleting">
+            <summary>
+            The Deleting event enables you to access an object before it is deleted from the data source or to cancel the operation. 
+            The Entity property of the OpenAccessDataSourceChangingEventArgs holds the object being deleted. 
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Inserted">
+            <summary>
+            The Inserted event enables you to access an object created in the data source. 
+            The Entity property of the OpenAccessDataSourceChangedEventArgs instance is used to access the added object. 
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Inserting">
+            <summary>
+            The Inserting event enables you to modify or verify the object being added, add a different object, or cancel the operation. 
+            Handle this event to access the object to be added from the Entity property of the OpenAccessDataSourceChangingEventArgs instance. 
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Selected">
+            <summary>
+            The Selected event enables you to access the results of a query and retrieve row count information. 
+            Handle this event when you want to access object results or store objects in the view state. 
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Selecting">
+            <summary>
+            The Selecting event enables you to modify the configuration of the OpenAccessDataSource and to read or change the arguments 
+            from the data-bound control before the query is constructed and executed. Handle this event when you want to modify the 
+            paging or sorting behaviors of the control, or to cancel the query.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Updated">
+            <summary>
+            The Updated event enables you to access an object that has just had changes persisted to the data source. 
+            The Entity property of the OpenAccessDataSourceChangedEventArgs instance is used to access the updated object.
+            </summary>
+        </member>
+        <member name="E:Telerik.OpenAccess.OpenAccessDataSource.Updating">
+            <summary>
+            The Updating event enables you to modify or verify changes to the object, supply a different object, or cancel the operation 
+            before the changes are persisted. You can access the modified object from the Entity property of the 
+            OpenAccessDataSourceChangingEventArgs object. Handle this event to verify or validate changes, or to set different 
+            original values for concurrency control.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSourceContextCreatedEventArgs">
+            <summary>
+            Provides data for the ContextCreated event. 
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceContextCreatedEventArgs.Context">
+            <summary>
+            Gets the IObjectScope instance used by the data source.
+            </summary>
+            <value>The object context used by the data source.</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSourceContextCreatingEventArgs">
+            <summary>
+            Provides data for the ContextCreating event. 
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceContextCreatingEventArgs.Context">
+            <summary>
+            Gets the IObjectScope instance used by the data source.
+            </summary>
+            <value>The object context used by the data source.</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSourceContextDisposingEventArgs">
+            <summary>
+            Provides data for the ContextDisposing event. 
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceContextDisposingEventArgs.Context">
+            <summary>
+            Gets the IObjectScope instance used by the data source.
+            </summary>
+            <value>The object context used by the data source.</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs">
+            <summary>
+            Provides data for the Inserted, Updated, and Deleted events. 
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs.Context">
+            <summary>
+            Gets the IObjectScope instance used by the data source.
+            </summary>
+            <value>The object context used by the data source.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs.Entity">
+            <summary>
+            Gets the object being added, modified, or updated.
+            </summary>
+            <value>An Object that is the entity.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs.Exception">
+            <summary>
+            Gets the exception that was thrown during the query.
+            </summary>
+            <value>The exception, if an error occurred; otherwise, a null reference (Nothing in Visual Basic).</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs.ExceptionHandled">
+            <summary>
+            Gets or sets a value that indicates whether the exception was handled and that it should not be thrown again.
+            </summary>
+            <value>true if the exception was handled; otherwise, false.</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs">
+            <summary>
+            Provides data for the Inserting, Updating, and Deleting events.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs.Context">
+            <summary>
+            Gets the IObjectScope instance used by the data source.
+            </summary>
+            <value>The object context used by the data source.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs.Entity">
+            <summary>
+            Gets the object being added, modified, or updated.
+            </summary>
+            <value>An Object that is the entity.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs.Exception">
+            <summary>
+            Gets the exception that was thrown during the query.
+            </summary>
+            <value>The exception, if an error occurred; otherwise, a null reference (Nothing in Visual Basic).</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs.ExceptionHandled">
+            <summary>
+            Gets or sets a value that indicates whether the exception was handled and that it should not be thrown again.
+            </summary>
+            <value>true if the exception was handled; otherwise, false.</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs">
+            <summary>
+            Provides data for the Selected event. 
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs.Context">
+            <summary>
+            Gets the IObjectScope instance used by the data source.
+            </summary>
+            <value>The object context used by the data source.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs.Exception">
+            <summary>
+            Gets the exception that was thrown during the query.
+            </summary>
+            <value>The exception, if an error occurred; otherwise, a null reference (Nothing in Visual Basic).</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs.ExceptionHandled">
+            <summary>
+            Gets or sets a value that indicates whether the exception was handled and that it should not be thrown again.
+            </summary>
+            <value>true if the exception was handled; otherwise, false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs.Results">
+            <summary>
+            Gets the objects returned by the query.
+            </summary>
+            <value>Objects returned by the query.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs.SelectArguments">
+            <summary>
+            Gets values that determine how the data is returned. 
+            </summary>
+            <value>An object that contains values for determining how the data is returned.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs.TotalRowCount">
+            <summary>
+            Gets the total number of objects returned by the query.
+            </summary>
+            <value>The total number of object returned.</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDataSourceSelectingEventArgs">
+            <summary>
+            Provides data for the Selecting event.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectingEventArgs.DataSource">
+            <summary>
+            Gets the OpenAccessDataSource instance that raised the Selecting event.
+            </summary>
+            <value>The data source that raised the Selecting event.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDataSourceSelectingEventArgs.SelectArguments">
+            <summary>
+            Gets values that determine how the data is returned.
+            </summary>
+            <value>The data source that raised the Selecting event.</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.RT.DataSource.ConcurencyMode">
+            <summary>
+            The mode that OpenAccessDataSource uses for concurrency control when storing concurrency relevant
+            information in the View State 
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.RT.DataSource.ConcurencyMode.Version">
+            <summary>
+            The persistent class whose objects are exposed by OpenAccessDataSource 
+            has a version field - visible or internal, OpenAccessDataSource uses tha for concurrency checks
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.RT.DataSource.ConcurencyMode.Changed">
+            <summary>
+            The persistent class whose objects are exposed by OpenAccessDataSource does not
+            contain a version field - OpenAccessDataSource uses the 'changed' concurrency mechanism
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView">
+            <summary>
+            The Data Source View implementation for Telerik.OpenAccess
+            </summary>
+            <remarks>
+            An ObjectScopeProvider is requiered to connect the datasource to the database.
+            </remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.ExecuteDelete(System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>
+            Performs a delete operation on the list of data that the System.Web.UI.DataSourceView object represents.
+            </summary>
+            <param name="keys">An System.Collections.IDictionary of object or row keys to be deleted by the System.Web.UI.DataSourceView.ExecuteDelete(System.Collections.IDictionary,System.Collections.IDictionary) operation.</param>
+            <param name="oldValues">An System.Collections.IDictionary of name/value pairs that represent data elements and their original values.</param>
+            <returns>The number of items that were deleted from the underlying data storage.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.ExecuteInsert(System.Collections.IDictionary)">
+            <summary>
+            Performs an insert operation on the list of data that the System.Web.UI.DataSourceView object represents.
+            </summary>
+            <param name="values"> An System.Collections.IDictionary of name/value pairs used during an insert operation.</param>
+            <returns>The number of items that were inserted into the underlying data storage.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.ExecuteUpdate(System.Collections.IDictionary,System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>
+            Performs an update operation on the list of data that the System.Web.UI.DataSourceView object represents.
+            </summary>
+            <param name="keys">An System.Collections.IDictionary of object or row keys to be updated by the update operation.</param>
+            <param name="values">An System.Collections.IDictionary of name/value pairs that represent data elements and their new values.</param>
+            <param name="oldValues">An System.Collections.IDictionary of name/value pairs that represent data elements and their original values.</param>
+            <returns>The number of items that were updated in the underlying data storage.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.ExecuteSelect(System.Web.UI.DataSourceSelectArguments)">
+            <summary>
+            Gets a list of data from the underlying data storage.
+            </summary>
+            <param name="arguments"> A System.Web.UI.DataSourceSelectArguments that is used to request operations on the data beyond basic data retrieval.</param>
+            <returns>An System.Collections.IEnumerable list of data from the underlying data storage.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.IsEqual(System.Object,System.Object)">
+            <summary>
+            Checks if the 2 values are equal. "" and null are seen as equal!
+            </summary>
+            <param name="web">The value comming from the web element</param>
+            <param name="db">The value from the database</param>
+            <returns>true if equal</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.LoadViewState(System.Object)">
+            <summary>
+            Restores the previously saved view state for the data source view. 
+            </summary>
+            <param name="savedState">The OpenAccessDataSourceView control state to restore.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.SaveViewState">
+            <summary>
+            Saves the changes to view state for the OpenAccessDataSourceView instance since the time that the page was posted back to the server. 
+            </summary>
+            <returns>The object that contains the changes to the OpenAccessDataSourceView instance view state, or null if there is no view state associated with the object.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.TrackViewState">
+            <summary>
+            Tracks view state changes. 
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or
+            resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnContextCreated(Telerik.OpenAccess.OpenAccessDataSourceContextCreatedEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnContextCreating(Telerik.OpenAccess.OpenAccessDataSourceContextCreatingEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnContextDisposing(Telerik.OpenAccess.OpenAccessDataSourceContextDisposingEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnDeleted(Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnDeleting(Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnInserted(Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnInserting(Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnSelected(Telerik.OpenAccess.OpenAccessDataSourceSelectedEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnSelecting(Telerik.OpenAccess.OpenAccessDataSourceSelectingEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnUpdated(Telerik.OpenAccess.OpenAccessDataSourceChangedEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OnUpdating(Telerik.OpenAccess.OpenAccessDataSourceChangingEventArgs)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.GetViewSchema">
+            <summary>
+            Returns a table that represents the OpenAccessDataSourceView. 
+            </summary>
+            <returns>A table that contains the properties of the OpenAccessDataSourceView.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.EnableDelete">
+            <summary>
+            Gets or sets a value that indicates whether data records can be deleted through the data view. 
+            </summary>
+            <value>true if automatic delete operations are enabled; otherwise, false. The default value is true. </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.EnableUpdate">
+            <summary>
+            Gets or sets a value that indicates whether objects can be modified through the data view. 
+            </summary>
+            <value>true if automatic update operations are enabled; otherwise, false. The default value is false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.EnableInsert">
+            <summary>
+            Gets or sets a value that indicates whether the data view view supports adding new rows. 
+            </summary>
+            <value>true if the view supports inserting rows; otherwise, false. The default is false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.Where">
+            <summary>
+            Gets or sets a value that specifies which filter is used 
+            for retrieving data.
+            </summary>
+            <value>
+            A string that is used to create the Filter Expressions.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CanRetrieveTotalRowCount">
+            <summary>
+            Gets a value that indicates whether the OpenAccessDataSourceView object that is associated with the current OpenAccessDataSource 
+            control supports retrieving the total number of data rows, in addition to retrieving the data. 
+            </summary>
+            <value>
+            Always true.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CanPage">
+            <summary>
+            Gets a value indicating whether the System.Web.UI.DataSourceView object associated with the current System.Web.UI.DataSourceControl object 
+            supports paging through the data retrieved by the System.Web.UI.DataSourceView.ExecuteSelect(System.Web.UI.DataSourceSelectArguments) method.
+            </summary>
+            <value>
+            true if the operation is supported; otherwise, false. The base class implementation returns false.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CanDelete">
+            <summary>
+            Gets a value indicating whether the System.Web.UI.DataSourceView object associated with the current System.Web.UI.DataSourceControl object 
+            supports the System.Web.UI.DataSourceView.ExecuteDelete(System.Collections.IDictionary,System.Collections.IDictionary) operation.
+            </summary>
+            <value>
+            true if the operation is supported; otherwise, false. The base class implementation returns false.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CanInsert">
+            <summary>
+            Gets a value indicating whether the System.Web.UI.DataSourceView object associated with the current System.Web.UI.DataSourceControl object 
+            supports the System.Web.UI.DataSourceView.ExecuteInsert(System.Collections.IDictionary) operation.
+            </summary>
+            <value>
+            true if the operation is supported; otherwise, false. The base class implementation returns false.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CanSort">
+            <summary>
+            Gets a value indicating whether the System.Web.UI.DataSourceView object associated with the current System.Web.UI.DataSourceControl object 
+            supports a sorted view on the underlying data source.
+            </summary>
+            <value>
+            true if the operation is supported; otherwise, false. The default implementation returns false.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CanUpdate">
+            <summary>
+            Gets a value indicating whether the System.Web.UI.DataSourceView object associated with the current System.Web.UI.DataSourceControl object 
+            supports the System.Web.UI.DataSourceView.ExecuteUpdate(System.Collections.IDictionary,System.Collections.IDictionary,System.Collections.IDictionary) operation.
+            </summary>
+            <value>
+            true if the operation is supported; otherwise, false. The default implementation returns false.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.AutoGenerateOrderByClause">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSourceView object that is associated with the current OpenAccessDataSource 
+            control supports dynamic creation of an OrderBy clause.
+            </summary>
+            <value>true if the clause generation is supported; otherwise, false. The default is false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.AutoGenerateWhereClause">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSourceView object that is associated with the current 
+            OpenAccessDataSource control supports dynamic creation of a Where clause. 
+            </summary>
+            <value>true if the clause generation is supported; otherwise, false. The default is false.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.AutoPage">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSourceView object that is associated with the current 
+            OpenAccessDataSource control supports automatic paging. 
+            <value>true if automatic paging is supported; otherwise, false. The default is true.</value>
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.AutoSort">
+            <summary>
+            Gets or sets a value that indicates whether the OpenAccessDataSourceView object that is associated with the current 
+            OpenAccessDataSource control supports automatic sorting. 
+            </summary>
+            <value>true if automatic sorting is supported; otherwise, false. The default is true.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.StoreOriginalValuesInViewState">
+            <summary>
+            Gets or sets a value that indicates that original values from the select operation will be stored in view 
+            state when delete or update operations are enabled.
+            </summary>
+            <value>true if original values are saved in view state; otherwise, false. The default value is true.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.ContextTypeName">
+            <summary>
+            Gets or sets the fully qualified name of the typed IObjectScope context used by the OpenAccessDataSourceView instance. 
+            </summary>
+            <value>A String that is the fully qualified name of the type.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.ContextType">
+            <summary>
+            Gets or sets the typed IObjectScope context used by the OpenAccessDataSourceView control.
+            </summary>
+            <value>The type that is associated with the data context class specified in the ContextTypeName property.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.Extent">
+            <summary>
+            Gets or sets the name of the entity set used by the OpenAccessDataSourceView instance. 
+            </summary>
+            <value>The entity set name.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CommandText">
+            <summary>
+            Gets or sets an OQL command that defines the query.
+            </summary>
+            <value>A string value that is the OQL query.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.CommandParameters">
+            <summary>
+            Gets the parameter collection for the query. 
+            </summary>
+            <value>A ParameterCollection that contains the parameters that are passed to the query command. </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.DeleteParameters">
+            <summary>
+            Gets the parameters collection that contains the parameters that are used during a delete operation. 
+            </summary>
+            <value>A collection that contains the parameters that are used by the Delete method.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.UpdateParameters">
+            <summary>
+            Gets the collection of parameters that are used during an update operation. 
+            </summary>
+            <value>The parameters that are used during an update operation.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.SelectNew">
+            <summary>
+            Gets or sets the projection that defines the properties to include in the query results.
+            </summary>
+            <value>The parameters that are used for creating the ORDER BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.SelectNewParameters">
+            <summary>
+            Gets the collection of parameters that are used to create the projection. 
+            </summary>
+            <value>The parameters that are used to create the Select clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OrderBy">
+            <summary>
+            Gets or sets the OQL expression that specifies how to order the query results.
+            </summary>
+            <value>The ORDER BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.OrderByParameters">
+            <summary>
+            Gets the collection of parameters that are used to create the ORDER BY clause.
+            </summary>
+            <value>The parameters that are used for creating the ORDER BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.GroupBy">
+            <summary>
+            Gets or sets the OQL expression that specifies how to group the query results. 
+            </summary>
+            <value>The GROUP BY clause.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.InsertParameters">
+            <summary>
+            Gets the collection of parameters that are used during an insert operation. 
+            </summary>
+            <value>The parameters that are used during an insert operation.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.WhereParameters">
+            <summary>
+            Gets the collection of parameters that are used to create the WHERE clause.
+            </summary>
+            <value>
+            Represents a collection of System.Web.UI.WebControls.Parameter and
+            System.Web.UI.WebControls.Parameter-derived<br/>
+            objects that are used by data source controls in advanced data-binding
+            scenarios.
+            </value>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.Modifiable">
+            <summary>hidden</summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.RT.DataSource.OpenAccessDataSourceView.GenerateIEditableObjectWrapperForNewObjects">
+            <summary>hidden</summary>
+        </member>
+    </members>
+</doc>

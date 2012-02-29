@@ -1,0 +1,2919 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.OpenAccess.35.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.OpenAccess.FetchOptimization.FetchStrategy">
+            <summary>Provides for immediate loading and filtering of related data.</summary>
+            <example>
+            In the following example, all the Orders for all the Customers from USA are retrieved when the query is executed. As a result, successive access to the Orders property on a Customer object does not trigger a new database query.
+            <code title="Example1" description="" lang="C#">NorthwindDataContext db = new NorthwindDataContext();
+            FetchStrategy fetchStrategy = new FetchStrategy();
+            fetchStrategy.LoadWith&lt;Customer&gt;(c =&gt; c.Orders);
+            db.FetchStrategy = fetchStrategy;
+            var customerQuery =
+                from customer in db.Customers
+                where customer.Country == "USA"
+                select customer;
+            foreach (Customer custObj in customerQuery)
+            {
+                Console.WriteLine("Customer ID: {0}", custObj.CustomerID);
+                foreach (Order order in custObj.Orders)
+                {
+                    Console.WriteLine("\tOrder ID: {0}", order.OrderID);
+                }
+            }</code><code title="Example1" description="" lang="VB.NET">Dim db As NorthwindDataContext = New NorthwindDataContext()
+            Dim fetchStrategy As FetchStrategy = New FetchStrategy()
+            fetchStrategy.LoadWith(Of Customer)(c =&gt; c.Orders)
+            db.FetchStrategy = fetchStrategy
+            Dim customerQuery = 
+            	From customer In db.Customers 
+            	Where customer.Country = "USA" 
+            	Select customer
+            For Each custObj As Customer In customerQuery
+            	Console.WriteLine("Customer ID: {0}", custObj.CustomerID)
+            	For Each order As Order In custObj.Orders
+            		Console.WriteLine(Constants.vbTab &amp; "Order ID: {0}", order.OrderID)
+            	Next order
+            Next custObj</code></example>
+        </member>
+        <member name="F:Telerik.OpenAccess.FetchOptimization.FetchStrategy.DefaultMaxResultsLimit">
+            <summary>
+            Default value for MaxResultsLimit
+            </summary>
+            <seealso cref="P:Telerik.OpenAccess.FetchOptimization.FetchStrategy.MaxResultsLimit"/>
+        </member>
+        <member name="F:Telerik.OpenAccess.FetchOptimization.FetchStrategy.DefaultMaxFetchDepth">
+            <summary>
+            Default value for MaxFetchDepth
+            </summary>
+            <seealso cref="P:Telerik.OpenAccess.FetchOptimization.FetchStrategy.MaxFetchDepth"/>
+        </member>
+        <member name="M:Telerik.OpenAccess.FetchOptimization.FetchStrategy.LoadWith``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>Specifies which sub-objects to retrieve when a query is submitted for an object of type T.</summary>
+            <typeparam name="T">Type that is queried against.</typeparam>
+            <param name="expression">Identifies the field or property to be retrieved.The expression should identify a field or property that represents a one-to-one or one-to-many
+            relationship. The expression is of type &lt;Type&gt; =&gt; &lt;Type&gt;.&lt;Member&gt;.</param>
+            <remarks>You cannot specify the loading of two levels of relationships (for example, Orders.OrderDetails). In these scenarios you must specify two separate LoadWith  methods.</remarks>
+            <example>
+            In the following example, all the Orders for all the Customers from USA are retrieved when the query is executed. As a result, successive access to the Orders property on a Customer object does not trigger a new database query.
+            <code title="Example1" description="" lang="C#">NorthwindDataContext db = new NorthwindDataContext();
+            FetchStrategy fetchStrategy = new FetchStrategy();
+            fetchStrategy.LoadWith&lt;Customer&gt;(c =&gt; c.Orders);
+            db.FetchStrategy = fetchStrategy;
+            var customerQuery =
+                from customer in db.Customers
+                where customer.Country == "USA"
+                select customer;
+            foreach (Customer custObj in customerQuery)
+            {
+                Console.WriteLine("Customer ID: {0}", custObj.CustomerID);
+                foreach (Order order in custObj.Orders)
+                {
+                    Console.WriteLine("\tOrder ID: {0}", order.OrderID);
+                }
+            }</code><code title="Example1" description="" lang="VB.NET">Dim db As NorthwindDataContext = New NorthwindDataContext()
+            Dim fetchStrategy As FetchStrategy = New FetchStrategy()
+            fetchStrategy.LoadWith(Of Customer)(c =&gt; c.Orders)
+            db.FetchStrategy = fetchStrategy
+            Dim customerQuery = 
+            	From customer In db.Customers 
+            	Where customer.Country = "USA" 
+            	Select customer
+            For Each custObj As Customer In customerQuery
+            	Console.WriteLine("Customer ID: {0}", custObj.CustomerID)
+            	For Each order As Order In custObj.Orders
+            		Console.WriteLine(Constants.vbTab &amp; "Order ID: {0}", order.OrderID)
+            	Next order
+            Next custObj</code></example>
+        </member>
+        <member name="M:Telerik.OpenAccess.FetchOptimization.FetchStrategy.LoadWith(System.Linq.Expressions.LambdaExpression)">
+            <summary>Retrieves specified data related to the main target by using a lambda expression.</summary>
+            <param name="expression">A lambda expression that identifies the related material.</param>
+            <remarks>You cannot specify the loading of two levels of relationships (for example, Orders.OrderDetails). In these scenarios you must specify two
+            separate LoadWith  methods or use the overload LoadWith&lt;T&gt;(params Expression&lt;Func&lt;T, object&gt;&gt;[] args).</remarks>
+            <example>
+            In the following example, all the Orders for all the Customers from USA are retrieved when the query is executed. As a result, successive access
+            to the Orders property on a Customer object does not trigger a new database query.
+            <code title="Example1" description="" lang="CS">NorthwindDataContext db = new NorthwindDataContext();
+            FetchStrategy fetchStrategy = new FetchStrategy();
+            fetchStrategy.LoadWith((Customer c) =&gt; c.Orders);
+            db.FetchStrategy = fetchStrategy;
+            var customerQuery =
+                from customer in db.Customers
+                where customer.Country == "USA"
+                select customer;
+            foreach (Customer custObj in customerQuery)
+            {
+                Console.WriteLine("Customer ID: {0}", custObj.CustomerID);
+                foreach (Order order in custObj.Orders)
+                {
+                    Console.WriteLine("\tOrder ID: {0}", order.OrderID);
+                }
+            }</code><code title="Example1" description="" lang="VB.NET">Dim db As NorthwindDataContext = New NorthwindDataContext()
+            Dim fetchStrategy As FetchStrategy = New FetchStrategy()
+            fetchStrategy.LoadWith((Customer c) =&gt; c.Orders)
+            db.FetchStrategy = fetchStrategy
+            Dim customerQuery = 
+            	From customer In db.Customers 
+            	Where customer.Country = "USA" 
+            	Select customer
+            For Each custObj As Customer In customerQuery
+            	Console.WriteLine("Customer ID: {0}", custObj.CustomerID)
+            	For Each order As Order In custObj.Orders
+            		Console.WriteLine(Constants.vbTab &amp; "Order ID: {0}", order.OrderID)
+            	Next order
+            Next custObj</code></example>
+        </member>
+        <member name="M:Telerik.OpenAccess.FetchOptimization.FetchStrategy.LoadWith``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
+            <summary>Specifies which sub-objects to retrieve by using a variable number of expressions.</summary>
+            <typeparam name="T">Type that is queried against.</typeparam>
+            <param name="args">A variable number of expressions that identify the fields or properties to be retrieved. The expressions should identify fields or properties that represent one-to-one or one-to-many relationships.</param>
+            <example>
+            In the follwoing example the Supplier and Category for all the Products are loaded. As a result, successive access to the Supplier or Category
+            property on a Product object does not trigger a new database query.
+            <code title="Example1" description="" lang="CS">NorthwindDataContext db = new NorthwindDataContext();
+            FetchStrategy fetchStrategy = new FetchStrategy();
+            fetchStrategy.LoadWith&lt;Product&gt;(p =&gt; p.Category, p =&gt; p.Supplier);
+            db.FetchStrategy = fetchStrategy;
+            foreach (Product p in db.Products)
+            {
+               Console.WriteLine("Product ID: {0}", p.ProductID);
+               Console.WriteLine("\tSupplier's Company Name: {0}", p.Supplier.CompanyName);
+               Console.WriteLine("\tCategory Name: {0}", p.Category.CategoryName);
+            }</code><code title="Example1" description="" lang="VB.NET">Dim db As New NorthwindDataContext()
+            Dim fetchStrategy As New FetchStrategy()
+            fetchStrategy.LoadWith(Of Product)(Function(p) p.Category, Function(p) p.Supplier)
+            db.FetchStrategy = fetchStrategy
+            For Each p As Product In db.Products
+            	Console.WriteLine("Product ID: {0}", p.ProductID)
+            	Console.WriteLine(vbTab &amp; "Supplier's Company Name: {0}", p.Supplier.CompanyName)
+            	Console.WriteLine(vbTab &amp; "Category Name: {0}", p.Category.CategoryName)
+            Next</code></example>
+        </member>
+        <member name="M:Telerik.OpenAccess.FetchOptimization.FetchStrategy.LoadWith(System.Linq.Expressions.LambdaExpression[])">
+            <summary>Retrieves specified data related to the main target by using a variable number of lambda expressions.</summary>
+            <param name="args">A variable number of lambda expressions that identify the related material.</param>
+            <example>
+            In the follwoing example the Supplier and Category for all the Products are loaded. As a result, successive access to the Supplier or Category
+            property on a Product object does not trigger a new database query.
+            <code title="Example1" description="" lang="CS">NorthwindDataContext db = new NorthwindDataContext();
+            FetchStrategy fetchStrategy = new FetchStrategy();
+            fetchStrategy.LoadWith((Product p) =&gt; p.Category, (Product p) =&gt; p.Supplier);
+            db.FetchStrategy = fetchStrategy;
+            foreach (Product p in db.Products)
+            {
+               Console.WriteLine("Product ID: {0}", p.ProductID);
+               Console.WriteLine("\tSupplier's Company Name: {0}", p.Supplier.CompanyName);
+               Console.WriteLine("\tCategory Name: {0}", p.Category.CategoryName);
+            }</code><code title="Example1" description="" lang="VB.NET">Dim db As New NorthwindDataContext()
+            Dim fetchStrategy As New FetchStrategy()
+            fetchStrategy.LoadWith(Function(p As Product) p.Category, Function(p As Product) p.Supplier)
+            db.FetchStrategy = fetchStrategy
+            For Each p As Product In db.Products
+            	Console.WriteLine("Product ID: {0}", p.ProductID)
+            	Console.WriteLine(vbTab &amp; "Supplier's Company Name: {0}", p.Supplier.CompanyName)
+            	Console.WriteLine(vbTab &amp; "Category Name: {0}", p.Category.CategoryName)
+            Next</code></example>
+        </member>
+        <member name="P:Telerik.OpenAccess.FetchOptimization.FetchStrategy.MaxFetchDepth">
+            <summary>Gets or sets tha maximum fetch depth.
+            The MaxFetchDepth determines how "deep" into the object graph to traverse when loading an instance.
+            For example, with a MaxFetchDepth of 2, OpenAccess will load at most the target instance and its immediate relations. With a MaxFetchDepth of 3, OpenAccess may load the target instance, its immediate relations, and the relations of those relations.</summary>
+            <remarks>The value must be &gt;=1 and the default one is 3. The maximum possible value depends on the database server and the class hierarchy depth and is bound by the number of SQL joins required.</remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.FetchOptimization.FetchStrategy.MaxResultsLimit">
+            <summary>Limits the maximum number of instances to return by query execution.</summary>
+            <remarks>This property can be used for performance optimizations, if not all instances matching the query are required.</remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.FetchOptimization.FetchStrategy.Count">
+            <summary>
+            Gets the number of user defined fetch strategy fragments
+            </summary>
+            <value>Number of fragments</value>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration">
+            <summary>
+            Base class for mapping configurations.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the MappingConfiguration class that defines an artificial type. 
+            </summary>
+            <param name="typeName">The name of the artificial type.</param>
+            <param name="typeNamespace">The namespace of the artificial type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration.MapType">
+            <summary>
+            Specifies that all property mapping should be handled by OpenAccess.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration.CreateFieldNamingRules">
+            <summary>
+            Creates default naming rules for the mapping configuration to use.
+            </summary>
+            <returns>A NamingRules instance.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration.GetConfiguredType">
+            <summary>
+            Gets the configured type.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration.DefaultMapProperties">
+            <summary>
+            Create default mapping for properties.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration.ProcessNewExpression(System.Linq.Expressions.NewExpression)">
+            <summary>
+            Process the specified expression that specifies property to column mapping.
+            </summary>
+            <param name="newExpression">The expression to be processed.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration.FieldNamingRules">
+            <summary>
+            Gets or sets the naming rules used for deriving the field name for a property.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.JoinTableConfigurationBase.GetConfiguredType">
+            <summary>
+            Gets the configured type.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.ArtificialJoinTableSpecificConfiguration">
+            <summary>
+            Represents the specific mapping configuration for a join table.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.JoinTableSpecificConfigurationBase">
+            <summary>
+            Base class for join table specific configuration objects.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialJoinTableSpecificConfiguration.CreatePrimaryKeyFromForeignKeys">
+            <summary>
+            Marks the foreign keys as primary keys.
+            </summary>        
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialJoinTableSpecificConfiguration.HasSequenceColumn(System.String)">
+            <summary>
+            Specifies the sequence column of the join table.
+            </summary>
+            <param name="columnName">The column name to be used.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialJoinTableSpecificConfiguration.HasSequenceColumn(System.String,System.String)">
+            <summary>
+            Specifies the sequence column of the join table.
+            </summary>
+            <param name="columnName">The column name to be used.</param>
+            <param name="sqlColumnType">The sql type of the sequence column.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions">
+            <summary>
+            A class containing the extensions for the dictionary property configuration.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithLoadBehavior``3(Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration{``0,``1,``2},Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="behavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.AsTransient``3(Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration{``0,``1,``2})">
+            <summary>
+            Marks this property as transient.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.AsTransient``3(Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration{``0,``1,``2},System.Boolean)">
+            <summary>
+            Marks this property as transient.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="isTransient">whether the property is transient or not.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithDataAccessKind``3(Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration{``0,``1,``2},Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.MapJoinTable``3(Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration{``0,``1,``2},Telerik.OpenAccess.Metadata.Fluent.TableName,System.Linq.Expressions.Expression{System.Func{``0,``1,``2,System.Object}})">
+            <summary>
+            Specifies the join table that defines a many to many relation and its endpoints.
+            </summary>
+            <param name="configuration">The dictionary property configuration.</param>
+            <param name="tableName">The name of the table.</param>
+            <param name="joinTableMap">Expression specifying the join table and endpoints for the relation.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.HasFieldName``3(Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration{``0,``1,``2},System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithDictionaryValue``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.String)">
+            <summary>
+            Specifies the column for the dictionary value.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="columnName">The column name of the dictionary value column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithDictionaryValue``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.String,System.String)">
+            <summary>
+            Specifies the column for the dictionary value.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="columnName">The column name of the dictionary value column.</param>
+            <param name="columnType">The column type of the dictionary value column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithDictionaryKey``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.String)">
+            <summary>
+            Specifies the column for the dictionary key.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="columnName">The column name of the dictionary key column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithDictionaryKey``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.String,System.String)">
+            <summary>
+            Specifies the column for the dictionary key.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="columnName">The column name of the dictionary key column.</param>
+            <param name="columnType">The column type of the dictionary key column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithForeignKey``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.String)">
+            <summary>
+            Specifies the foreign keys of the dictionary.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="columnName">The column name of the foreign key column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithForeignKey``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.String,System.String)">
+            <summary>
+            Specifies the foreign keys of the dictionary
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="columnName">The column name of the foreign key column.</param>
+            <param name="columnType">The column type of the foreign key column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithForeignKey``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Specifies the foreign keys of the dictionary
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="joinTableMap">The expression specifying the foreign keys.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithTable``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},Telerik.OpenAccess.Metadata.Fluent.TableName)">
+            <summary>
+            Specifies the name of the lookup table.
+            </summary>
+            <param name="configuration">The array property configuration.</param>
+            <param name="tableName">The name of the look up table.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithLoadBehavior``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="behavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.AsTransient``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2})">
+            <summary>
+            Marks this property as transient.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.AsTransient``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.Boolean)">
+            <summary>
+            Marks this property as transient.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="isTransient">whether the property is transient or not.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.WithDataAccessKind``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.DictionaryPropertyExtensions.HasFieldName``3(Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration{``0,``1,``2},System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.MetaIndexConfiguration">
+            <summary>
+            Represents the configuration object for an index.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MetaIndexConfiguration.IsUnique">
+            <summary>
+            Specifies that the defined index is unique.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MetaIndexConfiguration.IsClustered">
+            <summary>
+            Specifies that the defined index is clustered.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MetaIndexConfiguration.IsNotUnique">
+            <summary>
+            Specifies that the defined index is unique.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MetaIndexConfiguration.IsNotClustered">
+            <summary>
+            Specifies that the defined index is clustered.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MetaIndexConfiguration.WithName(System.String)">
+            <summary>
+            Specifies the name of the index.
+            </summary>
+            <param name="indexName">The name of the index.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration`3">
+            <summary>
+            Represents the configuration object for an Dictionary property.
+            </summary>
+            <typeparam name="TEntity">The declaring type of the property.</typeparam>
+            <typeparam name="TKey">The type of the dictionary key.</typeparam>
+            <typeparam name="TValue">The type of the dictionary value.</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration">
+            <summary>
+            Represents the configuration of a navigation property.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.PropertyConfiguration">
+            <summary>
+            Base class for property configuration objects.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PropertyConfiguration.#ctor(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Base constructor accepting a mapping configuration object and the clr type of the property being mapped.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration object this object relates to.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.PropertyConfiguration.IsArtificial">
+            <summary>
+            Gets whether this property is marked as artificial.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.GetIsDependent">
+            <summary>
+            Gets whether this property is dependent.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.SetIsDependent(System.Boolean)">
+            <summary>
+            Sets whether this property is marked as dependent.
+            </summary>
+            <param name="value">Dependent.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.GetIsRequired">
+            <summary>
+            Gets whether this property is required.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.SetIsRequired(System.Boolean)">
+            <summary>
+            Sets whether this property is required.
+            </summary>
+            <param name="value">Required.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.GetIsManaged">
+            <summary>
+            Gets whether this property is managed.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.SetIsManaged(System.Boolean)">
+            <summary>
+            Sets whether this property is managed.
+            </summary>
+            <param name="value">Managed.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.GetInverseOwnerType">
+            <summary>
+            Gets the opposite property owner type.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.FindAssociationOnInverseEnd(Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource)">
+            <summary>
+            searches for the association on the opposite end.
+            </summary>
+            <param name="fluentMappingSource">The fluent mapping source handling the generation of the model.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration.IsMasterEnd">
+            <summary>
+            Gets whether this is the master end of the relationship.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DictionaryPropertyConfiguration`3.GetInverseOwnerType">
+            <summary>
+            Gets the inverse owner type.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithArrayValue``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.String,System.String)">
+            <summary>
+            Specifies a value column that will hold the value of the array field.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array property configuration.</param>
+            <param name="columnName">The name of the value column.</param>
+            <param name="columnType">The type of the value column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithArrayValue``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.String)">
+            <summary>
+            Specifies a value column that will hold the value of the array field.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array property configuration.</param>
+            <param name="columnName">The name of the value column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithSequenceColumn``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.String)">
+            <summary>
+            Specifies the sequence column that will be used.
+            </summary>
+            <param name="configuration">The array property configuration.</param>
+            <param name="columnName">The name of the sequence column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithSequenceColumn``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.String,System.String)">
+            <summary>
+            Specifies the sequence column that will be used.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array property configuration.</param>
+            <param name="columnName">The name of the sequence column.</param>
+            <param name="columnType">The sequence column type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithForeignKey``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.String)">
+            <summary>
+            Specifies the foreign key column of the lookup table.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array property configuration.</param>
+            <param name="columnName">The foreign key column name.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithForeignKey``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.String,System.String)">
+            <summary>
+            Specifies the foreign key column of the lookup table.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array property configuration.</param>
+            <param name="columnName">The foreign key column name.</param>
+            <param name="columnType">The foreign key column type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithForeignKey``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Specifies the foreign key column of the lookup table.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array property configuration.</param>
+            <param name="joinTableMap">The lambda expression that specifies the foreign key columns.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithTable``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},Telerik.OpenAccess.Metadata.Fluent.TableName)">
+            <summary>
+            Specifies the name of the lookup table.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array property configuration.</param>
+            <param name="tableName">The name of the look up table.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithLoadBehavior``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The array configuration object.</param>
+            <param name="behavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.AsTransient``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1})">
+            <summary>
+            Marks this property as transient.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.AsTransient``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.Boolean)">
+            <summary>
+            Marks this property as transient.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The configuration object for this array.</param>
+            <param name="isTransient">whether the property is transient or not.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.WithDataAccessKind``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The configuration object for this array.</param>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.ArrayPropertyExtensions.HasFieldName``2(Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration{``0,``1},System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <typeparam name="TEntity">The declaring type.</typeparam>
+            <typeparam name="TInverse">The type of the array.</typeparam>
+            <param name="configuration">The primitive dictionary configuration object.</param>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialProperty``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String)">
+            <summary>
+            Gets or creates an artificial property. Should only be used with types that cannot
+            be defined using HasArtificialPrimitiveProperty or HasArtificialStringProperty.
+            </summary>
+            <typeparam name="T">The type of the artificial property.</typeparam>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="name">The name of the artificial property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialProperty(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String,System.Type)">
+            <summary>
+            Gets or creates an artificial property. Should only be used with types that cannot
+            be defined using HasArtificialPrimitiveProperty or HasArtificialStringProperty.
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="name">The name of the artificial property.</param>
+            <param name="type">The type of the artificial property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialPrimitiveProperty``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String)">
+            <summary>
+            Gets or creates an artificial property.
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <typeparam name="T">The type of the artificial property.</typeparam>
+            <param name="name">The name of the artificial property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialPrimitiveProperty(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String,System.Type)">
+            <summary>
+            Gets or creates an artificial property.
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="name">The name of the artificial property.</param>
+            <param name="type">The type of the artificial property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialStringProperty(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String)">
+            <summary>
+            Gets or creates an artificial string property.
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="name">The name of the artificial string property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialDateTimeProperty(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String)">
+            <summary>
+            Gets or creates an artificial datetime property.
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="name">The name of the artificial string property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialAssociation(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String,System.Type)">
+            <summary>
+            Gets the configuration object for an artificial association.
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="propertyName">The name of the artificial association property.</param>
+            <param name="propertyType">The type of the artificial association property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasArtificialCollectionAssociation(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.String,System.Type)">
+            <summary>
+            Gets the configuration object for an artificial collection association.
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="collectionName">The name of the artificial collection property.</param>
+            <param name="itemType">The type of the artificial collection property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Artificial.ArtificialExtensions.HasBaseType(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,System.Type)">
+            <summary>
+            Specifies the base type for a mapping configuration object. 
+            </summary>
+            <param name="configuration">The configuration object that is extended.</param>
+            <param name="baseType">The base type for this mapped class.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasField``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String)">
+            <summary>
+            Gets the property configuration object for a field.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasMember``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String,System.String)">
+            <summary>
+            Gets the property configuration object for a field/property pair.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field.</param>
+            <param name="propertyName">The name of the mapped property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasPrimitiveField``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String)">
+            <summary>
+            Gets the property configuration object for a primitive field.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasPrimitiveMember``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String,System.String)">
+            <summary>
+            Gets the property configuration object for a primitive field/property pair.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field.</param>
+            <param name="propertyName">The name of the mapped property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasStringField``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String)">
+            <summary>
+            Gets the property configuration object for a string field.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasStringMember``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String,System.String)">
+            <summary>
+            Gets the property configuration object for a string field/property pair.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+            <param name="propertyName">The name of the mapped property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasDateTimeField``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String)">
+            <summary>
+            Gets the property configuration object for a DateTime field.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasDateTimeMember``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String,System.String)">
+            <summary>
+            Gets the property configuration object for a DateTime field.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+            <param name="propertyName">The name of the mapped property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasAssociationField``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String)">
+            <summary>
+            Gets the property configuration object for a navigation field.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasAssociationMember``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.String,System.String)">
+            <summary>
+            Gets the property configuration object for a navigation field/property pair.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field.</param>
+            <param name="propertyName">The name of the mapped property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.WithOppositeField``2(Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration{``0,``1},System.String)">
+            <summary>
+            Specifies the opposite field for an association.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <typeparam name="TInverse">The inverse type of the association.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.WithOppositeMember``2(Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration{``0,``1},System.String,System.String)">
+            <summary>
+            Specifies the opposite field for an association.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <typeparam name="TInverse">The inverse type of the association.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="fieldName">The name of the mapped field</param>
+            <param name="propertyName">The name of the mapped property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.HasIndex``1(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Creates an index over the specified properties.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <param name="configuration">The configuration object.</param>
+            <param name="propertyMap">An expression specifying the properties/columns of the index.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.Advanced.FluentExtensions.OrderBy``2(Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration{``0,``1},System.String)">
+            <summary>
+            Sets the order by clause of the association.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+            <typeparam name="TInverse">The inverse type of the association.</typeparam>
+            <param name="config">The configuration object that is extended.</param>
+            <param name="orderByClause">The OrderBy clause that is going to be used.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.JoinTableSpecificConfiguration`2">
+            <summary>
+            Represents the specific mapping configuration for a join table.
+            </summary>
+            <typeparam name="TEntity">The persistent type starting the association.</typeparam>
+            <typeparam name="TInverse">The inverse persistent type.</typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.JoinTableSpecificConfiguration`2.CreatePrimaryKeyFromForeignKeys">
+            <summary>
+            Marks the foreign keys as primary keys.
+            </summary>        
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.JoinTableSpecificConfiguration`2.HasSequenceColumn(System.String)">
+            <summary>
+            Specifies the sequence column of the join table.
+            </summary>
+            <param name="columnName">The column name to be used.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.JoinTableSpecificConfiguration`2.HasSequenceColumn(System.String,System.String)">
+            <summary>
+            Specifies the sequence column of the join table.
+            </summary>
+            <param name="columnName">The column name to be used.</param>
+            <param name="sqlColumnType">The sql type of the sequence column.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1">
+            <summary>
+            Represents the mapping configuration for a persistent type and its members.
+            </summary>
+            <typeparam name="TEntity">The persistent type to be mapped.</typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.#ctor">
+            <summary>
+            Initializes a new instance of the MappingConfiguration&lt;T&gt; class.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.MapType(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Specifies the property to column mapping for primitive members of the persistent type.
+            </summary>
+            <param name="propertyMap">An expression specifying the property to column mapping of the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasIdentity(Telerik.OpenAccess.Metadata.KeyGenerator)">
+            <summary>
+            Specifies that this class uses internal identity.
+            </summary>
+            <param name="internalKeyGenerator">The key generator used for the internal identity.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasIdentity(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Specifies the properties that define the identity of this class.
+            </summary>
+            <param name="propertyMap">An expression defining the properties the class identity is composed of.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasIdentity">
+            <summary>
+            Specifies the internal identity of the mapped class.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasVersion">
+            <summary>
+            Specifies the internal version of the mapped class.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasDiscriminator">
+            <summary>
+            Specifies the discriminator column of the mapped class.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasDiscriminatorValue(System.String)">
+            <summary>
+            Specifies the discriminator value that is used by the mapped class.
+            </summary>
+            <param name="discriminatorValue">The discriminator value of the mapped class.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasAssociation``2(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IDictionary{``0,``1}}})">
+            <summary>
+            Define the mapping for a dictionary property.
+            </summary>
+            <typeparam name="TKey">The type of the key used by the dictionary.</typeparam>
+            <typeparam name="TValue">The type of the value used by the dictionary.</typeparam>
+            <param name="expression">An expression specifying the collection property to be mapped.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasAssociation``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{``0}}})">
+            <summary>
+            Define the mapping for a collection property.
+            </summary>
+            <typeparam name="TInverse">The persistent type of the other end of the relation.</typeparam>
+            <param name="expression">An expression specifying the collection property to be mapped.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasAssociation``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
+            <summary>
+            Gets the configuration object for a navigation property.
+            </summary>
+            <typeparam name="TInverse">The persistent type of the other end of the relation.</typeparam>
+            <param name="expression">An expression specifying the reference property to be mapped.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Gets the property configuration object for a property of type bool.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Boolean}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable bool.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Int16}})">
+            <summary>
+            Gets the property configuration object for a property of type short.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Int16}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable short.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Int32}})">
+            <summary>
+            Gets the property configuration object for a property of type int .
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Int32}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable int.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Int64}})">
+            <summary>
+            Gets the property configuration object for a property of type long.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Int64}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable long.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Single}})">
+            <summary>
+            Gets the property configuration object for a property of type float.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Single}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable float.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Double}})">
+            <summary>
+            Gets the property configuration object for a property of type double.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Double}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable double.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Guid}})">
+            <summary>
+            Gets the property configuration object for a property of type guid.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Guid}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable guid.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Decimal}})">
+            <summary>
+            Gets the property configuration object for a property of type decimal.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.Decimal}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable decimal.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Enum}})">
+            <summary>
+            Gets the property configuration object for a property of enum type.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Byte[]}})">
+            <summary>
+            Gets the property configuration object for a property of an byte array type.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Gets the property configuration object for a property of an unknown type.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.String}})">
+            <summary>
+            Gets the property configuration object for a property of type string.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.DateTime}})">
+            <summary>
+            Gets the property configuration object for a property of type DateTime.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Nullable{System.DateTime}}})">
+            <summary>
+            Gets the property configuration object for a property of type nullable DateTime.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Array}})">
+            <summary>
+            Gets the property configuration object for a property of array type.
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.HasProperty``2(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IDictionary{``0,``1}}})">
+            <summary>
+            
+            </summary>
+            <param name="expression">An expression specifying the property</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration`1.GetConfiguredType">
+            <summary>
+            Gets the configured type.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.ArrayPropertyConfiguration`2">
+            <summary>
+            Represents the configuration object for an array property.
+            </summary>
+            <typeparam name="TEntity">The declaring type of the property.</typeparam>
+            <typeparam name="TInverse">The type of the property.</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.LookUpPropertyConfiguration`1">
+            <summary>
+            Represent the configuration for a property that is based on a lookup table.
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.LookUpPropertyConfiguration`1.GetInverseOwnerType">
+            <summary>
+            Gets the inverse owner type.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration">
+            <summary>
+            Represents the configuration object for an artificial association property.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.IsDependent">
+            <summary>
+            Specifies that this navigation property is dependent.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.IsDependent(System.Boolean)">
+            <summary>
+            Specifies that this navigation property is dependent.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.IsManaged">
+            <summary>
+            Specifies that this navigation property is managed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.IsManaged(System.Boolean)">
+            <summary>
+            Specifies that this navigation property is managed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.HasFieldName(System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.IsRequired">
+            <summary>
+            Specifies that this navigation property requires a value.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.WithOpposite(System.String)">
+            <summary>
+            Defines the opposite property name.
+            </summary>
+            <param name="inversePropertyName">The opposite property name.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.ToColumn(System.String)">
+            <summary>
+            Specify the column name that this property is mapped to.vo
+            </summary>
+            <param name="columnName">The name of the column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.WithOppositeCollection(System.String)">
+            <summary>
+            Defines the opposite collection property name.
+            </summary>
+            <param name="inversePropertyName">The opposite collection property name.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.MapJoinTable">
+            <summary>
+            Specifies that defaults should be used in this many to many relationship.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.MapJoinTable(Telerik.OpenAccess.Metadata.Fluent.TableName)">
+            <summary>
+            Specifies that default join table name with a given name will be generated.
+            </summary>
+            <param name="joinTableName">The name of the join table.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.MapJoinTable(Telerik.OpenAccess.Metadata.Fluent.TableName,System.String,System.String)">
+            <summary>
+            Specifies the join table that defines a many to many relation and its endpoints.
+            </summary>
+            <param name="tableName">The name of the table.</param>
+            <param name="inverseForeignKey"></param>
+            <param name="ownForeignKey"></param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.GetInverseOwnerType">
+            <summary>
+            Gets the opposite property owner type.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.WithLoadBehavior(Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <param name="loadBehavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.WithDataAccessKind(Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialNavigationPropertyConfiguration.HasConstraint">
+            <summary>
+            Specifies that a constraint should be generated for this association.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.ArtificialPropertyConfiguration">
+            <summary>
+            Represents the configuration object for an artificial property.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.ArtificialPropertyConfiguration.#ctor(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo,Telerik.OpenAccess.Metadata.Fluent.PropertyConfiguration)">
+            <summary>
+            Initializes an instance of the ArtificialPropertyConfiguration class.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration.</param>
+            <param name="innerConfiguration">The inner property configuration.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.ArtificialPropertyConfiguration.InnerConfiguration">
+            <summary>
+            Gets the inner property configuration.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.ArtificialPropertyConfiguration.IsArtificial">
+            <summary>
+            Gets whether this property is marked as artificial.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.BasicPropertyConfiguration">
+            <summary>
+            Serves as a base class for primitive and navigation properties of a mapping configuration object.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.BasicPropertyConfiguration.GetIsVersion">
+            <summary>
+            Gets whether this property is used for versioning.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.BasicPropertyConfiguration.SetIsVersion(System.Boolean)">
+            <summary>
+            Sets whether this property is used for versioning.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.BasicPropertyConfiguration.CreateColumn(Telerik.OpenAccess.Metadata.Relational.MetaTable)">
+            <summary>
+            Creates a MetaColumn instance based on the specified table.
+            </summary>
+            <param name="table">The table this column will refer to.</param>
+            <returns>A MetaColumn instance.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.BasicPropertyConfiguration.SetPrimitiveMemberProperties(Telerik.OpenAccess.Metadata.MetaPrimitiveMember)">
+            <summary>
+            Sets the primitive member properties based on the specified primitive member.
+            </summary>
+            <param name="primitiveMember">The primitive member used to specify the properties.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.BasicPropertyConfiguration.MergeRelationalItem(Telerik.OpenAccess.Metadata.Relational.MetaColumn,System.Boolean)">
+            <summary>
+            Used to merge the column definitions when flat mapping is used.
+            Whenever two properties are added in different classes in the 
+            hierarchy and mapped to the same column.
+            </summary>
+            <param name="column">The column we should apply settings for.</param>
+            <param name="override">Whether settings should be overridden.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration">
+            <summary>
+            Represents the configuration for a property of a datetime type.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.IdentityPropertyConfiguration">
+            <summary>
+            Represents the configuration for a property that can be an identity.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.IdentityPropertyConfiguration.#ctor(System.String,Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new instance of the IdentityPropertyConfiguration class.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.IdentityPropertyConfiguration.GetIsIdentity">
+            <summary>
+            Gets whether this property is an identity.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.IdentityPropertyConfiguration.SetIsIdentity">
+            <summary>
+            Sets that this property is an identity.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.IdentityPropertyConfiguration.SetIsIdentity(Telerik.OpenAccess.Metadata.KeyGenerator)">
+            <summary>
+            Sets that this property is an identity with the specified key generator.
+            </summary>
+            <param name="keyGenerator">A key generator.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.IdentityPropertyConfiguration.CreateColumn(Telerik.OpenAccess.Metadata.Relational.MetaTable)">
+            <summary>
+            Creates a MetaColumn instance based on the specified table.
+            </summary>
+            <param name="table">The table this column will refer to.</param>
+            <returns>A MetaColumn instance.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.IdentityPropertyConfiguration.SetPrimitiveMemberProperties(Telerik.OpenAccess.Metadata.MetaPrimitiveMember)">
+            <summary>
+            Sets the primitive member properties based on the specified primitive member.
+            </summary>
+            <param name="primitiveMember">The primitive member used to specify the properties.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.#ctor(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new instance of the DateTimePropertyConfiguration class.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.#ctor(System.String,Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new instance of the DateTimePropertyConfiguration class.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="columnName">The column name this property is mapped to.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.HasFieldName(System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.ToColumn(System.String)">
+            <summary>
+            Specify the column name that this property is mapped to.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.HasColumnType(System.String)">
+            <summary>
+            Specifies the underlying column type.
+            </summary>
+            <param name="typeName">The name of the underlying column type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.IsNullable">
+            <summary>
+            Specifies that the property is nullable.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.IsNotNullable">
+            <summary>
+            Specifies that the property is not nullable.
+            </summary>               
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.IsCalculatedOn(Telerik.OpenAccess.Metadata.DateTimeAutosetMode)">
+            <summary>
+            Specifies if the property should be updated upon create or update operations.
+            </summary>
+            <param name="mode">The DateTimeAutoSet mode.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.WithLoadBehavior(Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <param name="loadBehavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.WithDataAccessKind(Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.WithConverter(System.String)">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <param name="converterName">The converter for this column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.WithConverter``1">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <typeparam name="TConverterType">The type of the converter for this column.</typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.IsVersion">
+            <summary>
+            Specifies that the property contains information about versioning.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.IsIdentity">
+            <summary>
+            Specifies that the property is part of the identity key.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DateTimePropertyConfiguration.IsIdentity(Telerik.OpenAccess.Metadata.KeyGenerator)">
+            <summary>
+            Specifies  that the property is part of the identity key.
+            </summary>
+            <param name="keyGenerator">The key generator used for this property.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.EntityMap">
+            <summary>
+            Represents an object containing mapping configuration settings.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.Inheritance(Telerik.OpenAccess.InheritanceStrategy)">
+            <summary>
+            Specifies the inheritance strategy for this mapping configuration.
+            </summary>
+            <param name="strategy">The inheritance strategy for this mapping configuration.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.ToTable(Telerik.OpenAccess.Metadata.Fluent.TableName)">
+            <summary>
+            Specifies the table name for this mapping configuration.
+            </summary>
+            <param name="tableName">The name of the table that is used in this mapping configuration.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.UseDefaultMap">
+            <summary>
+            Create mapping for all members that are not explicitly specified.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.HasDiscriminatorColumn(System.String)">
+            <summary>
+            Specifies the discriminator column name for this class.
+            </summary>
+            <param name="columnName">The column name of the discriminator column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.HasDiscriminatorColumn(System.String,System.String)">
+            <summary>
+            Specifies the discriminator column name for this class.
+            </summary>
+            <param name="columnName">The column name of the discriminator column.</param>
+            <param name="sqlType">The sql type of the discriminator column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.HasDiscriminatorValue(System.String)">
+            <summary>
+            Specifies the discriminator value for this class.
+            </summary>
+            <param name="discriminatorValue">The discriminator value for this class.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.HasDiscriminatorColumn(System.String,System.Type)">
+            <summary>
+            Specifies the discriminator column name for this class.
+            </summary>
+            <param name="columnName">The column name of the discriminator column.</param>
+            <param name="type">The type of the discriminator column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.WithDataAccessKind(Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Sets the data access kind of the persistent type.
+            </summary>
+            <param name="dataAccessKind">The data access kind for this type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.WithCacheStrategy(Telerik.OpenAccess.Metadata.CacheStrategy)">
+            <summary>
+            Sets the cache strategy of the persistent type.
+            </summary>
+            <param name="cacheStrategy">The cache strategy for this type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.EntityMap.WithConcurencyControl(Telerik.OpenAccess.OptimisticConcurrencyControlStrategy)">
+            <summary>
+            Sets the concurrency control to be used by that type.
+            </summary>
+            <param name="concurencyControl">The concurrency control for this type.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.EntityMap.TableName">
+            <summary>
+            Gets the object that represents the table name for this mapping configuration.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.FluentMappingContext">
+            <summary>
+            Represents a base context class for fluent mapping scenarios.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessContext">
+            <summary>
+            OpenAccess context class for .NET 3.5 usage.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.#ctor(System.String,Telerik.OpenAccess.BackendConfiguration,Telerik.OpenAccess.Metadata.MetadataSource)">
+            <summary>
+            OpenAccessContext Constructor with MetadataSource
+            </summary>
+            <param name="connectionString">The connection string name or the connection string. This is a required parameter</param>
+            <param name="backendConfiguration">
+            A backend configuration instance. If the parameter is null the default settings are used.
+            For some backends the backend type cannot be derived from the connection string, the backend type must be set.
+            </param>
+            <param name="metadataSource">A metadata source. If non is specified the metadata is derived from the context itself.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.#ctor(System.String,Telerik.OpenAccess.BackendConfiguration,Telerik.OpenAccess.Metadata.MetadataContainer)">
+            <summary>
+            OpenAccessContext Constructor with MetadataContainer
+            </summary>
+            <param name="connectionString">The connection string name or the connection string. This is a required parameter</param>
+            <param name="backendConfiguration">
+            A backend configuration instance. If the parameter is null the default settings are used.
+            For some backends the backend type cannot be derived from the connection string. The backend type must be set then.
+            </param>
+            <param name="metadataContainer">A metadata container. If non is specified the metadata is derived from the context itself.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.#ctor(System.String,Telerik.OpenAccess.BackendConfiguration,Telerik.OpenAccess.Metadata.MetadataContainer,System.Reflection.Assembly)">
+            <summary>
+            OpenAccessContext Constructor with MetadataContainer
+            </summary>
+            <param name="connectionString">The connection string name or the connection string. This is a required parameter</param>
+            <param name="backendConfiguration">
+            A backend configuration instance. If the parameter is null the default settings are used.
+            For some backends the backend type cannot be derived from the connection string. The backend type must be set then.
+            </param>
+            <param name="metadataContainer">A metadata container. If non is specified the metadata is derived from the context itself.</param>
+            <param name="callingAssembly">The assembly to search for the attribute mapping if no metadata is specified.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.#ctor(System.String,Telerik.OpenAccess.BackendConfiguration,Telerik.OpenAccess.Metadata.MetadataSource,System.Reflection.Assembly)">
+            <summary>
+            OpenAccessContext Constructor with MetadataSource
+            </summary>
+            <param name="connectionString">The connection string name or the connection string. This is a required parameter</param>
+            <param name="backendConfiguration">
+            A backend configuration instance. If the parameter is null the default settings are used.
+            For some backends the backend type cannot be derived from the connection string. The backend type must be set then.
+            </param>
+            <param name="metadataSource">A metadata source. If non is specified the metadata is derived from the context itself.</param>
+            <param name="callingAssembly">The assembly to search for the attribute mapping if no metadata is specified.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.#ctor(Telerik.OpenAccess.OpenAccessContextBase)">
+            <summary>
+            Copy constructor, the same database connection and configuration will be used.
+            </summary>
+            <param name="otherContext">An existing not disposed context</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.GetAll``1">
+            <summary>
+            Provides an IQueryable instance usable for Linq queries.
+            </summary>
+            <remarks>
+            This is the main entry point for constructing LINQ queries with OpenAccess.
+            </remarks>
+            <typeparam name="T">The type of the persistent objects that should be queried.</typeparam>
+            <returns>IQueryable instance that can be used to express queries.</returns>
+            <seealso cref="F:ExtensionMethods.Matches"/>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.GetAllCore``1">
+            <summary>
+            Provides an IQueryable instance usable for Linq queries.
+            </summary>
+            <typeparam name="T">The type of the persistent objects that should be queried.</typeparam>
+            <returns>IQueryable instance that can be used to express queries.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessContext.Dispose(System.Boolean)">
+            <summary>
+            Overwrite to free additional resources
+            </summary>
+            <param name="disposing">If true dispose is executed, if false nothing is done.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessContext.FetchStrategy">
+            <summary>
+            Controls the fetch strategy for this context.
+            </summary>
+            <remarks>
+            The fetch strategy allows to control the amount of data that is prefetched by execution
+            of queries.
+            </remarks>
+            <value>Fetch strategy instance</value>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMappingContext.#ctor(System.String,Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource,Telerik.OpenAccess.BackendConfiguration)">
+            <summary>
+            Initializes a new instance of the FluentMappingContext class.
+            </summary>
+            <param name="connectionString">The connection string name or the connection string. This is a required parameter</param>
+            <param name="fluentMappingSource">The fluent metadata source that provides the metadata for the current context.</param>
+            <param name="backendConfiguration">
+            A backend configuration instance. If the parameter is null the default settings are used.
+            For some backends the backend type cannot be derived from the connection string, the backend type must be set.
+            </param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource">
+            <summary>
+            Represents a mapping source that uses fluent configuration to create the mapping model.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.#ctor">
+            <summary>
+            Initializes a new instance of the FluentMetadataSource class.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.#ctor(Telerik.OpenAccess.Metadata.AggregationOptions)">
+            <summary>
+            Initializes a new instance of the FluentMetadataSource class.
+            </summary>
+            <param name="options">The aggregation options used by the source.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.#ctor(Telerik.OpenAccess.Metadata.MetadataContainer)">
+            <summary>
+            Initializes a new instance of the FluentMetadataSource class with an existing metadata container.
+            </summary>
+            <param name="existingContainer">An existing metadata container.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.#ctor(Telerik.OpenAccess.Metadata.MetadataContainer,Telerik.OpenAccess.Metadata.AggregationOptions)">
+            <summary>
+            Initializes a new instance of the FluentMetadataSource class with an existing metadata container.
+            </summary>
+            <param name="existingContainer">An existing metadata container.</param>
+            <param name="options">The aggregation options used by the source.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.FromAssembly(System.Reflection.Assembly)">
+            <summary>
+            Returns a list of FluentMetadataSource instances for all classes in the specified assembly 
+            that derive from the FluentMetadataSource class.
+            </summary>
+            <param name="assembly">A compiled assembly</param>
+            <returns>A list of FluentMetadataSource instances</returns>
+            <remarks>When creating a mapping source from an assembly, OpenAccess 
+            behaves like there is only one meta model inside that assembly. If you want to use multiple meta models in one assembly,
+            use the FromContext implementation.</remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.PrepareMapping">
+            <summary>
+            Called when this context instance is initializing and a model needs to be obtained.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.CreateModel">
+            <summary>
+            Creates a MetadataContainer instance using the list of mapping configurations.
+            </summary>
+            <returns>A MetadataContainer instance.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.FluentMetadataSource.MappingConfigurations">
+            <summary>
+            Gets the list of mapping configurations that will be used to create the mapping model.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.InternalPropertyConfiguration">
+            <summary>
+            Represent the property configuration for an internal field.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.InternalPropertyConfiguration.ToColumn(System.String)">
+            <summary>
+            Specify the column name that this property is mapped to.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.InternalPropertyConfiguration.HasPrecision(System.Int32)">
+            <summary>
+            Specifies the precision of this property
+            </summary>
+            <param name="precision">The precision of the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.InternalPropertyConfiguration.HasScale(System.Int32)">
+            <summary>
+            Specifies the scale of this property.
+            </summary>
+            <param name="scale">The scale of this property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.InternalPropertyConfiguration.HasColumnType(System.String)">
+            <summary>
+            Specifies the underlying column type.
+            </summary>
+            <param name="typeName">The name of the underlying column type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.InternalPropertyConfiguration.CreateColumn(Telerik.OpenAccess.Metadata.Relational.MetaTable)">
+            <summary>
+            Creates the column for this property configuration object.
+            </summary>
+            <param name="table">The table this column should be added to.</param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2">
+            <summary>
+            Represents the configuration of a navigation property.
+            </summary>
+            <typeparam name="TEntity">The type that contains the navigation property.</typeparam>
+            <typeparam name="TInverse">The type that the navigation property refers to.</typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.#ctor(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new NavigationPropertyConfiguration instance.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="ownProperty">The property that specifies the start point of the relation.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.IsRequired">
+            <summary>
+            Specifies that this navigation property requires a value.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.IsDependent">
+            <summary>
+            Specifies that this navigation property is dependent.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.IsDependent(System.Boolean)">
+            <summary>
+            Specifies that this navigation property is dependent.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.IsManaged">
+            <summary>
+            Specifies that this navigation property is managed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.IsManaged(System.Boolean)">
+            <summary>
+            Specifies that this navigation property is managed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.WithOpposite(System.Linq.Expressions.Expression{System.Func{`1,System.Collections.Generic.IList{`0}}})">
+            <summary>
+            Specifies the inverse property of the relation.
+            </summary>
+            <param name="expression">An expression specifying the inverse property of the relation that is a collection.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.WithOpposite(System.Linq.Expressions.Expression{System.Func{`1,`0}})">
+            <summary>
+            Specifies the inverse property of the relation.
+            </summary>
+            <param name="expression">An expression specifying the inverse property of the relation that is a reference.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.WithLoadBehavior(Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <param name="loadBehavior">The load behavior for the persistent type.   </param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.WithDataAccessKind(Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.HasFieldName(System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.ToColumn(System.String)">
+            <summary>
+            Specify the column name that this property is mapped to.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.AsTransient">
+            <summary>
+            Marks this property as transient.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.AsTransient(System.Boolean)">
+            <summary>
+            Specifies whether this property is transient.
+            </summary>
+            <param name="isTransient">The bool value specifying if this property is transient.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.HasConstraint">
+            <summary>
+            Specifies that a constraint should be generated for this association.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.HasConstraint(System.Linq.Expressions.Expression{System.Func{`0,`1,System.Boolean}})">
+            <summary>
+            Specifies the constraint that defines the relation and its endpoints.
+            </summary>
+            <param name="constraintExpression">Expression defining the constraint and endpoints for the relation</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.MapJoinTable">
+            <summary>
+            Specifies that defaults should be used in this many to many relationship.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.MapJoinTable(Telerik.OpenAccess.Metadata.Fluent.TableName)">
+            <summary>
+            Specifies that default join table name with a given name will be generated.
+            </summary>
+            <param name="joinTableName">The name of the join table.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.MapJoinTable(Telerik.OpenAccess.Metadata.Fluent.TableName,System.Linq.Expressions.Expression{System.Func{`0,`1,System.Object}})">
+            <summary>
+            Specifies the join table that defines a many to many relation and its endpoints.
+            </summary>
+            <param name="tableName">The name of the table.</param>
+            <param name="joinTableMap">Expression specifying the join table and endpoints for the relation.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.NavigationPropertyConfiguration`2.GetInverseOwnerType">
+            <summary>
+            Gets the opposite property owner type.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration`3">
+            <summary>
+            Represent the property configuration for a IDictionary property with primitive types for key and value;
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitiveDictionaryPropertyConfiguration`3.GetInverseOwnerType">
+            <summary>
+            Gets the inverse owner end.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration">
+            <summary>
+            Represents the configuration for a property of a value type.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.#ctor(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new instance of the PrimitivePropertyConfiguration class.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.#ctor(System.String,Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new instance of the PrimitivePropertyConfiguration class.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.HasFieldName(System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.ToColumn(System.String)">
+            <summary>
+            Specify the column name that this property is mapped to.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.HasColumnType(System.String)">
+            <summary>
+            Specifies the underlying column type.
+            </summary>
+            <param name="typeName">The name of the underlying column type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.IsNullable">
+            <summary>
+            Specifies that the property is nullable.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.IsNotNullable">
+            <summary>
+            Specifies that the property is not nullable.
+            </summary>               
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.IsVersion">
+            <summary>
+            Specifies that the property contains information about versioning.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.IsIdentity">
+            <summary>
+            Specifies that the property is part of the identity key.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.IsIdentity(Telerik.OpenAccess.Metadata.KeyGenerator)">
+            <summary>
+            Specifies  that the property is part of the identity key.
+            </summary>
+            <param name="keyGenerator">The key generator used for this property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.HasPrecision(System.Int32)">
+            <summary>
+            Specifies the precision of this property
+            </summary>
+            <param name="precision">The precision of the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.HasScale(System.Int32)">
+            <summary>
+            Specifies the scale of this property.
+            </summary>
+            <param name="scale">The scale of this property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.AsTransient">
+            <summary>
+            Marks this property as transient.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.AsTransient(System.Boolean)">
+            <summary>
+            Sets whether this property is marked as transient.
+            </summary>
+            <param name="isTransient">Transient.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.WithLoadBehavior(Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <param name="loadBehavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.WithDataAccessKind(Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.WithConverter(System.String)">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <param name="converterName">The converter for this column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PrimitivePropertyConfiguration.WithConverter``1">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <typeparam name="TConverterType">The type of the converter for this column.</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.MemberInfo">
+            <summary>
+            Represents an object that contains information about properties of a mapped type.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.#ctor(System.String,System.String,System.Type,System.Type)">
+            <summary>
+            Initializes a new PropertyInfo object.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="fieldName">Name of the field.</param>
+            <param name="type">Type of the property.</param>
+            <param name="declaringType">Type of the declaring type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.Equals(Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Determines whether the specified PropertyInfo object is equal to the current PropertyInfo Object.
+            </summary>
+            <param name="other">An object of type PropertyInfo</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.GetHashCode">
+            <summary>
+            Returns the hash code for this instance.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.Equals(System.Object)">
+            <summary>
+            Determines whether the specified Object is equal to the current Object.
+            </summary>
+            <param name="obj">Object to compare.</param>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.PropertyName">
+            <summary>
+            Gets the property name.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.FieldName">
+            <summary>
+            Gets the field name.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.PropertyType">
+            <summary>
+            Gets the property type.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.DeclaringType">
+            <summary>
+            Gets the declaring type of the property.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.IsReference">
+            <summary>
+            Gets or sets whether this is a reference property.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.MemberInfo.IsCollection">
+            <summary>
+            Gets or sets whether this a collection property.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration">
+            <summary>
+            Represents the configuration for a property of type string.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.#ctor(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new StringPropertyConfiguration object.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.#ctor(System.String,Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new StringPropertyConfiguration object.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.IsIdentity">
+            <summary>
+            Specifies that the property is part of the identity key.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.IsNullable">
+            <summary>
+            Specifies that the property is nullable.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.IsNotNullable">
+            <summary>
+            Specifies that the property is not nullable.
+            </summary>               
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.HasFieldName(System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.ToColumn(System.String)">
+            <summary>
+            Specify the column name that this property is mapped to.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.HasColumnType(System.String)">
+            <summary>
+            Specifies the underlying column type.
+            </summary>
+            <param name="typeName">The name of the underlying column type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.HasLength(System.Int32)">
+            <summary>
+            Specifies the length of this string property.
+            </summary>
+            <param name="length">The length of this string property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.AsTransient">
+            <summary>
+            Marks this property as transient.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.AsTransient(System.Boolean)">
+            <summary>
+            Sets whether this property is marked as transient.
+            </summary>
+            <param name="isTransient">Transient.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.WithLoadBehavior(Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <param name="loadBehavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.WithDataAccessKind(Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.WithConverter(System.String)">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <param name="converterName">The converter for this column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.StringPropertyConfiguration.WithConverter``1">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <typeparam name="TConverterType">The type of the converter for this column.</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.TableName">
+            <summary>
+            Represents the name of a table.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.TableName.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new TableName object.
+            </summary>
+            <param name="tableName">The name of the table.</param>
+            <param name="schemaName">The schema of the table.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.TableName.op_Implicit(System.String)~Telerik.OpenAccess.Metadata.Fluent.TableName">
+            <summary>
+            Implicitly convert from a string property.
+            </summary>
+            <param name="tableName">The table name.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.TableName.FromString(System.String)">
+            <summary>
+            Create a new TableName object from a string.
+            </summary>
+            <param name="tableName">The table name.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.TableName.ToString">
+            <summary>
+            Returns the full name of the table.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.TableName.ShortName">
+            <summary>
+            Gets the table name without the schema name.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.TableName.SchemaName">
+            <summary>
+            Gets the schema name.
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Metadata.Fluent.TableName.FullName">
+            <summary>
+            Gets the full name of the table.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration">
+            <summary>
+            Represents the configuration for a property of an unknown type.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.#ctor(Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new UnknownPropertyConfiguration object.
+            </summary>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.#ctor(System.String,Telerik.OpenAccess.Metadata.Fluent.MappingConfiguration,Telerik.OpenAccess.Metadata.Fluent.MemberInfo)">
+            <summary>
+            Initializes a new UnknownPropertyConfiguration object.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+            <param name="mappingConfiguration">The mapping configuration object that contains this object.</param>
+            <param name="memberInfo">The member info object that defining this property or field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.IsNullable">
+            <summary>
+            Specifies that the property is nullable.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.IsNotNullable">
+            <summary>
+            Specifies that the property is not nullable.
+            </summary>               
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.HasFieldName(System.String)">
+            <summary>
+            Specify the field name that this property relates to.
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.ToColumn(System.String)">
+            <summary>
+            Specify the column name that this property is mapped to.
+            </summary>
+            <param name="columnName">The name of the column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.HasColumnType(System.String)">
+            <summary>
+            Specifies the underlying column type.
+            </summary>
+            <param name="typeName">The name of the underlying column type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.AsTransient">
+            <summary>
+            Marks this property as transient.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.AsTransient(System.Boolean)">
+            <summary>
+            Sets whether this property is marked as transient.
+            </summary>
+            <param name="isTransient">Transient.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.WithLoadBehavior(Telerik.OpenAccess.LoadBehavior)">
+            <summary>
+            Specifies the load behavior.
+            </summary>
+            <param name="loadBehavior">The load behavior for the property.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.WithDataAccessKind(Telerik.OpenAccess.DataAccessKind)">
+            <summary>
+            Specifies the data access kind of the property.
+            </summary>
+            <param name="dataAccessKind">The data access kind for the persistent type.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.WithConverter(System.String)">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <param name="converterName">The converter for this column.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.WithConverter``1">
+            <summary>
+            Specifies a specific converter to be used with that property.
+            </summary>
+            <typeparam name="TConverterType">The type of the converter for this column.</typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.GenericPropertyConfiguration.HasLength(System.Int32)">
+            <summary>
+            Specifies the length of this property.
+            </summary>
+            <param name="length">The length of this property.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DotNetMetadataHelper.IsTrackedList(System.Type)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.DotNetMetadataHelper.IsTrackedBindingList(System.Type)">
+            <summary>hidden</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PropertyInfoHelper.IsMember(System.Linq.Expressions.UnaryExpression)">
+            <summary>
+            Determines whether this is an expression that defines 'x.Property'
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Metadata.Fluent.PropertyInfoHelper.IsConvert(System.Linq.Expressions.Expression)">
+            <summary>
+            Determines whether this is an unary convert expression (much like Convert(x.Property))
+            </summary>
+            <param name="unary"></param>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ExpressionCutter">
+            <summary>
+            Finds an expression in the complete expression tree where the execution must transition to 
+            in-memory; that is, find the expression that cannot be done on the database server.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionCutter.CutAndExecute(System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.ExecutionSettings,System.Linq.Expressions.Expression)">
+            <summary>
+            Finds the cutting point that divides the database LINQ part and the in-memory LINQ part, and chain
+            together the database part as input for the in-memory part if necessary.
+            </summary>
+            <param name="expression">The complete expression to be handled</param>
+            <param name="settings">The settings to use</param>
+            <param name="whole">Controls is logging should be performed on this complete expression</param>
+            <returns>IQueryable instance for a chained execution or null when all can be done in memory</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.Query.ExpressionCutter.TryGetObjectById">
+            <summary>
+            Indicates of the GetObjectByKey shortcut should be attempted.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ExpressionEquivalentChecker">
+            <summary>
+            Compare two expressions to determine if they are equivalent
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ExpressionStitcher">
+            <summary>
+            Performs the chaining of database LINQ part and in-memory LINQ part.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionStitcher.Transition2InMemory(System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.ExecutionSettings,System.Linq.Expressions.Expression,System.Boolean)">
+            <summary>
+            Stitches together the database and the in-memory LINQ parts as divided by the cuttingPoint.
+            </summary>
+            <param name="completeExpression">Complete LINQ expression</param>
+            <param name="settings">Execution settings</param>
+            <param name="cuttingPoint">Dividing expression</param>
+            <param name="m">Multiple results returned by top expression</param>
+            <returns>IQueryable</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ImplementationExtensions.AreEqual(System.Collections.Generic.List{System.Linq.Expressions.Expression},System.Collections.Generic.List{System.Linq.Expressions.Expression})">
+            <summary>
+            Returns true when two Lists of Expressions are equal
+            </summary>
+            <param name="a">First List to compare</param>
+            <param name="b">Second List to compare</param>
+            <returns><c>True</c> when lists are equal</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ImplementationExtensions.AreEquivalent(System.Collections.Generic.List{System.Linq.Expressions.Expression},System.Collections.Generic.List{System.Linq.Expressions.Expression})">
+            <summary>
+            Returns true when two Lists of Expressions are equivalent.
+            </summary>
+            <param name="a">First List to compare</param>
+            <param name="b">Second List to compare</param>
+            <returns><c>True</c> when lists are equivalent</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ImplementationExtensions.GetExpressionOccurenceCount(System.Collections.Generic.List{System.Linq.Expressions.Expression},System.Linq.Expressions.Expression)">
+            <summary>
+            Counts the occurrences of the given expression in the collection
+            </summary>
+            <param name="collection">The collection to search in</param>
+            <param name="exp">The Expression to search for</param>
+            <returns>The number of occurrences</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionWalker.CanBeEvaluatedLocally(System.Linq.Expressions.Expression,System.Boolean)">
+            <summary>
+            Determines whether a given expression can be executed locally. 
+            (It contains no parts that should be translated to the target environment.)
+            </summary>
+        </member>
+        <member name="P:Telerik.OpenAccess.Query.ExpressionCompiler.AddDefaultOrdering">
+            <summary>
+            Indicate if the physical query should add an order expression in case no order is specified.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ExpressionExecution">
+            <summary>
+            Execution methods for LINQ queries. 
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.PerformDatabaseQueryMulti``1(System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.ExecutionSettings,System.Object[],System.Boolean,Telerik.OpenAccess.Query.FetchStrategyBuilder)">
+            <summary>
+            Main method to execute a query that should return multiple results.
+            </summary>
+            <typeparam name="T">Type of result elements</typeparam>
+            <param name="grpVals">When a grouping query is to be resolved, this are the grouping key values.</param>
+            <param name="checkOid">True if GetObjectByKey should be attempted</param>
+            <param name="expr">The expression to execute</param>
+            <param name="settings">The settings to use</param>
+            <param name="strategyBuilder">FetchStrategy builder</param>
+            <returns>Result set iterator</returns>        
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.PerformDatabaseQueryFor(System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.ExecutionSettings,System.Boolean)">
+            <summary>
+            Perform database query lazily when the whole expression was cut into 2 database+in-memory pieces.
+            </summary>
+            <param name="expr">The database expression</param>
+            <param name="settings">The settings to use</param>
+            <param name="checkOid">True if GetObjectByKey should be attempted</param>
+            <returns>Queryable</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.PerformDatabaseQuerySingle``2(Telerik.OpenAccess.Query.ChainedContext,System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.QueryableCategory,System.Int32@,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Performs a database query that should return only one result.
+            </summary>
+            <typeparam name="TResult">Type of result</typeparam>
+            <typeparam name="T">Type of last LINQ expression</typeparam>
+            <param name="context">Query context</param>
+            <param name="before">Categories seen before</param>
+            <param name="expression">The expression to execute</param>
+            <param name="found">Number of results found</param>
+            <param name="elemAt">Element position when >= 0; ignored otherwise</param>
+            <param name="single">Indicates that Single or SingleOrDefault is to be executed</param>
+            <param name="diffType">Indicates a different return type than expected.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.TryGetObjectByKeyShortCut(Telerik.OpenAccess.Query.QueryableCategory,System.Type)">
+            <summary>
+            Determines if the GetObjectByKey shortcut can be taken
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.PerformQuerySingle``2(Telerik.OpenAccess.Query.QueryableCategory,System.Linq.Expressions.Expression,System.Boolean,Telerik.OpenAccess.Query.ChainedContext)">
+            <summary>
+            Performs a LINQ query that should return a single result.
+            </summary>
+            <typeparam name="T">Type of last LINQ expression piece</typeparam>
+            <typeparam name="TResult">Result type</typeparam>
+            <param name="before">Categorization</param>
+            <param name="piece">Query context</param>
+            <param name="tryGetObjectById">Set if GetObjectById can be tried</param>
+            <param name="expression">Expression that is causing the execution on top of the last LINQ expression</param>
+            <returns>Result</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.PerformQueryCount``1(System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.ChainedContext)">
+            <summary>
+            Performs a database query to obtain the number of result elements.
+            </summary>
+            <typeparam name="T">Type of last LINQ expression piece</typeparam>
+            <param name="expression">Last LINQ expression piece</param>
+            <param name="context">Query context</param>
+            <returns>Number of result elements as calculated by the database server</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.PerformQueryGroupResolve``2(Telerik.OpenAccess.Query.ExpressionCompiler,``1)">
+            <summary>
+            Resolves the IGroupable produced by this query for the given key.
+            </summary>
+            <typeparam name="TElement">Extent type (PC)</typeparam>
+            <typeparam name="TKey">Grouping type (the key of the group)</typeparam>
+            <param name="key">Group key value</param>
+            <param name="origQuery">Original query (with grouping)</param>
+            <returns>Enumerable of PC</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.PerformQueryCompilation(System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.ChainedContext,System.Boolean,System.Type)">
+            <summary>
+            Returns the backend query that would be used for exececution.
+            </summary>
+            <returns>Relational backend query</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.CanBeHandledByServer(System.Linq.Expressions.Expression,Telerik.OpenAccess.Query.QueryableToken,System.Type,Telerik.OpenAccess.Query.QueryableCategory,System.Type)">
+            <summary>
+            Checks the created piece if the resulting query can be run on the server or not.
+            </summary>
+            <returns><c>False</c> when the transition to in-memory-query has to be made</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.ExpressionExecution.GetCategory(Telerik.OpenAccess.Query.QueryableToken,System.Linq.Expressions.Expression)">
+            <summary>
+            Classifies an expression with regard to its effects on a simple query.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.ExtensionMethods">
+            <summary>
+            Extension methods for Telerik.OpenAccess that provide the entries for LINQ.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.Extent``1(Telerik.OpenAccess.IObjectScope)">
+            <summary>
+            Provides an IQueryable instance usable for Linq queries.
+            </summary>
+            <remarks>
+            This is the main entry point for constructing LINQ queries with OpenAccess.
+            </remarks>
+            <param name="scope">The object scope this LINQ query is bound to.</param>
+            <typeparam name="T">The type of the persistent objects that should be queried.</typeparam>
+            <returns>IQueryable instance that can be used to express queries.</returns>
+            <seealso cref="M:Telerik.OpenAccess.ExtensionMethods.Matches(System.String,System.String)"/>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.ExtentByName(Telerik.OpenAccess.IObjectScope,System.String)">
+             <summary>
+             Provides an IQueryable instance usable for dynamically generated Linq queries.
+             </summary>
+            <remarks>
+            This is the main entry point for constructing dynamic LINQ queries with OpenAccess.
+            Typically, this is used for queries on Artificial Types together with the System.Linq.Dynamic.DynamicQueryable extension methods.
+            To express queries on artificial fields, the <see cref="M:Telerik.OpenAccess.ExtensionMethods.FieldValue``1(System.Object,System.String)"/> extension method can be used. A slightly modified version
+            of the DynamicQueryable class is provided in the source folder.
+            </remarks>
+            <param name="scope">The object scope this LINQ query is bound to.</param>
+            <param name="typeName">The name of type of the persistent objects that should be queried.</param>
+            <returns>IQueryable instance that can be used to express dynamic queries.</returns>
+            <example>
+            <code>
+             using System.Linq.Dynamic; // to obtain the DynamicQueryable extension methods
+             // Constructing a Linq expression over an artificial type involving a filter whose value is passed as parameter 
+             // and a projection for a field of the artificial type.
+             var src = Scope.ExtentByName("Telerik.OpenAccess.Tests.CSModel.BType");
+             IQueryable q = src.Where("Y != @0", 1.1m).Select("X");      
+            </code>
+            </example>
+            <seealso cref="M:Telerik.OpenAccess.ExtensionMethods.Extent``1(Telerik.OpenAccess.IObjectScope)"/>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.Matches(System.String,System.String)">
+            <summary>
+            Returns true when the string matches a certain regular expression using * and ? wildcards.
+            </summary>
+            <remarks>
+            This is a tagging method that will be translated into the correct SQL LIKE statements where
+            the * and ? wildcards need to be translated into backend specific wildcards (typically % and _).
+            You can escape the * and ? characters by prefixing them with a single backslash.
+            </remarks>
+            <param name="left">The string that should match the <paramref name="wildcardPattern">wildcard pattern</paramref>.</param>
+            <param name="wildcardPattern">The wildcard pattern with the * and ? wildcards.</param>
+            <returns><c>True</c> when a match is found.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.FieldValue``1(System.Object,System.String)">
+            <summary>
+            Returns the value of the named persistent field of the given persistent instance.
+            </summary>
+            <typeparam name="T">The type of the persistent field</typeparam>
+            <param name="persistentInstance">The persistent instance whose field value is to be returned</param>
+            <param name="nameOfPersistentField">The name of the persistent field whose value is to be returned</param>
+            <returns>Value of the field</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.SetFieldValue``1(System.Object,System.String,``0)">
+            <summary>
+            Sets the value of the named persistent field of the given persistent instance.
+            </summary>
+            <typeparam name="T">The type of the persistent field</typeparam>
+            <param name="persistentInstance">The persistent instance whose field value is to be returned</param>
+            <param name="nameOfPersistentField">The name of the persistent field whose value is to be returned</param>
+            <param name="newValue">The new objects which is set to the field</param>        
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.SQL``1(System.String,System.Object[])">
+            <summary>
+            Provides a SQL fragment to a LINQ expression.
+            </summary>
+            <remarks>
+            Puts the given SQL fragment into the SQL that is generated by the surrounding LINQ expression. This can be quite useful
+            when an unmapped server side function needs to be used in a LINQ expression.
+            <para>
+            In order to reference domain model fields symbolically and map them to to their columns, the <paramref name="arguments"/> can be used and 
+            referenced from the <paramref name="sqlFragment"/> in a <see cref="M:System.String.Format(System.String,System.Object)"/> like style : {0} references 
+            the SQL generated by the mapping of the first parameter, {1} the SQL for the second parameter, ... .
+            </para>
+            The provided SQL fragment is not able to change the principal structure of the SQL that gets generated by the LINQ expression. 
+            <example>
+            The following example shows how to incorporate a SQL fragment to test for a fulltext condition; it will require a fulltext index
+            to be present and populated and is specific to MSSQL.
+            <code>
+            string fulltextCondition = "\"Vin*\"";
+            var q = from o in Orders where "CONTAINS({0},{1})".SQL&lt;bool&gt;(o.ShipName, fulltextCondition) select o;
+            </code>
+            The LINQ expression will incorporate the given SQL fragment and reference the column that is backing the ShipName property (or field)
+            and provide the parameter to the CONTAINS fulltext method.
+            </example>
+            </remarks>
+            <typeparam name="T">The type that the island generates in the database server.</typeparam>
+            <param name="sqlFragment">The SQL fragment that will be placed into the generated SQL query.</param>
+            <param name="arguments">The arguments as referenced by the <paramref name="sqlFragment"/>.</param>
+            <returns>SQL expression with the specified type</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.Include``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            Specifies which sub-objects to load additionally in the query result by using an expressions that specifies the path needed.
+            </summary>
+            <typeparam name="T">Source query element type</typeparam>
+            <param name="path">An expressions that identifies the field or property to be loaded. 
+            The expression should identify a field or property that represents a relationship or a non-default fetch group field.</param>
+            <param name="query">OpenAccess query</param>
+            <remarks>
+            <para>
+            In case the passed <paramref name="query"/> instance is not an OpenAccess query, there is no effect.
+            </para>
+            <para>
+            There can be multiple Include statements in a LINQ query.
+            </para>
+            <para>
+            When Include is specified, the <see cref="P:Telerik.OpenAccess.OpenAccessContext.FetchStrategy"/> of the OpenAccessContext is ignored.
+            </para>
+            <para>
+            When Include is specified, a <see cref="T:Telerik.OpenAccess.FetchOptimization.FetchStrategy"/> cannot be specified with the <see cref="M:Telerik.OpenAccess.ExtensionMethods.LoadWith``1(System.Linq.IQueryable{``0},Telerik.OpenAccess.FetchOptimization.FetchStrategy)"/> method; 
+            these fetch description approaches exclude each other.
+            </para>
+            <para>
+            An Include cannot be made after a non-trivial projection.
+            </para>
+            <para>
+            When neither an <see cref="M:Telerik.OpenAccess.ExtensionMethods.Include``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})"/> nor a <see cref="M:Telerik.OpenAccess.ExtensionMethods.LoadWith``1(System.Linq.IQueryable{``0},Telerik.OpenAccess.FetchOptimization.FetchStrategy)"/> was used for a query, the default <see cref="P:Telerik.OpenAccess.OpenAccessContext.FetchStrategy"/> 
+            of the context is used.
+            </para>
+            </remarks>
+            <exception cref="T:Telerik.OpenAccess.Exceptions.InvalidOperationException">When a FetchStrategy was already specified for the query.</exception>
+            <returns>New query instance that will include additional objects.</returns>
+            <seealso cref="M:Telerik.OpenAccess.ExtensionMethods.LoadWith``1(System.Linq.IQueryable{``0},Telerik.OpenAccess.FetchOptimization.FetchStrategy)"/>
+            <seealso cref="T:Telerik.OpenAccess.FetchOptimization.FetchStrategy"/>
+            <seealso cref="P:Telerik.OpenAccess.OpenAccessContextBase.FetchStrategy"/>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtensionMethods.LoadWith``1(System.Linq.IQueryable{``0},Telerik.OpenAccess.FetchOptimization.FetchStrategy)">
+            <summary>
+            Specifies a fetch strategy to be used with this query.
+            </summary>
+            <remarks>
+            <para>
+            A <see cref="T:Telerik.OpenAccess.FetchOptimization.FetchStrategy"/> defines which additional objects should be loaded by an action.
+            </para>
+            <para>
+            When LoadWith is used, the <see cref="P:Telerik.OpenAccess.OpenAccessContext.FetchStrategy"/> of the OpenAccessContext is ignored.
+            </para>
+            <para>
+            LoadWith cannot be used with <see cref="M:Telerik.OpenAccess.ExtensionMethods.Include``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})"/> in one query;  these fetch description approaches exclude each other.
+            </para>
+            <para>
+            When neither an <see cref="M:Telerik.OpenAccess.ExtensionMethods.Include``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})"/> nor a <see cref="M:Telerik.OpenAccess.ExtensionMethods.LoadWith``1(System.Linq.IQueryable{``0},Telerik.OpenAccess.FetchOptimization.FetchStrategy)"/> was used for a query, the default <see cref="P:Telerik.OpenAccess.OpenAccessContext.FetchStrategy"/> 
+            of the context is used.
+            </para>
+            </remarks>
+            <typeparam name="T">Source query element type</typeparam>
+            <param name="query">OpenAccess query</param>
+            <param name="strategy">FetchStrategy that should be used</param>
+            <exception cref="T:Telerik.OpenAccess.Exceptions.InvalidOperationException">When an Include was already specified for the query.</exception>
+            <returns>New query instance that will include additional objects.</returns>
+            <seealso cref="M:Telerik.OpenAccess.ExtensionMethods.Include``1(System.Linq.IQueryable{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})"/>
+            <seealso cref="T:Telerik.OpenAccess.FetchOptimization.FetchStrategy"/>
+            <seealso cref="P:Telerik.OpenAccess.OpenAccessContextBase.FetchStrategy"/>
+        </member>
+        <member name="T:Telerik.OpenAccess.ExtentQuery`1">
+            <summary>
+            Represents a typed LINQ query in an OpenAccess context.
+            </summary>
+            <remarks>
+            This interface allows to configure the dynamic behavior of a LINQ query.
+            </remarks>
+            <typeparam name="T">Type of the results set elements</typeparam>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtentQuery`1.ParallelFetch(System.Boolean)">
+            <summary>
+            Determines whether parallel result fetching is allowed.
+            </summary>
+            <remarks>
+            Parallel fetching allow the efficient retrieval of a single collection field from the result set elements.
+            </remarks>
+            <param name="allowParallelFetch"><c>True</c> when parallel fetching is to be allowed (Default: False)</param>
+            <returns>New query instance</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtentQuery`1.IgnoreUncommitted(System.Boolean)">
+            <summary>
+            Determines whether the query execution is allowed to ignore the
+            changes made in the current transaction.
+            </summary>
+            <remarks>
+            When the query is set to not ignore uncommitted changes, the content of the current 
+            transaction will be flushed (but not yet committed) to the database server. After that,
+            objects deleted, changed or inserted in the current transaction will be visible to the
+            query and the result will reflect the (uncommitted) changes.
+            </remarks>
+            <param name="doNotFlush"><c>True</c> when uncommitted changes are ignored. (Default: True)</param>
+            <returns>New query instance</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtentQuery`1.ForwardsOnly(System.Boolean)">
+            <summary>
+            Determines whether the query result can be traversed forwards only, or if random access is possible.
+            </summary>
+            <remarks>
+            Normal LINQ applications rarely have the need to change the behavior to random access as LINQ queries
+            tend to favor forward reading.
+            </remarks>
+            <param name="noRandomAccess"><c>True</c> when the result set is accessed in a forward iterating manner only. (Default: True></param>
+            <returns>Query instance</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.ExtentQuery`1.Debug(System.Boolean)">
+            <summary>
+            Controls additional query tracing and execution debugging aids.
+            </summary>
+            <remarks>
+            This method is for internal debugging methods only and should not be relied upon in production code.
+            </remarks>
+            <param name="show"><c>True</c> for additional information. (Default: False)</param>
+            <returns>Query instance</returns>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.FormTreeDisplay.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.FormTreeDisplay.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.FormTreeDisplay.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:IQToolkit.Data.Common.Aggregator.GetAggregator(System.Type,System.Type)">
+            <summary>
+            Get a function that coerces a sequence of one type into another type.
+            This is primarily used for aggregators stored in ProjectionExpression's, which are used to represent the 
+            final transformation of the entire result set of a query.
+            </summary>
+        </member>
+        <member name="T:IQToolkit.IDeferLoadable">
+            <summary>
+            Common interface for controlling defer-loadable types
+            </summary>
+        </member>
+        <member name="T:IQToolkit.DeferredList`1">
+            <summary>
+            A list implementation that is loaded the first time the contents are examined
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:IQToolkit.ExpressionComparer">
+            <summary>
+            Compare two expressions to determine if they are equivalent
+            </summary>
+        </member>
+        <member name="T:IQToolkit.ExpressionReplacer">
+            <summary>
+            Replaces references to one specific instance of an expression node with another node
+            </summary>
+        </member>
+        <member name="T:IQToolkit.Grouping`2">
+            <summary>
+            Simple implementation of the IGrouping&lt;TKey, TElement&gt; interface
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TElement"></typeparam>
+        </member>
+        <member name="T:IQToolkit.IQueryText">
+            <summary>
+            Optional interface for IQueryProvider to implement Query&lt;T&gt;'s QueryText property.
+            </summary>
+        </member>
+        <member name="T:IQToolkit.Query`1">
+            <summary>
+            A default implementation of IQueryable for use with QueryProvider
+            </summary>
+        </member>
+        <member name="T:IQToolkit.QueryProvider">
+            <summary>
+            A basic abstract LINQ query provider
+            </summary>
+        </member>
+        <member name="T:IQToolkit.TypedSubtreeFinder">
+            <summary>
+            Finds the first sub-expression that is of a specified type
+            </summary>
+        </member>
+        <member name="T:IQToolkit.TypeHelper">
+            <summary>
+            Type related helper methods
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ParamPos">
+            <summary>
+            Names or references a parameter expression.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ResultData">
+            <summary>
+            Holds the query result data that the fixed result converters are working on.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ResultConverter">
+            <summary>
+            Provides a method to obtain the values of a specific type from the ResultData.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.RetrieveConverter">
+            <summary>
+            Retrieves a value from the aggregator
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.PropertyConverter">
+            <summary>
+            Sets a value to a property.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.FieldConverter">
+            <summary>
+            Sets a value to a field.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ObjectConstructor">
+            <summary>
+            Construct an instance by calling the ctor with the right amount of data.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.GroupKeyConstructor">
+            <summary>
+            Constructs a group key instance
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ObjectConstructorNoArgsInvoke">
+            <summary>
+            Construct an instance where a no-args constructor is to be used.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ObjectInitializer">
+            <summary>
+            Create an instance by calling the constructor and initializing the members.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ArrayConverter`1">
+            <summary>
+            Converts array elements to an array.
+            </summary>
+            <typeparam name="S">Array Element Type</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.BasicConverter`1">
+            <summary>
+            Obtain a strongly typed value from the result data.
+            </summary>
+            <typeparam name="S">Target type</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ByteArrayConverter">
+            <summary>
+            Obtain a byte array typed value from the result data.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.NullableConverter`1">
+            <summary>
+            Obtain a strongly typed value from the result data.
+            </summary>
+            <typeparam name="S">Target type</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.EnumConverter`1">
+            <summary>
+            Obtain a strongly typed value from the result data.
+            </summary>
+            <typeparam name="S">Target type</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.TypeAsConverter`1">
+            <summary>
+            Obtain a strongly typed value from the result data.
+            </summary>
+            <typeparam name="S">Target type</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.PCRefConverter`1">
+            <summary>
+            Obtain a strongly typed PC value from the result data.
+            </summary>
+            <typeparam name="S">Target type, must be pc</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.ToStringConverter">
+            <summary>
+            Obtain a value and call ToString() on it.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.GroupingConverter`1">
+            <summary>
+            Obtain a grouping from the result data.
+            </summary>
+            <typeparam name="S">Target type</typeparam>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.GroupKeyConverter">
+            <summary>
+            Obtain a grouping from the result data.
+            </summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.EnumerableConverter`1">
+            <summary>
+            Obtain a enumerable from the result data.
+            </summary>
+            <typeparam name="S">Target element type</typeparam>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.Translator.builder">
+            <summary>
+            The query builder (runtime instance).
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.Translator.compiler">
+            <summary>
+            The instance that got all the parameter infos.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.Translator.resolveGrouping">
+            <summary>
+            Indicates is a group is about to be resolved in the given query.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.Translator._iteratorInfo">
+            <summary>
+            Translates the parameter to the respective iterator; don't remove entries!
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.Translator._currentParameters">
+            <summary>
+            The current logical result iterators, what is logically on the evaluation stack.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.Translator.query">
+            <summary>
+            The current query to process.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.Query.Translator.current">
+            <summary>
+            The current query method that is beeing processed.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.Translator.Descend(System.Linq.Expressions.Expression)">
+            <summary>
+            The main processing function which descends from the top node to all sources in a depth-first manner.
+            </summary>
+            <param name="expression">The expression to translate</param>
+            <returns>Expression that describes the query</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.Translator.DescendJoin(Telerik.OpenAccess.Query.IQueryExpression,System.Linq.Expressions.MethodCallExpression,System.Boolean)">
+            <summary>
+            Figure out a join. The first argument has already been descended to and provides
+            the scope and settings. The second argument is the right side of the join, and that
+            expression needs to be descended to first before we build up further.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Query.Translator.IsUnnecessaryNullCheck(System.Linq.Expressions.ConditionalExpression)">
+            <summary>
+            This method checks if there are some unnecessary null checks which are generated through odata. 
+            i.e.: {IIF((Not(Convert(it.ProductName.EndsWith("knödel"))) == null), False, Not(Convert(it.ProductName.EndsWith("knödel"))).Value)}
+            </summary>
+            <param name="conditionalExpression">A ConditiaonalExpression object</param>
+            <returns>Returns true if a null check can be avoided</returns>
+        </member>
+        <member name="T:Telerik.OpenAccess.Query.TypedEnumerableWrapper`1">
+            <summary>
+            Creates a pure enumerable by wrapping another enumerable.
+            </summary>
+            <remarks>
+            Using this class can avoid that the using code calls the Count property
+            which happens when the enumerable is actually a collection or list.
+            </remarks>
+        </member>
+    </members>
+</doc>

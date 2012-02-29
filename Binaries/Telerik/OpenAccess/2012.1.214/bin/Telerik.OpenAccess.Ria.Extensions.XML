@@ -1,0 +1,420 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Telerik.OpenAccess.Ria.Extensions</name>
+    </assembly>
+    <members>
+        <member name="T:Telerik.OpenAccess.Ria.AttachChanges">
+            <summary>
+            Handles all attachement and compare operations for a DomainService with persistent objects.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.#ctor(System.ServiceModel.DomainServices.Server.ChangeSet,Telerik.OpenAccess.OpenAccessContext,System.Action{System.Object,System.ServiceModel.DomainServices.Server.ChangeSetEntry},System.Func{System.ServiceModel.DomainServices.Server.ChangeSetEntry,System.Collections.Generic.IEnumerable{System.String},System.Boolean},System.Func{System.ServiceModel.DomainServices.Server.ChangeSetEntry,System.Exception,System.Boolean},System.ServiceModel.DomainServices.Server.DomainServiceDescription)">
+            <summary>
+            Constructor for a given change set and OpenAccessContext
+            </summary>
+            <param name="changeSet">The change set to attach</param>
+            <param name="context">The target context</param>
+            <param name="fswap">Method to be called after final commit/rollback</param>
+            <param name="conflict">Method to be called if conflict is detected</param>
+            <param name="inaccessible">Method to be called if entity is not resolvable</param>
+            <param name="description">Meta info about the domain service</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.ConfirmStoreEntities">
+            <summary>
+            Checks, that the corresponding store entities in the context (still) exist.
+            </summary>
+            <value><c>True</c> when all needed entries are resolved</value>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.CheckConcurrencyControl">
+            <summary>
+            Checks the concurrency control information.
+            </summary>
+            <returns><c>True</c> if all store instances are in the same version than the original instances from the change set.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.CopyChanges">
+            <summary>
+            Copies the changed values to the store entities.
+            </summary>
+            <returns><c>True</c> if all copy operations succeeded</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.PerformAddRemove">
+            <summary>
+            Performs the needed Add()/Delete() operations for the store entities on the context
+            </summary>
+            <returns><c>True</c> if all operations succeeded</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.SwapEntity(System.ServiceModel.DomainServices.Server.ChangeSetEntry,System.Boolean)">
+            <summary>
+            Swaps the client and the store entity so that domain service callbacks can operate on the store entity.
+            </summary>
+            <param name="entry">The change set entry for which the StoreEntity and Entity value are to be swapped</param>
+            <param name="final">Indicates the final swap operation.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.SwapAllEntities">
+            <summary>
+            Swaps all client and store entities in the whole change set.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.FindChangeSetEntry(System.Object)">
+            <summary>
+            Finds the associated change set entry in linear time.
+            </summary>
+            <param name="clientOrStore">The client or the store entity</param>
+            <returns>Change set entry or <c>null</c></returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.AttachChanges.Report(System.ServiceModel.DomainServices.Server.ChangeSetEntry,System.String,System.Int32,System.String,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            Reports a problem to the client side.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#GetField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32,``0)">
+            <summary> Return the value for the field.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#GetNullableField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32,System.Nullable{``0})">
+            <summary> Return the value for the field.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#SetField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32,``0,``0)">
+            <summary> Set the value of the field.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#SetNullableField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32,System.Nullable{``0},System.Nullable{``0})">
+            <summary> Set the value of the field.</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#ProvidedField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32,``0)">
+            <summary>The value of the field requested to be provided to the <code>StateManager</code></summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#ProvidedNullableField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32,System.Nullable{``0})">
+            <summary>The value of the field requested to be provided to the <code>StateManager</code></summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#ReplacingField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32)">
+            <summary>The replacing value of the field in the calling instance</summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.Ria.KeyStateManager.Telerik#OpenAccess#SPI#dataobjects#StateManager#ReplacingNullableField``1(Telerik.OpenAccess.SPI.dataobjects.PersistenceCapable,System.Int32)">
+            <summary>The replacing value of the field in the calling instance</summary>
+        </member>
+        <member name="T:Telerik.OpenAccess.OpenAccessDomainService`1">
+             <summary>
+             Base class for domain services for persistent instances provided by an OpenAccessContext
+             </summary>
+             <example>
+            <para>
+            There must be a OpenAccessContext type available in the application defining the entity types
+            and providing a way to establish the database context. For this example, we assume a name like
+            MyPersistentDataModel.NorthwindEntityDiagrams which defines some Category and Order types.
+            </para>
+            <para>
+            The values of the callbacks for Insert,Update,Delete are affected by the <see cref="P:Telerik.OpenAccess.OpenAccessDomainService`1.UseClientInstancesDuringSubmit"/> property.
+            </para>
+            <para>
+            <note type="caution">
+            There will be a wizard that generates the needed code; potentially, the API changes again.
+            </note>
+            </para>
+            <code lang="C#">
+            namespace BusinessApplication.Web
+            {
+                using System.Linq;
+                using System.ServiceModel.DomainServices.Hosting;
+                using System.ServiceModel.DomainServices.Server;
+                using Telerik.OpenAccess;
+                using MyPersistentDataModel;
+                
+             // TODO: Wire up authentication (Windows/ASP.NET Forms) and uncomment the following to disable anonymous access
+             // Also consider adding roles to restrict access as appropriate.
+             //[RequiresAuthentication]
+            [EnableClientAccess()]
+            public class MyDomainService : OpenAccessDomainService&lt;MyPersistentDataModel.NorthwindEntityDiagrams&gt;
+            {
+                public MyDomainService() : base() { }
+            
+                public IQueryable&lt;Category&gt; GetCategories()
+                {   // exposes the Category entities
+                    return this.DataContext.Categories;
+                }
+                public IQueryable&lt;Category&gt; GetOrders()
+                {   // exposes the Orders entities
+                    return this.DataContext.Orders;
+                }
+            
+                public void DeleteOrder(Order o)
+                {   // Called when an Order instance gets removed from the database
+                }
+            
+                public void UpdateOrder(Order o)
+                {   // Called when the Order instance o gets updated in the database
+                }
+            
+                public void InsertOrder(Order o)
+                {   // Called when a new Order instance gets inserted into the database
+                }
+            }
+            }
+            
+            </code>
+             </example>
+             <typeparam name="TContext">The instanciable OpenAccessContext type.</typeparam>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_ObjectNotAccessible">
+            <summary>
+            Existing store entity is not resolvable: already deleted or locked.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_ObjectVersionMismatch">
+            <summary>
+            Store entity is not in the same version as the original entity (optimistic concurrency control failure).
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_ObjectNotAdded">
+            <summary>
+            Store entity could not be added, most likely due to a duplicate key exception.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_ObjectNotDeleted">
+            <summary>
+            Store entity could not be deleted.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_ObjectNotCreated">
+            <summary>
+            New store entity could not be created.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_MemberRead">
+            <summary>
+            Read access of a member failed.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_MemberWrite">
+            <summary>
+            Write access of a member failed.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.Error_MemberCompare">
+            <summary>
+            Comparison of a member failed.
+            </summary>
+        </member>
+        <member name="F:Telerik.OpenAccess.OpenAccessDomainService`1.VersionField">
+            <summary>
+            The name of the (internal) concurrency control version field.
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.#ctor">
+            <summary>
+            Protected constructor
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.Dispose(System.Boolean)">
+            <summary>
+            Dispose this <see cref="T:System.ServiceModel.DomainServices.Server.DomainService"/>.
+            </summary>
+            <param name="disposing">True if called from Dispose()</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.Initialize(System.ServiceModel.DomainServices.Server.DomainServiceContext)">
+            <summary>
+            Initializes this <see cref="T:System.ServiceModel.DomainServices.Server.DomainService"/>.
+            <see cref="M:System.ServiceModel.DomainServices.Server.DomainService.Initialize(System.ServiceModel.DomainServices.Server.DomainServiceContext)"/>
+            must be called 
+            prior to invoking any operations on the <see cref="T:System.ServiceModel.DomainServices.Server.DomainService"/>
+            instance.
+            </summary>
+            <param name="context">The <see cref="T:System.ServiceModel.DomainServices.Server.DomainServiceContext"/>
+            for this <see cref="T:System.ServiceModel.DomainServices.Server.DomainService"/>
+            instance. Overrides must call the base method.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.Query(System.ServiceModel.DomainServices.Server.QueryDescription,System.Collections.Generic.IEnumerable{System.ComponentModel.DataAnnotations.ValidationResult}@,System.Int32@)">
+            <summary>
+            See base implementors description
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.Count``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Gets the number of rows in an <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <typeparam name="T">The element Type of the query.</typeparam>
+            <param name="query">The query for which the count should be returned.</param>
+            <returns>The total number of results.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.Invoke(System.ServiceModel.DomainServices.Server.InvokeDescription,System.Collections.Generic.IEnumerable{System.ComponentModel.DataAnnotations.ValidationResult}@)">
+            <summary>
+            See base implementors description
+            </summary>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.AuthorizeChangeSet">
+            <summary>
+            Verifies the user is authorized to submit the current <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>.
+            </summary>
+            <returns>True if the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            is authorized, false otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.ExecuteChangeSet">
+            <summary>
+            This method invokes the <see cref="T:System.ServiceModel.DomainServices.Server.DomainOperationEntry"/>
+            for each operation in the current <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>.
+            </summary>
+            <returns>True if the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            was processed successfully, false otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.PersistChangeSet">
+            <summary>
+            This method is called to finalize changes after all the operations in the current
+            <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            have been invoked. This method should commit the changes as necessary to the
+            data source.
+            Any errors should be set on the individual <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSetEntry"/>s
+            in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>.
+            </summary>
+            <returns>True if the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            was persisted successfully, false otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.Submit(System.ServiceModel.DomainServices.Server.ChangeSet)">
+            <summary>
+            Performs the operations indicated by the specified <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            by invoking the corresponding domain operations for each.
+            </summary>
+            <param name="changeSet">The changeset to submit</param>
+            <returns>True if the submit was successful, false otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.ValidateChangeSet">
+            <summary>
+            This method validates the current <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            prior to calling <see cref="M:System.ServiceModel.DomainServices.Server.DomainService.ExecuteChangeSet"/>.
+            Any errors should be set on the individual <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSetEntry"/>s
+            in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>.
+            </summary>
+            <returns><c>True</c> if all operations in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            passed validation, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.ValidateChangeSetRules">
+            <summary>
+            Performs change set validation as given by the default DomainService implementation.
+            </summary>
+            <returns><c>True</c> is validation was successful.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.CreateDataContext">
+            <summary>
+            Create a new OpenAccessContext instance.
+            </summary>
+            <returns>New OpenAccessContext instance</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.ValidateConcurrencyControl">
+            <summary>
+            This method validates the current <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            against the content of the database.
+            Any errors should be set on the individual <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSetEntry"/>s
+            in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>.
+            </summary>
+            <returns><c>True</c> if all concurrency control operations in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            passed validation, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.ValidateStoreEntities">
+            <summary>
+            This method finds or creates the corresponding instances of the current 
+            <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/> entries and makes them available 
+            through the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSetEntry.StoreEntity"/>.
+            Any errors should be set on the individual <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSetEntry"/>s
+            in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>.
+            </summary>
+            <returns><c>True</c> if all find and create operations in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            passed, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.ExecuteCopyOperations">
+            <summary>
+            This method copies the content of the current <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            to the <typeparamref name="TContext"/> context.
+            Any errors should be set on the individual <see cref="T:System.ServiceModel.DomainServices.Server.ChangeSetEntry"/>s
+            in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>.
+            </summary>
+            <returns><c>True</c> if all copy operations in the <see cref="P:System.ServiceModel.DomainServices.Server.DomainService.ChangeSet"/>
+            passed, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.CommitChanges">
+            <summary>
+            Persist all applied changes.
+            </summary>
+            <returns><c>True</c> if changes have been made persistent</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.ExecuteContextOperations">
+            <summary>
+            Executes the Add and Remove operations for the elements of the change set.
+            </summary>
+            <returns><c>True</c> if operation was successful, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.SwapAllStoreEntities">
+            <summary>
+            Swaps the StoreEntity and the Entity instances of all ChangeSetEntry instances in the current ChangeSet.
+            </summary>
+            <remarks>This can be useful if a custom Submit operation is to be implemented where the StoreEntity
+            reference (usually an instance managed by the DataContext) and the Entity reference (usually an instance with the
+            values from the client) need to be exchanged.</remarks>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.SwapStoreEntity(System.ServiceModel.DomainServices.Server.ChangeSetEntry,System.Boolean)">
+            <summary>
+            Swaps the StoreEntity and the Entity instance of the associated ChangeSetEntry.
+            </summary>
+            <remarks>This will be called after CommitChanges is performed in order to send the newest version back to the client.</remarks>
+            <param name="entry">The change set entry.</param>
+            <param name="final">If <c>True</c>, the ChangeSetEntry.Entity will contain the instance managed by the <see cref="P:Telerik.OpenAccess.OpenAccessDomainService`1.DataContext"/>.</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.TryGetChangeSetEntry(System.Object,System.ServiceModel.DomainServices.Server.ChangeSetEntry@)">
+            <summary>
+            Finds the change set entry for a given client or store entity instance.
+            </summary>
+            <remarks>This method will potentially need O(n) time for finding the change set entry corresponding to a given store entity.</remarks>
+            <param name="clientOrStoreEntity">The key for which the changeSetEntry is to be found.</param>
+            <param name="changeSetEntry">The found ChangeSetEntry</param>
+            <returns><c>True</c> when change set entry was found, false otherwise.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.FinalSwap(System.Object,System.ServiceModel.DomainServices.Server.ChangeSetEntry)">
+            <summary>
+            Called after all Submit operations have been made so that the instance managed by the DataContext
+            (ChangeSetEntry.StoreEntity) is send back to the client.
+            </summary>
+            <param name="clientEntity">Initial client Entity</param>
+            <param name="entry">Associated ChangeSetEntry for clientEntity</param>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.OnConcurrencyConflict(System.ServiceModel.DomainServices.Server.ChangeSetEntry,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Called when a concurrency conflict is detected to determine if and how it is reported.
+            </summary>
+            <param name="entry">The change set entry that causes a conflict</param>
+            <param name="conflictMembers">The list of conflict members</param>
+            <returns><c>False</c> (default) when processing should stop.</returns>
+        </member>
+        <member name="M:Telerik.OpenAccess.OpenAccessDomainService`1.OnInaccessibleEntity(System.ServiceModel.DomainServices.Server.ChangeSetEntry,System.Exception)">
+            <summary>
+            Called when an entity cannot be resolved in the given context to determine if and how it is reported.
+            </summary>
+            <param name="entry">The change set entry whose StoreEntity could not be resolved</param>
+            <param name="exception">The caught exception</param>
+            <returns><c>False</c> (default) when processing should stop.</returns>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDomainService`1.DataContext">
+            <summary>
+            Gets the current OpenAccessDataContext instance.
+            </summary>
+            <remarks>
+            This method will create a data context instance if needed.
+            </remarks>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDomainService`1.UseClientInstancesDuringSubmit">
+            <summary>
+            Controls whether instances that are managed by the <see cref="P:DataContext"/> are
+            passed as arguments to the insert,update,delete operations during <see cref="M:Telerik.OpenAccess.OpenAccessDomainService`1.ExecuteChangeSet"/>.
+            </summary>
+            <value><c>True</c> if client instances are visible. Default: Instances managed by the DataContext.</value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDomainService`1.AutomaticContextOperations">
+            <summary>
+            Controls whether the Add() and Delete() methods of the <see cref="P:Telerik.OpenAccess.OpenAccessDomainService`1.DataContext"/> are called automatically.
+            </summary>
+            <value>Default: <c>True</c></value>
+        </member>
+        <member name="P:Telerik.OpenAccess.OpenAccessDomainService`1.AutomaticCopyOperations">
+            <summary>
+            Controls whether the copy operations from the Entities to the StoreEntities are performed automatically.
+            </summary>
+            <value>Default: <c>True</c></value>
+        </member>
+    </members>
+</doc>
