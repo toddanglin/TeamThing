@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<gadget>
+  <name>TeamThing</name>
+  <version>1.0.0.0</version>
+  <author name="TeamThingy">      
+	<info url="http://huwebsrv01/teamthing"/>      
+	<logo src="teamthing.png"/> 
+  </author>  
+  <copyright>&#169; Telerik, Inc.</copyright>
+  <description>A gadget for displaying personal TeamThing tasks.</description>
+  <icons>      
+	<icon height="64" width="64" src="teamthing.png"/>  
+  </icons>
+  <hosts>
+    <host name="sidebar">
+      <base type="HTML" apiVersion="1.0.0" src="teamthinggadget.html" />
+      <permissions>Full</permissions>
+      <platform minPlatformVersion="1.0" />
+    </host>
+  </hosts>
+</gadget>

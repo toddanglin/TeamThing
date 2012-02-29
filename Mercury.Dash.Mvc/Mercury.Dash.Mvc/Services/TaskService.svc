@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Mercury.Dash.Mvc.Services.TaskService" CodeBehind="TaskService.svc.cs" %>

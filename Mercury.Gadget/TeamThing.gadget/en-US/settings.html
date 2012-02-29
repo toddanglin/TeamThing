@@ -1,0 +1,47 @@
+<html>
+<head>
+	<style>
+		body{ 
+			width: 250px;
+			height: 200px;
+		}
+	</style>
+    <script type="text/javascript" src="js/SettingsManager.js"></script>
+	<script>
+	    function init() {
+	        SettingsManager.loadFile();
+	        if (!(SettingsManager.getValue("apiKey", "key") == ""))
+	            inputapikey.innerText = SettingsManager.getValue("apiKey", "key");
+
+	        if (!(SettingsManager.getValue("apiKey", "server") == ""))
+	            inputserver.innerText = SettingsManager.getValue("apiKey", "server");
+	    }
+
+	    System.Gadget.onSettingsClosing = SettingsClosing;
+	    function SettingsClosing(event) {
+	        if (event.closeAction == event.Action.commit) {
+	            apiKey = inputapikey.value;
+	            server = inputserver.value;
+	            SettingsManager.setValue("apiKey", "key", apiKey)
+	            SettingsManager.setValue("apiKey", "server", server)
+	            SettingsManager.saveFile();
+	        }
+
+	        event.cancel = false;
+	    }
+	</script>
+</head>
+<body onload="init()">
+	<span id="mySpan" style="font-family: Tahoma; font-size: 10pt;">
+		<p>
+		<label for="inputusername">TeamThing API Key:</label><br>
+		<input type="text" id="inputapikey" length="60">
+		</p>
+        <p>
+		<label for="inputserver">Server Name:</label><br>
+		<input type="text" id="inputserver" length="60"><br />
+        <i>(Example: huwebsrv01 or localhost:port)</i>
+		</p>
+	</span>
+</body>
+</html>

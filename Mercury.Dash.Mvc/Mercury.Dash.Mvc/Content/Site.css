@@ -1,0 +1,230 @@
+html,form,body
+{
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;    
+}
+
+h1,h2,h3,h4,h5
+{
+    margin:0;
+    padding:0;
+    font-family: 'Lobster', Arial, Serif;
+}
+
+ul
+{
+    list-style:none;
+    padding:0;
+}
+
+body
+{
+    background:#555;
+    color:#FFF;
+    font-family: Tahoma, Arial, Sans-Serif;
+}
+
+#hd
+{
+    padding:5px;
+    -webkit-box-shadow: 0px 5px 5px #444;
+    -moz-box-shadow: 0px 5px 5px #444;
+    box-shadow: 0px 5px 5px #444;
+}
+
+#bd
+{
+    padding:10px;
+}
+
+#right
+{
+    float:right;
+    width:225px;
+    height:100%;
+}
+
+#left
+{
+    margin-right:250px;
+}
+
+.tasklist, .teamlist, .statlist
+{
+    list-style:none;
+    font-family: 'Droid Sans',Arial,Sans-serif;
+    font-size:1.15em;
+    margin:0;
+    padding:0;
+}
+
+.tasklist li
+{
+    display:block;
+    border:solid 1px #777;
+    background:#888;
+    min-height:30px;
+    padding:5px;
+    margin:0 0 4px 0;
+    -webkit-box-shadow: 2px 2px 3px #444;
+    -moz-box-shadow: 2px 2px 3px #444;
+    box-shadow: 2px 2px 3px #444;
+}
+
+.tasklist li.done
+{
+    color:#888;
+    background:#555;
+}
+
+.tasktext
+{
+    margin: 0 80px 0 35px;
+    display:block;
+}
+
+.status
+{
+    float:right;
+    text-transform:uppercase;
+    font-size:28px;     
+}
+
+.teamlist, .statlist
+{
+    font-size:.8em;
+}
+
+.teamlist li
+{
+    background:none;
+    margin-bottom:4px;
+    display:block;
+}
+
+.statlist span
+{
+    font-size:2em;
+    font-family: 'Lobster', Georgia, Serif;
+    margin-right: .25em;
+}
+
+.teamProfile, .profileBox
+{
+    width:30px;
+    height:30px;
+    float:left;
+    text-align:center;    
+    margin-right:5px;
+    font-family: 'Lobster', Arial, Sans-Serif;
+    -webkit-box-shadow:-1px -1px 0 #444444, 1px 1px 0 #999999;
+    -moz-box-shadow:-1px -1px 0 #444444, 1px 1px 0 #999999;
+    box-shadow:-1px -1px 0 #444444, 1px 1px 0 #999999;
+}
+
+.profileBox
+{
+    font-size:22px;
+    color:#222;
+}
+
+.sidebox
+{
+    margin-bottom:1em;
+}
+
+.borderbox
+{
+    border:solid 1px #FFCB3F;
+    padding:8px;
+    margin-bottom:1em;
+}
+
+.fontborder
+{
+    text-shadow: -1px 0 #888, 0 1px #888, 1px 0 #888, 0 -1px #888;
+}
+
+.etch, h2.etch
+{
+    text-shadow: -1px -1px 0px #101010, 1px 1px 0px #C0C0C0;
+}
+
+.bkgnd-smooth
+{
+    background: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.07, rgb(230,230,230)),
+    color-stop(0.39, rgb(245,245,245)),
+    color-stop(1, rgb(247,247,247))
+    );
+    
+    background: -moz-linear-gradient(
+        center bottom,
+        rgb(230,230,230) 7%,
+        rgb(245,245,245) 39%,
+        rgb(247,247,247) 100%
+    );
+}
+
+.bkgnd-smooth-dark
+{
+    background: #222;
+    
+    background:-webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.18, rgb(33,33,33)),
+    color-stop(0.67, rgb(46,46,46)),
+    color-stop(0.86, rgb(51,51,51))
+    );
+
+    background: -moz-linear-gradient(
+    center bottom,
+    rgb(33,33,33) 18%,
+    rgb(46,46,46) 67%,
+    rgb(51,51,51) 86%
+    );
+}
+
+
+h2.etch
+{
+    color:#888;
+}
+
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}

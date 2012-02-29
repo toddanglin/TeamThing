@@ -1,0 +1,222 @@
+<html>
+<head>
+    <title>TeamThing</title>
+    <link id="styles" href="css/styles.css" rel="Stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="all" href="css/jScrollPane.css" />
+    
+    <script src="js/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/SettingsManager.js"></script>
+    <script type="text/javascript" src="js/date.format.js"></script>
+    <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/jquery.em.js"></script>
+    <script type="text/javascript" src="js/jScrollPane.js"></script>   
+    <script type="text/javascript" src="js/jquery.timers-1.2.js"></script> 
+</head>
+<body>
+<!--<g:background id="imgBackground"></g:background>-->
+<div id="hd" class="bkgnd-smooth-dark">
+    <h1>TeamThing</h1>
+    <h3>Things you're working on</h3>
+</div>
+<div id="bd">
+<div id="msg">Loading...</div>
+<div id="content" style="display:none;"></div>
+</div>
+<script type="text/javascript">
+    var apikey;
+    var server;
+
+    $(document).ready(function () {
+        $("body").width(260).height(275).css("margin", "0");
+
+        System.Gadget.settingsUI = "settings.html";
+        System.Gadget.onSettingsClosed = settingsClosed;
+
+        //Load tasks for user
+        SettingsManager.loadFile();
+        if (SettingsManager.getValue("apiKey", "key") == "")
+            $("#msg").text("Please configure your API key.");
+        else if (SettingsManager.getValue("apiKey", "server") == "")
+            $("#msg").text("Please configure the server name.");
+        else {
+            apikey = SettingsManager.getValue("apiKey", "key");
+            server = SettingsManager.getValue("apiKey", "server");
+            loadTasks();
+            $(document).everyTime("180s", "refreshTimer", function(){ loadTasks(); });
+        }
+    });
+
+    function settingsClosed() {
+        SettingsManager.loadFile();
+        apikey = SettingsManager.getValue("apiKey", "key");
+        server = SettingsManager.getValue("apiKey", "server");
+
+        if (apikey != "" && server != "") {
+            $(document).stopTime("refreshTimer");
+            loadTasks();
+            $(document).everyTime("180s", "refreshTimer", function(){ loadTasks(); });
+        } else
+            checkConfig();
+    }
+
+    function checkConfig() {
+        if (SettingsManager.getValue("apiKey", "key") == "")
+            $("#msg").text("Please configure your API key.");
+        else if (SettingsManager.getValue("apiKey", "server") == "")
+            $("#msg").text("Please configure the server name.");
+    }
+
+    var originalLoad = true;
+    function loadTasks() {
+        $("#msg").text("Fetching tasks...");
+
+        $.getJSON("http://" + server + "/services/TaskService.svc/GetTeamMemberTasks?key=" + apikey + "&dummy=" + new Date().getTime(),
+            function (data) {
+                $("#msg").text("Tasks fetched.");
+
+                var element = $("#content");
+                element.fadeOut().html("");
+
+                var todayList = $("<ul />").addClass("tasklist");
+                var yesterdayList = $("<ul />").addClass("tasklist");
+
+                var newDiv = $("<div />").attr("id", "tasks");
+                newDiv.append("<h2 style='margin-left:5px'>Today</h2>");
+
+                if (data.d.length <= 0) {
+                    var emptyMsg = $("<div />").html("<i>No tasks for you today. Looks like you've got more time to work!</i>");
+                    element.append(newDiv.append(emptyMsg));
+                }
+                else {
+
+                    var today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    var tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    tomorrow.setHours(0, 0, 0, 0);
+
+                    var yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    yesterday.setHours(0, 0, 0, 0);
+
+                    var showYesterday = false;
+                    $.each(data.d, function (i, d) {
+                        var newLi = $("<li />").addClass(d.status);
+
+                        var statusBlock = $("<a />").addClass("status").addClass(d.status).attr("href", "#");
+                        initClickHandler(statusBlock, d.status, d.description);
+
+                        newLi = newLi.append($("<span />").addClass("tasktext").html(d.description)).append(statusBlock);
+
+                        //Decide which list to add item to based on date
+                        var itemDate = formatJSONDate(d.dateCreated);
+                        itemDate.setHours(0, 0, 0, 0);
+
+                        if (itemDate.toString() == today.toString() || itemDate.toString() == tomorrow.toString())
+                            todayList.append(newLi);
+                        else if (itemDate.toString() == yesterday.toString()) {
+                            yesterdayList.append(newLi);
+                            showYesterday = true;
+                        }
+                        else {
+                            $("#hd").text(itemDate.toString());
+                        }
+                    });
+
+
+                    newDiv.append(todayList);
+                    if (showYesterday)
+                        newDiv.append("<h2 style='margin-left:5px'>Yesterday</h2>").append(yesterdayList);
+
+                    element.append(newDiv);
+
+                    var h = element.height();
+                    element.height(h);
+                }
+
+
+                element.fadeIn("slow");
+                $("#msg").fadeOut("slow");
+
+                //Adjust gadget height
+                var newHeight = $("#hd").height() + $("#bd").height() - 5;
+                $("body").height(newHeight);
+            });
+        }
+
+        function updateStatus(description, originalStatus, element) {
+            //Call to webservice to change status
+            //InProgress becomes done. Done becomes InProgress.
+
+            $("#msg").text("Updating...").fadeIn();
+
+            var status;
+            if (originalStatus == "InProgress" || originalStatus == "Delayed")
+                status = "Done";
+            else if (originalStatus == "Done")
+                status = "InProgress";
+            else
+                return; //Unrecogized original status
+
+            $("#msg").text("New status: " + status + "...");
+
+            $("#hd").ajaxError(function () {
+                $(this).text("Error talking to server");
+            });
+
+            $.get("http://"+ server +"/services/TaskService.svc/UpdateTaskStatus?key=" + apikey + "&description=" + escape(description) + "&newstatus=" + status + "&dummy=" + new Date().getTime(),
+                    function (data) {
+                        if (data.d == true) {
+                            $("#msg").text("Updated.").removeClass().addClass("success").fadeIn().animate({ opacity: 1.0 }, 1000).fadeOut().removeClass();
+                            element.removeClass().addClass("status").addClass(status.toLowerCase());
+                            element.parent().removeClass().addClass(status.toLowerCase());
+
+                            initClickHandler(element, status.toLowerCase(), description);
+                        }
+                    });
+                }
+
+                function initClickHandler(element, status, description) {
+                    $(element).unbind("click");
+
+                    $(element).click(function () {
+                        updateStatus(description, status, $(this));
+                        return false;
+                    });
+                }
+
+    function formatJSONDate(jsonDate) {
+        var d = new Date(parseInt(/\/Date\((\d+).*/.exec(jsonDate)[1]))
+        return d;
+    }
+
+    // relative_time by Mike Demers
+    // taken from http://twitter.pbwiki.com/RelativeTimeScripts
+    function relative_time(time_value) {
+        time_value = time_value.replace("+0000", "GMT"); // Stupid IE tricks
+        var parsed_date = Date.parse(time_value);
+
+        var relative_to = new Date();
+        var delta = parseInt((relative_to.getTime() - parsed_date) / 1000);
+
+        if (delta < 60) {
+            return 'less than a minute ago';
+        } else if (delta < 120) {
+            return 'about a minute ago';
+        } else if (delta < (45 * 60)) {
+            return (parseInt(delta / 60)).toString() + ' minutes ago';
+        } else if (delta < (90 * 60)) {
+            return 'about an hour ago';
+        } else if (delta < (24 * 60 * 60)) {
+            return 'about ' + (parseInt(delta / 3600)).toString() + ' hours ago';
+        } else if (delta < (48 * 60 * 60)) {
+            return '1 day ago';
+        } else {
+            return (parseInt(delta / 86400)).toString() + ' days ago';
+        }
+    }
+</script>
+</body>
+</html>
