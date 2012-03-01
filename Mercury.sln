@@ -44,7 +44,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{1D549C3C-003
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets = Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.CommonPackage.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.CommonPackage.dll
-		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.AddinInstaller.exe = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.AddinInstaller.exe
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Intellitrace.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Intellitrace.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.AddIn.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.AddIn.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.Design.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.Design.dll

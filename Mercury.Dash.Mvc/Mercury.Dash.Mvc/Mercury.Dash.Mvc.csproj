@@ -76,6 +76,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.35.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.OpenAccess.Runtime, Version=2012.1.214.1, Culture=neutral, PublicKeyToken=7ce17eeaf1d59342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Telerik.OpenAccess.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\ObjectScopeProvider1.cs" />
@@ -160,7 +165,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties OpenAccess_ConfigFile="Web.config" OpenAccess_ConnectionId="MercuryDb" OpenAccess_Enhancing="False" OpenAccess_UpdateDatabase="False" OpenAccess_EnhancementOutputLevel="1" />
+      <UserProperties OpenAccess_EnhancementOutputLevel="1" OpenAccess_UpdateDatabase="False" OpenAccess_Enhancing="False" OpenAccess_ConnectionId="MercuryDb" OpenAccess_ConfigFile="Web.config" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
