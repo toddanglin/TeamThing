@@ -78,7 +78,8 @@
     </Reference>
     <Reference Include="Telerik.OpenAccess.Runtime, Version=2012.1.214.1, Culture=neutral, PublicKeyToken=7ce17eeaf1d59342, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Binaries\Telerik\OpenAccess\Telerik.OpenAccess.Runtime.dll</HintPath>
+      <HintPath>..\..\Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Runtime.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
