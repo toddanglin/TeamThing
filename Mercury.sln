@@ -54,8 +54,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{1D549C3C-003
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe.config = Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamThing.Model", "TeamThing.Model\TeamThing.Model.csproj", "{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Mercury.vsmdi
@@ -109,16 +107,6 @@ Global
 		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|x86.ActiveCfg = Release|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{0E7E6B6B-9009-475E-8BD8-3B5507F3A9DB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,9 +119,9 @@ Global
 		{1D549C3C-0039-44EC-8C1A-810C97A70D2C} = {B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		ShowOldMenu = True
-		IndexUsingAttrib = False
-		FetchGroupUsingAttrib = True
 		VersionFieldUsingAttrib = True
+		FetchGroupUsingAttrib = True
+		IndexUsingAttrib = False
+		ShowOldMenu = True
 	EndGlobalSection
 EndGlobal
