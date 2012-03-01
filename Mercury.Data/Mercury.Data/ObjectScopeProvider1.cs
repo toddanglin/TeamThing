@@ -68,7 +68,7 @@ namespace Mercury.Data
                                                     "PLACEHOLDER", dll.GetName().Name);
                 System.Xml.XmlDocument xmlDoc = new System.Xml.XmlDocument();
                 xmlDoc.LoadXml(assumedInitialConfiguration);
-                Database db = Telerik.OpenAccess.Database.Get("MercuryDb", 
+                Database db = Telerik.OpenAccess.Database.Get("teamthing", 
                                             xmlDoc.DocumentElement,
                                             new System.Reflection.Assembly[] { dll } );
 
@@ -88,7 +88,7 @@ namespace Mercury.Data
 				theObjectScopeProvider1 = new ObjectScopeProvider1();
 
 			if( theObjectScopeProvider1.myDatabase == null )
-				theObjectScopeProvider1.myDatabase = Telerik.OpenAccess.Database.Get( "MercuryDb" );
+				theObjectScopeProvider1.myDatabase = Telerik.OpenAccess.Database.Get( "teamthing" );
 
 			return theObjectScopeProvider1.myDatabase;
 		}

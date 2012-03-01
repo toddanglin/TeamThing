@@ -72,7 +72,7 @@
   <!--<Import Condition="Exists('..\..\Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets')" Project="..\..\Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets" />-->
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties OpenAccess_ConfigFile="App.config" OpenAccess_ConnectionId="MercuryDb" OpenAccess_Enhancing="True" OpenAccess_UpdateDatabase="False" OpenAccess_EnhancementOutputLevel="1" />
+      <UserProperties OpenAccess_EnhancementOutputLevel="1" OpenAccess_UpdateDatabase="False" OpenAccess_Enhancing="True" OpenAccess_ConnectionId="teamthing" OpenAccess_ConfigFile="App.config" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

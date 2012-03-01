@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ObjectScopeProvider1.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Logic\Processors\AddThingProcessor.cs" />
     <Compile Include="Logic\Processors\DelayThingProcessor.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Logic\Processors\IThingProcessor.cs" />
     <Compile Include="Logic\Processors\ThingProcessorBase.cs" />
     <Compile Include="Logic\Processors\ThingProcessorFactory.cs" />
-    <Compile Include="ObjectScopeProvider1.cs" />
     <Compile Include="Repositories\ObstacleRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logic\TaskCollector.cs" />
@@ -136,7 +136,7 @@
   <!--<Import Condition="Exists('..\..\Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets')" Project="..\..\Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets" />-->
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties OpenAccess_EnhancementOutputLevel="1" OpenAccess_UpdateDatabase="False" OpenAccess_Enhancing="False" OpenAccess_ConnectionId="MercuryDb" OpenAccess_ConfigFile="App.config" />
+      <UserProperties OpenAccess_ConfigFile="App.config" OpenAccess_ConnectionId="teamthing" OpenAccess_Enhancing="False" OpenAccess_UpdateDatabase="False" OpenAccess_EnhancementOutputLevel="1" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
