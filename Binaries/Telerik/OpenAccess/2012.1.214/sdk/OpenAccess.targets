@@ -23,11 +23,11 @@ Copyright (C) 2007-2009 Telerik Inc. All rights reserved.
 	<!-- 
 	Defines the location of the helper assemblies. 
     -->
-	<PropertyGroup>
-		<UseOpenAccessTargets Condition="'$(UseOpenAccessTargets)'==''">true</UseOpenAccessTargets>
-		<OpenAccessPath Condition="'$(OpenAccessPath)'==''">.</OpenAccessPath>
-		<EnhancerAssembly Condition="'$(EnhancerAssembly)'==''">$(OpenAccessPath)\enhancer.exe</EnhancerAssembly>
-	</PropertyGroup>
+  <PropertyGroup>
+    <UseOpenAccessTargets Condition="'$(UseOpenAccessTargets)'==''">true</UseOpenAccessTargets>
+    <OpenAccessPath Condition="'$(OpenAccessPath)'==''">..\Binaries\Telerik\OpenAccess\2012.1.214\sdk\</OpenAccessPath>
+    <EnhancerAssembly>enhancer.exe</EnhancerAssembly>
+  </PropertyGroup>
 
 
   <!-- This .targets file can be used by updating Microsoft.Common.targets to 
