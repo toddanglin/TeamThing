@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.Dash.Mvc", "Mercury.Dash.Mvc\Mercury.Dash.Mvc\Mercury.Dash.Mvc.csproj", "{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Binaries", "Binaries", "{C1257430-2F2A-4DC6-BE94-A249EF89B08C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OpenSource", "OpenSource", "{E0C22445-7D88-4447-B4A5-0C3810F589DA}"
@@ -103,16 +101,6 @@ Global
 		{E129752D-6DE0-469A-B74D-66AB678FCDD7}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E129752D-6DE0-469A-B74D-66AB678FCDD7}.Release|x86.ActiveCfg = Release|x86
 		{E129752D-6DE0-469A-B74D-66AB678FCDD7}.Release|x86.Build.0 = Release|x86
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|x86.ActiveCfg = Release|Any CPU
 		{9D7B082A-67D5-4F7D-AD5A-0B2E5B910477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D7B082A-67D5-4F7D-AD5A-0B2E5B910477}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7B082A-67D5-4F7D-AD5A-0B2E5B910477}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -155,9 +143,9 @@ Global
 		{1D549C3C-0039-44EC-8C1A-810C97A70D2C} = {B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VersionFieldUsingAttrib = True
-		FetchGroupUsingAttrib = True
-		IndexUsingAttrib = False
 		ShowOldMenu = True
+		IndexUsingAttrib = False
+		FetchGroupUsingAttrib = True
+		VersionFieldUsingAttrib = True
 	EndGlobalSection
 EndGlobal

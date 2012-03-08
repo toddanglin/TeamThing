@@ -85,6 +85,8 @@ namespace TeamThing.Model
                     });
 
             mapping.HasAssociation(m => m.Thing)
+                   .IsManaged()
+                   .IsDependent()
                    .ToColumn("ThingId");
 
             mapping.HasAssociation(m => m.AssignedByUser)
@@ -111,7 +113,8 @@ namespace TeamThing.Model
 
             mapping.HasAssociation(m => m.AssignedTo)
                    .WithOpposite(t => t.Thing)
-                   .IsManaged();
+                   .IsManaged()
+                   .IsDependent();
 
             mapping.HasProperty(m => m.Status)
                    .HasColumnType("varchar")

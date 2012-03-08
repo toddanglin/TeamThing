@@ -6,6 +6,7 @@ namespace TeamThing.Model
     public class User
     {
         public User(string emailAddress)
+            : this()
         {
             this.EmailAddress = emailAddress;
             this.DateCreated = DateTime.Now;
@@ -13,6 +14,8 @@ namespace TeamThing.Model
 
         private User()
         {
+            this.Things = new List<UserThing>();
+            this.Teams = new List<TeamUser>();
         }
 
         public string ImagePath { get; set; }
