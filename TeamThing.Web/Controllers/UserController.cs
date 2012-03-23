@@ -38,7 +38,6 @@ namespace TeamThing.Web.Controllers
         [HttpPost]
         public HttpResponseMessage SignIn(ServiceModel.SignInViewModel model)
         {
-            // Validate movie
             if (!ModelState.IsValid)
             {
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
@@ -58,7 +57,6 @@ namespace TeamThing.Web.Controllers
 
         public HttpResponseMessage Register(ServiceModel.AddUserModel value)
         {
-            // Validate movie
             if (!ModelState.IsValid)
             {
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
@@ -92,7 +90,5 @@ namespace TeamThing.Web.Controllers
         public void Delete(int id)
         {
         }
-
-       
     }
 }

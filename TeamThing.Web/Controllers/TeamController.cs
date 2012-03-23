@@ -36,16 +36,15 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ServiceModel.Thing> Things(int id)
+        public IEnumerable<ServiceModel.Thing> GetThings(int id)
         {
             var team = context.GetAll<TeamThing.Model.Team>()
                               .First(t => t.Id == id);
 
             var teamThings = team.TeamMembers
-                                 .Where(tm=>tm.Status == DomainModel.TeamUserStatus.Approved)
+                                 .Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved)
                                  .SelectMany(tm => tm.User.Things)
-                                 .Distinct()
-                                 .ToList();
+                                 .Distinct();
 
             return teamThings.MapToServiceModel();
         }
