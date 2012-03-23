@@ -8,6 +8,7 @@ using System.Web.Http;
 using TeamThing.Web.Core.Mappers;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
+using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
@@ -40,25 +41,16 @@ namespace TeamThing.Web.Controllers
             // Validate movie
             if (!ModelState.IsValid)
             {
-                var errors = new JsonArray();
-                foreach (var prop in ModelState.Values)
-                {
-                    if (prop.Errors.Any())
-                    {
-                        errors.Add(prop.Errors.First().ErrorMessage);
-                    }
-                }
-                return new HttpResponseMessage<JsonValue>(errors, HttpStatusCode.BadRequest);
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
             var existingUser = context.GetAll<DomainModel.User>()
-                             .FirstOrDefault(u => u.EmailAddress == model.EmailAddress);
+                                      .FirstOrDefault(u => u.EmailAddress.Equals(model.EmailAddress, StringComparison.OrdinalIgnoreCase));
 
             if (existingUser == null)
             {
-                var errors = new JsonArray();
-                errors.Add("A user does not exist with this user name.");
-                return new HttpResponseMessage<JsonValue>(errors, HttpStatusCode.BadRequest);
+                ModelState.AddModelError("", "A user does not exist with this user name.");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
             return new HttpResponseMessage<ServiceModel.User>(existingUser.MapToServiceModel());
@@ -69,25 +61,16 @@ namespace TeamThing.Web.Controllers
             // Validate movie
             if (!ModelState.IsValid)
             {
-                var errors = new JsonArray();
-                foreach (var prop in ModelState.Values)
-                {
-                    if (prop.Errors.Any())
-                    {
-                        errors.Add(prop.Errors.First().ErrorMessage);
-                    }
-                }
-                return new HttpResponseMessage<JsonValue>(errors, HttpStatusCode.BadRequest);
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
             var existingUser = context.GetAll<DomainModel.User>()
-                              .FirstOrDefault(u => u.EmailAddress == value.EmailAddress);
+                                      .FirstOrDefault(u => u.EmailAddress.Equals(value.EmailAddress, StringComparison.OrdinalIgnoreCase));
 
             if (existingUser != null)
             {
-                var errors = new JsonArray();
-                errors.Add("A user with this email address has already registered!");
-                return new HttpResponseMessage<JsonValue>(errors, HttpStatusCode.BadRequest);
+                ModelState.AddModelError("", "A user with this email address has already registered!");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
             var user = new DomainModel.User(value.EmailAddress);
