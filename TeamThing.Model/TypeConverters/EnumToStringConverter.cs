@@ -56,12 +56,18 @@ namespace TeamThing.Model.TypeConverters
         }
         public override void Write(ref DataHolder holder)
         {
-            holder.Parameter.DbType = System.Data.DbType.String;
+            holder.Parameter.DbType = System.Data.DbType.StringFixedLength;
             if (!holder.NoValue)
             {
                 string s = Enum.GetName(typeof(TEnum), holder.ObjectValue);
-                holder.Parameter.Size = s.Length + 1;
+                //if (holder.Parameter.Size < s.Length)
+                //{
+                    holder.Parameter.Size = 25; //YIKES
+                //}
+                holder.Box = false;
                 holder.Parameter.Value = s;
+                holder.ObjectValue = s;
+                holder.StringValue = s;
             }
         }
     }
