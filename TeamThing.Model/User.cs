@@ -19,6 +19,8 @@ namespace TeamThing.Model
         }
 
         public string ImagePath { get; set; }
+        //public string PasswordHash { get; set; }
+        //public string PasswordSalt { get; set; }
         public int Id { get; private set; }
         public string EmailAddress { get; private set; }
         public string FirstName { get; set; }

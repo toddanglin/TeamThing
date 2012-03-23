@@ -14,7 +14,7 @@
     <AssemblyName>TeamThing.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -130,11 +130,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
+    <Compile Include="Controllers\ThingController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Core\Helpers\ModalStateHelpers.cs" />
+    <Compile Include="Core\Mappers\DomainToServiceModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\API\Team.cs" />
+    <Compile Include="Models\API\TeamMember.cs" />
+    <Compile Include="Models\API\TeamMemberBasic.cs" />
+    <Compile Include="Models\API\Thing.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -166,11 +176,9 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.6.2-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.6.2.js" />
-    <Content Include="Scripts\jquery-1.6.2.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.11.js" />
-    <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
+    <Content Include="OAuthExample.htm" />
+    <Content Include="Scripts\jquery-1.7.1.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -178,9 +186,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-2.0.0.debug.js" />
-    <Content Include="Scripts\knockout-2.0.0.js" />
-    <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
+    <Content Include="index.html" />
+    <Content Include="Scripts\modernizr-2.5.3.min.js" />
+    <Content Include="Scripts\path.js" />
+    <Content Include="Scripts\path.min.js" />
+    <Content Include="Scripts\plugins.js" />
+    <Content Include="Scripts\script.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -210,7 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -220,6 +230,12 @@
       <Project>{B707630C-4D60-4972-A722-0788EF3AA5ED}</Project>
       <Name>TeamThing.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Dashboard\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_ThingListItem.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -236,12 +252,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>6071</DevelopmentServerPort>
+          <DevelopmentServerPort>5079</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:5079/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

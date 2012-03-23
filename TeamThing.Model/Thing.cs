@@ -7,15 +7,16 @@ namespace TeamThing.Model
     {
         private Thing()
         {
+            this.AssignedTo = new List<UserThing>();
+            this.History = new List<ThingLog>();
         }
 
         public Thing(User owner)
+            : this()
         {
             this.DateCreated = DateTime.Now;
             this.Status = ThingStatus.InProgress;
 
-            this.AssignedTo = new List<UserThing>();
-            this.History = new List<ThingLog>();
             this.ChangeOwner(owner);
         }
 

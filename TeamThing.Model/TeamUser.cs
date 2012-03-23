@@ -13,6 +13,7 @@ namespace TeamThing.Model
             this.User = user;
             this.UserId = user.Id;
             this.Status = TeamUserStatus.Pending;
+            this.Role = TeamUserRole.Viewer;
         }
 
         public Team Team { get; set; }

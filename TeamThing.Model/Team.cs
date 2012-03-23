@@ -10,22 +10,37 @@ namespace TeamThing.Model
     {
         private Team()
         {
+
+            this.TeamMembers = new List<TeamUser>();
         }
 
         public Team(string name, User owner, bool isOpen = false)
+            : this()
         {
             this.Name = name;
             this.IsOpen = isOpen;
             this.DateCreated = DateTime.Now;
 
-            this.TeamMembers = new List<TeamUser>();
-
             ChangeOwner(owner);
         }
 
         public string ImagePath { get; set; }
-        public int Id { get;  private set; }
+        public int Id { get; private set; }
         public IList<TeamUser> TeamMembers { get; private set; }
+        //public IList<TeamUser> ApprovedTeamMembers
+        //{
+        //    get
+        //    {
+        //        return TeamMembers.Where(tm => tm.Status == TeamUserStatus.Approved).ToList();
+        //    }
+        //}
+        //public IList<TeamUser> PendingTeamMembers
+        //{
+        //    get
+        //    {
+        //        return TeamMembers.Where(tm => tm.Status == TeamUserStatus.Pending).ToList();
+        //    }
+        //}
         public string Name { get; set; }
         public User Owner { get; private set; }
         public int OwnerId { get; private set; }
@@ -36,7 +51,8 @@ namespace TeamThing.Model
         //    get
         //    {
         //        return TeamMembers.Where(tm => tm.Status == TeamUserStatus.Approved)
-        //                          .SelectMany(tm => tm.User.Things)
+        //                          .Select(tm => tm.User)
+        //                          .SelectMany(u => u.Things)
         //                          .Distinct()
         //                          .ToList();
         //    }
@@ -48,6 +64,7 @@ namespace TeamThing.Model
             this.OwnerId = newOwner.Id;
             var teamUser = new TeamUser(this, newOwner);
             teamUser.Status = TeamUserStatus.Approved;
+            teamUser.Role = TeamUserRole.Administrator;
             this.TeamMembers.Add(teamUser);
         }
     }

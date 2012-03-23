@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamThing.Model", "TeamThin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamThing.ModelBootstrapper", "TeamThing.ModelBootstrapper\TeamThing.ModelBootstrapper.csproj", "{04EEA662-26FE-41BC-A13C-5C965B23B0F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mercury.Dash.Mvc", "Mercury.Dash.Mvc\Mercury.Dash.Mvc\Mercury.Dash.Mvc.csproj", "{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Mercury.vsmdi
@@ -131,6 +133,16 @@ Global
 		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|Mixed Platforms.Build.0 = Release|x86
 		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|x86.ActiveCfg = Release|x86
 		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|x86.Build.0 = Release|x86
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7EF6A9AE-8B07-43F8-AAF7-A8AE6F99F12B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,9 +155,9 @@ Global
 		{1D549C3C-0039-44EC-8C1A-810C97A70D2C} = {B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		ShowOldMenu = True
-		IndexUsingAttrib = False
-		FetchGroupUsingAttrib = True
 		VersionFieldUsingAttrib = True
+		FetchGroupUsingAttrib = True
+		IndexUsingAttrib = False
+		ShowOldMenu = True
 	EndGlobalSection
 EndGlobal

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Mercury.Data;
-using Mercury.Model;
 
 namespace Mercury.Dash.Mvc.Controllers
 {
@@ -12,6 +9,8 @@ namespace Mercury.Dash.Mvc.Controllers
     {
         //
         // GET: /Dashboard/
+        
+
         public ActionResult Index()
         {
             var context = new DashboardViewContext();

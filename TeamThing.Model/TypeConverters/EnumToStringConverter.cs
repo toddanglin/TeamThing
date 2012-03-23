@@ -60,7 +60,7 @@ namespace TeamThing.Model.TypeConverters
             if (!holder.NoValue)
             {
                 string s = Enum.GetName(typeof(TEnum), holder.ObjectValue);
-                holder.Parameter.Size = s.Length;
+                holder.Parameter.Size = s.Length + 1;
                 holder.Parameter.Value = s;
             }
         }

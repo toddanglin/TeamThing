@@ -23,15 +23,32 @@ namespace TeamThing.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
+            //routes.MapHttpRoute(
+            //    name: "TeamThings",
+            //    routeTemplate: "api/team/{id}/things",
+            //    defaults: new { controller = "Team", action = "GetThings" }
+            //);
+            routes.MapHttpRoute(
+                name: "SingleResourceApi",
+                routeTemplate: "api/{controller}/{id}/{action}",
+                defaults: new { action="get" },
+                constraints: new { id = @"\d+" }
+            );
+
+            routes.MapHttpRoute(
+                name: "ResourceApi",
+                routeTemplate: "api/{controller}/{action}"
+            );
+
             routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}"
             );
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
+                url: "index.html",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }

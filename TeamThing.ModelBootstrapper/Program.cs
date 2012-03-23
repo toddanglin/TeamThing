@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using OpenAccessRuntime.product;
 using TeamThing.Model;
 
 namespace TeamThing.ModelBootstrapper
@@ -23,32 +23,46 @@ namespace TeamThing.ModelBootstrapper
         private static void TestContext()
         {
             Console.WriteLine("Running Tests");
+
+            User newUser;
+            User newUser2;
+            Team newTeam;
+            Thing thing;
             using (var context = new TeamThingContext())
             {
                 //add some new data
-                User newUser = new User("holt@telerik.com");
+                newUser = new User("holt@telerik.com");
                 newUser.FirstName = "Josh";
                 newUser.LastName = "Holt";
                 context.Add(newUser);
                 context.SaveChanges();
 
                 //add some new data
-                User newUser2 = new User("jholt456@gmail.com");
+                newUser2 = new User("jholt456@gmail.com");
                 newUser2.FirstName = "Josh2";
                 newUser2.LastName = "Holt2";
                 context.Add(newUser2);
                 context.SaveChanges();
 
-                Team newTeam = new Team("Closed Team", newUser, false);
+                newTeam = new Team("Closed Team", newUser, false);
+                newTeam.TeamMembers.Add(new TeamUser(newTeam, newUser2));
                 context.Add(newTeam);
                 context.SaveChanges();
 
-                Thing thing = new Thing(newUser);
+                thing = new Thing(newUser);
                 thing.Description = "Test Thing";
                 thing.AssignedTo.Add(new UserThing(thing, newUser2, newUser));
+                thing.AssignedTo.Add(new UserThing(thing, newUser, newUser));
+
                 context.Add(thing);
                 context.SaveChanges();
-
+ }
+            using (var context = new TeamThingContext())
+            {
+                newUser = context.GetAll<User>().FirstOrDefault(p => p.EmailAddress == newUser.EmailAddress);
+                newUser2 = context.GetAll<User>().FirstOrDefault(p => p.EmailAddress == newUser2.EmailAddress);
+                newTeam = context.GetAll<Team>().FirstOrDefault(p => p.Name == newTeam.Name);
+                thing = context.GetAll<Thing>().FirstOrDefault(p => p.Description == thing.Description);
                 ////recall the saved items
                 //IProduct retrievedProduct = context.Products.FirstOrDefault(p => p.Name == newProduct.Name);
                 //ICategory retrievedCategory = context.Categories.FirstOrDefault(p => p.Name == newCategory.Name);
@@ -56,6 +70,24 @@ namespace TeamThing.ModelBootstrapper
                 //Debug.Assert(retrievedCategory!= null);
                 //Debug.Assert(retrievedProduct.Category == retrievedCategory);
                 //Debug.Assert(retrievedCategory.Products.Contains(retrievedProduct));
+                Debug.Assert(newUser != null);
+                Debug.Assert(newUser2 != null);
+                Debug.Assert(newTeam != null);
+                Debug.Assert(thing != null);
+
+                Debug.Assert(thing.Owner != null);
+                Debug.Assert(newTeam.Owner != null);
+
+                Debug.Assert(newUser.Teams.Count > 0);
+
+                Debug.Assert(newUser2.Teams.Count > 0);
+                Debug.Assert(newUser2.Things.Count > 0);
+
+                Debug.Assert(newTeam.TeamMembers.Count > 0);
+                //Debug.Assert(newTeam.TeamThings.Count > 0);
+
+                Debug.Assert(thing.AssignedTo.Count > 0);
+                
 
 
         //        //clean up

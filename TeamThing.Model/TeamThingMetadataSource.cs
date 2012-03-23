@@ -43,6 +43,16 @@ namespace TeamThing.Model
             mapping.HasProperty(m => m.IsActive)
                    .HasColumnType("bit");
 
+            mapping.HasAssociation(m => m.Things)
+                   .WithOpposite(m => m.AssignedToUser)
+                   .IsManaged()
+                   .IsDependent()
+                   .ToColumn("AssignedToUserId");
+            mapping.HasAssociation(m => m.Teams)
+                   .WithOpposite(t => t.User)
+                   .IsManaged()
+                   .IsDependent()
+                   .ToColumn("UserId");
             return mapping;
         }
   
@@ -116,6 +126,11 @@ namespace TeamThing.Model
                    .IsManaged()
                    .IsDependent();
 
+            mapping.HasAssociation(m => m.Owner)
+                   .IsManaged()
+                   .IsDependent()
+                   .ToColumn("OwnerId");
+
             mapping.HasProperty(m => m.Status)
                    .HasColumnType("varchar")
                    .HasPrecision(25)
@@ -143,6 +158,12 @@ namespace TeamThing.Model
                    .IsDependent()
                    .ToColumn("TeamId");
 
+            mapping.HasAssociation(m => m.User)
+                   .WithOpposite(t => t.Teams)
+                   .IsManaged()
+                   .IsDependent()
+                   .ToColumn("UserId");
+
             mapping.HasProperty(m => m.Status)
                    .HasColumnType("varchar")
                    .HasPrecision(25)
@@ -168,6 +189,12 @@ namespace TeamThing.Model
 
             mapping.HasProperty(m => m.IsOpen)
                    .HasColumnType("bit");
+         
+
+            mapping.HasAssociation(m => m.Owner)
+                   .IsManaged()
+                   .IsDependent()
+                   .ToColumn("OwnerId");
 
             mapping.HasAssociation(m => m.TeamMembers)
                    .WithOpposite(t => t.Team)
