@@ -99,7 +99,7 @@
         </div>
     </script>
     <script type="text/x-kendo-tmpl" id="teamPendingUserListTemplate">
-        <div class="userListItem">
+        <div class="pendingUserListItem">
                 <input type="hidden" class="userId" id="userId" value="#= Id #"/>
                 <button class="k-button k-view-button" title="Approve User"><span class="k-icon k-accept"></span></button>
                 <button class="k-button k-delete-button" title="Deny User"><span class="k-icon k-delete"></span></button></p>
@@ -119,7 +119,7 @@
                 </li>
                 <li class="commands">
                     <button class="k-button" data-bind="click:cancel">Cancel</button>
-                    <button class="k-button" data-bind="click:save, enabled:canSave">Create</button>
+                    <button class="k-button" data-bind="click:save, enabled:canSave">Save</button>
                 </li>
             </ol>
         </div>
@@ -276,7 +276,7 @@
                     var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
 
                     //save the new thing back to the server
-                    teamThing.createResource("/api/thing", thing, function (result) {
+                    teamThing.dataProvider.createResource("/api/thing", thing, function (result) {
                         dialog.close();
                         thingAdded(result);
                     });
@@ -311,7 +311,15 @@
 
         function teamUpdated(team) {
             //TODO: Update team info in UI
-           // that.user.Teams.push(team);
+           
+            var teams = that.user.Teams;
+             var i = teams.length;
+            while (i--) {
+                var currentTeam = teams[i];
+                if (currentTeam.Id == team.Id) {
+                    teams[i] = team;
+                }
+            }
             refresh();
         }
 
@@ -384,13 +392,22 @@
             kendo.bind($("#joinTeam"), joinTeamViewModel);
         };
 
+        this.removeTeam = function (team) {
+            if (confirm("SRSLY?")) {
+                var currentUserId = teamThing.getCurrentUser().id;
+                teamThing.dataProvider.removeResource('/api/team/' + team.Id + "/deleteteam", {userId:currentUserId}, function () {
+                    that.refresh();
+                });
+            }
+        };
+
         this.editTeam = function (team) {
 
             var teamEditorViewModel = {
                 name: team.Name,
                 id: team.Id,
                 isPublic: team.IsPublic,
-                canSave: false,
+                canSave: true,
                 searchTeams: function (e) {
                     var searchedName = this.name;
                     var vm = this;
@@ -401,7 +418,7 @@
                             vm.set('canSave', false);
                         }
                         else if (result.length > 0 && result[0].Id == vm.id) {
-                            $("#teamForm").find("#teamSearchStatus").css({ 'color': 'green' }).html("Current Team");
+                            $("#teamForm").find("#teamSearchStatus").html("");
                             vm.set('canSave', true);
                         }
                         else {
@@ -415,10 +432,10 @@
                     //get the current application user's id
                     var currentUserId = teamThing.getCurrentUser().id;
 
-                    var editedTeam = { id: this.id, name: this.name, ispublic: this.isPublic };
+                    var editedTeam = { id: this.id, name: this.name, ispublic: this.isPublic, updatedbyid: currentUserId };
                     var vm = this;
                     //save the new thing back to the server
-                    teamThing.dataProvider.updateResource("/api/team/" + editedTeam.id, editedTeam, function (result) {
+                    teamThing.dataProvider.updateResource("/api/team/" + editedTeam.id + "/updateteam", editedTeam, function (result) {
                         teamThing.closeDialog(); //ewww
                         teamUpdated(result);
                         kendo.unbind($("#teamForm"), vm);
@@ -432,7 +449,7 @@
 
             //TODO: This could be cleaner I am sure
             var content = teamThing.compileTemplate("newTeamTemplate", teamEditorViewModel);
-            var dialog = teamThing.showDialog("Edit Team: " + team.name, content);
+            var dialog = teamThing.showDialog("Edit Team: " + team.Name, content);
             kendo.bind($("#teamForm"), teamEditorViewModel);
         };
 
@@ -488,7 +505,7 @@
         });
 
         this.pendingTeams = $.map(teamUser.PendingTeams, function (team) {
-            return new TeamListItemViewModel(team, null);
+            return new TeamListItemViewModel(team, that);
         });
 
         this.things = teamUser.Things;
@@ -505,24 +522,25 @@
     };
 
     function TeamListItemViewModel(team, userController) {
-        this.name = team.Name;
-        this.id = team.Id;
 
-        this.team = team;
         var user = userController.user;
         var controller = userController;
-        //TODO: these can't be bound at the moment
-        //this.viewTeam = function (e) { alert("view"); };
-        this.editTeam = function (e) { controller.editTeam(team); };
-        this.removeTeam = function (e) { controller.removeTeam(team); };
+
+        this.team = team;
+
+        this.editTeam = function (e) { controller.editTeam(this.team); };
+        this.removeTeam = function (e) { controller.removeTeam(this.team); };
 
         this.userCanEditTeam = function () {
-            //TODO: ALSO CHECK IF USER ID IS IN ADMIN VALUE ARRAY
-            if (user != null && (this.team.OwnerId === user.Id || $.inArray(user.Id, this.team.Administrators))) {
+            if (user != null && (this.team.OwnerId === user.Id || $.inArray(user.Id, this.team.Administrators) != -1)) {
                 return true;
             }
-
             return false;
+        };
+
+        this.userCanViewTeam = function () {
+            //TODO: check user team status
+            return true;
         };
     };
 
@@ -773,6 +791,7 @@
             Path.map("/logout").to(function () {
                 that.activeUserViewModel = null;
                 that.showLogin();
+                location.href = "index.html";
                 //TODO: Fix url it will still have logout!
             });
 
@@ -786,7 +805,7 @@
             });
 
             Path.rescue(notFound);
-            Path.root("/my");
+            Path.root("/index.html");
 
             Path.history.listen();
 
@@ -859,10 +878,11 @@
             });
         };
 
-        this.removeResource = function (url, success, fail) {
+        this.removeResource = function (url,data, success, fail) {
             $.ajax({
                 url: url,
                 type: "DELETE",
+                data: JSON.stringify(data),
                 contentType: "application/json;charset=utf-8",
                 statusCode: {
                     200: function (resource) {

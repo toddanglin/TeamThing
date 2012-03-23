@@ -76,8 +76,8 @@ namespace TeamThing.Web.Controllers
             return response;
         }
 
-        
-        public void PutTeam(int id, ServiceModel.Team viewModel)
+        [HttpPut]
+        public HttpResponseMessage UpdateTeam(int id, ServiceModel.UpdateTeamViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -92,27 +92,27 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException("Invalid Team", HttpStatusCode.BadRequest);
             }
 
-            //var editor = team.TeamMembers
-            //                 .Where(tm=>tm.Role== DomainModel.TeamUserRole.Administrator && tm.UserId == viewModel.UpdatedById);
+            var editor = team.TeamMembers
+                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == viewModel.UpdatedById);
 
-            //if (editor == null)
-            //{
-            //    throw new HttpResponseException("User does not have permissions to edit team", HttpStatusCode.NotFound);
-            //}
+            if (editor == null)
+            {
+                throw new HttpResponseException("User does not have permissions to edit team", HttpStatusCode.NotFound);
+            }
 
             team.Name = viewModel.Name;
             team.IsOpen = viewModel.IsPublic;
             
             context.SaveChanges();
 
-            //var sTeam = team.MapToServiceModel();
-            //var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
-            //response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
-            //return response;
+            var sTeam = team.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
+            return response;
         }
 
         [HttpDelete]
-        public HttpResponseMessage DeleteTeam(int id, ServiceModel.UpdateTeamViewModel viewModel)
+        public HttpResponseMessage DeleteTeam(int id, int userId)
         {
             if (!ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace TeamThing.Web.Controllers
             }
 
             var team = context.GetAll<DomainModel.Team>()
-                              .FirstOrDefault(u => u.Id == viewModel.Id);
+                              .FirstOrDefault(u => u.Id == id);
 
             //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
             //if (team == null)
@@ -129,7 +129,7 @@ namespace TeamThing.Web.Controllers
             //}
 
             var editor = team.TeamMembers
-                             .Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == viewModel.UpdatedById);
+                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == userId);
 
             if (editor == null)
             {
