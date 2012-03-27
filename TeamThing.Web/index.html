@@ -11,14 +11,17 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-  <link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.common.min.css" rel="stylesheet" />
     <link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.default.min.css" rel="stylesheet" />
-    <link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.dataviz.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.dataviz.min.css" rel="stylesheet" />
     <link href="/Content/Site.css" rel="stylesheet" />
+    
     <script src="/Scripts/modernizr-2.5.3.min.js"></script>
     <script src="/Scripts/path.min.js"></script>
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
+    <script src="/Scripts/teamThing.js"></script>
+
     <style>
         .formFieldList li
         {
@@ -35,16 +38,40 @@
         
         .publicTeam
         {
-            color:Green;
+            color: Green;
         }
         
         .closedTeam
         {
-            color:red;
+            color: red;
         }
         .teamListItem, .thingListItem, .userListItem
         {
-            margin:3px 0px;
+            margin: 3px 0px;
+        }
+        
+        .hidden 
+        {
+            display:none;
+        }
+        
+
+
+        
+        .searchResult 
+        {
+             margin: 0px;
+             margin-top:3px;
+        }
+        
+        .searchResult.error
+        {
+            color:Red;
+        }
+        
+        .searchResult.ok
+        {
+            color:Green;
         }
     </style>
 </head>
@@ -53,19 +80,17 @@
     <div id="teamThing" class="bkgnd-smooth-dark">
         <h1>
             TeamThing</h1>
-        <div id="navigation">
-            <a href="/my" class="k-button k-view-button">Home</a> <a href="/logout" class="k-button k-view-button">
+        <div id="navigation" class="navigation hidden">
+            <a href="/my" class="nav k-button k-view-button">Home</a> <a href="/logout" class="nav k-button k-view-button">
                 Logout</a>
         </div>
         <div id="appFrame">
         </div>
     </div>
-    <div id="teamInfo">
-    </div>
+    <div id="dialog" class="window"></div>
     <script type="text/x-kendo-tmpl" id="teamListTemplate">
         <div class="teamListItem">
-
-            <a href="/team/#= team.Id #" class="k-button k-view-button"><span class="k-icon k-search"></span></a>
+            <a href="/team/#= team.Id #" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>
 
             #if( userCanEditTeam() ) { #
                 <button class="k-button k-edit-button" data-bind="click:editTeam"><span class="k-icon k-edit"></span></button>
@@ -91,52 +116,17 @@
     </script>
     <script type="text/x-kendo-tmpl" id="teamUserListTemplate">
         <div class="userListItem">
-                <input type="hidden" class="userId" id="userId" value="#= Id #"/>
-                <button class="k-button k-view-button">View</button>
-                <button class="k-button k-edit-button" title="Edit User"><span class="k-icon k-edit"></span></button>
-                <button class="k-button k-delete-button" title="Deny User"><span class="k-icon k-delete"></span></button>
-                #= EmailAddress # 
+                <button class="k-button k-view-button" title="View User" data-bind="click:viewUser">View</button>
+                <button class="k-button k-edit-button" title="Edit User" data-bind="click:editUser"><span class="k-icon k-edit"></span></button>
+                <button class="k-button k-delete-button" title="Deny User" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
+                #= user.EmailAddress # 
         </div>
     </script>
     <script type="text/x-kendo-tmpl" id="teamPendingUserListTemplate">
         <div class="pendingUserListItem">
-                <input type="hidden" class="userId" id="userId" value="#= Id #"/>
-                <button class="k-button k-view-button" title="Approve User"><span class="k-icon k-accept"></span></button>
-                <button class="k-button k-delete-button" title="Deny User"><span class="k-icon k-delete"></span></button></p>
-                #= EmailAddress # 
-        </div>
-    </script>
-    <script type="text/x-kendo-tmpl" id="newTeamTemplate">
-        <div id="teamForm">
-            <ol class="formFieldList">
-                <li>
-                    <label>Team Name</label> <input type="text" id="searchTeamName"data-value-update="keyup"
- data-bind="{value:name, , events: { keyup: searchTeams }"/>
-                    <span id="teamSearchStatus"></span>
-                </li>
-                <li>
-                    <label>Is Public?</label> <input type="checkbox" data-bind="checked:isPublic"/>
-                </li>
-                <li class="commands">
-                    <button class="k-button" data-bind="click:cancel">Cancel</button>
-                    <button class="k-button" data-bind="click:save, enabled:canSave">Save</button>
-                </li>
-            </ol>
-        </div>
-    </script>
-    <script type="text/x-kendo-tmpl" id="joinTeamTemplate">
-        <div id="joinTeam">
-            <ol class="formFieldList">
-                <li>
-                    <label>Team Name</label> <input type="text" id="searchTeamName"data-value-update="keyup"
- data-bind="{value:name, , events: { keyup: searchTeams }"/>
-                    <span id="teamSearchStatus"></span>
-                </li>
-                <li class="commands">
-                    <button class="k-button" data-bind="click:cancel">Cancel</button>
-                    <button class="k-button" data-bind="click:save, enabled:canSave">Join</button>
-                </li>
-            </ol>
+                <button class="k-button k-view-button" title="Approve User" data-bind="click:approveUser"><span class="k-icon k-update"></span></button>
+                <button class="k-button k-delete-button" title="Deny User" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
+                #= user.EmailAddress # 
         </div>
     </script>
     <script type="text/x-kendo-tmpl" id="userSignInTemplate">
@@ -154,7 +144,7 @@
     </script>
     <script type="text/x-kendo-tmpl" id="teamDashboardTemplate">
        <div id="teamDashboard">
-            <h2 data-bind="text:name">
+            <h2 data-bind="text:team.Name">
             </h2>
              <div class="k-toolbar k-grid-toolbar">
                 <button class="k-button k-button-icontext k-add-button" data-bind="click:addThing">
@@ -162,14 +152,22 @@
                 </button>
             </div>
             <h3>Team Members</h3>
-                <div id="teamUserList" data-template="teamUserListTemplate" data-role="listview" data-bind="source:teamMembers">
-            </div>
 
-            #if(pendingTeamMembers.length > 0 ) { #
-                <h3>Pending Team Members</h3>
-                <div id="teamPendingUserList" data-template="teamPendingUserListTemplate" data-role="listview" data-bind="source:pendingTeamMembers">
-                </div>
-            # } #
+            <div data-role="tabstrip">
+                <ul>
+                  <li class="k-state-active">Approved</li>
+                  #if(pendingTeamMembers.length > 0 ) { #
+                      <li>Pending</li>
+                  # } #
+                </ul>
+                    <div id="teamUserList" data-template="teamUserListTemplate" data-role="listview" data-bind="source:teamMembers">
+                    </div>
+
+                #if(pendingTeamMembers.length > 0 ) { #
+                    <div id="teamPendingUserList" data-template="teamPendingUserListTemplate" data-role="listview" data-bind="source:pendingTeamMembers">
+                    </div>
+                # } #
+            </div>
         </div>
     </script>
     <script type="text/x-kendo-tmpl" id="userDashboardTemplate">
@@ -186,764 +184,30 @@
             </div>
             <div data-role="tabstrip">
                 <ul>
-                    <li class="k-state-active">My Teams</li>
-                    <li>My Pending Teams</li>
+                    <li class="k-state-active">My Things</li>
+                    <li>My Teams</li>
+                    #if(pendingTeams.length > 0 ) { #
+                        <li>Pending Teams</li>
+                    # } #
                 </ul>
                 <!---using class becuase the id is killed when it is put into a tab strip! --->
+                <div id="userThings" data-template="thingListTemplate" data-role="listview" data-bind="source:things">
+                </div>
                 <div id="teamListView" class="teamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:teams">
                 </div>
-                <div id="pendingTeamListView" class="pendingTeamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:pendingTeams">
-                </div>
-            </div>
-            <h3>My Things</h3>
-            <div id="userThings" data-template="thingListTemplate" data-role="listview" data-bind="source:things">
+                #if(pendingTeams.length > 0 ) { #
+                    <div id="pendingTeamListView" class="pendingTeamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:pendingTeams">
+                    </div>
+                # } #
             </div>
         </div>
     </script>
-    <script type="text/x-kendo-tmpl" id="newThingTemplate">
-        <div id="addThing">
-            <ol>
-                <li>
-                    <label>Assign To</label>
-                     <select multiple data-bind="source: availableTeamMembers, value: selectedTeamMembers" data-text-field="EmailAddress"  data-value-field="Id"></select>
-                </li>
-                <li>
-                     <label>Description</label>
-                     <textarea data-bind="value: description"></textarea>
-                </li>
-                <li class="commands">
-                    <button class="k-button" data-bind="click:cancel">Cancel</button>
-                    <button class="k-button" data-bind="click:save">Save</button>
-                </li>
-            </ol>
-        </div>
-    </script>
+
 </body>
 <script>
-    "use strict";
-
-    function TeamDashboard(teamThing, team) {
-        var that = this;
-        var teamThing = teamThing;
-
-        this.team = team;
-        this.name = team.Name;
-        this.id = team.Id;
-        this.pendingTeamMembers = team.PendingTeamMembers;
-        this.teamMembers = team.TeamMembers;
-        this.things = team.Things
-
-        function thingAdded(thing) {
-        };
-
-        function refresh() {
-            //TODO: Memory leak?!?
-            teamThing.showTeam(that.team);
-        }
-
-        this.denyMember = function (id) {
-
-            var approvalInfo = { teamId: that.id, userId: id };
-
-            //ToDO: will this cause a memory leak?!
-            teamThing.dataProvider.updateResource("/api/team/" + that.id + "/denymember", approvalInfo, this.refresh);
-        }
-
-        this.approveMember = function (id) {
-            var approvalInfo = { teamId: that.id, userId: id };
-
-            //ToDO: will this cause a memory leak?!
-            teamThing.dataProvider.updateResource("/api/team/" + that.id + "/approvemember", approvalInfo, this.refresh);
-        }
-
-        this.addThing = function () {
-
-            var newThingModel = {
-                description: "",
-                availableTeamMembers: that.teamMembers,
-                selectedTeamMembers: [],
-                save: function (e) {
-
-                    //retrieve the ids for the selected assignments
-                    var assignedTo = $.map(this.selectedTeamMembers, function (member) {
-                        return member.Id;
-                    });
-
-                    //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
-
-                    //create the thing object
-                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
-
-                    //save the new thing back to the server
-                    teamThing.dataProvider.createResource("/api/thing", thing, function (result) {
-                        dialog.close();
-                        thingAdded(result);
-                    });
-                },
-                cancel: function (e) {
-                    dialog.close();
-                }
-            };
-
-            //TODO: This could be cleaner I am sure
-            var content = teamThing.compileTemplate("newThingTemplate", newThingModel);
-            var dialog = teamThing.showDialog("Add a Thing", content);
-            kendo.bind($("#addThing"), newThingModel);
-        };
-
-        return this;
-    };
-
-    function UserDashboard(teamThing, teamUser) {
-        var that = this;
-        var teamThing = teamThing;
-        this.UserName = teamUser.EmailAddress;
-        this.id = teamUser.Id;
-        this.user = teamUser;
-
-        function toogleUI() {
-            //if the user only has one team, show that teams info!
-            if (that.teams.length === 1) {
-                that.viewTeam(that.teams[0].Id);
-            };
-        };
-
-        function teamUpdated(team) {
-            //TODO: Update team info in UI
-           
-            var teams = that.user.Teams;
-             var i = teams.length;
-            while (i--) {
-                var currentTeam = teams[i];
-                if (currentTeam.Id == team.Id) {
-                    teams[i] = team;
-                }
-            }
-            refresh();
-        }
-
-        function teamCreated(team) {
-            that.user.Teams.push(team);
-            refresh();
-        }
-
-        function refresh() {
-            //TODO: Memory leak?!?
-            teamThing.loadUser(that.user);
-        }
-
-        function teamJoined(team) {
-            if (team.IsPublic) {
-                that.user.Teams.push(team);
-            }
-            else {
-                that.user.PendingTeams.push(team);
-            }
-
-            refresh();
-        };
-
-        this.joinTeam = function () {
-
-            var joinTeamViewModel = kendo.observable({
-                name: "",
-                canSave: false,
-                searchTeams: function (e) {
-
-                    var searchedName = this.name;
-                    var vm = this;
-                    //TODO: instead of an exact match we could let users se how many partials matches there are?
-                    teamThing.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
-                        if (result.length > 0) {
-                            $("#joinTeam").find("#teamSearchStatus").css({ 'color': 'green' }).html("Team Found");
-                            vm.set('canSave', true);
-                        }
-                        else {
-                            $("#joinTeam").find("#teamSearchStatus").css({ 'color': 'red' }).html("No Team Found");
-                            vm.set('canSave', false);
-                        }
-                    });
-                },
-                save: function (e) {
-
-                    //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
-
-                    //create the team object
-                    var team = { name: this.name, userId: currentUserId };
-                    var vm = this;
-                    //save the new team back to the server
-                    teamThing.dataProvider.updateResource("/api/team/join", team, function (result) {
-                        kendo.unbind($("#joinTeam"), vm);
-                        teamThing.closeDialog(); //ewww
-                        teamJoined(result);
-                    });
-                },
-                cancel: function (e) {
-                    teamThing.closeDialog(); //ewww
-                    kendo.unbind($("#joinTeam"), this);
-                }
-            });
-
-            //TODO: This could be cleaner I am sure
-            var content = teamThing.compileTemplate("joinTeamTemplate", joinTeamViewModel);
-            var dialog = teamThing.showDialog("Join a Team", content);
-            kendo.bind($("#joinTeam"), joinTeamViewModel);
-        };
-
-        this.removeTeam = function (team) {
-            if (confirm("SRSLY?")) {
-                var currentUserId = teamThing.getCurrentUser().id;
-                teamThing.dataProvider.removeResource('/api/team/' + team.Id + "/deleteteam", {userId:currentUserId}, function () {
-                    that.refresh();
-                });
-            }
-        };
-
-        this.editTeam = function (team) {
-
-            var teamEditorViewModel = {
-                name: team.Name,
-                id: team.Id,
-                isPublic: team.IsPublic,
-                canSave: true,
-                searchTeams: function (e) {
-                    var searchedName = this.name;
-                    var vm = this;
-                    //TODO: instead of an exact match we could let users se how many partials matches there are?
-                    teamThing.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
-                        if (result.length > 0 && result[0].Id != vm.id) {
-                            $("#teamForm").find("#teamSearchStatus").css({ 'color': 'red' }).html("Team Name Not Available");
-                            vm.set('canSave', false);
-                        }
-                        else if (result.length > 0 && result[0].Id == vm.id) {
-                            $("#teamForm").find("#teamSearchStatus").html("");
-                            vm.set('canSave', true);
-                        }
-                        else {
-                            $("#teamForm").find("#teamSearchStatus").css({ 'color': 'green' }).html("Team Name Available");
-                            vm.set('canSave', true);
-                        }
-                    });
-                },
-                save: function (e) {
-
-                    //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
-
-                    var editedTeam = { id: this.id, name: this.name, ispublic: this.isPublic, updatedbyid: currentUserId };
-                    var vm = this;
-                    //save the new thing back to the server
-                    teamThing.dataProvider.updateResource("/api/team/" + editedTeam.id + "/updateteam", editedTeam, function (result) {
-                        teamThing.closeDialog(); //ewww
-                        teamUpdated(result);
-                        kendo.unbind($("#teamForm"), vm);
-                    });
-                },
-                cancel: function (e) {
-                    teamThing.closeDialog(); //ewww
-                    kendo.unbind($("#teamForm"), this);
-                }
-            };
-
-            //TODO: This could be cleaner I am sure
-            var content = teamThing.compileTemplate("newTeamTemplate", teamEditorViewModel);
-            var dialog = teamThing.showDialog("Edit Team: " + team.Name, content);
-            kendo.bind($("#teamForm"), teamEditorViewModel);
-        };
-
-        this.createTeam = function () {
-
-            var newTeamViewModel = {
-                name: "",
-                isPublic: false,
-                canSave:false,
-                searchTeams: function (e) {
-
-                    var searchedName = this.name;
-                    var vm = this;
-                    //TODO: instead of an exact match we could let users se how many partials matches there are?
-                    teamThing.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
-                        if (result.length > 0) {
-                            $("#teamForm").find("#teamSearchStatus").css({ 'color': 'red' }).html("Team Name Not Available");
-                            vm.set('canSave', false);
-                        }
-                        else {
-                            $("#teamForm").find("#teamSearchStatus").css({ 'color': 'green' }).html("Team Name Available");
-                            vm.set('canSave', true);
-                        }
-                    });
-                },
-                save: function (e) {
-
-                    //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
-
-                    //create the thing object
-                    var team = { name: this.name, ispublic: this.isPublic, createdById: currentUserId };
-
-                    //save the new thing back to the server
-                    teamThing.dataProvider.createResource("/api/team", team, function (result) {
-                        teamThing.closeDialog(); //ewww
-                        teamCreated(result);
-                    });
-                },
-                cancel: function (e) {
-                    teamThing.closeDialog(); //ewww
-                }
-            };
-
-            //TODO: This could be cleaner I am sure
-            var content = teamThing.compileTemplate("newTeamTemplate", newTeamViewModel);
-            var dialog = teamThing.showDialog("Create a New Team", content);
-            kendo.bind($("#teamForm"), newTeamViewModel);
-        };
-
-        this.teams = $.map(teamUser.Teams, function (team) {
-            return new TeamListItemViewModel(team, that);
-        });
-
-        this.pendingTeams = $.map(teamUser.PendingTeams, function (team) {
-            return new TeamListItemViewModel(team, that);
-        });
-
-        this.things = teamUser.Things;
-
-        this.viewTeam = function (id) {
-            //todo: this is kinda ugly
-            teamThing.dataProvider.get("api/team/" + id, teamThing.showTeam);
-        };
-
-        //TODO: this takes a user directly to a team if they only belong to one.
-        //toogleUI();
-
-        return this;
-    };
-
-    function TeamListItemViewModel(team, userController) {
-
-        var user = userController.user;
-        var controller = userController;
-
-        this.team = team;
-
-        this.editTeam = function (e) { controller.editTeam(this.team); };
-        this.removeTeam = function (e) { controller.removeTeam(this.team); };
-
-        this.userCanEditTeam = function () {
-            if (user != null && (this.team.OwnerId === user.Id || $.inArray(user.Id, this.team.Administrators) != -1)) {
-                return true;
-            }
-            return false;
-        };
-
-        this.userCanViewTeam = function () {
-            //TODO: check user team status
-            return true;
-        };
-    };
-
-    function SignInViewModel(teamThing) {
-        var teamThing = teamThing;
-        this.userName = "";
-        var that = this;
-
-        function userRegistered(newUser) {
-            teamThing.loadUser(newUser);
-        };
-
-        function validateInput() {
-            var minUserNameLength = 7; //'@.xxx'
-
-            //TODO: that should be changed to this after release
-            if (that.userName.length <= minUserNameLength) {
-                alert("User name must be greater than " + minUserNameLength + " characters");
-                return false;
-            }
-
-            return true;
-        }
-
-        this.signInUser = function () {
-            if (validateInput()) {
-                //TODO: that should be changed to this after release
-                var userInfo = { EmailAddress: that.userName };
-                //todo: this is kinda ugly
-                teamThing.dataProvider.post("/api/user/signin", userInfo, teamThing.loadUser);
-            }
-        };
-
-        this.registerUser = function () {
-            if (validateInput()) {
-                //TODO: that should be changed to this after release
-                var userInfo = { EmailAddress: that.userName };
-                //todo: this is kinda ugly
-                teamThing.dataProvider.createResource("/api/user/register", userInfo, userRegistered);
-            }
-        };
-    }
-
-    function TeamThing(context) {
-        var dialog;
-        var activeUserViewModel;
-        var views = [];
-
-        this.context = context;
-        this.dataProvider;
-        var that = this;
-
-        function createDialog() {
-            var dialog = $("#teamInfo").kendoWindow({
-                actions: ["Close"],
-                draggable: true,
-                height: "250px",
-                modal: true,
-                resizable: false,
-                width: "525px"
-            });
-
-            return dialog;
-        };
-
-        this.closeDialog = function () {
-            if (dialog != null) {
-                var window = dialog.data("kendoWindow");
-                window.close();
-            }
-        };
-
-        this.showDialog = function (title, content) {
-
-            if (dialog == null) {
-                dialog = createDialog();
-            }
-
-            var window = dialog.data("kendoWindow");
-            window.content(content)
-                  .title(title)
-                  .center()
-                  .open();
-
-            return window;
-        };
-
-        this.compileTemplate = function (templateName, viewModel) {
-            var template = kendo.template($("#" + templateName).html());
-            return template(viewModel);
-        };
-
-        this.showTeam = function (team) {
-
-            var teamViewModel = new TeamDashboard(that, team);
-            changeContent("teamDashboardTemplate", teamViewModel);
-            kendo.bind($("#teamDashboard"), teamViewModel);
-
-            //TODO: remove this after the release as you will be able to bind in templates :)
-            $("#teamPendingUserList")
-                .delegate(".k-view-button", "click", function (e) {
-                    var row = $(this).closest(".userListItem");
-                    var userId = row.find("#userId");
-                    teamViewModel.approveMember(userId.val());
-                })
-                .delegate(".k-delete-button", "click", function (e) {
-                    var row = $(this).closest(".userListItem");
-                    var userId = row.find("#userId");
-                    teamViewModel.denyMember(userId.val());
-                })
-        };
-
-        this.showLogin = function () {
-            var signInViewModel = new SignInViewModel(that);
-            changeContent("userSignInTemplate", signInViewModel);
-            kendo.bind($("#userLogin"), signInViewModel);
-
-            //TODO: remove this after the release as you will be able to bind in templates :)
-            $("#userLogin").delegate("#userName", "change", function () {
-                signInViewModel.userName = this.value;
-            });
-        };
-
-        function changeContent(templateName, viewModel) {
-
-            var compiledTemplate;
-
-            //cache caused issues (maybe force a refresh?) also need to include an identifier in the cache key
-            //if (views[templateName] == null) {
-                var template = kendo.template($("#" + templateName).html());
-                compiledTemplate = that.compileTemplate(templateName, viewModel);
-                views[templateName] = compiledTemplate;
-//            }
-//            else {
-//                compiledTemplate = views[templateName];
-//            }
-
-            $("#appFrame").html(compiledTemplate);
-        };
-
-//        this.previous = function () {
-//            //$("#appFrame").html(views.pop());
-//        };
-//        this.forward = function () {
-//            //$("#appFrame").html(views.p());
-//        };
-
-        this.showErrors = function (errors) {
-            var strErrors = "";
-            $.each(errors, function (index, err) {
-                strErrors += "*" + err + "\n";
-            });
-            alert(strErrors);
-        };
-
-        this.loadUser = function (user) {
-            activeUserViewModel = new UserDashboard(that, user);
-
-            changeContent("userDashboardTemplate", activeUserViewModel);
-
-            bindUserTeams();
-        };
-
-
-        function bindUserTeams() {
-            kendo.unbind($("#userDashboard"), activeUserViewModel);
-            kendo.bind($("#userDashboard"), activeUserViewModel);
-
-            //TODO:THIS IS A HACK WHICH CAN BE ReMOVED WHEN ON THE Q11 Kendo RELEASE
-            $(".teamListView")
-            //            .delegate(".k-view-button", "click", function (e) {
-            //                var row = $(this).closest(".teamListItem");
-            //                var teamId = row.find("#teamId");
-            //                activeUserViewModel.viewTeam(teamId.val());
-            //            })
-//            .delegate(".k-edit-button", "click", function (e) {
-//                var row = $(this).closest(".teamListItem");
-//                var teamId = row.find("#teamId");
-//                activeUserViewModel.edit(teamId);
-//            })
-//            .delegate(".k-delete-button", "click", function (e) {
-//                if (confirm("SRSLY?")) {
-//                    var row = $(this).closest(".teamListItem");
-//                    var teamId = row.find("#teamId");
-//                    activeUserViewModel.deleteTeam(teamId);
-//                }
-//            });
-        }
-
-        this.init = function () {
-
-            //alert('bind');
-            //kendo.bind(this.context, this);
-            //alert('routes');
-            configureRoutes();
-            //alert('data provider');
-            configureDataProvider();
-            //alert('connection');
-            configureConnectivityDetection();
-
-            //alert('login');
-            that.showLogin();
-        };
-
-        function configureDataProvider() {
-            that.dataProvider = new DataProvider(that.showErrors);
-        };
-
-        var isOnline;
-        function connectivityChanged() {
-            //here would swap out the data provider, and wire up some sync operations if needed
-            if (navigator.onLine) {
-                alert('online');
-            }
-            else {
-                alert('offline');
-            }
-
-            
-        };
-
-        function configureConnectivityDetection() {
-            setInterval(function () {
-                if (isOnline != null && navigator.onLine != isOnline) {
-                    connectivityChanged();
-                }
-
-                isOnline = navigator.onLine;
-            }, 1000);
-        };
-
-        function configureRoutes() {
-
-            // Here we define our routes.  You'll notice that I only define three routes, even
-            // though there are four links.  Each route has an action assigned to it (via the 
-            // `to` method, as well as an `enter` method.  The `enter` method is called before
-            // the route is performed, which allows you to do any setup you need (changes classes,
-            // performing AJAX calls, adding animations, etc.
-            Path.map("/my").to(function () {
-                that.loadUser(activeUserViewModel.user);
-            }).enter(function () {
-                if (activeUserViewModel == null) {
-                    that.showLogin();
-                    return false;
-                }
-            });
-
-            Path.map("/logout").to(function () {
-                that.activeUserViewModel = null;
-                that.showLogin();
-                location.href = "index.html";
-                //TODO: Fix url it will still have logout!
-            });
-
-            Path.map("/team/:teamId").to(function () {
-                that.dataProvider.get('api/team/' + this.params["teamId"], that.showTeam);
-            }).enter(function () {
-                if (activeUserViewModel == null) {
-                    that.showLogin();
-                    return false;
-                }
-            });
-
-            Path.rescue(notFound);
-            Path.root("/index.html");
-
-            Path.history.listen();
-
-            $('body').on('click', 'a', function (event) {
-                event.preventDefault();
-                Path.history.pushState({}, "", $(this).attr("href"));
-            });
-        };
-
-        function notFound() {
-            alert("BAD PAGE DOOODE");
-        };
-
-        this.getCurrentUser = function () { return activeUserViewModel; };
-
-        return this;
-    };
-
-    //TODO: can I leverage the datasource here?!
-    function DataProvider(failback) {
-        var that = this;
-        this.failback = failback
-
-        function handleErrors(errors, failback) {
-            if (failback == null) {
-                that.failback(errors);
-            }
-            else {
-                failback(errors);
-            }
-        }
-
-        this.createResource = function (url, model, success, fail) {
-            $.ajax({
-                url: url,
-                data: JSON.stringify(model),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    201: function (newResource) {
-                        if (success) {
-                            success(newResource);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        this.updateResource = function (url, model, success, fail) {
-            $.ajax({
-                url: url,
-                type: "PUT",
-                data: JSON.stringify(model),
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (result) {
-                        if (success) {
-                            success(result);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        this.removeResource = function (url,data, success, fail) {
-            $.ajax({
-                url: url,
-                type: "DELETE",
-                data: JSON.stringify(data),
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (resource) {
-                        if (success) {
-                            success(resource);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        this.get = function (url, success, fail) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (resource) {
-                        if (success) {
-                            success(resource);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        //TODO: is this needed?! the only diff between it and create is handling 200 and 201?!
-        this.post = function (url, data, success, fail) {
-            $.ajax({
-                url: url,
-                data: JSON.stringify(data),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (resource) {
-                        success(resource);
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        return this;
-    };
-
 
     $(function () {
-        var baseUrl = 'http://localhost:5079/';
-        var app = new TeamThing($("#teamThing"));
-        app.init();
+        application.init($("#teamThing"));
     });
 
 </script>

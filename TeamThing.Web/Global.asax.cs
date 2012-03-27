@@ -32,7 +32,14 @@ namespace TeamThing.Web
             routes.MapHttpRoute(
                 name: "SingleResourceApi",
                 routeTemplate: "api/{controller}/{id}/{action}",
-                defaults: new { action="get" },
+                defaults: new { },
+                constraints: new { id = @"\d+" }
+            );
+
+            routes.MapHttpRoute(
+                name: "HeaderBasedApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { },
                 constraints: new { id = @"\d+" }
             );
 
@@ -45,6 +52,38 @@ namespace TeamThing.Web
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}"
             );
+
+
+            ////routes.MapHttpRoute(
+            ////    name: "TeamThings",
+            ////    routeTemplate: "api/team/{id}/things",
+            ////    defaults: new { controller = "Team", action = "GetThings" }
+            ////);
+            //routes.MapHttpRoute(
+            //    name: "SingleResourceApi",
+            //    routeTemplate: "api/{controller}/{id}/{action}",
+            //    defaults: new { },
+            //    constraints: new { id = @"\d+" }
+            //);
+
+            //routes.MapHttpRoute(
+            //    name: "HttpMethodBasedResourceApi",
+            //    routeTemplate: "api/{controller}/{id}",
+            //    defaults: new { },
+            //    constraints: new { id = @"\d+" }
+            //);
+
+            //routes.MapHttpRoute(
+            //    name: "ResourceApi",
+            //    routeTemplate: "api/{controller}/{action}",
+            //    defaults: new { action = "get" }
+            //);
+
+            ////routes.MapHttpRoute(
+            ////    name: "DefaultApi",
+            ////    routeTemplate: "api/{controller}/{id}",
+            ////    defaults: new { id = RouteParameter.Optional }
+            ////);
 
             routes.MapRoute(
                 name: "Default",

@@ -193,7 +193,6 @@ namespace TeamThing.Model
 
             mapping.HasAssociation(m => m.Owner)
                    .IsManaged()
-                   .IsDependent()
                    .ToColumn("OwnerId");
 
             mapping.HasAssociation(m => m.TeamMembers)

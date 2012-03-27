@@ -55,6 +55,13 @@ namespace TeamThing.Web.Models.API
             get;
             set;
         }
+
+        [Required(ErrorMessage = "Team Id required to join a team.")]
+        public int Id 
+        {
+            get;
+            set;
+        }
     }
 
     public class AddTeamViewModel
@@ -133,5 +140,54 @@ namespace TeamThing.Web.Models.API
             get;
             set;
         }
+    }
+
+    public class UpdateThingViewModel
+    {
+
+        [Required(ErrorMessage = "A valid id is required to update an existing thing")]
+        public int Id
+        {
+            get;
+            set;
+        }
+
+        public string Description
+        {
+            get;
+            set;
+        }
+
+        [Required(ErrorMessage = "A thing must have a creator")]
+        public int CreatedById
+        {
+            get;
+            set;
+        }
+
+        [Required(ErrorMessage = "A thing must be assigned to 1 or more people")]
+        public int[] AssignedTo
+        {
+            get;
+            set;
+        }
+    }
+
+    public class DeleteThingViewModel
+    {
+
+        [Required(ErrorMessage = "A thing can only be deleted by a valid user.")]
+        public int DeletedById
+        {
+            get;
+            set;
+        }
+
+        public int Id
+        {
+            get;
+            set;
+        }
+
     }
 }

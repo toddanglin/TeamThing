@@ -55,6 +55,7 @@ namespace TeamThing.Web.Controllers
             return new HttpResponseMessage<ServiceModel.User>(existingUser.MapToServiceModel());
         }
 
+        [HttpPost]
         public HttpResponseMessage Register(ServiceModel.AddUserModel value)
         {
             if (!ModelState.IsValid)

@@ -77,13 +77,39 @@ namespace TeamThing.Web.Controllers
         }
 
         // PUT /api/thing/5
-        public void Put(int id, string value)
+        [HttpPut]
+        public void Put(ServiceModel.UpdateThingViewModel viewModel)
         {
         }
 
         // DELETE /api/thing/5
-        public void Delete(int id)
+        [HttpDelete]
+        public HttpResponseMessage Delete(ServiceModel.DeleteThingViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            var thing = context.GetAll<DomainModel.Thing>()
+                              .FirstOrDefault(u => u.Id == viewModel.Id);
+
+            //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
+            if (thing == null)
+            {
+                throw new HttpResponseException("Invalid Thing", HttpStatusCode.BadRequest);
+            }
+
+            if (thing.OwnerId != viewModel.DeletedById)
+            {
+                throw new HttpResponseException("A thing can only be removed by its owner.", HttpStatusCode.BadRequest);
+            }
+
+
+            context.Delete(thing);
+            context.SaveChanges();
+
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }
