@@ -107,9 +107,9 @@ Global
 		{1D549C3C-0039-44EC-8C1A-810C97A70D2C} = {B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		ShowOldMenu = True
-		IndexUsingAttrib = False
-		FetchGroupUsingAttrib = True
 		VersionFieldUsingAttrib = True
+		FetchGroupUsingAttrib = True
+		IndexUsingAttrib = False
+		ShowOldMenu = True
 	EndGlobalSection
 EndGlobal

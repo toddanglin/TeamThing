@@ -35,6 +35,7 @@ namespace TeamThing.Web.Core.Mappers
 
         public static ServiceModel.Thing MapToServiceModel(this DomainModel.Thing t)
         {
+            if (t == null) return null;
             return new ServiceModel.Thing()
             {
                 Id = t.Id,

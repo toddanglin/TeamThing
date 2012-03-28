@@ -28,11 +28,20 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpGet]
-        public ServiceModel.Team Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return context.GetAll<TeamThing.Model.Team>()
-                          .First(t => t.Id == id)
-                          .MapToServiceModel();
+            var item = context.GetAll<TeamThing.Model.Team>()
+                          .FirstOrDefault(t => t.Id == id);
+            if (item == null)
+            {
+                ModelState.AddModelError("", "Invalid Team");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            var sTeam = item.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
+            return response;
         }
 
         [HttpPost]

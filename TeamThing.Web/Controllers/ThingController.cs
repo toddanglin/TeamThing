@@ -21,10 +21,21 @@ namespace TeamThing.Web.Controllers
         }
 
         // GET /api/thing/5
-        public ServiceModel.Thing Get(int id)
+        public HttpResponseMessage Get(int id)
         {
             //TODO: We chould grab the current user here probably?
-            return context.GetAll<DomainModel.Thing>().FirstOrDefault(t => t.Id == id).MapToServiceModel();
+            var thing = context.GetAll<DomainModel.Thing>().FirstOrDefault(t => t.Id == id);
+
+            if (thing == null)
+            {
+                ModelState.AddModelError("", "Invalid Thing");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            var sThing = thing.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
+            return response;
         }
 
         // GET /api/thing
