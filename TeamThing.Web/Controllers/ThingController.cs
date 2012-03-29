@@ -61,8 +61,16 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException("Invalid Creator", HttpStatusCode.NotFound);
             }
 
+            var team = context.GetAll<DomainModel.Team>()
+                                      .FirstOrDefault(u => u.Id == newThing.TeamId);
+
+            if (team == null)
+            {
+                throw new HttpResponseException("Invalid Team", HttpStatusCode.NotFound);
+            }
+
             
-            var thing = new DomainModel.Thing(thingCreator);
+            var thing = new DomainModel.Thing(team, thingCreator);
             thing.Description = newThing.Description;
 
             foreach (var userId in newThing.AssignedTo)
@@ -87,6 +95,30 @@ namespace TeamThing.Web.Controllers
             return response;
         }
 
+        [HttpPut]
+        public HttpResponseMessage Complete(int id, int userId)
+        {
+
+            var thing = context.GetAll<DomainModel.Thing>()
+                               .FirstOrDefault(u => u.Id == id);
+
+            //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
+            if (thing == null)
+            {
+                throw new HttpResponseException("Invalid Thing", HttpStatusCode.BadRequest);
+            }
+
+            if (!thing.AssignedTo.Any(at=>at.AssignedToUserId == userId))
+            {
+                throw new HttpResponseException("A thing can only be removed by its owner.", HttpStatusCode.BadRequest);
+            }
+
+            thing.Complete(userId);
+            context.SaveChanges();
+
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
+
         // PUT /api/thing/5
         [HttpPut]
         public void Put(ServiceModel.UpdateThingViewModel viewModel)
@@ -103,7 +135,7 @@ namespace TeamThing.Web.Controllers
             }
 
             var thing = context.GetAll<DomainModel.Thing>()
-                              .FirstOrDefault(u => u.Id == viewModel.Id);
+                               .FirstOrDefault(u => u.Id == viewModel.Id);
 
             //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
             if (thing == null)
@@ -116,8 +148,7 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException("A thing can only be removed by its owner.", HttpStatusCode.BadRequest);
             }
 
-
-            context.Delete(thing);
+            thing.Delete(viewModel.DeletedById);
             context.SaveChanges();
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);

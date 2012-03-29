@@ -28,11 +28,20 @@ namespace TeamThing.Web.Controllers
         }
 
         // GET /api/user/5
-        public ServiceModel.User Get(int id)
+        public HttpResponseMessage Get(int id)
         {
-            return context.GetAll<TeamThing.Model.User>()
-                          .First(t => t.Id == id)
-                          .MapToServiceModel();
+            var item = context.GetAll<TeamThing.Model.User>()
+                              .FirstOrDefault(t => t.Id == id);
+            if (item == null)
+            {
+                ModelState.AddModelError("", "Invalid User");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            var sUser = item.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.User>(sUser, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/user/" + sUser.Id.ToString());
+            return response;
         }
 
         [HttpPost]
@@ -73,6 +82,8 @@ namespace TeamThing.Web.Controllers
             }
 
             var user = new DomainModel.User(value.EmailAddress);
+            var defaultImage = new Uri(Request.RequestUri, "/images/GenericUserImage.gif");
+            user.ImagePath = defaultImage.ToString();
             context.Add(user);
             context.SaveChanges();
 
@@ -90,6 +101,7 @@ namespace TeamThing.Web.Controllers
         // DELETE /api/user/5
         public void Delete(int id)
         {
+            //TODO: Mark inactive
         }
     }
 }

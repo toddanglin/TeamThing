@@ -128,8 +128,13 @@ namespace TeamThing.Model
 
             mapping.HasAssociation(m => m.Owner)
                    .IsManaged()
-                   .IsDependent()
                    .ToColumn("OwnerId");
+
+            mapping.HasAssociation(m => m.Team)
+                   .WithOpposite(m=>m.TeamThings)
+                   .IsManaged()
+                   .IsDependent()
+                   .ToColumn("TeamId");
 
             mapping.HasProperty(m => m.Status)
                    .HasColumnType("varchar")
@@ -194,6 +199,10 @@ namespace TeamThing.Model
             mapping.HasAssociation(m => m.Owner)
                    .IsManaged()
                    .ToColumn("OwnerId");
+
+            mapping.HasAssociation(m => m.TeamThings)
+                   .IsManaged()
+                   .ToColumn("TeamId");
 
             mapping.HasAssociation(m => m.TeamMembers)
                    .WithOpposite(t => t.Team)

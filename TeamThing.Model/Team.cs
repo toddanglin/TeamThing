@@ -46,17 +46,11 @@ namespace TeamThing.Model
         public int OwnerId { get; private set; }
         public bool IsOpen { get; set; }
         public DateTime DateCreated { get; private set; }
-        //public IList<UserThing> TeamThings
-        //{
-        //    get
-        //    {
-        //        return TeamMembers.Where(tm => tm.Status == TeamUserStatus.Approved)
-        //                          .Select(tm => tm.User)
-        //                          .SelectMany(u => u.Things)
-        //                          .Distinct()
-        //                          .ToList();
-        //    }
-        //}
+        public IList<Thing> TeamThings
+        {
+            get;
+            private set;
+        }
 
         public void ChangeOwner(User newOwner)
         {

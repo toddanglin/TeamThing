@@ -49,7 +49,7 @@ namespace TeamThing.ModelBootstrapper
                 context.Add(newTeam);
                 context.SaveChanges();
 
-                thing = new Thing(newUser);
+                thing = new Thing(newTeam, newUser);
                 thing.Description = "Test Thing";
                 thing.AssignedTo.Add(new UserThing(thing, newUser2, newUser));
                 thing.AssignedTo.Add(new UserThing(thing, newUser, newUser));

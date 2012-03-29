@@ -140,6 +140,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\API\AddUserModel.cs" />
+    <Compile Include="Models\API\SignInViewModel.cs" />
     <Compile Include="Models\API\Team.cs" />
     <Compile Include="Models\API\TeamMember.cs" />
     <Compile Include="Models\API\TeamMemberBasic.cs" />
@@ -149,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="addThing.html" />
+    <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -177,6 +180,7 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
+    <Content Include="Images\GenericUserImage.gif" />
     <Content Include="joinTeam.html" />
     <Content Include="teamEditor.html" />
     <Content Include="OAuthExample.htm" />
@@ -203,7 +207,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\html5bp.css" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\aspNetHome.png" />
     <Content Include="Images\bullet.png" />

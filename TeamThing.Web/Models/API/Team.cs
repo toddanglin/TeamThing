@@ -9,10 +9,14 @@ namespace TeamThing.Web.Models.API
     {
         public string Name { get; set; }
         public int Id { get; set; }
-        public IList<TeamMemberBasic> TeamMembers { get; set; }
-        //public IList<Thing> Things { get; set; }
-        public IList<TeamMemberBasic> PendingTeamMembers { get; set; }
+        public IEnumerable<TeamMemberBasic> TeamMembers { get; set; }
+        public IEnumerable<Thing> Things { get; set; }
+        public IEnumerable<TeamMemberBasic> PendingTeamMembers { get; set; }
         public bool IsPublic { get; set; }
+
+        public UserBasic Owner { get; set; }
+        //TODO: this should probably return a bool flag based on the current user's permissions, so that they don't know the admin's id!
+        public int[] Administrators { get; set; }
     }
 
     public class TeamBasic
@@ -20,6 +24,8 @@ namespace TeamThing.Web.Models.API
         public string Name { get; set; }
         public int Id { get; set; }
         public int OwnerId { get; set; }
+
+        //TODO: this should probably return a bool flag based on the current user's permissions, so that they don't know the admin's id!
         public int[] Administrators { get; set; }
         public bool IsPublic { get; set; }
     }
@@ -28,6 +34,7 @@ namespace TeamThing.Web.Models.API
     {
         public int Id { get; set; }
         public string EmailAddress { get; set; }
+        public string ImagePath { get; set; }
         public IList<TeamBasic> Teams { get; set; }
         public IList<TeamBasic> PendingTeams { get; set; }
         public IList<Thing> Things { get; set; }
@@ -36,6 +43,7 @@ namespace TeamThing.Web.Models.API
     public class UserBasic
     {
         public int Id { get; set; }
+        public string ImagePath { get; set; }
         public string EmailAddress { get; set; }
     }
 
@@ -129,6 +137,13 @@ namespace TeamThing.Web.Models.API
 
         [Required(ErrorMessage = "A thing must have a creator")]
         public int CreatedById
+        {
+            get;
+            set;
+        }
+
+        [Required(ErrorMessage = "A thing must have a an associated team")]
+        public int TeamId
         {
             get;
             set;

@@ -1,10 +1,9 @@
 ﻿(function (application, $, kendo, undefined) {
     "use strict";
+    var application;
 
-    function TeamDashboard(_teamThing, team) {
+    function TeamDashboard(team) {
         var that = this;
-        var teamThing = _teamThing;
-
         this.team = team;
 
         this.pendingTeamMembers = $.map(team.PendingTeamMembers, function (member) {
@@ -15,7 +14,7 @@
             return new TeamMemberListItemViewModel(member, that);
         });
 
-        this.things = team.Things
+        this.thingList = new ThingListViewModel(team.Things);
 
         function thingAdded(thing) {
             refresh();
@@ -23,8 +22,12 @@
 
         function refresh() {
             //TODO: Memory leak?!?
-            teamThing.showTeam(that.team);
+            application.showTeam(that.team);
         }
+
+        this.userIsAdmin = function (user) {
+            return true; //TODO: check if passed user is an admin for the team
+        };
 
         this.editMember = function (user) {
             alert("edit" + user.Id);
@@ -40,7 +43,7 @@
             var approvalInfo = { teamId: teamId, userId: user.Id };
 
             //ToDO: will this cause a memory leak?!
-            teamThing.dataProvider.updateResource("/api/team/" + teamId + "/denymember", approvalInfo, this.refresh);
+            application.dataProvider.updateResource("/api/team/" + teamId + "/denymember", approvalInfo, this.refresh);
         };
 
         this.approveMember = function (user) {
@@ -48,7 +51,7 @@
             var approvalInfo = { teamId: teamId, userId: user.Id };
 
             //ToDO: will this cause a memory leak?!
-            teamThing.dataProvider.updateResource("/api/team/" + teamId + "/approvemember", approvalInfo, this.refresh);
+            application.dataProvider.updateResource("/api/team/" + teamId + "/approvemember", approvalInfo, this.refresh);
         };
 
         this.addThing = function () {
@@ -65,31 +68,30 @@
                     });
 
                     //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
+                    var currentUserId = application.user.Id;
 
                     //create the thing object
-                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
+                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo, TeamId:that.team.Id };
 
                     //save the new thing back to the server
-                    teamThing.dataProvider.createResource("/api/thing", thing, function (result) {
-                        teamThing.closeDialog(); //ewww
+                    application.dataProvider.createResource("/api/thing", thing, function (result) {
+                        application.closeDialog(); //ewww
                         thingAdded(result);
                     });
                 },
                 cancel: function (e) {
-                    teamThing.closeDialog(); //ewww
+                    application.closeDialog(); //ewww
                 }
             };
 
-            teamThing.showDialog("#addThing", "Add a Thing", "/addThing.html", newThingModel);
+            application.showDialog("#addThing", "Add a Thing", "/addThing.html", newThingModel);
         };
 
         return this;
     };
 
-    function UserDashboard(_teamThing, teamUser) {
+    function UserDashboard(teamUser) {
         var that = this;
-        var teamThing = _teamThing;
         this.UserName = teamUser.EmailAddress;
         this.id = teamUser.Id;
         this.user = teamUser;
@@ -122,16 +124,12 @@
 
         function refresh() {
             //TODO: Memory leak?!?
-            teamThing.loadUser(that.user);
+            application.loadUser(that.user);
         }
 
         function teamRemoved(removedTeam) {
-        
-            that.user.Teams = $.map(that.user.Teams, function (team) {
-                if (team.Id !== removedTeam.Id) {
-                    return team;
-                }
-            });
+
+            that.user.Teams = $.grep(that.user.Teams, function (e) { return e.Id != removedTeam.Id });
             refresh();
         }
 
@@ -158,8 +156,8 @@
                     var searchedName = this.name;
                     var vm = this;
                     //TODO: instead of an exact match we could let users se how many partials matches there are?
-                    teamThing.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
-                        
+                    application.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
+
                         if (result.length > 0) {
                             vm.set('canSave', true);
                             vm.set('searchStatusClass', 'searchResult ok');
@@ -177,31 +175,31 @@
                 save: function (e) {
 
                     //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
+                    var currentUserId = application.user.Id;
 
                     //create the team object
                     var team = { name: this.name, userId: currentUserId };
                     var vm = this;
                     //save the new team back to the server
-                    teamThing.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {
+                    application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {
                         kendo.unbind($("#joinTeam"), vm);
-                        teamThing.closeDialog(); //ewww
+                        application.closeDialog(); //ewww
                         teamJoined(result);
                     });
                 },
                 cancel: function (e) {
-                    teamThing.closeDialog(); //ewww
+                    application.closeDialog(); //ewww
                     kendo.unbind($("#joinTeam"), this);
                 }
             });
 
-            teamThing.showDialog("#joinTeam", "Join a Team", "/joinTeam.html", joinTeamViewModel);
+            application.showDialog("#joinTeam", "Join a Team", "/joinTeam.html", joinTeamViewModel);
         };
 
         this.removeTeam = function (team) {
             if (confirm("SRSLY?")) {
-                var currentUserId = teamThing.getCurrentUser().id;
-                teamThing.dataProvider.removeResource('/api/team/' + team.Id, { userId: currentUserId }, function () {
+                var currentUserId = application.user.Id;
+                application.dataProvider.removeResource('/api/team/' + team.Id, { userId: currentUserId }, function () {
                     teamRemoved(team);
                 });
             }
@@ -213,14 +211,14 @@
                 name: team.Name,
                 id: team.Id,
                 isPublic: team.IsPublic,
-                canSave: true, 
+                canSave: true,
                 searchStatusClass: 'ok',
                 searchStatusMessage: '',
                 searchTeams: function (e) {
                     var searchedName = this.name;
                     var vm = this;
                     //TODO: instead of an exact match we could let users se how many partials matches there are?
-                    teamThing.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
+                    application.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
 
                         if (result.length > 0 && result[0].Id != vm.id) {
                             vm.set('canSave', false);
@@ -242,24 +240,24 @@
                 save: function (e) {
 
                     //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
+                    var currentUserId = application.user.Id;
 
                     var editedTeam = { id: this.id, name: this.name, ispublic: this.isPublic, updatedbyid: currentUserId };
                     var vm = this;
                     //save the new thing back to the server
-                    teamThing.dataProvider.updateResource("/api/team/" + editedTeam.id, editedTeam, function (result) {
-                        teamThing.closeDialog(); //ewww
+                    application.dataProvider.updateResource("/api/team/" + editedTeam.id, editedTeam, function (result) {
+                        application.closeDialog(); //ewww
                         teamUpdated(result);
                         kendo.unbind($("#newTeam"), vm);
                     });
                 },
                 cancel: function (e) {
-                    teamThing.closeDialog(); //ewww
+                    application.closeDialog(); //ewww
                     kendo.unbind($("#newTeam"), this);
                 }
             };
 
-            teamThing.showDialog("#newTeam", "Edit Team", "/teamEditor.html", teamEditorViewModel);
+            application.showDialog("#newTeam", "Edit Team", "/teamEditor.html", teamEditorViewModel);
         };
 
         this.createTeam = function () {
@@ -275,7 +273,7 @@
                     var searchedName = this.name;
                     var vm = this;
                     //TODO: instead of an exact match we could let users se how many partials matches there are?
-                    teamThing.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
+                    application.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
 
                         if (result.length > 0) {
                             vm.set('canSave', false);
@@ -292,14 +290,14 @@
                 save: function (e) {
 
                     //get the current application user's id
-                    var currentUserId = teamThing.getCurrentUser().id;
+                    var currentUserId = application.user.Id;
 
                     //create the thing object
                     var team = { name: this.name, ispublic: this.isPublic, createdById: currentUserId };
 
                     //save the new thing back to the server
-                    teamThing.dataProvider.createResource("/api/team", team, function (result) {
-                        teamThing.closeDialog(); //ewww
+                    application.dataProvider.createResource("/api/team", team, function (result) {
+                        application.closeDialog(); //ewww
                         teamCreated(result);
                     });
 
@@ -307,16 +305,16 @@
                 },
                 cancel: function (e) {
                     kendo.unbind($("#newTeam"), this);
-                    teamThing.closeDialog(); //ewww
+                    application.closeDialog(); //ewww
                 }
             };
 
-            teamThing.showDialog("#newTeam", "Create a New Team", "/teamEditor.html", newTeamViewModel);
+            application.showDialog("#newTeam", "Create a New Team", "/teamEditor.html", newTeamViewModel);
         };
 
         this.viewTeam = function (id) {
             //todo: this is kinda ugly
-            teamThing.dataProvider.get("api/team/" + id, teamThing.showTeam);
+            application.dataProvider.get("api/team/" + id, application.showTeam);
         };
 
         this.teams = $.map(teamUser.Teams, function (team) {
@@ -327,7 +325,94 @@
             return new TeamListItemViewModel(team, that);
         });
 
-        this.things = teamUser.Things;
+        this.thingList = new ThingListViewModel(teamUser.Things);
+
+        return this;
+    };
+
+    function ThingListViewModel(things) {
+
+        var that = this;
+        this.things = $.map(things, function (thing) {
+            return new ThingListItemViewModel(thing, that);
+        });
+
+        this.edit = function (thing) {
+            var thingEditModel = {
+                description: thing.Description,
+                availableTeamMembers: that.teamMembers,
+                selectedTeamMembers: [thing.AssignedTo],
+                save: function (e) {
+
+                    //retrieve the ids for the selected assignments
+                    var assignedTo = $.map(this.selectedTeamMembers, function (member) {
+                        return member.user.Id;
+                    });
+
+                    //get the current application user's id
+                    var currentUserId = application.user.Id;
+
+                    //create the thing object
+                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
+
+                    //save the new thing back to the server
+                    application.dataProvider.createResource("/api/thing", thing, function (result) {
+                        application.closeDialog(); //ewww
+                        thingAdded(result);
+                    });
+                },
+                cancel: function (e) {
+                    application.closeDialog(); //ewww
+                }
+            };
+
+            application.showDialog("#addThing", "Edit a Thing", "/addThing.html", thingEditModel);
+
+        };
+
+        function thingRemoved(thing) {
+            that.things = $.grep(that.things, function (e) { return e.Id != thing.Id });
+        }
+
+        this.remove = function (thing) {
+            if (confirm("SRSLY?")) {
+                var currentUserId = application.user.Id;
+                application.dataProvider.removeResource('/api/thing/' + thing.Id, { DeletedById: currentUserId }, function () {
+                    thingRemoved(thing);
+                });
+            }
+        };
+
+        return this;
+    }
+
+    function ThingListItemViewModel(thing, thingListViewModel) {
+
+        var parent = thingListViewModel;
+        this.thing = thing;
+
+        this.edit = function (e) { parent.edit(this.thing); };
+        this.remove = function (e) { parent.remove(this.thing); };
+
+        this.userCanEdit = function () {
+            var applicationUser = application.user;
+            var assignedUsers = $.map(thing.AssignedTo, function (user) {
+                return user.Id;
+            });
+            if (applicationUser != null && (this.thing.OwnerId === applicationUser.Id || $.inArray(applicationUser.Id, assignedUsers) != -1)) {
+                return true;
+            }
+            return false;
+        };
+
+        this.userCanRemove = function () {
+            var applicationUser = application.user;
+
+            if (applicationUser != null && this.thing.Owner.Id === applicationUser.Id) {
+                return true;
+            }
+            return false;
+        };
 
         return this;
     };
@@ -361,6 +446,15 @@
 
         this.approveUser = function (e) { controller.approveMember(this.user); };
         this.denyUser = function (e) { controller.denyMember(this.user); };
+
+        this.userCanApprove = function () {
+
+            if (controller.userIsAdmin(application.user)) {
+                return true;
+            }
+
+            return false;
+        };
     };
 
     function TeamMemberListItemViewModel(user, teamController) {
@@ -372,8 +466,7 @@
         this.denyUser = function (e) { controller.denyMember(this.user); };
     };
 
-    function SignInViewModel(_teamThing) {
-        var teamThing = _teamThing;
+    function SignInViewModel() {
         this.userName = "";
         var that = this;
 
@@ -389,12 +482,17 @@
             return true;
         }
 
+        function userLoaded(user) {
+            application.user = user;
+            application.loadUser(user);
+        }
+
         this.signInUser = function () {
             if (validateInput()) {
                 //TODO: that should be changed to this after release
                 var userInfo = { EmailAddress: that.userName };
                 //todo: this is kinda ugly
-                teamThing.dataProvider.post("/api/user/signin", userInfo, teamThing.loadUser);
+                application.dataProvider.post("/api/user/signin", userInfo, userLoaded);
             }
         };
 
@@ -403,21 +501,38 @@
                 //TODO: that should be changed to this after release
                 var userInfo = { EmailAddress: that.userName };
                 //todo: this is kinda ugly
-                teamThing.dataProvider.createResource("/api/user/register", userInfo, teamThing.loadUser);
+                application.dataProvider.createResource("/api/user/register", userInfo, userLoaded);
             }
         };
 
         return this;
     }
 
-    function Application(context) {
-        var dialog;
-        var activeUserViewModel;
-        var views = [];
+    function TeamThingApplication(_context) {
 
-        this.context = context;
         this.dataProvider;
+        this.user = null;
+
+        var dialog;
+        var views = [];
+        var isOnline;
+        var context = _context;
         var that = this;
+
+        function changeContent(templateName, viewModel) {
+
+            //cache caused issues (maybe force a refresh?) also need to include an identifier in the cache key
+            //if (views[templateName] == null) {
+            //var template = kendo.template($("#" + templateName).html());
+            var compiledTemplate = that.compileTemplate(templateName, viewModel);
+            views[templateName] = compiledTemplate;
+            //            }
+            //            else {
+            //                compiledTemplate = views[templateName];
+            //            }
+
+            $("#appFrame").html(compiledTemplate);
+        }
 
         function createDialog() {
             if (dialog == null) {
@@ -473,7 +588,7 @@
         };
 
         this.showTeam = function (team) {
-            var teamViewModel = new TeamDashboard(that, team);
+            var teamViewModel = new TeamDashboard(team);
             changeContent("teamDashboardTemplate", teamViewModel);
             kendo.bind($("#teamDashboard"), teamViewModel);
         };
@@ -489,23 +604,6 @@
             $("#userLogin").delegate("#userName", "change", function () {
                 signInViewModel.userName = this.value;
             });
-        };
-
-        function changeContent(templateName, viewModel) {
-
-            var compiledTemplate;
-
-            //cache caused issues (maybe force a refresh?) also need to include an identifier in the cache key
-            //if (views[templateName] == null) {
-            var template = kendo.template($("#" + templateName).html());
-            compiledTemplate = that.compileTemplate(templateName, viewModel);
-            views[templateName] = compiledTemplate;
-            //            }
-            //            else {
-            //                compiledTemplate = views[templateName];
-            //            }
-
-            $("#appFrame").html(compiledTemplate);
         };
 
         //        this.previous = function () {
@@ -528,13 +626,14 @@
             alert(strErrors);
         };
 
+        var activeUserViewModel; //TODO: get rid of this
         this.loadUser = function (user) {
 
             if (activeUserViewModel != null) {
                 kendo.unbind($("#userDashboard"), activeUserViewModel);
             }
 
-            activeUserViewModel = new UserDashboard(that, user);
+            activeUserViewModel = new UserDashboard(user);
             changeContent("userDashboardTemplate", activeUserViewModel);
 
             $('#navigation').show(); //TODO: should be able to do style binding?
@@ -542,9 +641,13 @@
             kendo.bind($("#userDashboard"), activeUserViewModel);
         };
 
-        this.init = function () {
+        this.appViewModel = {
+            user: null
+        };
 
-            //kendo.bind(this.context, this);
+        function init() {
+
+            kendo.bind(context, that);
 
             configureRoutes();
             configureDataProvider();
@@ -557,7 +660,6 @@
             that.dataProvider = new DataProvider(that.showErrors);
         };
 
-        var isOnline;
         function connectivityChanged() {
             //here would swap out the data provider, and wire up some sync operations if needed
             if (navigator.onLine) {
@@ -595,10 +697,9 @@
             });
 
             Path.map("/logout").to(function () {
-                that.activeUserViewModel = null;
-                //that.showLogin();
-                location.href = "/index.html";
+                location.href = Path.history.initial.URL;
             });
+
 
             Path.map("/team/:teamId").to(function () {
                 that.dataProvider.get('api/team/' + this.params["teamId"], that.showTeam);
@@ -610,7 +711,7 @@
             });
 
             Path.rescue(notFound);
-            Path.root("/index.html");
+            Path.root("/");
 
             Path.history.listen();
 
@@ -624,8 +725,7 @@
             alert("BAD PAGE DOOODE");
         };
 
-        this.getCurrentUser = function () { return activeUserViewModel; };
-
+        init(context);
         return this;
     };
 
@@ -749,11 +849,10 @@
         return this;
     };
 
-    application.init = function ($contextEl) {
-        var app = new Application($contextEl);
-        app.init();
+    teamThing.init = function ($contextEl) {
+        application = new TeamThingApplication($contextEl);
     }
 
-    return application;
+    return teamThing;
 
-} (window.application = window.application || {}, jQuery, kendo));
+} (window.teamThing = window.teamThing || {}, jQuery, kendo));
