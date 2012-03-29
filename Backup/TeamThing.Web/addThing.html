@@ -1,0 +1,27 @@
+﻿<div id="addThing">
+    <ol class="formFieldList">
+        <li>
+            <label>
+                Assign To</label>
+            <select multiple data-bind="source: availableTeamMembers, value: selectedTeamMembers"
+                data-text-field="user.EmailAddress" data-value-field="user.Id">
+            </select>
+        </li>
+        <!--<li>
+            <label>
+                Status</label>
+            <textarea data-bind="source: availableStatuses, value: selectedStatus"></textarea>
+        </li>-->
+        <li>
+            <label>
+                Description</label>
+            <textarea data-bind="value: description"></textarea>
+        </li>
+        <li class="commands">
+            <button class="k-button" data-bind="click:cancel">
+                Cancel</button>
+            <button class="k-button" data-bind="click:save">
+                Save</button>
+        </li>
+    </ol>
+</div>

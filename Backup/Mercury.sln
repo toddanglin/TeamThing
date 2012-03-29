@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 11
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B49A9FC-5E26-4513-B097-BB415C8A5534}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -21,27 +21,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2012.1.214", "2012.1.214", 
 		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.35.Extensions.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.35.Extensions.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.40.Extensions.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.40.Extensions.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Config.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Config.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Runtime.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Runtime.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.40.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.40.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.Web.dll
-		Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.dll = Binaries\Telerik\OpenAccess\2012.1.214\Telerik.OpenAccess.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{1D549C3C-0039-44EC-8C1A-810C97A70D2C}"
 	ProjectSection(SolutionItems) = preProject
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\CecilLicense.txt = Binaries\Telerik\OpenAccess\2012.1.214\sdk\CecilLicense.txt
-		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe = Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe.config = Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe.config
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Mono.Cecil.Pdb.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets = Binaries\Telerik\OpenAccess\2012.1.214\sdk\OpenAccess.targets
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.CommonPackage.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.CommonPackage.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Intellitrace.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Intellitrace.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.AddIn.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.AddIn.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.Design.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.Design.dll
-		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.VSPackage.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.VSPackage.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.dll
+		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.VSPackage.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.SDK.VSPackage.dll
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Upgrade.dll = Binaries\Telerik\OpenAccess\2012.1.214\sdk\Telerik.OpenAccess.Upgrade.dll
-		Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe = Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe
-		Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe.config = Binaries\Telerik\OpenAccess\2012.1.214\sdk\enhancer.exe.config
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe = Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe
 		Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe.config = Binaries\Telerik\OpenAccess\2012.1.214\sdk\venhance.exe.config
 	EndProjectSection
@@ -65,16 +65,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|x86.ActiveCfg = Debug|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|x86.Build.0 = Debug|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|Any CPU.ActiveCfg = Release|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|Mixed Platforms.Build.0 = Release|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|x86.ActiveCfg = Release|x86
-		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|x86.Build.0 = Release|x86
 		{9D7B082A-67D5-4F7D-AD5A-0B2E5B910477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D7B082A-67D5-4F7D-AD5A-0B2E5B910477}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7B082A-67D5-4F7D-AD5A-0B2E5B910477}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -95,21 +85,31 @@ Global
 		{B707630C-4D60-4972-A722-0788EF3AA5ED}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B707630C-4D60-4972-A722-0788EF3AA5ED}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B707630C-4D60-4972-A722-0788EF3AA5ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|x86.ActiveCfg = Debug|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Debug|x86.Build.0 = Debug|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|Any CPU.ActiveCfg = Release|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|Mixed Platforms.Build.0 = Release|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|x86.ActiveCfg = Release|x86
+		{04EEA662-26FE-41BC-A13C-5C965B23B0F7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1D549C3C-0039-44EC-8C1A-810C97A70D2C} = {B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}
+		{E0C22445-7D88-4447-B4A5-0C3810F589DA} = {C1257430-2F2A-4DC6-BE94-A249EF89B08C}
 		{445FBD21-339A-402E-A347-45C357C89372} = {C1257430-2F2A-4DC6-BE94-A249EF89B08C}
 		{6614E320-A0B0-47F0-A1CD-680CBF395362} = {445FBD21-339A-402E-A347-45C357C89372}
 		{B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A} = {6614E320-A0B0-47F0-A1CD-680CBF395362}
-		{E0C22445-7D88-4447-B4A5-0C3810F589DA} = {C1257430-2F2A-4DC6-BE94-A249EF89B08C}
+		{1D549C3C-0039-44EC-8C1A-810C97A70D2C} = {B928AAD2-940C-4C48-B6EE-CFC12ACD2D2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		VersionFieldUsingAttrib = True
 		FetchGroupUsingAttrib = True
 		IndexUsingAttrib = False
 		ShowOldMenu = True
-		VersionFieldUsingAttrib = True
 	EndGlobalSection
 EndGlobal

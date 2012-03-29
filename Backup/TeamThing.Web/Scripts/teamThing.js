@@ -57,7 +57,7 @@
         this.addThing = function () {
 
             var newThingModel = {
-                description: "test",
+                description: "",
                 availableTeamMembers: that.teamMembers,
                 selectedTeamMembers: [],
                 save: function (e) {
@@ -70,25 +70,21 @@
                     //get the current application user's id
                     var currentUserId = application.user.Id;
 
-                    var vm = this;
                     //create the thing object
                     var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo, TeamId:that.team.Id };
 
                     //save the new thing back to the server
                     application.dataProvider.createResource("/api/thing", thing, function (result) {
                         application.closeDialog(); //ewww
-                        thingAdded(result);                      
+                        thingAdded(result);
                     });
-
-                    kendo.unbind($("#thingEditor"), vm);
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
-                    kendo.unbind($("#thingEditor"), this);
                 }
             };
 
-            application.showDialog("#thingEditor", "Add a Thing", "/thingEditor.html", newThingModel);
+            application.showDialog("#addThing", "Add a Thing", "/addThing.html", newThingModel);
         };
 
         return this;
@@ -185,11 +181,11 @@
                     var team = { name: this.name, userId: currentUserId };
                     var vm = this;
                     //save the new team back to the server
-                    application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {                        
+                    application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {
+                        kendo.unbind($("#joinTeam"), vm);
                         application.closeDialog(); //ewww
                         teamJoined(result);
                     });
-                    kendo.unbind($("#joinTeam"), vm);
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
@@ -252,9 +248,8 @@
                     application.dataProvider.updateResource("/api/team/" + editedTeam.id, editedTeam, function (result) {
                         application.closeDialog(); //ewww
                         teamUpdated(result);
+                        kendo.unbind($("#newTeam"), vm);
                     });
-
-                    kendo.unbind($("#newTeam"), vm);
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
@@ -371,12 +366,8 @@
                 }
             };
 
-            application.showDialog("#thingEditor", "Edit a Thing", "/thingEditor.html", thingEditModel);
+            application.showDialog("#addThing", "Edit a Thing", "/addThing.html", thingEditModel);
 
-        };
-
-        function thingAdded(thing) {
-            that.things.push(new ThingListItemViewModel(thing, that));
         };
 
         function thingRemoved(thing) {
@@ -574,8 +565,7 @@
         this.closeDialog = function () {
             if (dialog != null) {
                 var window = dialog.data("kendoWindow");
-                window.content(' ') //empty string does not work, it still returns the content
-                      .close();
+                window.close();
             }
         };
 
@@ -592,7 +582,7 @@
             };
 
             window.bind("refresh", refreshCallback);
-            //todo: bind on close to unbind view model?
+
             window.refresh({ url: url })
                   .title(title)
                   .center()
