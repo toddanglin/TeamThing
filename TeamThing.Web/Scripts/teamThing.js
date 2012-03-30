@@ -328,19 +328,27 @@
 
         this.pendingTeams = $.map(teamUser.PendingTeams, function (team) {
             return new TeamListItemViewModel(team, that);
-        });
+        });        
 
         this.thingList = new ThingListViewModel(teamUser.Things);
-
         return this;
     };
 
     function ThingListViewModel(things) {
 
         var that = this;
-        this.things = $.map(things, function (thing) {
-            return new ThingListItemViewModel(thing, that);
+
+        var activeThings = things.filter(function (t) {
+            return t.Status == "InProgress";
         });
+
+        var completedThings = things.filter(function (t) {
+            return t.Status == "Completed";
+        });
+
+        this.allTheThings = $.map(things, createThingViewModel);
+        this.activeThings = $.map(activeThings, createThingViewModel);
+        this.completedThings = $.map(completedThings, createThingViewModel);
 
         this.edit = function (thing) {
             var thingEditModel = {
@@ -375,12 +383,27 @@
 
         };
 
+        function createThingViewModel(thing) {
+            return new ThingListItemViewModel(thing, that);
+        }
         function thingAdded(thing) {
-            that.things.push(new ThingListItemViewModel(thing, that));
-        };
+            //Oh the horror
+            var thingVm = createThingViewModel(thing);
+            that.activeThings.push(thingVm);
+            that.allTheThings.push(thingVm);
+        }
 
         function thingRemoved(thing) {
-            that.things = $.grep(that.things, function (e) { return e.Id != thing.Id });
+            //Oh the horror
+            that.allTheThings = $.grep(that.allTheThings, function (e) { return e.Id != thing.Id });
+            that.activeThings = $.grep(that.activeThings, function (e) { return e.Id != thing.Id });
+            that.completedThings = $.grep(that.completedThings, function (e) { return e.Id != thing.Id });
+        }
+
+        function thingCompleted(thing) {
+            //Oh the horror
+            that.activeThings = $.grep(that.activeThings, function (e) { return e.Id != thing.Id });
+            that.completedThings.push(createThingViewModel(thing));
         }
 
         this.remove = function (thing) {
@@ -388,6 +411,15 @@
                 var currentUserId = application.user.Id;
                 application.dataProvider.removeResource('/api/thing/' + thing.Id, { DeletedById: currentUserId }, function () {
                     thingRemoved(thing);
+                });
+            }
+        };
+
+        this.complete = function (thing) {
+            if (confirm("SRSLY?")) {
+                var currentUserId = application.user.Id;
+                application.dataProvider.updateResource('/api/thing/' + thing.Id + '/complete', { userId: currentUserId }, function () {
+                    thingCompleted(thing);
                 });
             }
         };
@@ -402,7 +434,8 @@
 
         this.edit = function (e) { parent.edit(this.thing); };
         this.remove = function (e) { parent.remove(this.thing); };
-
+        this.complete = function (e) { parent.complete(this.thing); };
+       
         this.userCanEdit = function () {
             var applicationUser = application.user;
             var assignedUsers = $.map(thing.AssignedTo, function (user) {
@@ -423,6 +456,19 @@
             return false;
         };
 
+        this.userCanComplete= function () {
+            var applicationUser = application.user;
+
+            var assignedToIds = $.map(this.thing.AssignedTo, function (thingMember) {
+                return thingMember.Id;
+            });
+
+            if (applicationUser != null && $.inArray(applicationUser.Id, assignedToIds) != -1) {
+                return true;
+            }
+            return false;
+        };
+
         return this;
     };
 
@@ -436,6 +482,7 @@
         this.editTeam = function (e) { parent.editTeam(this.team); };
         this.removeTeam = function (e) { parent.removeTeam(this.team); };
 
+       
         this.userCanEditTeam = function () {
             if (user != null && (this.team.OwnerId === user.Id || $.inArray(user.Id, this.team.Administrators) != -1)) {
                 return true;
@@ -473,7 +520,9 @@
         this.viewUser = function (e) { parent.viewMember(this.user); };
         this.editUser = function (e) { parent.editMember(this.user); };
         this.denyUser = function (e) { parent.denyMember(this.user); };
-
+        this.hint = function (element) {
+            return element.clone();
+        }
         this.userCanApprove = function () {
 
             if (parent.userIsAdmin(application.user) || user.Id == application.user.Id) {

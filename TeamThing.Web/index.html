@@ -25,52 +25,53 @@
 <body>
     <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
     <div id="header" class="bkgnd-smooth-dark">
-        <h1>
-            TeamThing</h1>
-    </div>
-    <div id="teamThing">
-        <div id="navigation" class="navigation">
-            <span data-bind="{text:appViewModel.user.EmailAddress}"></span>
+        <h1>TeamThing</h1>
+         <div id="navigation" class="navigation">
+            <!--<span data-bind="{text:user.EmailAddress}"></span>-->
             <a href="/my" class="k-button nav">
                 Home</a>
              <a href="/logout" class="k-button nav">Logout</a>
         </div>
+    </div>
+    <div id="teamThing">       
         <div id="appFrame">
         </div>
     </div>
     <div id="dialog" class="window">
     </div>
     <script type="text/x-kendo-tmpl" id="teamListTemplate">
-        <div class="listItem teamListItem">
+        <div class="listItem teamListItem">           
             <div class="commands">
-                <a href="/team/#= team.Id #" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>
+             <!--   <a href="/team/#= team.Id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
 
                 #if( userCanEditTeam() ) { #
-                    <button class="k-button k-edit-button" data-bind="click:editTeam"><span class="k-icon k-edit"></span></button>
-                    <button class="k-button k-delete-button" data-bind="click:removeTeam"><span class="k-icon k-delete"></span></button>
+                    <button class="k-button k-edit-button" title="Edit Team" data-bind="click:editTeam"><span class="k-icon k-edit"></span></button>
+                    <button class="k-button k-delete-button" title="Delete Team" data-bind="click:removeTeam"><span class="k-icon k-delete"></span></button>
                 # } #
             </div>
             <div class="details">
-            <span data-bind="{text:team.Name}" class="# if(team.IsPublic) { #
+            <a href="/team/#= team.Id #" title="View Team" data-bind="{text:team.Name}" class="nav # if(team.IsPublic) { #
                             publicTeam
                       # } else { #
                             closedTeam
                        # } #"/>
-            </div>
-            <input type="hidden" class="teamId" id="teamId" value="#= team.Id #"/>
+            </div>        
         </div>
     </script>
     <script type="text/x-kendo-tmpl" id="thingListTemplate">
-        <div class="listItem thingListItem">
+        <div class="listItem thingListItem" data-role="droptarget">
             <input type="hidden" class="thingId" id="thingId" data-bind="{value:thing.Id}"/>
             <div class="commands">
-                <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>
+                 #if( userCanComplete() ) { #
+                    <button class="k-button k-complete-button" title="Complete Thing" data-bind="click:complete"><span class="k-icon k-update"></span></button>
+                # } #
+                <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>              
                 #if( userCanEdit() ) { #
                     <button class="k-button k-edit-button" title="Edit Thing" data-bind="click:edit"><span class="k-icon k-edit"></span></button>
                 # } #
                 #if( userCanRemove() ) { #
                     <button class="k-button k-delete-button" title="Delete Thing" data-bind="click:remove"><span class="k-icon k-delete"></span></button>
-                # } #
+                # } #               
             </div>
             <div class="details">
                 <span data-bind="{text:thing.Description}" class="info"/>
@@ -78,16 +79,15 @@
         </div>
     </script>
     <script type="text/x-kendo-tmpl" id="teamUserListTemplate">
-        <div class="listItem userListItem">
-            <div class="commands">
-                <button class="k-button k-view-button" title="View User" data-bind="click:viewUser"><span class="k-icon k-search"></span></button>
-                <button class="k-button k-edit-button" title="Edit User" data-bind="click:editUser"><span class="k-icon k-edit"></span></button>
+        <div class="listItem userListItem" data-role="draggable" data-draggable-hint="hint" data-hint="hint">
+            <div class="commands">               
+                <button class="k-button k-edit-button" title="Edit Team Memeber" data-bind="click:editUser"><span class="k-icon k-edit"></span></button>
                 # if( userCanApprove() ) { #
-                    <button class="k-button k-delete-button" title="Deny User" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
+                    <button class="k-button k-delete-button" title="Remove Team Member" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
                 # } #
             </div>
             <div class="details user">
-                <img data-bind="{attr:{src:user.ImagePath}}" class="image"/>
+                <img data-bind="{attr:{src:user.ImagePath}}"/>
                 <span data-bind="{text:user.EmailAddress}" class="info"/>
             </div>
         </div>
@@ -108,6 +108,7 @@
     </script>
     <script type="text/x-kendo-tmpl" id="userSignInTemplate">
         <div id="userLogin">
+        <h2>Please Login</h2>
             <ol class="formFieldList">
                 <li>
                     <input id="userName" type="text" data-bind="value:userName" class="k-textbox" />
@@ -143,15 +144,26 @@
                 </div>
             </div>
             <div id="left">
-                <h3>Team Things</h3>
-                 <button id="addThing" class="k-button k-add-button" data-bind="click:addThing">
-                    <span class="k-icon k-add"></span>
-                </button>
-                <div id="teamList" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.things">
+               <h3>Team Things</h3>
+                <div class="listCommands">
+                        <button class="k-button k-add-button" data-bind="click:addThing" title="Create a Thing">
+                            <span class="k-icon k-add"></span>
+                        </button> 
+                </div>
+                <div data-role="tabstrip">
+                     <ul>
+                        <li class="k-state-active">Active</li>
+                        <li>Completed</li>
+                    </ul>
+                    <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
+                    </div>
+                    <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
+                    </div>
                 </div>
             </div>
         </div>
     </script>
+
     <script type="text/x-kendo-tmpl" id="userDashboardTemplate">
         <div id="userDashboard">
             <h2 data-bind="text:UserName">
@@ -159,14 +171,14 @@
            
             <div id="right">
                 <h3>My Teams</h3>
-                 <div class="k-toolbar k-grid-toolbar">
-                        <button class="k-button k-button-icontext" data-bind="click:createTeam">
-                            <span class="k-icon k-add"></span>Create new team
+                  <div class="listCommands">
+                        <button class="k-button k-add-button" data-bind="click:createTeam" title="Create a Team">
+                            <span class="k-icon k-add"></span>
                         </button> 
-                        <button class="k-button k-button-icontext" data-bind="click:joinTeam">
-                            <span class="k-icon k-add"></span>Join a team
+                        <button class="k-button k-createLink-button" data-bind="click:joinTeam" title="Join a Team">
+                            <span class="k-icon k-createLink"></span>
                         </button>
-                    </div>
+                </div>
                 <div data-role="tabstrip">
                     <ul>
                         <li class="k-state-active">Active</li>
@@ -184,7 +196,15 @@
             </div>
             <div id="left">
                 <h3>My Things</h3>
-                <div id="userThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.things">
+                  <div data-role="tabstrip">
+                     <ul>
+                        <li class="k-state-active">Active</li>
+                        <li>Completed</li>
+                    </ul>
+                    <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
+                    </div>
+                    <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
+                    </div>
                 </div>
             </div>
         </div>

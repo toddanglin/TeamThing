@@ -1,76 +1,101 @@
-﻿html,form,body
+﻿html, form, body
 {
-    height:100%;
-    width:100%;
-    margin:0;
-    padding:0;    
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-h1,h2,h3,h4,h5
+h1, h2, h3, h4, h5
 {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     font-family: 'Lobster', Arial, Serif;
 }
 
 ul, ol
 {
-    list-style:none;
-    padding:0;
+    list-style: none;
+    padding: 0;
 }
 
-a 
+a, a:active, a:hover, a.k-button
 {
-     color: #FFFFFF;
+    color: #FFFFFF;
 }
-a.k-button
-{
-     color: #FFFFFF;
-}
+
+    a:link
+    {
+        color: #ffffff;
+    }
+
+    a:visited
+    {
+        color: #ffffff;
+    }
+
+    a:hover
+    {
+        color: #ffffff;
+    }
+
+    a:active
+    {
+        color: #ffffff;
+    }
 
 body
 {
-    background:#555;
-    color:#FFF;
+    background: #555;
+    color: #FFF;
     font-family: Tahoma, Arial, Sans-Serif;
 }
 
 #header
 {
-    padding:5px;
+    padding: 5px;
     -webkit-box-shadow: 0px 5px 5px #444;
     -moz-box-shadow: 0px 5px 5px #444;
     box-shadow: 0px 5px 5px #444;
 }
 
+    
+
+#userLogin
+{
+    margin: 10% auto 0;
+    width: 300px;
+    
+}
+
 #teamThing
 {
-    padding:10px;
+    padding: 10px;
 }
 
 #right
 {
-    float:right;
-    width:225px;
-    height:100%;
+    float: right;
+    width: 225px;
+    height: 100%;
 }
 
 #left
 {
-    margin-right:250px;
+    margin-right: 250px;
 }
 
 .bkgnd-smooth
 {
-    background: -webkit-gradient(     linear,     left bottom,     left top,     color-stop(0.07, rgb(230,230,230)),     color-stop(0.39, rgb(245,245,245)),     color-stop(1, rgb(247,247,247))     );
-    background: -moz-linear-gradient(         center bottom,         rgb(230,230,230) 7%,         rgb(245,245,245) 39%,         rgb(247,247,247) 100%     );
+    background: -webkit-gradient( linear, left bottom, left top, color-stop(0.07, rgb(230,230,230)), color-stop(0.39, rgb(245,245,245)), color-stop(1, rgb(247,247,247)) );
+    background: -moz-linear-gradient( center bottom, rgb(230,230,230) 7%, rgb(245,245,245) 39%, rgb(247,247,247) 100% );
 }
 
 .bkgnd-smooth-dark
 {
     background: #222;
-    background: -webkit-gradient(     linear,     left bottom,     left top,     color-stop(0.18, rgb(33,33,33)),     color-stop(0.67, rgb(46,46,46)),     color-stop(0.86, rgb(51,51,51))     );
-    background: -moz-linear-gradient(     center bottom,     rgb(33,33,33) 18%,     rgb(46,46,46) 67%,     rgb(51,51,51) 86%     );
+    background: -webkit-gradient( linear, left bottom, left top, color-stop(0.18, rgb(33,33,33)), color-stop(0.67, rgb(46,46,46)), color-stop(0.86, rgb(51,51,51)) );
+    background: -moz-linear-gradient( center bottom, rgb(33,33,33) 18%, rgb(46,46,46) 67%, rgb(51,51,51) 86% );
 }
 
 .formFieldList li
@@ -81,25 +106,29 @@ body
 
 .formFieldList ol
 {
-    list-style:none;
+    list-style: none;
     margin: 15px;
     padding: 0;
-    margin:0px;
+    margin: 0px;
 }
 
 .formFieldList label
 {
-    display:block;
+    display: block;
 }
 
 .publicTeam
 {
-    color: Green;
+    background-image: url('/images/unlocked.png');
+    background-repeat: no-repeat;
+    padding-left: 20px;
 }
 
 .closedTeam
 {
-    color: red;
+    background-image: url('/images/locked.png');
+    background-repeat: no-repeat;
+    padding-left: 20px;
 }
 
 
@@ -124,37 +153,52 @@ body
     color: Green;
 }
 
-.k-view-button, .k-delete-button, .k-edit-button, .k-add-button
+.k-view-button, .k-delete-button, .k-edit-button, .k-add-button, .k-createLink-button, .k-complete-button
 {
     border: 0 solid;
-    background-color:transparent;
-    background-image:none;
+    background-color: transparent;
+    background-image: none;
 }
 
-.k-tabstrip 
+.k-createLink
+{
+    background-position: -115px -46px;
+}
+
+.k-tabstrip
 {
     background-color: transparent;
     background-image: none;
     border: 0 none;
 }
+
 .listItem
 {
-    height: 100px;
-    border-top: 1px solid #E5E5E5;
+    border-top: 1px solid #666;
     padding: 5px 0;
+}
+
+    .listItem:nth-child(1)
+    {
+        border-top: 0px;
+    }
+
+.thingListItem
+{
 }
 
 .listItem .details
 {
-    line-height: 50px;
-    margin-left: 40px;
+    line-height: 35px;
+    margin-right: 40px;
 }
 
-.user .image
+.user img
 {
     width: 60px;
     height: 60px;
 }
+
 .user .info
 {
     display: block;
@@ -162,12 +206,18 @@ body
 
 .listItem .commands
 {
-    float: left;
-    width: 40px;
+    float: right;
 }
 
-#addThing
+.listCommands
 {
-    float:right;
-    margin-top:-30px;
+    float: right;
+}
+
+.navigation
+{
+    float: right;
+     margin-right: 10px;
+    margin-top: -30px;
+    display: none;
 }

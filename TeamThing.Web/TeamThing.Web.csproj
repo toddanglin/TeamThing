@@ -160,6 +160,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\locked.png" />
+    <Content Include="Images\unlocked.png" />
     <Content Include="thingEditor.html" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
