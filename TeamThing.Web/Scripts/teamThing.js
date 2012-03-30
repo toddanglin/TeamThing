@@ -57,7 +57,7 @@
         this.addThing = function () {
 
             var newThingModel = {
-                description: "test",
+                description: "",
                 availableTeamMembers: that.teamMembers,
                 selectedTeamMembers: [],
                 save: function (e) {
@@ -77,10 +77,10 @@
                     //save the new thing back to the server
                     application.dataProvider.createResource("/api/thing", thing, function (result) {
                         application.closeDialog(); //ewww
-                        thingAdded(result);                      
-                    });
+                        thingAdded(result);
 
-                    kendo.unbind($("#thingEditor"), vm);
+                        kendo.unbind($("#thingEditor"), vm);
+                    });
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
@@ -188,8 +188,8 @@
                     application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {                        
                         application.closeDialog(); //ewww
                         teamJoined(result);
+                        kendo.unbind($("#joinTeam"), vm);
                     });
-                    kendo.unbind($("#joinTeam"), vm);
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
@@ -252,9 +252,9 @@
                     application.dataProvider.updateResource("/api/team/" + editedTeam.id, editedTeam, function (result) {
                         application.closeDialog(); //ewww
                         teamUpdated(result);
-                    });
 
-                    kendo.unbind($("#newTeam"), vm);
+                        kendo.unbind($("#newTeam"), vm);
+                    });
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
@@ -304,9 +304,9 @@
                     application.dataProvider.createResource("/api/team", team, function (result) {
                         application.closeDialog(); //ewww
                         teamCreated(result);
-                    });
 
-                    kendo.unbind($("#newTeam"), this);
+                        kendo.unbind($("#newTeam"), this);
+                    });
                 },
                 cancel: function (e) {
                     kendo.unbind($("#newTeam"), this);
@@ -350,36 +350,39 @@
         this.activeThings = $.map(activeThings, createThingViewModel);
         this.completedThings = $.map(completedThings, createThingViewModel);
 
-        this.edit = function (thing) {
-            var thingEditModel = {
-                description: thing.Description,
-                availableTeamMembers: that.teamMembers,
-                selectedTeamMembers: [thing.AssignedTo],
-                save: function (e) {
+        this.edit = function (editedThing) {
 
-                    //retrieve the ids for the selected assignments
-                    var assignedTo = $.map(this.selectedTeamMembers, function (member) {
-                        return member.user.Id;
-                    });
+            application.dataProvider.get("/api/thing/" + editedThing.Id, function (result) {
+                var thingEditModel = {
+                    description: result.Description,
+                    availableTeamMembers: result.Team.TeamMembers,
+                    selectedTeamMembers: result.AssignedTo,
+                    save: function (e) {
 
-                    //get the current application user's id
-                    var currentUserId = application.user.Id;
+                        //retrieve the ids for the selected assignments
+                        var assignedTo = $.map(this.selectedTeamMembers, function (member) {
+                            return member.user.Id;
+                        });
 
-                    //create the thing object
-                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
+                        //get the current application user's id
+                        var currentUserId = application.user.Id;
 
-                    //save the new thing back to the server
-                    application.dataProvider.createResource("/api/thing", thing, function (result) {
+                        //create the thing object
+                        var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
+
+                        //save the new thing back to the server
+                        application.dataProvider.updateResource("/api/thing/" + result.Id, thing, function (result) {
+                            application.closeDialog(); //ewww
+                            thingAdded(result);
+                        });
+                    },
+                    cancel: function (e) {
                         application.closeDialog(); //ewww
-                        thingAdded(result);
-                    });
-                },
-                cancel: function (e) {
-                    application.closeDialog(); //ewww
-                }
-            };
+                    }
+                };
 
-            application.showDialog("#thingEditor", "Edit a Thing", "/thingEditor.html", thingEditModel);
+                application.showDialog("#thingEditor", "Edit a Thing", "/thingEditor.html", thingEditModel);
+            });
 
         };
 
