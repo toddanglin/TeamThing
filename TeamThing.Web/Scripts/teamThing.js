@@ -459,6 +459,10 @@
             return false;
         };
 
+        this.isDone = function () {
+            return this.thing.Status == "Completed";
+        };
+
         this.userCanComplete = function () {
             var applicationUser = application.user;
 

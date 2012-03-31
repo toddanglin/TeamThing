@@ -62,15 +62,18 @@
         <div class="listItem thingListItem" data-role="droptarget">
             <input type="hidden" class="thingId" id="thingId" data-bind="{value:thing.Id}"/>
             <div class="commands">
-                 #if( userCanComplete() ) { #
-                    <button class="k-button k-complete-button" title="Complete Thing" data-bind="click:complete"><span class="k-icon k-update"></span></button>
-                # } #
                 <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>
-                #if( userCanEdit() ) { #
-                    <button class="k-button k-edit-button" title="Edit Thing" data-bind="click:edit"><span class="k-icon k-edit"></span></button>
-                # } #
-                #if( userCanRemove() ) { #
-                    <button class="k-button k-delete-button" title="Delete Thing" data-bind="click:remove"><span class="k-icon k-delete"></span></button>
+
+                 #if(!isDone()) { #
+                     #if( userCanComplete() ) { #
+                        <button class="k-button k-complete-button" title="Complete Thing" data-bind="click:complete"><span class="k-icon k-update"></span></button>
+                    # } #
+                    #if( userCanEdit() ) { #
+                        <button class="k-button k-edit-button" title="Edit Thing" data-bind="click:edit"><span class="k-icon k-edit"></span></button>
+                    # } #
+                    #if( userCanRemove() ) { #
+                        <button class="k-button k-delete-button" title="Delete Thing" data-bind="click:remove"><span class="k-icon k-delete"></span></button>
+                    # } #
                 # } #
             </div>
             <div class="details">
