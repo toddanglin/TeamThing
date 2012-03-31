@@ -663,6 +663,7 @@
         };
 
         this.showTeam = function (team) {
+            //We need to unbind this
             var teamViewModel = new TeamDashboard(team);
             changeContent("teamDashboardTemplate", teamViewModel);
             kendo.bind($("#teamDashboard"), teamViewModel);
@@ -763,7 +764,7 @@
             // the route is performed, which allows you to do any setup you need (changes classes,
             // performing AJAX calls, adding animations, etc.
             Path.map("/my").to(function () {
-                that.loadUser(activeUserViewModel.user);
+                that.dataProvider.get('/api/user/' + activeUserViewModel.user.Id, that.loadUser);
             }).enter(function () {
                 if (activeUserViewModel == null) {
                     that.showLogin();
@@ -777,7 +778,7 @@
 
 
             Path.map("/team/:teamId").to(function () {
-                that.dataProvider.get('api/team/' + this.params["teamId"], that.showTeam);
+                that.dataProvider.get('/api/team/' + this.params["teamId"], that.showTeam);
             }).enter(function () {
                 if (activeUserViewModel == null) {
                     that.showLogin();
