@@ -121,7 +121,10 @@ namespace TeamThing.Web.Controllers
             thing.Complete(userId);
             context.SaveChanges();
 
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
+            var sThing = thing.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
+            return response;
         }
 
         // PUT /api/thing/5

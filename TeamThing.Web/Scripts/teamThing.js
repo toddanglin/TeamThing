@@ -14,15 +14,18 @@
             return new TeamMemberListItemViewModel(member, that);
         });
 
-        this.thingList = new ThingListViewModel(team.Things);
+        this.thingList = new ThingListViewModel(this, team);
 
-        function thingAdded(thing) {
-            refresh();
-        };
 
-        function refresh() {
+
+        this.refresh = function () {
             //TODO: Memory leak?!?
             application.showTeam(that.team);
+        }
+
+        function thingAdded(thing) {
+            that.team.Things.push(thing);
+            that.refresh();
         }
 
         this.userIsAdmin = function (user) {
@@ -120,7 +123,7 @@
             refresh();
         }
 
-        function refresh() {
+        this.refresh = function () {
             //TODO: Memory leak?!?
             application.loadUser(that.user);
         }
@@ -324,14 +327,16 @@
             return new TeamListItemViewModel(team, that);
         });
 
-        this.thingList = new ThingListViewModel(this.user.Things);
+        this.thingList = new ThingListViewModel(this, this.user);
 
         return this;
     };
 
-    function ThingListViewModel(things) {
+    function ThingListViewModel(parent, _thingContainer) {
 
         var that = this;
+        var things = _thingContainer.Things;
+        var thingContainer = _thingContainer;
 
         var activeThings = things.filter(function (t) {
             return t.Status == "InProgress";
@@ -365,7 +370,7 @@
                         //save the new thing back to the server
                         application.dataProvider.updateResource("/api/thing/" + editedThing.Id, thing, function (result) {
                             application.closeDialog(); //ewww
-                            thingAdded(result);
+                            thingUpdated(result);
                         });
                     },
                     cancel: function (e) {
@@ -382,23 +387,25 @@
             return new ThingListItemViewModel(thing, that);
         }
         function thingAdded(thing) {
-            //Oh the horror
-            var thingVm = createThingViewModel(thing);
-            that.activeThings.push(thingVm);
-            that.allTheThings.push(thingVm);
+            thingContainer.Things.push(thing);
+            parent.refresh();
         }
 
         function thingRemoved(thing) {
-            //Oh the horror
-            that.allTheThings = $.grep(that.allTheThings, function (e) { return e.Id != thing.Id });
-            that.activeThings = $.grep(that.activeThings, function (e) { return e.Id != thing.Id });
-            that.completedThings = $.grep(that.completedThings, function (e) { return e.Id != thing.Id });
+            thingContainer.Things = $.grep(thingContainer.Things, function (e) { return e.Id != thing.Id });
+            parent.refresh();
         }
 
-        function thingCompleted(thing) {
-            //Oh the horror
-            that.activeThings = $.grep(that.activeThings, function (e) { return e.Id != thing.Id });
-            that.completedThings.push(createThingViewModel(thing));
+        function thingUpdated(thing) {
+
+            var i = thingContainer.Things.length;
+            while (i--) {
+                var current = thingContainer.Things[i];
+                if (current.Id == thing.Id) {
+                    thingContainer.Things[i] = thing;
+                }
+            }
+            parent.refresh();
         }
 
         this.remove = function (thing) {
@@ -413,8 +420,8 @@
         this.complete = function (thing) {
             if (confirm("SRSLY?")) {
                 var currentUserId = application.user.Id;
-                application.dataProvider.updateResource('/api/thing/' + thing.Id + '/complete', { userId: currentUserId }, function () {
-                    thingCompleted(thing);
+                application.dataProvider.updateResource('/api/thing/' + thing.Id + '/complete', { userId: currentUserId }, function (result) {
+                    thingUpdated(result);
                 });
             }
         };
@@ -437,7 +444,7 @@
                 return user.Id;
             });
             //if (applicationUser != null && (this.thing.OwnerId === applicationUser.Id || $.inArray(applicationUser.Id, assignedUsers) != -1)) {
-            if (applicationUser != null && this.thing.Owner.Id === applicationUser.Id ) {
+            if (applicationUser != null && this.thing.Owner.Id === applicationUser.Id) {
                 return true;
             }
             return false;
