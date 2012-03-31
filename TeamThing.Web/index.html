@@ -33,14 +33,14 @@
              <a href="/logout" class="k-button nav">Logout</a>
         </div>
     </div>
-    <div id="teamThing">       
+    <div id="teamThing">
         <div id="appFrame">
         </div>
     </div>
     <div id="dialog" class="window">
     </div>
     <script type="text/x-kendo-tmpl" id="teamListTemplate">
-        <div class="listItem teamListItem">           
+        <div class="listItem teamListItem">
             <div class="commands">
              <!--   <a href="/team/#= team.Id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
 
@@ -178,7 +178,7 @@
                             </div>
                         # } #
                      # } else { #
-                        <br/>
+                        <br/><!---Yea its a br...deal with it--->
                         <em>Nothing to do yet! </em>
                         <br/>
                         <a href="\#" data-bind="click:addThing">
@@ -189,7 +189,19 @@
             </div>
         </div>
     </script>
-
+    <script type="text/x-kendo-tmpl" id="noTeamsTemplate">
+    <div>
+        <br/><!---Yea its a br...deal with it--->
+        <em>You Have Not Joined Any Teams, yet!</em>
+        <br/>
+        <a data-bind="click:createTeam">
+            Create a Team
+        </a> 
+        <a data-bind="click:joinTeam">
+            Join a Team
+        </a>
+    </div>
+    </script>
     <script type="text/x-kendo-tmpl" id="userDashboardTemplate">
         <div id="userDashboard">
             <h2 data-bind="text:user.EmailAddress">
@@ -197,28 +209,43 @@
            
             <div id="right">
                 <h3>My Teams</h3>
-                  <div class="listCommands">
-                    <button class="k-button k-add-button" data-bind="click:createTeam" title="Create a Team">
-                        <span class="k-icon k-add"></span>
-                    </button> 
-                    <button class="k-button k-createLink-button" data-bind="click:joinTeam" title="Join a Team">
-                        <span class="k-icon k-createLink"></span>
-                    </button>
-                </div>
-                <div data-role="tabstrip">
-                    <ul>
-                        <li class="k-state-active">Active</li>
-                        #if(pendingTeams.length > 0 ) { #
-                            <li>Pending</li>
-                        # } #
-                    </ul>
-                    <div id="teamListView" class="teamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:teams">
+                  #if( pendingTeams.length > 0 || teams.length > 0 ) { #
+                      <div class="listCommands">
+                        <button class="k-button k-add-button" data-bind="click:createTeam" title="Create a Team">
+                            <span class="k-icon k-add"></span>
+                        </button> 
+                        <button class="k-button k-createLink-button" data-bind="click:joinTeam" title="Join a Team">
+                            <span class="k-icon k-createLink"></span>
+                        </button>
                     </div>
-                    #if(pendingTeams.length > 0 ) { #
-                        <div id="pendingTeamListView" class="pendingTeamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:pendingTeams">
+                    <div data-role="tabstrip">
+                        <ul>
+                            <li class="k-state-active">Active</li>
+                            #if(pendingTeams.length > 0 ) { #
+                                <li>Pending</li>
+                            # } #
+                        </ul>
+                        <div id="teamListView" class="teamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:teams">
                         </div>
-                    # } #
-                </div>
+                        #if(pendingTeams.length > 0 ) { #
+                            <div id="pendingTeamListView" class="pendingTeamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:pendingTeams">
+                            </div>
+                        # } #
+                    </div>
+                # } else { #
+                    <!---Nested Template doesn't work!--->
+                      <div>
+                       <br/><!---Yea its a br...deal with it--->
+                        <em>You Have Not Joined Any Teams, yet!</em>
+                        <br/>
+                        <a href="\#"  data-bind="click:createTeam">
+                            Create a Team
+                        </a> &nbsp;
+                        <a href="\#" data-bind="click:joinTeam">
+                            Join a Team
+                        </a>
+                    </div>
+                # } #
             </div>
             <div id="left">
                 <h3>My Things</h3>
