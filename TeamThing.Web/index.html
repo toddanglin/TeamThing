@@ -65,13 +65,13 @@
                  #if( userCanComplete() ) { #
                     <button class="k-button k-complete-button" title="Complete Thing" data-bind="click:complete"><span class="k-icon k-update"></span></button>
                 # } #
-                <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>              
+                <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>
                 #if( userCanEdit() ) { #
                     <button class="k-button k-edit-button" title="Edit Thing" data-bind="click:edit"><span class="k-icon k-edit"></span></button>
                 # } #
                 #if( userCanRemove() ) { #
                     <button class="k-button k-delete-button" title="Delete Thing" data-bind="click:remove"><span class="k-icon k-delete"></span></button>
-                # } #               
+                # } #
             </div>
             <div class="details">
                 <span data-bind="{text:thing.Description}" class="info"/>
@@ -80,7 +80,7 @@
     </script>
     <script type="text/x-kendo-tmpl" id="teamUserListTemplate">
         <div class="listItem userListItem" data-role="draggable" data-draggable-hint="hint" data-hint="hint">
-            <div class="commands">               
+            <div class="commands">
                 <button class="k-button k-edit-button" title="Edit Team Memeber" data-bind="click:editUser"><span class="k-icon k-edit"></span></button>
                 # if( userCanApprove() ) { #
                     <button class="k-button k-delete-button" title="Remove Team Member" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
@@ -146,19 +146,42 @@
             <div id="left">
                <h3>Team Things</h3>
                 <div class="listCommands">
+                    # if(thingList.completedThings.length > 0 || thingList.activeThings.length > 0 ) { #
                         <button class="k-button k-add-button" data-bind="click:addThing" title="Create a Thing">
                             <span class="k-icon k-add"></span>
                         </button> 
+                    # } #
                 </div>
                 <div data-role="tabstrip">
-                     <ul>
-                        <li class="k-state-active">Active</li>
-                        <li>Completed</li>
-                    </ul>
-                    <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
-                    </div>
-                    <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
-                    </div>
+                        # if(thingList.completedThings.length > 0 || thingList.activeThings.length > 0 ) { #
+                            <ul>
+                                #if(thingList.activeThings.length > 0 ) { #
+                                    <li class="k-state-active">Active</li>
+                                # } #
+                                #if(thingList.completedThings.length > 0 ) { #
+                                    <li
+                                     #if(thingList.activeThings.length == 0 ) { #
+                                        class="k-state-active"
+                                     # } #
+                                    >Completed</li>
+                                # } #
+                            </ul>
+                        #if(thingList.activeThings.length > 0 ) { #
+                            <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
+                            </div>
+                        # } #
+                        #if(thingList.completedThings.length > 0 ) { #
+                            <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
+                            </div>
+                        # } #
+                     # } else { #
+                        <br/>
+                        <em>Nothing to do yet! </em>
+                        <br/>
+                        <a href="\#" data-bind="click:addThing">
+                            Add a Thing
+                        </a> 
+                     # } #
                 </div>
             </div>
         </div>
@@ -172,12 +195,12 @@
             <div id="right">
                 <h3>My Teams</h3>
                   <div class="listCommands">
-                        <button class="k-button k-add-button" data-bind="click:createTeam" title="Create a Team">
-                            <span class="k-icon k-add"></span>
-                        </button> 
-                        <button class="k-button k-createLink-button" data-bind="click:joinTeam" title="Join a Team">
-                            <span class="k-icon k-createLink"></span>
-                        </button>
+                    <button class="k-button k-add-button" data-bind="click:createTeam" title="Create a Team">
+                        <span class="k-icon k-add"></span>
+                    </button> 
+                    <button class="k-button k-createLink-button" data-bind="click:joinTeam" title="Join a Team">
+                        <span class="k-icon k-createLink"></span>
+                    </button>
                 </div>
                 <div data-role="tabstrip">
                     <ul>
@@ -185,7 +208,7 @@
                         #if(pendingTeams.length > 0 ) { #
                             <li>Pending</li>
                         # } #
-                    </ul>                
+                    </ul>
                     <div id="teamListView" class="teamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:teams">
                     </div>
                     #if(pendingTeams.length > 0 ) { #
@@ -197,14 +220,31 @@
             <div id="left">
                 <h3>My Things</h3>
                   <div data-role="tabstrip">
-                     <ul>
-                        <li class="k-state-active">Active</li>
-                        <li>Completed</li>
-                    </ul>
-                    <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
-                    </div>
-                    <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
-                    </div>
+                        # if(thingList.completedThings.length > 0 || thingList.activeThings.length > 0 ) { #
+                            <ul>
+                                #if(thingList.activeThings.length > 0 ) { #
+                                    <li class="k-state-active">Active</li>
+                                # } #
+                                #if(thingList.completedThings.length > 0 ) { #
+                                    <li
+                                     #if(thingList.activeThings.length == 0 ) { #
+                                        class="k-state-active"
+                                     # } #
+                                    >Completed</li>
+                                # } #
+                            </ul>
+                        #if(thingList.activeThings.length > 0 ) { #
+                            <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
+                            </div>
+                        # } #
+                        #if(thingList.completedThings.length > 0 ) { #
+                            <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
+                            </div>
+                        # } #
+                     # } else { #
+                        <br/>
+                        <em>Nothing to do yet! </em>
+                     # } #
                 </div>
             </div>
         </div>
