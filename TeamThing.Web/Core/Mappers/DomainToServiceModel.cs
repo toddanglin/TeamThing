@@ -60,7 +60,7 @@ namespace TeamThing.Web.Core.Mappers
                 DateCreated = t.DateCreated,
                 AssignedTo = t.AssignedTo.Select(a=>a.AssignedToUser).MapToBasicServiceModel(),
                 Owner = t.Owner.MapToBasicServiceModel(),
-                Team = t.Team.MapToServiceModel()
+                Team = t.Team.MapToBasicServiceModel()
             };
         }
         public static ServiceModel.ThingBasic MapToBasicServiceModel(this DomainModel.Thing t)
@@ -83,7 +83,8 @@ namespace TeamThing.Web.Core.Mappers
                 Description = t.Thing.Description,
                 Status = t.Thing.Status.ToString(),
                 AssignedTo = t.Thing.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel(),
-                Owner = t.Thing.Owner.MapToBasicServiceModel()
+                Owner = t.Thing.Owner.MapToBasicServiceModel(),
+                Team = t.Thing.Team.MapToBasicServiceModel()
             };
         }
 

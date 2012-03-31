@@ -58,7 +58,8 @@ namespace TeamThing.Web.Controllers
 
             if (thingCreator == null)
             {
-                throw new HttpResponseException("Invalid Creator", HttpStatusCode.NotFound);
+                ModelState.AddModelError("", "Invalid Creator");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
             var team = context.GetAll<DomainModel.Team>()
@@ -66,10 +67,11 @@ namespace TeamThing.Web.Controllers
 
             if (team == null)
             {
-                throw new HttpResponseException("Invalid Team", HttpStatusCode.NotFound);
+                ModelState.AddModelError("", "Invalid Team");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-            
+
             var thing = new DomainModel.Thing(team, thingCreator);
             thing.Description = newThing.Description;
 
@@ -80,7 +82,8 @@ namespace TeamThing.Web.Controllers
 
                 if (assignedTo == null)
                 {
-                    throw new HttpResponseException("Invalid User Assigned to Thing", HttpStatusCode.NotFound);
+                    ModelState.AddModelError("", "Invalid User Assigned to Thing");
+                    return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
                 }
 
                 thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingCreator));
@@ -105,12 +108,14 @@ namespace TeamThing.Web.Controllers
             //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
             if (thing == null)
             {
-                throw new HttpResponseException("Invalid Thing", HttpStatusCode.BadRequest);
+                ModelState.AddModelError("", "Invalid Thing");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-            if (!thing.AssignedTo.Any(at=>at.AssignedToUserId == userId))
+            if (!thing.AssignedTo.Any(at => at.AssignedToUserId == userId))
             {
-                throw new HttpResponseException("A thing can only be removed by its owner.", HttpStatusCode.BadRequest);
+                ModelState.AddModelError("", "A thing can only be removed by its owner.");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
             thing.Complete(userId);
@@ -121,8 +126,63 @@ namespace TeamThing.Web.Controllers
 
         // PUT /api/thing/5
         [HttpPut]
-        public void Put(ServiceModel.UpdateThingViewModel viewModel)
+        public HttpResponseMessage Put(ServiceModel.UpdateThingViewModel viewModel)
         {
+            var thingEditor = context.GetAll<DomainModel.User>()
+                                     .FirstOrDefault(u => u.Id == viewModel.EditedById);
+
+            var thing = context.GetAll<DomainModel.Thing>()
+                               .FirstOrDefault(u => u.Id == viewModel.Id);
+
+            if (thingEditor == null)
+            {
+                ModelState.AddModelError("", "Invalid Editor");
+            }
+            if (thing == null)
+            {
+                ModelState.AddModelError("", "Invalid Thing");
+            }
+            if (thing.OwnerId != thingEditor.Id)
+            {
+                ModelState.AddModelError("", "A Thing can only be edited by its owner");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            foreach (var userId in viewModel.AssignedTo)
+            {
+                //already assigned
+                if (thing.AssignedTo.Any(at => at.AssignedToUserId == userId)) continue;
+
+
+                var assignedTo = context.GetAll<DomainModel.User>()
+                                          .FirstOrDefault(u => u.Id == userId);
+
+                if (assignedTo == null)
+                {
+                    throw new HttpResponseException("Invalid User Assigned to Thing", HttpStatusCode.NotFound);
+                }
+
+                thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingEditor));
+            }
+
+            //removed users
+            var removedUserIds = thing.AssignedTo.Select(at => at.AssignedToUserId).Except(viewModel.AssignedTo);
+            var removedUserThings = thing.AssignedTo.Where(at => removedUserIds.Contains(at.AssignedToUserId)).ToList();
+
+            context.Delete(removedUserThings);
+
+            thing.Description = viewModel.Description;
+
+            context.SaveChanges();
+
+            var sThing = thing.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
+            return response;
         }
 
         // DELETE /api/thing/5

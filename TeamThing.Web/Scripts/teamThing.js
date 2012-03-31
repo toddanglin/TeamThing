@@ -58,21 +58,17 @@
 
             var newThingModel = {
                 description: "",
-                availableTeamMembers: that.teamMembers,
+                availableTeamMembers: that.team.TeamMembers,
                 selectedTeamMembers: [],
                 save: function (e) {
 
-                    //retrieve the ids for the selected assignments
-                    var assignedTo = $.map(this.selectedTeamMembers, function (member) {
-                        return member.user.Id;
-                    });
-
                     //get the current application user's id
                     var currentUserId = application.user.Id;
+                    var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.Id });
 
                     var vm = this;
                     //create the thing object
-                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo, TeamId:that.team.Id };
+                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo, TeamId: that.team.Id };
 
                     //save the new thing back to the server
                     application.dataProvider.createResource("/api/thing", thing, function (result) {
@@ -94,11 +90,9 @@
         return this;
     };
 
-    function UserDashboard(teamUser) {
+    function UserDashboard(_user) {
         var that = this;
-        this.UserName = teamUser.EmailAddress;
-        this.id = teamUser.Id;
-        this.user = teamUser;
+        this.user = _user;
 
         function toogleUI() {
             //if the user only has one team, show that teams info!
@@ -185,7 +179,7 @@
                     var team = { name: this.name, userId: currentUserId };
                     var vm = this;
                     //save the new team back to the server
-                    application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {                        
+                    application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {
                         application.closeDialog(); //ewww
                         teamJoined(result);
                         kendo.unbind($("#joinTeam"), vm);
@@ -322,15 +316,16 @@
             application.dataProvider.get("api/team/" + id, application.showTeam);
         };
 
-        this.teams = $.map(teamUser.Teams, function (team) {
+        this.teams = $.map(this.user.Teams, function (team) {
             return new TeamListItemViewModel(team, that);
         });
 
-        this.pendingTeams = $.map(teamUser.PendingTeams, function (team) {
+        this.pendingTeams = $.map(this.user.PendingTeams, function (team) {
             return new TeamListItemViewModel(team, that);
-        });        
+        });
 
-        this.thingList = new ThingListViewModel(teamUser.Things);
+        this.thingList = new ThingListViewModel(this.user.Things);
+
         return this;
     };
 
@@ -352,26 +347,23 @@
 
         this.edit = function (editedThing) {
 
-            application.dataProvider.get("/api/thing/" + editedThing.Id, function (result) {
+            application.dataProvider.get("/api/team/" + editedThing.Team.Id, function (result) {
                 var thingEditModel = {
-                    description: result.Description,
-                    availableTeamMembers: result.Team.TeamMembers,
-                    selectedTeamMembers: result.AssignedTo,
+                    description: editedThing.Description,
+                    availableTeamMembers: result.TeamMembers,
+                    selectedTeamMembers: $.map(editedThing.AssignedTo, function (member) { return member }),
                     save: function (e) {
-
-                        //retrieve the ids for the selected assignments
-                        var assignedTo = $.map(this.selectedTeamMembers, function (member) {
-                            return member.user.Id;
-                        });
 
                         //get the current application user's id
                         var currentUserId = application.user.Id;
 
+                        var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.Id });
+
                         //create the thing object
-                        var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
+                        var thing = { EditedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
 
                         //save the new thing back to the server
-                        application.dataProvider.updateResource("/api/thing/" + result.Id, thing, function (result) {
+                        application.dataProvider.updateResource("/api/thing/" + editedThing.Id, thing, function (result) {
                             application.closeDialog(); //ewww
                             thingAdded(result);
                         });
@@ -438,13 +430,14 @@
         this.edit = function (e) { parent.edit(this.thing); };
         this.remove = function (e) { parent.remove(this.thing); };
         this.complete = function (e) { parent.complete(this.thing); };
-       
+
         this.userCanEdit = function () {
             var applicationUser = application.user;
             var assignedUsers = $.map(thing.AssignedTo, function (user) {
                 return user.Id;
             });
-            if (applicationUser != null && (this.thing.OwnerId === applicationUser.Id || $.inArray(applicationUser.Id, assignedUsers) != -1)) {
+            //if (applicationUser != null && (this.thing.OwnerId === applicationUser.Id || $.inArray(applicationUser.Id, assignedUsers) != -1)) {
+            if (applicationUser != null && this.thing.Owner.Id === applicationUser.Id ) {
                 return true;
             }
             return false;
@@ -459,7 +452,7 @@
             return false;
         };
 
-        this.userCanComplete= function () {
+        this.userCanComplete = function () {
             var applicationUser = application.user;
 
             var assignedToIds = $.map(this.thing.AssignedTo, function (thingMember) {
@@ -485,7 +478,7 @@
         this.editTeam = function (e) { parent.editTeam(this.team); };
         this.removeTeam = function (e) { parent.removeTeam(this.team); };
 
-       
+
         this.userCanEditTeam = function () {
             if (user != null && (this.team.OwnerId === user.Id || $.inArray(user.Id, this.team.Administrators) != -1)) {
                 return true;

@@ -46,7 +46,6 @@ namespace TeamThing.Model
             mapping.HasAssociation(m => m.Things)
                    .WithOpposite(m => m.AssignedToUser)
                    .IsManaged()
-                   .IsDependent()
                    .ToColumn("AssignedToUserId");
             mapping.HasAssociation(m => m.Teams)
                    .WithOpposite(t => t.User)
@@ -91,7 +90,7 @@ namespace TeamThing.Model
            mapping.HasIdentity(map => new
                     {
                         map.AssignedToUserId,
-                        map.ThingId,
+                        map.ThingId
                     });
 
             mapping.HasAssociation(m => m.Thing)
@@ -103,6 +102,7 @@ namespace TeamThing.Model
                    .ToColumn("AssignedByUserId");
 
             mapping.HasAssociation(m => m.AssignedToUser)
+                   .WithOpposite(ut=>ut.Things)
                    .ToColumn("AssignedToUserId");
 
             return mapping;
@@ -132,8 +132,6 @@ namespace TeamThing.Model
 
             mapping.HasAssociation(m => m.Team)
                    .WithOpposite(m=>m.TeamThings)
-                   .IsManaged()
-                   .IsDependent()
                    .ToColumn("TeamId");
 
             mapping.HasProperty(m => m.Status)

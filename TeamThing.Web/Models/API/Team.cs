@@ -173,8 +173,8 @@ namespace TeamThing.Web.Models.API
             set;
         }
 
-        [Required(ErrorMessage = "A thing must have a creator")]
-        public int CreatedById
+        [Required(ErrorMessage = "A thing must have an editor")]
+        public int EditedById
         {
             get;
             set;

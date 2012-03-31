@@ -10,7 +10,7 @@ namespace TeamThing.Web.Models.API
         public string Status { get;set; }
         public DateTime DateCreated { get; set; }
         public UserBasic Owner { get; set; }
-        public Team Team { get; set; }
+        public TeamBasic Team { get; set; }
         public IEnumerable<UserBasic> AssignedTo { get; set; }
     }
 
