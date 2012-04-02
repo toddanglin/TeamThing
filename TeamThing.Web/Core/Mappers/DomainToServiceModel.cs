@@ -126,13 +126,15 @@ namespace TeamThing.Web.Core.Mappers
                 Name = t.Name,
                 OwnerId=t.OwnerId,
                 IsPublic = t.IsOpen,
+                ImagePath = t.ImagePath ?? "/images/GenericUserImage.gif",
                 Administrators = t.TeamMembers.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray()
             };
         }
 
-        public static IEnumerable<ServiceModel.TeamBasic> MapToBasicServiceModel(this IEnumerable<DomainModel.Team> t)
+        public static IQueryable<ServiceModel.TeamBasic> MapToBasicServiceModel(this IEnumerable<DomainModel.Team> t)
         {
-            return t.Select(MapToBasicServiceModel);
+            return t.Select(MapToBasicServiceModel).AsQueryable()
+                ;
         }
 
         public static ServiceModel.User MapToServiceModel(this DomainModel.User user)

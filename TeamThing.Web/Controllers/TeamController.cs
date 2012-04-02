@@ -22,16 +22,16 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpGet]
-        public IQueryable<ServiceModel.Team> Get()
+        public IQueryable<ServiceModel.TeamBasic> Get()
         {
-            return context.GetAll<TeamThing.Model.Team>().MapToServiceModel();
+            return context.GetAll<TeamThing.Model.Team>().MapToBasicServiceModel();
         }
 
         [HttpGet]
         public HttpResponseMessage Get(int id)
         {
             var item = context.GetAll<TeamThing.Model.Team>()
-                          .FirstOrDefault(t => t.Id == id);
+                              .FirstOrDefault(t => t.Id == id);
             if (item == null)
             {
                 ModelState.AddModelError("", "Invalid Team");

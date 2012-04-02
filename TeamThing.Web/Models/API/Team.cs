@@ -28,6 +28,7 @@ namespace TeamThing.Web.Models.API
         //TODO: this should probably return a bool flag based on the current user's permissions, so that they don't know the admin's id!
         public int[] Administrators { get; set; }
         public bool IsPublic { get; set; }
+        public string ImagePath { get; set; }
     }
 
     public class User

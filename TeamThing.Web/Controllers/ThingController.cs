@@ -99,13 +99,47 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
+        public HttpResponseMessage UpdateStatus(int id, int userId, string status)
+        {
+            var thing = context.GetAll<DomainModel.Thing>()
+                               .FirstOrDefault(u => u.Id == id);
+
+            DomainModel.ThingStatus realStatus;
+                
+            if (!Enum.TryParse<DomainModel.ThingStatus>(status, true, out realStatus))
+            {
+                ModelState.AddModelError("", "Invalid Status");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+             if (thing == null)
+            {
+                ModelState.AddModelError("", "Invalid Thing");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            if (!thing.AssignedTo.Any(at => at.AssignedToUserId == userId))
+            {
+                ModelState.AddModelError("", "A thing can only be removed by its owner.");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            thing.Complete(userId);
+            context.SaveChanges();
+
+            var sThing = thing.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
+            return response;
+        }
+
+        [HttpPut]
         public HttpResponseMessage Complete(int id, int userId)
         {
 
             var thing = context.GetAll<DomainModel.Thing>()
                                .FirstOrDefault(u => u.Id == id);
 
-            //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
             if (thing == null)
             {
                 ModelState.AddModelError("", "Invalid Thing");
