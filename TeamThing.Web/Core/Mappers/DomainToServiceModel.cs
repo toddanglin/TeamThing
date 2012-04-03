@@ -48,6 +48,11 @@ namespace TeamThing.Web.Core.Mappers
         {
             return things.Select(MapToServiceModel).AsQueryable();
         }
+        
+        public static IQueryable<ServiceModel.TeamBasic> MapToBasicServiceModel(this IEnumerable<DomainModel.Team> t)
+        {
+            return t.Select(MapToBasicServiceModel).AsQueryable();
+        }
 
         public static ServiceModel.Thing MapToServiceModel(this DomainModel.Thing t)
         {
@@ -88,6 +93,7 @@ namespace TeamThing.Web.Core.Mappers
             };
         }
 
+
         public static ServiceModel.TeamMemberBasic MapToServiceModel(this DomainModel.TeamUser tm)
         {
             if (tm == null) return null;
@@ -109,11 +115,11 @@ namespace TeamThing.Web.Core.Mappers
                 Id = t.Id,
                 Name = t.Name,
                 IsPublic = t.IsOpen,
-                TeamMembers = t.TeamMembers.Where(tm=>tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToServiceModel),
-                PendingTeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToServiceModel),
+                TeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToServiceModel).ToList(),
+                PendingTeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToServiceModel).ToList(),
                 Administrators = t.TeamMembers.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray(),
                 Owner = t.Owner.MapToBasicServiceModel(),
-                Things = t.TeamThings.MapToServiceModel()
+                Things = t.TeamThings.MapToServiceModel().ToList()
             };
         }
 
@@ -131,11 +137,6 @@ namespace TeamThing.Web.Core.Mappers
             };
         }
 
-        public static IQueryable<ServiceModel.TeamBasic> MapToBasicServiceModel(this IEnumerable<DomainModel.Team> t)
-        {
-            return t.Select(MapToBasicServiceModel).AsQueryable()
-                ;
-        }
 
         public static ServiceModel.User MapToServiceModel(this DomainModel.User user)
         {

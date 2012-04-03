@@ -42,7 +42,7 @@
     <script type="text/x-kendo-tmpl" id="teamListTemplate">
         <div class="listItem teamListItem">
             <div class="commands">
-             <!--   <a href="/team/#= team.Id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
+             <!--   <a href="/team/#= team.id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
 
                 #if( userCanEditTeam() ) { #
                     <button class="k-button k-edit-button" title="Edit Team" data-bind="click:editTeam"><span class="k-icon k-edit"></span></button>
@@ -50,7 +50,7 @@
                 # } #
             </div>
             <div class="details">
-            <a href="/team/#= team.Id #" title="View Team" data-bind="{text:team.Name}" class="nav # if(team.IsPublic) { #
+            <a href="/team/#= team.id #" title="View Team" data-bind="{text:team.name}" class="nav # if(team.isPublic) { #
                             publicTeam
                       # } else { #
                             closedTeam
@@ -60,7 +60,7 @@
     </script>
     <script type="text/x-kendo-tmpl" id="thingListTemplate">
         <div class="listItem thingListItem" data-role="droptarget">
-            <input type="hidden" class="thingId" id="thingId" data-bind="{value:thing.Id}"/>
+            <input type="hidden" class="thingId" id="thingId" data-bind="{value:thing.id}"/>
             <div class="commands">
                 <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>
 
@@ -77,7 +77,7 @@
                 # } #
             </div>
             <div class="details">
-                <span data-bind="{text:thing.Description}" class="info"/>
+                <span data-bind="{text:thing.description}" class="info"/>
             </div>
         </div>
     </script>
@@ -90,8 +90,8 @@
                 # } #
             </div>
             <div class="details user">
-                <img data-bind="{attr:{src:user.ImagePath}}"/>
-                <span data-bind="{text:user.EmailAddress}" class="info"/>
+                <img data-bind="{attr:{src:user.imagePath}}"/>
+                <span data-bind="{text:user.emailAddress}" class="info"/>
             </div>
         </div>
     </script>
@@ -104,8 +104,8 @@
                 # } #
             </div>
             <div class="details user">
-                <img data-bind="{attr:{src:user.ImagePath}}" class="image"/>
-                <span data-bind="{text:user.EmailAddress}" class="info"/>
+                <img data-bind="{attr:{src:user.imagePath}}" class="image"/>
+                <span data-bind="{text:user.emailAddress}" class="info"/>
             </div>
         </div>
     </script>
@@ -125,7 +125,7 @@
     </script>
     <script type="text/x-kendo-tmpl" id="teamDashboardTemplate">
        <div id="teamDashboard">
-            <h2 data-bind="text:team.Name">
+            <h2 data-bind="text:team.name">
             </h2>
 
             <div id="right">
@@ -204,7 +204,7 @@
     </script>
     <script type="text/x-kendo-tmpl" id="userDashboardTemplate">
         <div id="userDashboard">
-            <h2 data-bind="text:user.EmailAddress">
+            <h2 data-bind="text:user.emailAddress">
             </h2>
            
             <div id="right">

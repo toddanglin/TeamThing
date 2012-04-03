@@ -6,11 +6,11 @@
         var that = this;
         this.team = team;
 
-        this.pendingTeamMembers = $.map(team.PendingTeamMembers, function (member) {
+        this.pendingTeamMembers = $.map(team.pendingTeamMembers, function (member) {
             return new PendingMemberListItemViewModel(member, that);
         });
 
-        this.teamMembers = $.map(team.TeamMembers, function (member) {
+        this.teamMembers = $.map(team.teamMembers, function (member) {
             return new TeamMemberListItemViewModel(member, that);
         });
 
@@ -33,25 +33,25 @@
         };
 
         this.editMember = function (user) {
-            alert("edit" + user.Id);
+            alert("edit" + user.id);
         };
 
         this.viewMember = function (user) {
-            alert("view" + user.Id);
+            alert("view" + user.id);
         };
 
         this.denyMember = function (user) {
 
-            var teamId = that.team.Id;
-            var approvalInfo = { teamId: teamId, userId: user.Id };
+            var teamId = that.team.id;
+            var approvalInfo = { id: teamId, userId: user.id };
 
             //ToDO: will this cause a memory leak?!
             application.dataProvider.updateResource("/api/team/" + teamId + "/denymember", approvalInfo, this.refresh);
         };
 
         this.approveMember = function (user) {
-            var teamId = that.team.Id;
-            var approvalInfo = { teamId: teamId, userId: user.Id };
+            var teamId = that.team.id;
+            var approvalInfo = { teamId: teamId, userId: user.id };
 
             //ToDO: will this cause a memory leak?!
             application.dataProvider.updateResource("/api/team/" + teamId + "/approvemember", approvalInfo, this.refresh);
@@ -61,17 +61,17 @@
 
             var newThingModel = {
                 description: "",
-                availableTeamMembers: that.team.TeamMembers,
+                availableTeamMembers: that.team.teamMembers,
                 selectedTeamMembers: [],
                 save: function (e) {
 
                     //get the current application user's id
-                    var currentUserId = application.user.Id;
-                    var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.Id });
+                    var currentUserId = application.user.id;
+                    var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.id });
 
                     var vm = this;
                     //create the thing object
-                    var thing = { CreatedById: currentUserId, Description: this.description, AssignedTo: assignedTo, TeamId: that.team.Id };
+                    var thing = { createdById: currentUserId, description: this.description, assignedTo: assignedTo, teamId: that.team.id };
 
                     //save the new thing back to the server
                     application.dataProvider.createResource("/api/thing", thing, function (result) {
@@ -100,27 +100,27 @@
         function toogleUI() {
             //if the user only has one team, show that teams info!
             if (that.teams.length === 1) {
-                that.viewTeam(that.teams[0].Id);
+                that.viewTeam(that.teams[0].id);
             }
         };
 
         function teamUpdated(team) {
             //TODO: Update team info in UI
 
-            var teams = that.user.Teams;
+            var teams = that.user.teams;
             var i = teams.length;
             while (i--) {
                 var currentTeam = teams[i];
-                if (currentTeam.Id == team.Id) {
+                if (currentTeam.id == team.id) {
                     teams[i] = team;
                 }
             }
-            refresh();
+            that.refresh();
         }
 
         function teamCreated(team) {
-            that.user.Teams.push(team);
-            refresh();
+            that.user.teams.push(team);
+            that.refresh();
         }
 
         this.refresh = function () {
@@ -130,19 +130,19 @@
 
         function teamRemoved(removedTeam) {
 
-            that.user.Teams = $.grep(that.user.Teams, function (e) { return e.Id != removedTeam.Id });
-            refresh();
+            that.user.teams = $.grep(that.user.teams, function (e) { return e.id != removedTeam.id });
+            that.refresh();
         }
 
         function teamJoined(team) {
-            if (team.IsPublic) {
-                that.user.Teams.push(team);
+            if (team.isPublic) {
+                that.user.teams.push(team);
             }
             else {
-                that.user.PendingTeams.push(team);
+                that.user.pendingTeams.push(team);
             }
 
-            refresh();
+            that.refresh();
         };
 
         this.joinTeam = function () {
@@ -163,7 +163,7 @@
                             vm.set('canSave', true);
                             vm.set('searchStatusClass', 'searchResult ok');
                             vm.set('searchStatusMessage', 'Team Found');
-                            vm.set('foundTeamId', result[0].Id);
+                            vm.set('foundTeamId', result[0].id);
                         }
                         else {
                             vm.set('canSave', false);
@@ -176,10 +176,10 @@
                 save: function (e) {
 
                     //get the current application user's id
-                    var currentUserId = application.user.Id;
+                    var currentUserId = application.user.id;
 
                     //create the team object
-                    var team = { name: this.name, userId: currentUserId };
+                    var team = { name: this.name, userId: currentUserId, id:this.foundTeamId };
                     var vm = this;
                     //save the new team back to the server
                     application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {
@@ -199,8 +199,8 @@
 
         this.removeTeam = function (team) {
             if (confirm("SRSLY?")) {
-                var currentUserId = application.user.Id;
-                application.dataProvider.removeResource('/api/team/' + team.Id, { userId: currentUserId }, function () {
+                var currentUserId = application.user.id;
+                application.dataProvider.removeResource('/api/team/' + team.id, { userId: currentUserId }, function () {
                     teamRemoved(team);
                 });
             }
@@ -209,9 +209,9 @@
         this.editTeam = function (team) {
 
             var teamEditorViewModel = {
-                name: team.Name,
-                id: team.Id,
-                isPublic: team.IsPublic,
+                name: team.name,
+                id: team.id,
+                isPublic: team.isPublic,
                 canSave: true,
                 searchStatusClass: 'ok',
                 searchStatusMessage: '',
@@ -241,7 +241,7 @@
                 save: function (e) {
 
                     //get the current application user's id
-                    var currentUserId = application.user.Id;
+                    var currentUserId = application.user.id;
 
                     var editedTeam = { id: this.id, name: this.name, ispublic: this.isPublic, updatedbyid: currentUserId };
                     var vm = this;
@@ -292,7 +292,7 @@
                 save: function (e) {
 
                     //get the current application user's id
-                    var currentUserId = application.user.Id;
+                    var currentUserId = application.user.id;
 
                     //create the thing object
                     var team = { name: this.name, ispublic: this.isPublic, createdById: currentUserId };
@@ -319,11 +319,11 @@
             application.dataProvider.get("api/team/" + id, application.showTeam);
         };
 
-        this.teams = $.map(this.user.Teams, function (team) {
+        this.teams = $.map(this.user.teams, function (team) {
             return new TeamListItemViewModel(team, that);
         });
 
-        this.pendingTeams = $.map(this.user.PendingTeams, function (team) {
+        this.pendingTeams = $.map(this.user.pendingTeams, function (team) {
             return new TeamListItemViewModel(team, that);
         });
 
@@ -335,15 +335,15 @@
     function ThingListViewModel(parent, _thingContainer) {
 
         var that = this;
-        var things = _thingContainer.Things;
+        var things = _thingContainer.things;
         var thingContainer = _thingContainer;
 
         var activeThings = things.filter(function (t) {
-            return t.Status == "InProgress";
+            return t.status == "InProgress";
         });
 
         var completedThings = things.filter(function (t) {
-            return t.Status == "Completed";
+            return t.status == "Completed";
         });
 
         this.allTheThings = $.map(things, createThingViewModel);
@@ -352,23 +352,23 @@
 
         this.edit = function (editedThing) {
 
-            application.dataProvider.get("/api/team/" + editedThing.Team.Id, function (result) {
+            application.dataProvider.get("/api/team/" + editedThing.team.id, function (result) {
                 var thingEditModel = {
-                    description: editedThing.Description,
-                    availableTeamMembers: result.TeamMembers,
-                    selectedTeamMembers: $.map(editedThing.AssignedTo, function (member) { return member }),
+                    description: editedThing.description,
+                    availableTeamMembers: result.teamMembers,
+                    selectedTeamMembers: $.map(editedThing.assignedTo, function (member) { return member }),
                     save: function (e) {
 
                         //get the current application user's id
-                        var currentUserId = application.user.Id;
+                        var currentUserId = application.user.id;
 
-                        var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.Id });
+                        var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.id });
 
                         //create the thing object
-                        var thing = { EditedById: currentUserId, Description: this.description, AssignedTo: assignedTo };
+                        var thing = { editedById: currentUserId, description: this.description, assignedTo: assignedTo, id:editedThing.id };
 
                         //save the new thing back to the server
-                        application.dataProvider.updateResource("/api/thing/" + editedThing.Id, thing, function (result) {
+                        application.dataProvider.updateResource("/api/thing/" + editedThing.id, thing, function (result) {
                             application.closeDialog(); //ewww
                             thingUpdated(result);
                         });
@@ -387,22 +387,22 @@
             return new ThingListItemViewModel(thing, that);
         }
         function thingAdded(thing) {
-            thingContainer.Things.push(thing);
+            thingContainer.things.push(thing);
             parent.refresh();
         }
 
         function thingRemoved(thing) {
-            thingContainer.Things = $.grep(thingContainer.Things, function (e) { return e.Id != thing.Id });
+            thingContainer.things = $.grep(thingContainer.things, function (e) { return e.id != thing.id });
             parent.refresh();
         }
 
         function thingUpdated(thing) {
 
-            var i = thingContainer.Things.length;
+            var i = thingContainer.things.length;
             while (i--) {
-                var current = thingContainer.Things[i];
-                if (current.Id == thing.Id) {
-                    thingContainer.Things[i] = thing;
+                var current = thingContainer.things[i];
+                if (current.id == thing.id) {
+                    thingContainer.things[i] = thing;
                 }
             }
             parent.refresh();
@@ -410,8 +410,8 @@
 
         this.remove = function (thing) {
             if (confirm("SRSLY?")) {
-                var currentUserId = application.user.Id;
-                application.dataProvider.removeResource('/api/thing/' + thing.Id, { DeletedById: currentUserId }, function () {
+                var currentUserId = application.user.id;
+                application.dataProvider.removeResource('/api/thing/' + thing.id, { deletedById: currentUserId }, function () {
                     thingRemoved(thing);
                 });
             }
@@ -419,11 +419,14 @@
 
         this.complete = function (thing) {
             if (confirm("SRSLY?")) {
-                var currentUserId = application.user.Id;
-                application.dataProvider.updateResource('/api/thing/' + thing.Id + '/complete', { userId: currentUserId }, function (result) {
+                var vm = { id: thing.id, userId: application.user.id };
+                application.dataProvider.updateResource('/api/thing/' + thing.id + '/complete', vm, function (result) {
                     thingUpdated(result);
                 });
             }
+        };
+        this.view = function (thing) {
+            alert("view" + thing.id);
         };
 
         return this;
@@ -440,11 +443,11 @@
 
         this.userCanEdit = function () {
             var applicationUser = application.user;
-            var assignedUsers = $.map(thing.AssignedTo, function (user) {
-                return user.Id;
+            var assignedUsers = $.map(thing.assignedTo, function (user) {
+                return user.id;
             });
             //if (applicationUser != null && (this.thing.OwnerId === applicationUser.Id || $.inArray(applicationUser.Id, assignedUsers) != -1)) {
-            if (applicationUser != null && this.thing.Owner.Id === applicationUser.Id) {
+            if (applicationUser != null && this.thing.owner.id === applicationUser.id) {
                 return true;
             }
             return false;
@@ -453,7 +456,7 @@
         this.userCanRemove = function () {
             var applicationUser = application.user;
 
-            if (applicationUser != null && this.thing.Owner.Id === applicationUser.Id) {
+            if (applicationUser != null && this.thing.owner.id === applicationUser.id) {
                 return true;
             }
             return false;
@@ -466,11 +469,11 @@
         this.userCanComplete = function () {
             var applicationUser = application.user;
 
-            var assignedToIds = $.map(this.thing.AssignedTo, function (thingMember) {
-                return thingMember.Id;
+            var assignedToIds = $.map(this.thing.assignedTo, function (thingMember) {
+                return thingMember.id;
             });
 
-            if (applicationUser != null && $.inArray(applicationUser.Id, assignedToIds) != -1) {
+            if (applicationUser != null && $.inArray(applicationUser.id, assignedToIds) != -1) {
                 return true;
             }
             return false;
@@ -491,7 +494,7 @@
 
 
         this.userCanEditTeam = function () {
-            if (user != null && (this.team.OwnerId === user.Id || $.inArray(user.Id, this.team.Administrators) != -1)) {
+            if (user != null && (this.team.ownerId === user.id || $.inArray(user.id, this.team.administrators) != -1)) {
                 return true;
             }
             return false;
@@ -532,7 +535,7 @@
         }
         this.userCanApprove = function () {
 
-            if (parent.userIsAdmin(application.user) || user.Id == application.user.Id) {
+            if (parent.userIsAdmin(application.user) || user.id == application.user.id) {
                 return true;
             }
 
@@ -573,7 +576,7 @@
         this.registerUser = function () {
             if (validateInput()) {
                 //TODO: that should be changed to this after release
-                var userInfo = { EmailAddress: that.userName };
+                var userInfo = { emailAddress: that.userName };
                 //todo: this is kinda ugly
                 application.dataProvider.createResource("/api/user/register", userInfo, userLoaded);
             }
@@ -764,7 +767,7 @@
             // the route is performed, which allows you to do any setup you need (changes classes,
             // performing AJAX calls, adding animations, etc.
             Path.map("/my").to(function () {
-                that.dataProvider.get('/api/user/' + activeUserViewModel.user.Id, that.loadUser);
+                that.dataProvider.get('/api/user/' + activeUserViewModel.user.id, that.loadUser);
             }).enter(function () {
                 if (activeUserViewModel == null) {
                     that.showLogin();

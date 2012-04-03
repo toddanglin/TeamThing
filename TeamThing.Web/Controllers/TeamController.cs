@@ -82,7 +82,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateTeam(int id, ServiceModel.UpdateTeamViewModel viewModel)
+        public HttpResponseMessage Put(ServiceModel.UpdateTeamViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -160,7 +160,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Join(ServiceModel.JoinTeamViewModel joinTeamViewModel)
+        public HttpResponseMessage Join(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -228,10 +228,10 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public void DenyMember(int teamId, int userId)
+        public void DenyMember(int id, int userId)
         {
             var team = context.GetAll<DomainModel.Team>()
-                              .FirstOrDefault(u => u.Id == teamId);
+                              .FirstOrDefault(u => u.Id == id);
 
             if (team == null)
             {

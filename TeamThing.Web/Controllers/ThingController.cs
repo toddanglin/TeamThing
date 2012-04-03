@@ -15,6 +15,7 @@ namespace TeamThing.Web.Controllers
     public class ThingController : ApiController
     {
         private DomainModel.TeamThingContext context;
+
         public ThingController()
         {
             this.context = new DomainModel.TeamThingContext();
@@ -105,14 +106,14 @@ namespace TeamThing.Web.Controllers
                                .FirstOrDefault(u => u.Id == id);
 
             DomainModel.ThingStatus realStatus;
-                
+
             if (!Enum.TryParse<DomainModel.ThingStatus>(status, true, out realStatus))
             {
                 ModelState.AddModelError("", "Invalid Status");
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-             if (thing == null)
+            if (thing == null)
             {
                 ModelState.AddModelError("", "Invalid Thing");
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
@@ -161,7 +162,6 @@ namespace TeamThing.Web.Controllers
             return response;
         }
 
-        // PUT /api/thing/5
         [HttpPut]
         public HttpResponseMessage Put(ServiceModel.UpdateThingViewModel viewModel)
         {
@@ -179,7 +179,7 @@ namespace TeamThing.Web.Controllers
             {
                 ModelState.AddModelError("", "Invalid Thing");
             }
-            if (thing.OwnerId != thingEditor.Id)
+            if (thing != null && thing.OwnerId != thingEditor.Id)
             {
                 ModelState.AddModelError("", "A Thing can only be edited by its owner");
             }

@@ -1,14 +1,14 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.Json;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
-using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
@@ -42,6 +42,20 @@ namespace TeamThing.Web.Controllers
             var response = new HttpResponseMessage<ServiceModel.User>(sUser, HttpStatusCode.OK);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/user/" + sUser.Id.ToString());
             return response;
+        }
+
+        // GET /api/user/5/
+        public IEnumerable<ServiceModel.Thing> Things(int id, int teamId)
+        {
+            var item = context.GetAll<TeamThing.Model.User>()
+                              .FirstOrDefault(t => t.Id == id);
+
+            var team = context.GetAll<TeamThing.Model.Team>()
+                               .FirstOrDefault(t => t.Id == teamId);
+
+            var things = team.TeamThings.Where(t => t.AssignedTo.Any(at => at.AssignedToUserId == id));
+
+            return things.MapToServiceModel();
         }
 
         [HttpPost]
