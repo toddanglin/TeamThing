@@ -241,12 +241,27 @@ Thing Methods
 		URL
 			POST: /api/thing
 		Params
-			{"CreatedById":5,"Description":"My New Thing","AssignedTo":[5,6]}
+			{"CreatedById":5,"Description":"My New Thing","AssignedTo":[5,6], "teamId":10}
 		Result
 			SUCCESS - 201 Created
-				{"Description":"My New Thing",
-					"Id":8,
-					"Status":"InProgress"}
+				{"AssignedTo":[{"EmailAddress":"newUser@test.com",
+				"Id":7,
+				"ImagePath":"\/images\/GenericUserImage.gif"}],
+				"DateCreated":"\/Date(1333463568863-0500)\/",
+				"Description":"test",
+				"Id":52,
+				"Owner":{"EmailAddress":"jholt456@gmail.com",
+					"Id":11,
+					"ImagePath":"\/images\/GenericUserImage.gif"},
+				"Status":"InProgress",
+				"Team":{"Administrators":[7],
+					"Id":20,
+					"ImagePath":
+					"\/images\/GenericUserImage.gif",
+					"IsPublic":false,
+					"Name":"A Sweet Team",
+					"OwnerId":7}
+			}
 			FAILURE - 400 Bad Request - When any data is invalid
 				returns JSON error array
 				Example: ["A thing must be assigned to 1 or more people"]
@@ -273,3 +288,35 @@ Thing Methods
 			FAILURE 
 				400 Bad Request 
 					returns error message string if information is missing, or if user does not have permissions to remove thing(only thing owners can delete things)
+
+	-Complete a Thing
+		URL
+			PUT: /api/thing/8/complete
+		Params
+			{"UserId":10}
+		Results
+			SUCCESS - 200 Ok
+				{"Description":"a sdfasdf ",
+				 "Id":8,
+				 "Status":"Complete"}
+
+			FAILURE
+				- 400 Bad Request
+				returns JSON error array
+				Example: ["Invalid Thing"]
+
+	-Complete a Thing
+		URL
+			PUT: /api/thing/8/complete
+		Params
+			{"UserId":10, "Status":"Complete"}
+		Results
+			SUCCESS - 200 Ok
+				{"Description":"a sdfasdf ",
+				 "Id":8,
+				 "Status":"Complete"}
+
+			FAILURE
+				- 400 Bad Request
+				returns JSON error array
+				Example: ["Invalid Status"]
