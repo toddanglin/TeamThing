@@ -58,9 +58,27 @@
             </div>        
         </div>
     </script>
+    <script type="text/x-kendo-tmpl" id="pendingTeamListTemplate">
+        <div class="listItem teamListItem">
+            <div class="commands">
+             <!--   <a href="/team/#= team.id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
+
+                #if( userCanEditTeam() ) { #
+                    <button class="k-button k-edit-button" title="Edit Team" data-bind="click:editTeam"><span class="k-icon k-edit"></span></button>
+                    <button class="k-button k-delete-button" title="Delete Team" data-bind="click:removeTeam"><span class="k-icon k-delete"></span></button>
+                # } #
+            </div>
+            <div class="details">
+            <span data-bind="{text:team.name}" class="nav # if(team.isPublic) { #
+                            publicTeam
+                      # } else { #
+                            closedTeam
+                       # } #"/>
+            </div>        
+        </div>
+    </script>
     <script type="text/x-kendo-tmpl" id="thingListTemplate">
         <div class="listItem thingListItem" data-role="droptarget">
-            <input type="hidden" class="thingId" id="thingId" data-bind="{value:thing.id}"/>
             <div class="commands">
                 <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>
 
@@ -85,7 +103,7 @@
         <div class="listItem userListItem" data-role="draggable" data-draggable-hint="hint" data-hint="hint">
             <div class="commands">
                 <button class="k-button k-edit-button" title="Edit Team Memeber" data-bind="click:editUser"><span class="k-icon k-edit"></span></button>
-                # if( userCanApprove() ) { #
+                # if( userCanApprove()) { #
                     <button class="k-button k-delete-button" title="Remove Team Member" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
                 # } #
             </div>
@@ -178,12 +196,12 @@
                             </div>
                         # } #
                      # } else { #
-                        <br/><!---Yea its a br...deal with it--->
+                        <br/><!---Yea its a br...deal with it :)--->
                         <em>Nothing to do yet! </em>
                         <br/>
-                        <a href="\#" data-bind="click:addThing">
+                         <button data-bind="click:addThing" class="k-button">
                             Add a Thing
-                        </a> 
+                        </button> 
                      # } #
                 </div>
             </div>
@@ -191,7 +209,7 @@
     </script>
     <script type="text/x-kendo-tmpl" id="noTeamsTemplate">
     <div>
-        <br/><!---Yea its a br...deal with it--->
+        <br/><!---Yea its a br...deal with it :)--->
         <em>You Have Not Joined Any Teams, yet!</em>
         <br/>
         <a data-bind="click:createTeam">
@@ -228,22 +246,22 @@
                         <div id="teamListView" class="teamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:teams">
                         </div>
                         #if(pendingTeams.length > 0 ) { #
-                            <div id="pendingTeamListView" class="pendingTeamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:pendingTeams">
+                            <div id="pendingTeamListView" class="pendingTeamListView" data-template="pendingTeamListTemplate" data-role="listview" data-bind="source:pendingTeams">
                             </div>
                         # } #
                     </div>
                 # } else { #
                     <!---Nested Template doesn't work!--->
                       <div>
-                       <br/><!---Yea its a br...deal with it--->
+                       <br/><!---Yea its a br...deal with it :)--->
                         <em>You Have Not Joined Any Teams, yet!</em>
                         <br/>
-                        <a href="\#"  data-bind="click:createTeam">
+                        <button data-bind="click:createTeam" class="k-button">
                             Create a Team
-                        </a> &nbsp;
-                        <a href="\#" data-bind="click:joinTeam">
+                        </button> &nbsp;
+                        <button data-bind="click:joinTeam" class="k-button">
                             Join a Team
-                        </a>
+                        </button>
                     </div>
                 # } #
             </div>

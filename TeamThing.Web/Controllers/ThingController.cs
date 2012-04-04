@@ -14,14 +14,19 @@ namespace TeamThing.Web.Controllers
 {
     public class ThingController : ApiController
     {
-        private DomainModel.TeamThingContext context;
+        private readonly DomainModel.TeamThingContext context;
 
         public ThingController()
         {
             this.context = new DomainModel.TeamThingContext();
         }
 
-        // GET /api/thing/5
+        public IQueryable<ServiceModel.Thing> Get()
+        {
+            //TODO: We chould grab the current user here probably?
+            return context.GetAll<DomainModel.Thing>().MapToServiceModel();
+        }
+
         public HttpResponseMessage Get(int id)
         {
             //TODO: We chould grab the current user here probably?
@@ -38,15 +43,7 @@ namespace TeamThing.Web.Controllers
             response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
             return response;
         }
-
-        // GET /api/thing
-        public IQueryable<ServiceModel.Thing> Get()
-        {
-            //TODO: We chould grab the current user here probably?
-            return context.GetAll<DomainModel.Thing>().MapToServiceModel();
-        }
-
-        // POST /api/thing
+       
         public HttpResponseMessage Post(ServiceModel.AddThingViewModel newThing)
         {
             if (!ModelState.IsValid)
@@ -100,14 +97,14 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage UpdateStatus(int id, int userId, string status)
+        public HttpResponseMessage UpdateStatus(int id, ServiceModel.UpdateThingStatusViewModel updateStatusParameters)
         {
             var thing = context.GetAll<DomainModel.Thing>()
-                               .FirstOrDefault(u => u.Id == id);
+                            .FirstOrDefault(u => u.Id == id);
 
             DomainModel.ThingStatus realStatus;
 
-            if (!Enum.TryParse<DomainModel.ThingStatus>(status, true, out realStatus))
+            if (!Enum.TryParse<DomainModel.ThingStatus>(updateStatusParameters.Status, true, out realStatus))
             {
                 ModelState.AddModelError("", "Invalid Status");
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
@@ -119,13 +116,13 @@ namespace TeamThing.Web.Controllers
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-            if (!thing.AssignedTo.Any(at => at.AssignedToUserId == userId))
+            if (!thing.AssignedTo.Any(at => at.AssignedToUserId == updateStatusParameters.UserId))
             {
                 ModelState.AddModelError("", "A thing can only be removed by its owner.");
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-            thing.Complete(userId);
+            thing.Complete(updateStatusParameters.UserId);
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
@@ -135,7 +132,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Complete(int id, int userId)
+        public HttpResponseMessage Complete(int id, ServiceModel.CompleteThingViewModel viewModel)
         {
 
             var thing = context.GetAll<DomainModel.Thing>()
@@ -147,13 +144,13 @@ namespace TeamThing.Web.Controllers
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-            if (!thing.AssignedTo.Any(at => at.AssignedToUserId == userId))
+            if (!thing.AssignedTo.Any(at => at.AssignedToUserId == viewModel.UserId))
             {
                 ModelState.AddModelError("", "A thing can only be removed by its owner.");
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-            thing.Complete(userId);
+            thing.Complete(viewModel.UserId);
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
@@ -163,13 +160,13 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Put(ServiceModel.UpdateThingViewModel viewModel)
+        public HttpResponseMessage Put(int id, ServiceModel.UpdateThingViewModel viewModel)
         {
             var thingEditor = context.GetAll<DomainModel.User>()
                                      .FirstOrDefault(u => u.Id == viewModel.EditedById);
 
             var thing = context.GetAll<DomainModel.Thing>()
-                               .FirstOrDefault(u => u.Id == viewModel.Id);
+                               .FirstOrDefault(u => u.Id == id);
 
             if (thingEditor == null)
             {
@@ -222,9 +219,8 @@ namespace TeamThing.Web.Controllers
             return response;
         }
 
-        // DELETE /api/thing/5
         [HttpDelete]
-        public HttpResponseMessage Delete(ServiceModel.DeleteThingViewModel viewModel)
+        public HttpResponseMessage Delete(int id, ServiceModel.DeleteThingViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -232,7 +228,7 @@ namespace TeamThing.Web.Controllers
             }
 
             var thing = context.GetAll<DomainModel.Thing>()
-                               .FirstOrDefault(u => u.Id == viewModel.Id);
+                               .FirstOrDefault(u => u.Id == id);
 
             //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
             if (thing == null)
@@ -250,5 +246,5 @@ namespace TeamThing.Web.Controllers
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
-    }
+    }  
 }

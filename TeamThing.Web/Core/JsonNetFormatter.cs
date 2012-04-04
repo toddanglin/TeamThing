@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Json;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Formatting;
@@ -11,7 +12,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace TeamThing.Web.Core
 {
-    public class JsonNetFormatter : MediaTypeFormatter
+    public class JsonNetFormatter : JsonMediaTypeFormatter 
     {
         private readonly JsonSerializerSettings jsonSerializerSettings;
 
@@ -31,7 +32,8 @@ namespace TeamThing.Web.Core
 
         protected override bool CanReadType(Type type)
         {
-            return type != typeof(IKeyValueModel);
+            return true; //WE WILL HANDLE IKeyValues with the base implmentation
+            //return type != typeof(IKeyValueModel);
         }
 
         protected override bool CanWriteType(Type type)
@@ -45,22 +47,32 @@ namespace TeamThing.Web.Core
             Stream stream, HttpContentHeaders contentHeaders,
             FormatterContext formatterContext)
         {
-            var task = Task<object>.Factory.StartNew(() =>
+            Task<object> task;
+            if (type == typeof(IKeyValueModel))
             {
-                var settings = new JsonSerializerSettings()
+
+                task = base.OnReadFromStreamAsync(type, stream, contentHeaders, formatterContext);
+            }
+            else
+            {
+                task = Task<object>.Factory.StartNew(() =>
                 {
-                    NullValueHandling = NullValueHandling.Ignore,
-                };
+                    var settings = new JsonSerializerSettings()
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                    };
 
-                var sr = new StreamReader(stream);
-                var jreader = new JsonTextReader(sr);
+                    var sr = new StreamReader(stream);
+                    var jreader = new JsonTextReader(sr);
 
-                var ser = new JsonSerializer();
-                ser.Converters.Add(new IsoDateTimeConverter());
+                    var ser = new JsonSerializer();
+                    ser.Converters.Add(new IsoDateTimeConverter());
 
-                object val = ser.Deserialize(jreader, type);
-                return val;
-            });
+                    object val = ser.Deserialize(jreader, type);
+                    return val;
+
+                });
+            }
 
             return task;
         }
@@ -70,24 +82,36 @@ namespace TeamThing.Web.Core
             FormatterContext formatterContext,
             TransportContext transportContext)
         {
-            // Create a serializer
-            var serializer = JsonSerializer.Create(jsonSerializerSettings);
 
-            // Create task writing the serialized content
-            return Task.Factory.StartNew(
-                () =>
-                {
-                    using (var jsonTextWriter =
-                        new JsonTextWriter(new StreamWriter(stream))
-                            {
-                                Formatting = Formatting.Indented,
-                                CloseOutput = false
-                            })
+            Task task = null;
+            //use the standard serilizizer for these items.
+            if (type == typeof(JsonValue) || type == typeof(JsonObject) || type == typeof(JsonArray))
+            {
+                task = base.OnWriteToStreamAsync(type, value, stream, contentHeaders, formatterContext, transportContext);
+            }
+            else
+            {
+                // Create a serializer
+                var serializer = JsonSerializer.Create(jsonSerializerSettings);
+
+                // Create task writing the serialized content
+                task = Task.Factory.StartNew(
+                    () =>
                     {
-                        serializer.Serialize(jsonTextWriter, value);
-                        jsonTextWriter.Flush();
-                    }
-                });
+                        using (var jsonTextWriter =
+                            new JsonTextWriter(new StreamWriter(stream))
+                                {
+                                    Formatting = Formatting.Indented,
+                                    CloseOutput = false
+                                })
+                        {
+                            serializer.Serialize(jsonTextWriter, value);
+                            jsonTextWriter.Flush();
+                        }
+                    });
+            }
+
+            return task;
         }
     }
 }

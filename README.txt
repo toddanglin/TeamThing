@@ -1,7 +1,7 @@
-Service API
+<h1>Service API</h1>
 
-User Methods
-	Search Teams
+<h2>User Methods</h2>
+	Search Users
 		Notes
 			Most standard odata search conventions can be used to search for users.
 		URL
@@ -65,7 +65,7 @@ User Methods
 					returns JSON error array
 					Example: ["A user with this email address has already registered!"]
 
-Team Methods
+<h2>Team Methods</h2>
 
 	-Search Teams
 		Notes
@@ -202,7 +202,7 @@ Team Methods
 			FAILURE
 				404 Not Found - When invalid team or user
 				400 Bad Request - When trying to deny access to team owner
-Thing Methods
+<h2>Thing Methods</h2>
 	-Search Things
 		Notes
 			Most standard odata search conventions can be used to search for things.

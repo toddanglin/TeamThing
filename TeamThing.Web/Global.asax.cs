@@ -30,12 +30,21 @@ namespace TeamThing.Web
             //    routeTemplate: "api/team/{id}/things",
             //    defaults: new { controller = "Team", action = "GetThings" }
             //);
+
+            routes.MapHttpRoute(
+               name: "PutApi",
+               routeTemplate: "api/{controller}/{id}/{action}",
+               defaults: new { Action = "Put" },
+               constraints: new { httpMethod = new HttpMethodConstraint(new string[] { "PUT" }) }
+           );
             routes.MapHttpRoute(
                 name: "SingleResourceApi",
                 routeTemplate: "api/{controller}/{id}/{action}",
-                defaults: new { },
+                defaults: new {  },
                 constraints: new { id = @"\d+" }
-            );
+            ); 
+            
+           
 
             routes.MapHttpRoute(
                 name: "HeaderBasedApi",
@@ -92,7 +101,7 @@ namespace TeamThing.Web
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-            //RegisterApis(GlobalConfiguration.Configuration);
+            RegisterApis(GlobalConfiguration.Configuration);
         }
 
         protected void Application_Start()

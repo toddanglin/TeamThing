@@ -16,15 +16,19 @@
 
         this.thingList = new ThingListViewModel(this, team);
 
-
-
         this.refresh = function () {
             //TODO: Memory leak?!?
             application.showTeam(that.team);
         }
 
         function thingAdded(thing) {
-            that.team.Things.push(thing);
+            that.team.things.push(thing);
+            that.refresh();
+        }
+
+        function memberApproved(user) {
+            that.team.teamMembers.push(user);
+            that.team.pendingTeamMembers = $.grep(that.team.pendingTeamMembers, function (e) { return e.id != user.id });            
             that.refresh();
         }
 
@@ -43,18 +47,20 @@
         this.denyMember = function (user) {
 
             var teamId = that.team.id;
-            var approvalInfo = { id: teamId, userId: user.id };
+            var approvalInfo = { userId: user.id };
 
             //ToDO: will this cause a memory leak?!
             application.dataProvider.updateResource("/api/team/" + teamId + "/denymember", approvalInfo, this.refresh);
         };
-
+        
         this.approveMember = function (user) {
             var teamId = that.team.id;
-            var approvalInfo = { teamId: teamId, userId: user.id };
+            var approvalInfo = { userId: user.id };
 
             //ToDO: will this cause a memory leak?!
-            application.dataProvider.updateResource("/api/team/" + teamId + "/approvemember", approvalInfo, this.refresh);
+            application.dataProvider.updateResource("/api/team/" + teamId + "/approvemember", approvalInfo, function () {
+                memberApproved(user);
+            });
         };
 
         this.addThing = function () {
@@ -77,13 +83,10 @@
                     application.dataProvider.createResource("/api/thing", thing, function (result) {
                         application.closeDialog(); //ewww
                         thingAdded(result);
-
-                        kendo.unbind($("#thingEditor"), vm);
                     });
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
-                    kendo.unbind($("#thingEditor"), this);
                 }
             };
 
@@ -179,18 +182,16 @@
                     var currentUserId = application.user.id;
 
                     //create the team object
-                    var team = { name: this.name, userId: currentUserId, id:this.foundTeamId };
+                    var team = { userId: currentUserId, id:this.foundTeamId };
                     var vm = this;
                     //save the new team back to the server
                     application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {
                         application.closeDialog(); //ewww
                         teamJoined(result);
-                        kendo.unbind($("#joinTeam"), vm);
                     });
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
-                    kendo.unbind($("#joinTeam"), this);
                 }
             });
 
@@ -200,7 +201,8 @@
         this.removeTeam = function (team) {
             if (confirm("SRSLY?")) {
                 var currentUserId = application.user.id;
-                application.dataProvider.removeResource('/api/team/' + team.id, { userId: currentUserId }, function () {
+                var vm = { userId: currentUserId };
+                application.dataProvider.removeResource('/api/team/' + team.id, vm, function () {
                     teamRemoved(team);
                 });
             }
@@ -221,12 +223,12 @@
                     //TODO: instead of an exact match we could let users se how many partials matches there are?
                     application.dataProvider.get("/api/team?$filter=Name ne null and tolower(Name) eq '" + searchedName.toLowerCase() + "'", function (result) {
 
-                        if (result.length > 0 && result[0].Id != vm.id) {
+                        if (result.length > 0 && result[0].id != vm.id) {
                             vm.set('canSave', false);
                             vm.set('searchStatusClass', 'searchResult error');
                             vm.set('searchStatusMessage', 'Team Name Not Available');
                         }
-                        else if (result.length > 0 && result[0].Id == vm.id) {
+                        else if (result.length > 0 && result[0].id == vm.id) {
                             vm.set('canSave', true);
                             vm.set('searchStatusClass', 'searchResult ok');
                             vm.set('searchStatusMessage', '');
@@ -249,13 +251,10 @@
                     application.dataProvider.updateResource("/api/team/" + editedTeam.id, editedTeam, function (result) {
                         application.closeDialog(); //ewww
                         teamUpdated(result);
-
-                        kendo.unbind($("#newTeam"), vm);
                     });
                 },
                 cancel: function (e) {
                     application.closeDialog(); //ewww
-                    kendo.unbind($("#newTeam"), this);
                 }
             };
 
@@ -301,12 +300,9 @@
                     application.dataProvider.createResource("/api/team", team, function (result) {
                         application.closeDialog(); //ewww
                         teamCreated(result);
-
-                        kendo.unbind($("#newTeam"), this);
                     });
                 },
                 cancel: function (e) {
-                    kendo.unbind($("#newTeam"), this);
                     application.closeDialog(); //ewww
                 }
             };
@@ -341,7 +337,6 @@
         var activeThings = things.filter(function (t) {
             return t.status == "InProgress";
         });
-
         var completedThings = things.filter(function (t) {
             return t.status == "Completed";
         });
@@ -350,42 +345,10 @@
         this.activeThings = $.map(activeThings, createThingViewModel);
         this.completedThings = $.map(completedThings, createThingViewModel);
 
-        this.edit = function (editedThing) {
-
-            application.dataProvider.get("/api/team/" + editedThing.team.id, function (result) {
-                var thingEditModel = {
-                    description: editedThing.description,
-                    availableTeamMembers: result.teamMembers,
-                    selectedTeamMembers: $.map(editedThing.assignedTo, function (member) { return member }),
-                    save: function (e) {
-
-                        //get the current application user's id
-                        var currentUserId = application.user.id;
-
-                        var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.id });
-
-                        //create the thing object
-                        var thing = { editedById: currentUserId, description: this.description, assignedTo: assignedTo, id:editedThing.id };
-
-                        //save the new thing back to the server
-                        application.dataProvider.updateResource("/api/thing/" + editedThing.id, thing, function (result) {
-                            application.closeDialog(); //ewww
-                            thingUpdated(result);
-                        });
-                    },
-                    cancel: function (e) {
-                        application.closeDialog(); //ewww
-                    }
-                };
-
-                application.showDialog("#thingEditor", "Edit a Thing", "/thingEditor.html", thingEditModel);
-            });
-
-        };
-
         function createThingViewModel(thing) {
             return new ThingListItemViewModel(thing, that);
         }
+
         function thingAdded(thing) {
             thingContainer.things.push(thing);
             parent.refresh();
@@ -408,15 +371,46 @@
             parent.refresh();
         }
 
+        this.edit = function (editedThing) {
+
+            application.dataProvider.get("/api/team/" + editedThing.team.id, function (result) {
+                var thingEditModel = {
+                    description: editedThing.description,
+                    availableTeamMembers: result.teamMembers,
+                    selectedTeamMembers: $.map(editedThing.assignedTo, function (member) { return member }),
+                    save: function (e) {
+
+                        //get the current application user's id
+                        var currentUserId = application.user.id;
+
+                        var assignedTo = $.map(this.selectedTeamMembers, function (member) { return member.id });
+
+                        //create the thing object
+                        var thing = { editedById: currentUserId, description: this.description, assignedTo: assignedTo, id: editedThing.id };
+
+                        //save the new thing back to the server
+                        application.dataProvider.updateResource("/api/thing/" + editedThing.id, thing, function (result) {
+                            application.closeDialog(); //ewww
+                            thingUpdated(result);
+                        });
+                    },
+                    cancel: function (e) {
+                        application.closeDialog(); //ewww
+                    }
+                };
+
+                application.showDialog("#thingEditor", "Edit a Thing", "/thingEditor.html", thingEditModel);
+            });
+
+        };
         this.remove = function (thing) {
             if (confirm("SRSLY?")) {
                 var currentUserId = application.user.id;
-                application.dataProvider.removeResource('/api/thing/' + thing.id, { deletedById: currentUserId }, function () {
+                application.dataProvider.removeResource('/api/thing/' + thing.id, { deletedById: currentUserId, id:thing.id }, function () {
                     thingRemoved(thing);
                 });
             }
         };
-
         this.complete = function (thing) {
             if (confirm("SRSLY?")) {
                 var vm = { id: thing.id, userId: application.user.id };
@@ -432,52 +426,66 @@
         return this;
     }
 
-    function ThingListItemViewModel(thing, thingListViewModel) {
+    function ThingListItemViewModel(_thing, thingListViewModel) {
 
         var parent = thingListViewModel;
-        this.thing = thing;
+        this.thing = _thing;
 
         this.edit = function (e) { parent.edit(this.thing); };
+        this.view = function (e) { parent.view(this.thing); };
         this.remove = function (e) { parent.remove(this.thing); };
         this.complete = function (e) { parent.complete(this.thing); };
 
+        this.isDone = function () {
+            return this.thing.status == "Completed";
+        };
+
         this.userCanEdit = function () {
             var applicationUser = application.user;
-            var assignedUsers = $.map(thing.assignedTo, function (user) {
+            var assignedUsers = $.map(this.thing.assignedTo, function (user) {
                 return user.id;
             });
+
+            if (this.isDone == true) {
+                return false;
+            }
+
             //if (applicationUser != null && (this.thing.OwnerId === applicationUser.Id || $.inArray(applicationUser.Id, assignedUsers) != -1)) {
             if (applicationUser != null && this.thing.owner.id === applicationUser.id) {
                 return true;
             }
             return false;
         };
-
         this.userCanRemove = function () {
             var applicationUser = application.user;
+
+            if (this.isDone == true) {
+                return false;
+            }
 
             if (applicationUser != null && this.thing.owner.id === applicationUser.id) {
                 return true;
             }
             return false;
         };
-
-        this.isDone = function () {
-            return this.thing.Status == "Completed";
-        };
-
         this.userCanComplete = function () {
             var applicationUser = application.user;
+
+            if (this.isDone==true){
+                return false;
+            }
 
             var assignedToIds = $.map(this.thing.assignedTo, function (thingMember) {
                 return thingMember.id;
             });
 
-            if (applicationUser != null && $.inArray(applicationUser.id, assignedToIds) != -1) {
+            if ( applicationUser != null && $.inArray(applicationUser.id, assignedToIds) != -1) {
                 return true;
             }
             return false;
         };
+
+       
 
         return this;
     };
@@ -508,10 +516,10 @@
 
     function PendingMemberListItemViewModel(pendingMember, teamController) {
         var parent = teamController;
-        this.pendingMember = pendingMember;
+        this.user = pendingMember;
 
-        this.approveUser = function (e) { parent.approveMember(this.pendingMember); };
-        this.denyUser = function (e) { parent.denyMember(this.pendingMember); };
+        this.approveUser = function (e) { parent.approveMember(this.user); };
+        this.denyUser = function (e) { parent.denyMember(this.user); };
 
         this.userCanApprove = function () {
 
@@ -541,6 +549,15 @@
 
             return false;
         };
+
+        //this.userCanBeDenied = function () {
+
+        //    if (parent.userIsAdmin(application.user) || user.id != application.user.id) {
+        //        return true;
+        //    }
+
+        //    return false;
+        //};
     };
 
     function SignInViewModel() {
@@ -632,16 +649,22 @@
 
         this.closeDialog = function () {
             if (dialog != null) {
+                kendo.unbind($(dialog.selector), dialog.viewModel);
                 var window = dialog.data("kendoWindow");
                 window.content(' ') //empty string does not work, it still returns the content
                       .close();
             }
         };
 
+
         //TODO: maybe we should move the binding outside of this?!
         this.showDialog = function (bindingTargetSelector, title, url, viewModel) {
 
             var dialog = createDialog();
+            dialog.binding = {
+                selector: bindingTargetSelector,
+                viewModel: viewModel
+            };
 
             var window = dialog.data("kendoWindow");
 

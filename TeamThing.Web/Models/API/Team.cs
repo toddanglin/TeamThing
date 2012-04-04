@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Http;
 
 namespace TeamThing.Web.Models.API
 {
@@ -50,23 +51,8 @@ namespace TeamThing.Web.Models.API
 
     public class JoinTeamViewModel
     {
-        [Required(ErrorMessage = "A team must have a name")]
-        [StringLength(255, MinimumLength = 1, ErrorMessage = "A team name must be between 1 and 255 characters")]
-        public string Name
-        {
-            get;
-            set;
-        }
-
         [Required(ErrorMessage = "A user is required to join a team")]
         public int UserId
-        {
-            get;
-            set;
-        }
-
-        [Required(ErrorMessage = "Team Id required to join a team.")]
-        public int Id 
         {
             get;
             set;
@@ -113,15 +99,40 @@ namespace TeamThing.Web.Models.API
             set;
         }
 
-        [Required(ErrorMessage = "To update a team, an id must be sent to the server")]
-        public int Id
+        [Required(ErrorMessage = "To update a team, a user id must be sent to the server")]
+        public int UpdatedById
         {
             get;
             set;
         }
+    }
 
-        [Required(ErrorMessage = "To update a team, a user id must be sent to the server")]
-        public int UpdatedById
+    public class DeleteTeamViewModel
+    {
+        public int UserId
+        {
+            get;
+            set;
+        }
+    }
+
+    public class UpdateThingStatusViewModel
+    {
+        public int UserId
+        {
+            get;
+            set;
+        }
+        public string Status
+        {
+            get;
+            set;
+        }
+    }
+
+    public class MemberApprovalViewModel
+    {
+        public int UserId
         {
             get;
             set;
@@ -160,14 +171,6 @@ namespace TeamThing.Web.Models.API
 
     public class UpdateThingViewModel
     {
-
-        [Required(ErrorMessage = "A valid id is required to update an existing thing")]
-        public int Id
-        {
-            get;
-            set;
-        }
-
         public string Description
         {
             get;
@@ -198,12 +201,14 @@ namespace TeamThing.Web.Models.API
             get;
             set;
         }
+    }
 
-        public int Id
+    public class CompleteThingViewModel
+    {
+        public int UserId
         {
             get;
             set;
         }
-
     }
 }

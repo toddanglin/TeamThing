@@ -26,7 +26,7 @@ namespace TeamThing.Web.Core.Mappers
 
         public static IEnumerable<ServiceModel.TeamMemberBasic> MapToServiceModel(this IQueryable<DomainModel.TeamUser> teamMembers)
         {
-            return teamMembers.Select(MapToServiceModel);
+            return teamMembers.Select(MapToBasicServiceModel);
         }
 
         public static IQueryable<ServiceModel.UserBasic> MapToServiceModel(this IQueryable<DomainModel.User> users)
@@ -48,7 +48,7 @@ namespace TeamThing.Web.Core.Mappers
         {
             return things.Select(MapToServiceModel).AsQueryable();
         }
-        
+
         public static IQueryable<ServiceModel.TeamBasic> MapToBasicServiceModel(this IEnumerable<DomainModel.Team> t)
         {
             return t.Select(MapToBasicServiceModel).AsQueryable();
@@ -63,7 +63,7 @@ namespace TeamThing.Web.Core.Mappers
                 Description = t.Description,
                 Status = t.Status.ToString(),
                 DateCreated = t.DateCreated,
-                AssignedTo = t.AssignedTo.Select(a=>a.AssignedToUser).MapToBasicServiceModel(),
+                AssignedTo = t.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel(),
                 Owner = t.Owner.MapToBasicServiceModel(),
                 Team = t.Team.MapToBasicServiceModel()
             };
@@ -94,7 +94,7 @@ namespace TeamThing.Web.Core.Mappers
         }
 
 
-        public static ServiceModel.TeamMemberBasic MapToServiceModel(this DomainModel.TeamUser tm)
+        public static ServiceModel.TeamMemberBasic MapToBasicServiceModel(this DomainModel.TeamUser tm)
         {
             if (tm == null) return null;
             return new ServiceModel.TeamMemberBasic()
@@ -102,7 +102,7 @@ namespace TeamThing.Web.Core.Mappers
                 Id = tm.UserId,
                 FullName = tm.User.FirstName + " " + tm.User.LastName,
                 EmailAddress = tm.User.EmailAddress,
-                ImagePath =tm.User.ImagePath ?? "/images/GenericUserImage.gif",
+                ImagePath = tm.User.ImagePath ?? "/images/GenericUserImage.gif",
                 Role = tm.Role.ToString()
             };
         }
@@ -115,8 +115,8 @@ namespace TeamThing.Web.Core.Mappers
                 Id = t.Id,
                 Name = t.Name,
                 IsPublic = t.IsOpen,
-                TeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToServiceModel).ToList(),
-                PendingTeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToServiceModel).ToList(),
+                TeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToBasicServiceModel).ToList(),
+                PendingTeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToBasicServiceModel).ToList(),
                 Administrators = t.TeamMembers.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray(),
                 Owner = t.Owner.MapToBasicServiceModel(),
                 Things = t.TeamThings.MapToServiceModel().ToList()
@@ -130,7 +130,7 @@ namespace TeamThing.Web.Core.Mappers
             {
                 Id = t.Id,
                 Name = t.Name,
-                OwnerId=t.OwnerId,
+                OwnerId = t.OwnerId,
                 IsPublic = t.IsOpen,
                 ImagePath = t.ImagePath ?? "/images/GenericUserImage.gif",
                 Administrators = t.TeamMembers.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray()
@@ -144,7 +144,7 @@ namespace TeamThing.Web.Core.Mappers
             return new ServiceModel.User()
             {
                 Id = user.Id,
-                ImagePath=user.ImagePath ?? "/images/GenericUserImage.gif",
+                ImagePath = user.ImagePath ?? "/images/GenericUserImage.gif",
                 EmailAddress = user.EmailAddress,
                 Teams = user.Teams.Where(t => t.Status == DomainModel.TeamUserStatus.Approved).Select(tu => tu.Team).MapToBasicServiceModel().ToList(),
                 PendingTeams = user.Teams.Where(t => t.Status == DomainModel.TeamUserStatus.Pending).Select(tu => tu.Team).MapToBasicServiceModel().ToList(),

@@ -16,18 +16,17 @@ namespace TeamThing.Web.Controllers
     public class TeamController : ApiController
     {
         private readonly DomainModel.TeamThingContext context;
+
         public TeamController()
         {
             this.context = new DomainModel.TeamThingContext();
         }
 
-        [HttpGet]
         public IQueryable<ServiceModel.TeamBasic> Get()
         {
             return context.GetAll<TeamThing.Model.Team>().MapToBasicServiceModel();
         }
 
-        [HttpGet]
         public HttpResponseMessage Get(int id)
         {
             var item = context.GetAll<TeamThing.Model.Team>()
@@ -44,7 +43,6 @@ namespace TeamThing.Web.Controllers
             return response;
         }
 
-        [HttpPost]
         public HttpResponseMessage Post(ServiceModel.AddTeamViewModel addTeamViewModel)
         {
             if (!ModelState.IsValid)
@@ -80,85 +78,7 @@ namespace TeamThing.Web.Controllers
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
         }
-
-        [HttpPut]
-        public HttpResponseMessage Put(ServiceModel.UpdateTeamViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                throw new HttpResponseException(ModelState.ToJson().ToString(), HttpStatusCode.BadRequest);
-            }
-
-            var existingTeam = context.GetAll<DomainModel.Team>()
-                                  .FirstOrDefault(u => u.Name.Equals(viewModel.Name) && u.Id != viewModel.Id);
-
-            if (existingTeam != null)
-            {
-                ModelState.AddModelError("", "Team name already in use");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
-            }
-
-            var team = context.GetAll<DomainModel.Team>()
-                              .FirstOrDefault(u => u.Id == viewModel.Id);
-
-            if (team == null)
-            {
-                ModelState.AddModelError("", "Invalid team edited");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
-            }
-
-            var editor = team.TeamMembers
-                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == viewModel.UpdatedById);
-
-            if (editor == null)
-            {
-                ModelState.AddModelError("", "User does not have permissions to edit team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
-            }
-
-            team.Name = viewModel.Name;
-            team.IsOpen = viewModel.IsPublic;
-
-            context.SaveChanges();
-
-            var sTeam = team.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
-            response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
-            return response;
-        }
-
-        [HttpDelete]
-        public HttpResponseMessage Delete(int id, int userId)
-        {
-            if (!ModelState.IsValid)
-            {
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
-            }
-
-            var team = context.GetAll<DomainModel.Team>()
-                              .FirstOrDefault(u => u.Id == id);
-
-            //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
-            //if (team == null)
-            //{
-            //    throw new HttpResponseException("Invalid Team", HttpStatusCode.BadRequest);
-            //}
-
-            var editor = team.TeamMembers
-                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == userId);
-
-            if (editor == null)
-            {
-                ModelState.AddModelError("", "User does not have permissions to edit team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
-            }
-
-            context.Delete(team);
-            context.SaveChanges();
-
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
-        }
-
+                
         [HttpPut]
         public HttpResponseMessage Join(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
@@ -168,7 +88,7 @@ namespace TeamThing.Web.Controllers
             }
 
             var team = context.GetAll<DomainModel.Team>()
-                              .FirstOrDefault(u => u.Id == joinTeamViewModel.Id);
+                              .FirstOrDefault(u => u.Id == id);
 
             if (team == null)
             {
@@ -199,24 +119,24 @@ namespace TeamThing.Web.Controllers
             team.TeamMembers.Add(newTeamMember);
             context.SaveChanges();
 
-            var sTeam = team.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
+            var sTeam = team.MapToBasicServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.TeamBasic>(sTeam, HttpStatusCode.OK);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
         }
 
         [HttpPut]
-        public void ApproveMember(int teamId, int userId)
+        public void ApproveMember(int id, ServiceModel.MemberApprovalViewModel viewModel)
         {
             var team = context.GetAll<DomainModel.Team>()
-                              .FirstOrDefault(u => u.Id == teamId);
+                           .FirstOrDefault(u => u.Id == id);
 
             if (team == null)
             {
                 throw new HttpResponseException("Invalid Team", HttpStatusCode.NotFound);
             }
 
-            var teamMember = team.TeamMembers.FirstOrDefault(t => t.UserId == userId);
+            var teamMember = team.TeamMembers.FirstOrDefault(t => t.UserId == viewModel.UserId);
 
             if (teamMember == null)
             {
@@ -228,17 +148,17 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public void DenyMember(int id, int userId)
+        public void DenyMember(int id, ServiceModel.MemberApprovalViewModel viewModel)
         {
             var team = context.GetAll<DomainModel.Team>()
-                              .FirstOrDefault(u => u.Id == id);
+                           .FirstOrDefault(u => u.Id == id);
 
             if (team == null)
             {
                 throw new HttpResponseException("Invalid Team", HttpStatusCode.NotFound);
             }
 
-            var teamMember = team.TeamMembers.FirstOrDefault(t => t.UserId == userId);
+            var teamMember = team.TeamMembers.FirstOrDefault(t => t.UserId == viewModel.UserId);
 
             if (teamMember == null)
             {
@@ -253,5 +173,83 @@ namespace TeamThing.Web.Controllers
             teamMember.Status = DomainModel.TeamUserStatus.Denyed;
             context.SaveChanges();
         }
-    }
+
+        [HttpPut]
+        public HttpResponseMessage Put(int id, ServiceModel.UpdateTeamViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new HttpResponseException(ModelState.ToJson().ToString(), HttpStatusCode.BadRequest);
+            }
+
+            var existingTeam = context.GetAll<DomainModel.Team>()
+                                  .FirstOrDefault(u => u.Name.Equals(viewModel.Name) && u.Id != id);
+
+            if (existingTeam != null)
+            {
+                ModelState.AddModelError("", "Team name already in use");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            var team = context.GetAll<DomainModel.Team>()
+                              .FirstOrDefault(u => u.Id == id);
+
+            if (team == null)
+            {
+                ModelState.AddModelError("", "Invalid team edited");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            var editor = team.TeamMembers
+                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == viewModel.UpdatedById);
+
+            if (editor == null)
+            {
+                ModelState.AddModelError("", "User does not have permissions to edit team");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            team.Name = viewModel.Name;
+            team.IsOpen = viewModel.IsPublic;
+
+            context.SaveChanges();
+
+            var sTeam = team.MapToServiceModel();
+            var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
+            return response;
+        }
+
+        [HttpDelete]
+        public HttpResponseMessage Delete(int id, ServiceModel.DeleteTeamViewModel deleteParameters)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            var team = context.GetAll<DomainModel.Team>()
+                              .FirstOrDefault(u => u.Id == id);
+
+            //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
+            if (team == null)
+            {
+                throw new HttpResponseException("Invalid Team", HttpStatusCode.BadRequest);
+            }
+
+            var editor = team.TeamMembers
+                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == deleteParameters.UserId);
+
+            if (editor == null)
+            {
+                ModelState.AddModelError("", "User does not have permissions to edit team");
+                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+            }
+
+            context.Delete(team);
+            context.SaveChanges();
+
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
+    }    
 }
