@@ -1,14 +1,12 @@
 
-
 #TeamThing Service API
 
 ##User Methods
-	###Search Users
-	
+	Search Users	
 		Notes
 			Most standard odata search conventions can be used to search for users.
 			
-			<table>
+<table>
   <tr>
    <th>Request Type</th><th>Url</th><th>Result</th>
   </tr>
