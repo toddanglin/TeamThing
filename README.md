@@ -1,6 +1,6 @@
-#Service API
+<h1>Service API</h1>
 
-#User Methods
+<h2>User Methods</h2>
 	Search Users
 		Notes
 			Most standard odata search conventions can be used to search for users.
