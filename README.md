@@ -1,9 +1,8 @@
 #TeamThing Service API
 
 ##User Methods
-	**Search Users**
-		Notes
-			Most standard odata search conventions can be used to search for users.
+**Search Users**  
+Most standard odata search conventions can be used to search for users.
 			
 <table>
   <tr>
@@ -15,68 +14,88 @@
     	Example:
     	<br/>/api/team?$filter=EmailAddress ne null and tolower(EmailAddress) eq 'jholt456@gmail.com'
     </td>
-    <td>SUCCESS - 200 Ok
-    		[{"EmailAddress":"jholt456@gmail.com", Id":6}]
-    	FAILURE - 200 Ok
-    		Returns empty array for no results</td>
+    <td>SUCCESS - 200 Ok  
+    <pre>[{"EmailAddress":"jholt456@gmail.com", Id":6}]</pre>
+    	FAILURE - 200 Ok  
+    	Returns empty array for no results</td>
   </tr> 
 </table>
 
-	-Sign in an Existing User
-		Url
-			POST: /api/user/signin			
+**Sign in an Existing User**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>
+    	/api/user/signin
+    </td>
+    <td>
+    	{"EmailAddress":"jholt456@gmail.com"}
+    </td>
+    <td>SUCCESS - 200 Ok  
+    	<pre>
+{"EmailAddress":"jholt456@gmail.com",
+"Id":6,
+"PendingTeams":[],
+"Teams":[{"Administrators":[6],
+			"Id":6,
+			"IsPublic":true,
+			"Name":"567 asdfasdf",
+			"OwnerId":6},
+		{"Administrators":[6],
+			"Id":8,
+			"IsPublic":false,
+			"Name":"Test Team",
+			"OwnerId":6}],
+"Things":[{"Description":"Test thing",
+		"Id":5,"Status":
+		"InProgress"}]
+}
+    	</pre>
+    	Failure 400: Bad Request
+	returns JSON error array
+		<pre>["A user does not exist with this user name."]</pre>
+    </td>
+  </tr> 
+</table>
 
-		Params
-			{"EmailAddress":"jholt456@gmail.com"}
+**Register a New User**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>
+    	/api/user/register
+    </td>
+    <td>
+    	{"EmailAddress":"newUser@test.com"}
+    </td>
+    <td>SUCCESS - 200 Ok  
+    	<pre>
+{"EmailAddress":"newUser@test.com",
+	"Id":7,
+	"PendingTeams":[],
+	"Teams":[],
+	"Things":[]
+	}
+    	</pre>
+    	Failure 400: Bad Request
+	Returns JSON error array
+	<pre>
+["A user with this email address has already registered!"]
+</pre>
+    </td>
+  </tr> 
+</table>
 
-		Result				
-			SUCCESS
-					200: {"EmailAddress":"jholt456@gmail.com",
-							"Id":6,
-							"PendingTeams":[],
-							"Teams":[{"Administrators":[6],
-										"Id":6,
-										"IsPublic":true,
-										"Name":"567 asdfasdf",
-										"OwnerId":6},
-									{"Administrators":[6],
-										"Id":8,
-										"IsPublic":false,
-										"Name":"Test Team",
-										"OwnerId":6}],
-						"Things":[{"Description":"Test thing",
-									"Id":5,"Status":
-									"InProgress"}]
-						}
-			FAILURE
-				400: Bad Request
-				returns JSON error array
-				Example: ["A user does not exist with this user name."]
 
-	-Register a New User
-		Url
-			POST: /api/user/register
+##Team Methods
 
-		Params
-			{"EmailAddress":"newUser@test.com"}
-
-		Result
-			SUCCESS
-				{"EmailAddress":"newUser@test.com",
-					"Id":7,
-					"PendingTeams":[],
-					"Teams":[],
-					"Things":[]
-					}
-
-			FAILURE
-					400: Bad Request
-					returns JSON error array
-					Example: ["A user with this email address has already registered!"]
-
-<h2>Team Methods</h2>
-
-	-Search Teams
+**Search Teams**
 		Notes
 			Most standard odata search conventions can be used to search for teams.
 		URL
@@ -99,120 +118,216 @@
 			FAILURE - 200 Ok
 				Returns empty array for no results
 
-	-Get a Team	
-		URL
-			GET: /api/team/6
+**Get a Team**	
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>GET</td>
+    <td>
+    	/api/team/6
+    </td>
+    <td>    	
+    </td>
+    <td>SUCCESS - 200 Ok  
+    	<pre>
+{"Id":6,
+"IsPublic":true,
+"Name":"567 asdfasdf",
+"PendingTeamMembers":[],
+"TeamMembers":[{"EmailAddress":"jholt456@gmail.com",
+				"FullName":" ",
+				"Id":6,
+				"Role":"Administrator"}]}
+    	</pre>
+    	Failure 400: Bad Request
+	Returns JSON error array
+	<pre>
+["Invalid Team"]
+</pre>
+    </td>
+  </tr> 
+</table>
 
-		Result 
-			SUCCESS - 200 Ok
-				{"Id":6,
-					"IsPublic":true,
-					"Name":"567 asdfasdf",
-					"PendingTeamMembers":[],
-					"TeamMembers":[{"EmailAddress":"jholt456@gmail.com",
-									"FullName":" ",
-									"Id":6,
-									"Role":"Administrator"}]}
 
-			FAILURE
-				- 400 Bad Requestd
-				returns JSON error array
-				Example: ["Invalid Team"]
-
-	-Create a Team
-		URL
-			POST: /api/team		
-		Params
-			{"name":"asdf","ispublic":true,"createdById":6}
-		Result
-			SUCCESS - 201 Created
-				{"Administrators":[6],
-				 "Id":19,
-				 "IsPublic":false,
-				 "Name":"My new team",
-				 "OwnerId":6}
-			FAILURE - 400 Bad Request - When any data is invalid
-				returns JSON error array
-				Example: ["A team must have a name"]
+**Create a Team**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td>
+    	/api/team
+    </td>
+    <td> 
+    	<pre>
+{"name":"asdf",
+"ispublic":true,
+"createdById":6}
+    	</pre>
+    </td>
+    <td>SUCCESS - 201 Created  
+    	<pre>
+{"Administrators":[6],
+ "Id":19,
+ "IsPublic":false,
+ "Name":"My new team",
+ "OwnerId":6}
+    	</pre>
+    	Failure - 400 Bad Request - When any data is invalid
+	Returns JSON error array
+	<pre>["A team must have a name"]</pre>
+    </td>
+  </tr> 
+</table>
 	
-	-Update a Team
-		URL
-			PUT: /api/team/8
-		Params	
-			{"id":8,"name":"Test Team2","ispublic":true,"updatedbyid":6}
-		Result
-			SUCCESS - 200 Ok
-				{"Id":8,
-					"IsPublic":true,
-					"Name":"Test Team2",
-					"PendingTeamMembers":[],
-					"TeamMembers":[{"EmailAddress":"jholt456@gmail.com",
-									"FullName":" ",
-									"Id":6,
-									"Role":"Administrator"},
-									{"EmailAddress":"newUser@test.com",
-									"FullName":" ",
-									"Id":7,
-									"Role":"Viewer"}]}
-			FAILURE - 400 Bad Request - When any data is invalid
-				returns JSON error array
-				ex: ["Team name already in use"]
+**Update a Team**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>PUT</td>
+    <td>
+    	/api/team/8
+    </td>
+    <td> 
+    	<pre>
+{"id":8,"name":
+"Test Team2",
+"ispublic":true,
+"updatedbyid":6}
+    	</pre>
+    </td>
+    <td>SUCCESS - 201 Created  
+    	<pre>
+{"Id":8,
+"IsPublic":true,
+"Name":"Test Team2",
+"PendingTeamMembers":[],
+"TeamMembers":[{"EmailAddress":"jholt456@gmail.com",
+				"FullName":" ",
+				"Id":6,
+				"Role":"Administrator"},
+				{"EmailAddress":"newUser@test.com",
+				"FullName":" ",
+				"Id":7,
+				"Role":"Viewer"}]}
+    	</pre>
+    	Failure - 400 Bad Request - When any data is invalid
+	Returns JSON error array
+	<pre>["Team name already in use"]</pre>
+    </td>
+  </tr> 
+</table>
 
-	-Delete a Team
-		URL
-			DELETE: /api/team/8
-		Params
-			{"userId":6}
-		Results
-			SUCCESS - 204 No Content
-			FAILURE 
-				400 Bad Request 
-					returns error message string if information is missing, or if user does not have permissions to remove team
+**Delete a Team**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>DELETE</td>
+    <td>
+    	/api/team/8
+    </td>
+    <td> 
+    	<pre>{"userId":6}</pre>
+    </td>
+    <td>SUCCESS - 204 No Content  
+    
+    	Failure - 400 Bad Request - When any data is invalid  
+    	Returns JSON error array
+	<pre>["Invalid Team"]</pre>
+    </td>
+  </tr> 
+</table>
 
-	-Add a User to Team
-		URL
-			PUT: /api/team/6/join
-		Params 
-			{"name":"Test Team","userId":7}
-		Result
-			SUCCESS
-				{"Id":8,"IsPublic":false,
-					"Name":"Test Team",
-					"PendingTeamMembers":[{"EmailAddress":"newUser@test.com",
-										"FullName":" ",
-										"Id":7,
-										"Role":"Viewer"}],
-					"TeamMembers":[{"EmailAddress":"jholt456@gmail.com",
-									"FullName":" ",
-									"Id":6,
-									"Role":"Administrator"}]}
+**Add a User to Team**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>PUT</td>
+    <td>
+    	/api/team/6/join
+    </td>
+    <td> 
+    	<pre>{"userId":6}</pre>
+    </td>
+    <td>SUCCESS - 200 Ok 
+    	<pre>
+{"Id":6,"IsPublic":false,
+"Name":"Test Team",
+"PendingTeamMembers":[{"EmailAddress":"newUser@test.com",
+					"FullName":" ",
+					"Id":7,
+					"Role":"Viewer"}],
+"TeamMembers":[{"EmailAddress":"jholt456@gmail.com",
+				"FullName":" ",
+				"Id":6,
+				"Role":"Administrator"}]}
+    	</pre>
+    	Failure - 400 Bad Request - When any data is invalid  
+    	Returns JSON error array
+	<pre>["Invalid Team"]</pre>
+    </td>
+  </tr> 
+</table>
 
-			FAILURE
-				400 Bad Request - When any data is invalid
-				returns JSON error array
-				Example: ["A team must have a name"]
-	-Approve Pending Team Member
-		URL
-			PUT: /api/team/6/approvemember		
-		Params
-			{"teamId":8,"userId":7}
-		Result
-			SUCCESS - 200 Ok
-			FAILURE
-				404 Not Found - When invalid team or user
+**Approve Pending Team Member**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>PUT</td>
+    <td>
+    	/api/team/6/approvemember
+    </td>
+    <td> 
+    	<pre>{"userId":7}</pre>
+    	</td>
+	 <td>SUCCESS - 200 OK      
+    	
+    	FAILURE
+    	    	
+    	404 Not Found - When invalid team or user
+    	Returns JSON error array
+	<pre>["Invalid Team"]</pre>
+    </td>
+  </tr> 
+</table>
 
-	-Deny User
-		URL
-			PUT: /api/team/6/denymember
-		Params
-			{"teamId":8,"userId":7}
-		Result
-			SUCCESS - 200 Ok
-			FAILURE
-				404 Not Found - When invalid team or user
-				400 Bad Request - When trying to deny access to team owner
-<h2>Thing Methods</h2>
-	-Search Things
+**Deny User**
+<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Params</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>PUT</td>
+    <td>
+    	/api/team/6/denymember
+    </td>
+    <td> 
+    	<pre>{"userId":7}</pre>
+    	</td>
+	 <td>SUCCESS - 200 OK  
+    
+    	FAILURE  
+    	
+    	404 Not Found - When invalid team or user
+	400 Bad Request - When trying to deny access to team owner
+	<pre>["Invalid Team"]</pre>
+    </td>
+  </tr> 
+</table>
+
+##Thing Methods</h2>
+**Search Things**
 		Notes
 			Most standard odata search conventions can be used to search for things.
 		URL
@@ -231,7 +346,7 @@
 			FAILURE - 200 Ok
 				Returns empty array for no results
 
-	-Get a Thing	
+**Get a Thing**	
 		URL
 			GET: /api/thing/6
 
@@ -246,7 +361,7 @@
 				returns JSON error array
 				Example: ["Invalid Thing"]
 
-	-Create a new Thing
+**Create a new Thing**
 		URL
 			POST: /api/thing
 		Params
@@ -275,7 +390,7 @@
 				returns JSON error array
 				Example: ["A thing must be assigned to 1 or more people"]
 
-	-Update a Thing
+**Update a Thing**
 		URL
 			PUT: /api/thing/8
 		Params	
@@ -287,7 +402,7 @@
 				returns JSON error array
 				Example: ["A thing must be assigned to 1 or more people"]
 
-	-Delete a Thing
+**Delete a Thing**
 		URL
 			DELETE: /api/thing/8
 		Params
@@ -298,7 +413,7 @@
 				400 Bad Request 
 					returns error message string if information is missing, or if user does not have permissions to remove thing(only thing owners can delete things)
 
-	-Complete a Thing
+**Complete a Thing**
 		URL
 			PUT: /api/thing/8/complete
 		Params
@@ -313,17 +428,31 @@
 				- 400 Bad Request
 				returns JSON error array
 				Example: ["Invalid Thing"]
-
-	-Complete a Thing
+				
+**Update a Things Status**
 		URL
 			PUT: /api/thing/8/complete
 		Params
-			{"UserId":10, "Status":"Complete"}
+			{"UserId":10, "Status":"Completed"}
 		Results
 			SUCCESS - 200 Ok
 				{"Description":"a sdfasdf ",
 				 "Id":8,
-				 "Status":"Complete"}
+				 "Status":"Completed"}
+
+			FAILURE
+				- 400 Bad Request
+
+**Complete a Thing**
+		URL
+			PUT: /api/thing/8/complete
+		Params
+			{"UserId":10}
+		Results
+			SUCCESS - 200 Ok
+				{"Description":"a sdfasdf ",
+				 "Id":8,
+				 "Status":"Completed"}
 
 			FAILURE
 				- 400 Bad Request
