@@ -164,8 +164,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\mobile\html5reset-1.6.1.css" />
+    <Content Include="Content\mobile\img\bkgndCarbon.png" />
+    <Content Include="Content\mobile\kendo.common.min.css" />
+    <Content Include="Content\mobile\kendo.metro.min.css" />
+    <Content Include="Content\mobile\Metro\editor.png" />
+    <Content Include="Content\mobile\Metro\imagebrowser.png" />
+    <Content Include="Content\mobile\Metro\loading-image.gif" />
+    <Content Include="Content\mobile\Metro\loading.gif" />
+    <Content Include="Content\mobile\Metro\slider-h.gif" />
+    <Content Include="Content\mobile\Metro\slider-v.gif" />
+    <Content Include="Content\mobile\Metro\sprite.png" />
     <Content Include="Images\locked.png" />
     <Content Include="Images\unlocked.png" />
+    <Content Include="Scripts\kendo-2012.1.322.all.min.js" />
+    <Content Include="Scripts\localStore.js" />
+    <Content Include="Scripts\mobile\teamthing.app.js" />
+    <Content Include="Scripts\mobile\teamthing.data.js" />
     <Content Include="thingEditor.html" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -232,7 +247,7 @@
     <Content Include="Mobile\img\defaultTeam.jpg" />
     <Content Include="Mobile\img\teamAwesome.jpg" />
     <Content Include="Mobile\index.html" />
-    <Content Include="Mobile\js\add2home.js" />
+    <Content Include="Scripts\mobile\add2home.js" />
     <Content Include="Mobile\login.html" />
     <Content Include="Mobile\settings.html" />
     <Content Include="Mobile\team.html" />
