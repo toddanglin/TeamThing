@@ -1,4 +1,3 @@
-
 #TeamThing Service API
 
 ##User Methods
@@ -11,12 +10,16 @@
    <th>Request Type</th><th>Url</th><th>Result</th>
   </tr>
   <tr>
-    <td>GET</td><td>/api/team<br>
-    			example:/api/team?$filter=EmailAddress ne null and tolower(EmailAddress) eq 'jholt456@gmail.com'</td><td>	SUCCESS - 200 Ok
-				[{"EmailAddress":"jholt456@gmail.com",
-				"Id":6}]
-			FAILURE - 200 Ok
-				Returns empty array for no results</td>
+    <td>GET</td>
+    <td>/api/team<br/>
+    	Example:
+    	<br/>/api/team?$filter=EmailAddress ne null and tolower(EmailAddress) eq 'jholt456@gmail.com'
+    </td>
+    <td>SUCCESS - 200 Ok
+	    	[{"EmailAddress":"jholt456@gmail.com",
+	    	   Id":6}]
+    	FAILURE - 200 Ok
+    		Returns empty array for no results</td>
   </tr> 
 </table>
 
