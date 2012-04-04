@@ -1,9 +1,20 @@
-<h1>Service API</h1>
+<h1>TeamThing Service API</h1>
 
 <h2>User Methods</h2>
-	Search Users
+	<h3>Search Users</h3>
 		Notes
 			Most standard odata search conventions can be used to search for users.
+
+			<table>
+				<tr>
+					<th>
+						URL
+					</th>
+					<th>
+						Result
+					</th>
+				</tr>
+			</table>
 		URL
 			GET: /api/team?$filter=EmailAddress ne null and tolower(EmailAddress) eq 'jholt456@gmail.com'
 		Result	
