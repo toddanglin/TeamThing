@@ -1,31 +1,26 @@
 
-<table>
-  <tr>
-    <th>Url</th><th>Name</th><th>Rank</th>
-  </tr>
-  <tr>
-    <td>1</td><td>Tom Preston-Werner</td><td>Awesome</td>
-  </tr>
-  <tr>
-    <td>2</td><td>Albert Einstein</td><td>Nearly as awesome</td>
-  </tr>
-</table>
 
 #TeamThing Service API
 
 ##User Methods
 	###Search Users
+	
 		Notes
 			Most standard odata search conventions can be used to search for users.
-
-		URL
-			GET: /api/team?$filter=EmailAddress ne null and tolower(EmailAddress) eq 'jholt456@gmail.com'
-		Result	
-			SUCCESS - 200 Ok
+			
+			<table>
+  <tr>
+   <th>Request Type</th><th>Url</th><th>Result</th>
+  </tr>
+  <tr>
+    <td>GET</td><td>/api/team<br>
+    			example:/api/team?$filter=EmailAddress ne null and tolower(EmailAddress) eq 'jholt456@gmail.com'</td><td>	SUCCESS - 200 Ok
 				[{"EmailAddress":"jholt456@gmail.com",
 				"Id":6}]
 			FAILURE - 200 Ok
-				Returns empty array for no results
+				Returns empty array for no results</td>
+  </tr> 
+</table>
 
 	-Sign in an Existing User
 		Url
