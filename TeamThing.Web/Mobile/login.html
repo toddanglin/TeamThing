@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team Thing</title>
+	
+</head>
+<body class="tt">
+	<div data-role="view" id="vwLogin" data-layout="login" data-transition="overlay:down">	
+		<div class="wrapper">		
+			<ul data-role="listview" data-style="inset" class="loginList">
+				<li>Email <input type="email" id="txtEmail" placeholder="email@example.com" autocapitalize="off" autocorrect="off" autofocus /></li>
+				<li>Password<input type="password" id="txtPass" placeholder="*****" /></li>
+				<li>
+				
+				Remember Me? <input type="checkbox" id="chkRemember" data-role="switch" data-on-label="YES" data-off-label="NO" checked />
+				</li>
+			</ul>
+			
+			<button class="km-button" onclick="login()" id="btnLogin">Sign In</button>
+	    </div>
+	</div>
+	
+	<script>
+		$(function(){
+			// Set a timeout...
+			setTimeout(function(){
+			    // Hide the address bar!
+			    window.scrollTo(0, 1);
+			}, 0);
+		});
+		
+	   	 function login(){
+	   	 	var validator = $("#vwLogin").kendoValidator().data("kendoValidator"),
+	   	 		email = $("#txtEmail").val(),
+	   	 		pass = $("#txtPass").val(),
+	   	 		remember = $("#chkRemember")[0].checked,
+	   	 		app = teamThingApp;	   	 		
+	   	 	
+	   	 	if(validator.validate()){
+	   	 		app.showLoading("Validating...");
+	   	 		
+	   	 		$.when(app.validateUser(email, pass, remember)).then(function(user){
+	   	 			
+	   	 			app.hideLoading();
+	   	 			
+	   	 			console.log("USER", user);
+	   	 			if(!(user == null)){
+	   	 				//Re-show the app
+	   	 				if(user.teams.length < 1){
+	   	 					//User not associated with any teams yet
+	   	 					teamThingApp.app.navigate("teamPath.html");
+	   	 					return;
+	   	 				}
+	   	 				
+	   	 				if(user.teams.length == 1){
+	   	 					//User only associated with ONE team
+	   	 					//(no need to pick a team - go straight to app)
+	   	 				$.when(app.changeTeam(user.teams[0].id)).done(function(){
+	   	 						app.app.navigate("");
+	   	 					});	   	 				
+	   	 				}else{
+	   	 					//User is associated with more than one team
+	   	 					//(Needs to choose a team)
+	   	 					app.app.navigate("teamChoose.html");
+	   	 				}	   	 			
+	   	 			}else{
+	   	 				alert("Sorry, this email is not associated with a TeamThing Team.");
+	   	 			}
+	   	 		});	   	 			   	 			   	 		
+	   	 	}else{
+	   	 		alert("Please enter a valid email.");
+	   	 	}	   	 	
+	   	 } 	   
+	</script>
+</body>
+</html>

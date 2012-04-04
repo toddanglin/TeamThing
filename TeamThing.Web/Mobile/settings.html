@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Settings</title>
+</head>
+<body>
+<div data-role="view" id="vwStats" data-show="initView">
+	<div class="wrapper">
+     <button class="km-button" data-action="logout">Logout</button>
+     <button class="km-button" data-action="changeTeam">Change Team</button>
+    </div>
+</div>
+
+<script>
+	function initView(){
+		//Hide Add button on main index view
+		$("#btnAdd").css("visibility","hidden");
+	}
+</script>
+</body>
+</html>

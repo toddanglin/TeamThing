@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team Thing</title>
+	
+</head>
+<body class="tt">
+	<div data-role="view" id="vwCreateTeam" data-layout="title" data-transition="overlay:down" data-title="Create Team">	
+		<div class="wrapper">		
+			<ul data-role="listview" data-style="inset" class="loginList">
+				<li>Name <input type="email" id="txtTeamName" placeholder="Required" /></li>
+				<li>
+				Open Team <input type="checkbox" id="chkIsOpen" data-role="switch" data-on-label="YES" data-off-label="NO" />
+				</li>
+			</ul>
+			
+			<button class="km-button" id="btnLogin">Create Team</button>
+	    </div>
+	</div>
+	
+	<script>
+		$(function(){
+			// Set a timeout...
+			setTimeout(function(){
+			    // Hide the address bar!
+			    window.scrollTo(0, 1);
+			}, 0);
+		});		   
+	</script>
+</body>
+</html>

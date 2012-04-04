@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team Thing</title>
+	
+</head>
+<body class="tt">	
+	<div data-role="view" id="vwTeamPath" data-layout="title" data-transition="slide" data-title="Pick a Team" data-show="viewLoad">	
+		<div class="wrapper">		
+			<button class="km-button" id="btnPick" style="margin-bottom: 20px;">Choose Existing Team</button>
+			<button class="km-button" id="btnCreate" disabled>Create Team</button>
+	    </div>
+	</div>
+	
+	<script>
+	  $(function(){
+	  	// Set a timeout...
+	  	setTimeout(function(){
+	  	    // Hide the address bar!
+	  	    window.scrollTo(0, 1);
+	  	    
+	  	    $(".km-loader").hide();
+	  	}, 100);
+	  });
+	  
+	  function viewLoad(){
+	  	//Hide the back button for this view
+	  	$("#btnBack").css("visibility","hidden");	  		  	
+	  	
+	  	$("#btnPick").bind("click", function(){
+	  		teamThingApp.app.navigate("teamPick.html");
+	  	});
+	  }
+	</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+[	
+	{
+		"description":"Doing some important stuff",
+		"dateCreated": "2/2/2012",
+		"id": 1,
+		"userId": 1,
+		"owner": {
+			"id": 2,
+			"firstName":"Burke",
+			"lastName":"Holland",
+			"imagePath":"person.png",
+			"email":"holland@telerik.com"
+		 },
+		"status": "Complete"
+	},
+	{
+		"description":"Fixing bugs in the system",
+		"dateCreated": "2/3/2012",
+		"id": 2,
+		"userId": 1,
+		"owner": {
+			"id": 1,
+			"firstName":"Todd",
+			"lastName":"Anglin",
+			"imagePath":"person.png",
+			"email":"anglin@telerik.com"
+		 },
+		"status": "In Progress"
+	},
+	{
+		"description":"Planning grocery shopping",
+		"dateCreated": "2/5/2012",
+		"id": 3,
+		"userId": 1,
+		"owner": {
+			"id": 1,
+			"firstName":"Todd",
+			"lastName":"Anglin",
+			"imagePath":"person.png",
+			"email":"anglin@telerik.com"
+		 },
+		"status": "In Progress"
+	}
+]

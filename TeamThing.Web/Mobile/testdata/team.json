@@ -1,0 +1,40 @@
+{
+	"name":"Kendo UI Team",
+	"id": 1,
+	"ownerId": 1,
+	"isOpen": false,
+	"imagePath": "iconPath.png",
+	"dateCreated": null,
+	"teamMembers":[
+		{
+			"firstName":"Todd",
+			"lastName": "Anglin",
+			"emailAddress": "anglin@telerik.com",
+			"id": 1,
+			"imagePath": "person.jpg",
+			"color": "#23452",
+			"openThingsCount": 10,
+			"totalThingsCount": 34
+		},
+		{
+			"firstName":"Burke",
+			"lastName": "Holland",
+			"emailAddress": "holland@telerik.com",
+			"id": 2,
+			"imagePath": "person.jpg",
+			"color": "#23452",
+			"openThingsCount": 6,
+			"totalThingsCount": 42
+		},
+		{
+			"firstName":"Brandon",
+			"lastName": "Satrom",
+			"emailAddress": "satrom@telerik.com",
+			"id": 3,
+			"imagePath": "person.jpg",
+			"color": "#23452",
+			"openThingsCount": 3,
+			"totalThingsCount": 22
+		}
+	]
+}

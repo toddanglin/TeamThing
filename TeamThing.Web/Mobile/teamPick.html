@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team Thing</title>
+	
+</head>
+<body class="tt">
+
+	<div data-role="view" id="vwTeamPick" data-layout="title" data-transition="slide" data-title="Pick a Team" data-show="viewLoad">
+		<div class="wrapper" style="margin-top:20px;">		
+			<p>Join an existing team.</p>
+			<p>You may immediately join Open teams. Private teams require approval.</p>
+			<input id="txtTeamAc" placeholder="Search existing teams..." style="width: 80%;font-size: 16px;color: #000;height: 30px;" />
+			<div id="pvtTeamMsg" style="margin:15px auto;color: #ffd04c;width: 60%;display: none;">
+			You selected a private team. The team owner must approve your 
+			membership.
+			</div>
+			<div id="err" style="margin:15px auto;color: #e52d01;width: 60%;display: none;">
+				Oops! We couldn't add you to this team. Pick a different team 
+				or try again later.
+			</div>
+			<button class="km-button" id="btnConfirm" style="margin-top:40px;" disabled>Confirm Selection</button>
+	    </div>	    
+	</div>
+	
+	<script type="text/x-kendo-template" id="acItemTemp">
+		# var cssClass = (data.isPublic) ? "teamListItem" : "teamListItem private"; #
+		<div class="#= cssClass #">
+		<img src="#= data.imagePath #" alt="#= data.name #" />
+		<p>#= data.name #</p>
+		</div>
+	</script>
+	
+	<script>
+	  var ac = null,
+	  	  dsTeamSearch = null,
+	  	  app = null,
+	  	  team = null;
+	  	  
+	  function viewLoad(){
+		//Show the back button
+		$("#btnBack").css("visibility","visible");
+		
+		//Initially disable the confirm btn
+		var acEle = $("#txtTeamAc"),
+			tmpl = kendo.template($("#acItemTemp").html());
+			
+		app = teamThingApp;
+		dsTeamSearch = new kendo.data.DataSource({
+			transport:{
+				read: function(options){
+					var q = ac.value();
+					$.when(app.data.searchTeams(app.getCurrentUser().id, q)).done(function(data){
+				    	options.success(data);
+				    });
+				}
+			}
+		});
+		
+	  	if(ac == null){
+		  	ac = acEle.kendoAutoComplete({
+		  		dataSource:dsTeamSearch,
+		  		suggest:true,
+		  		template: tmpl,
+		  		filter:"contains",
+		  		dataTextField:"name",
+		  		minLength:2,
+		  		change:teamPickChange
+		  	}).data("kendoAutoComplete");
+	  	}
+	  	
+	  	//Bind button event
+	  	$("#btnConfirm").bind("click", confirmTeamPick);
+	  }
+	  
+	  function teamPickChange(){
+	  	var val = ac.value(),
+	  		btn = $("#btnConfirm");
+	  		  
+	  	//Get the selected team
+	  	dsTeamSearch.query({filter:{field:"name",operator:"eq",value:val}});
+	  	team = dsTeamSearch.view()[0];
+	  			  	
+	  	if(val == "" || team == null){
+	  		btn.attr("disabled","disabled");
+	  	 	return;
+	  	}
+	  	
+	  	btn.removeAttr("disabled");
+	  	
+	  	//Show message if private team
+	  	if(!team.isPublic){
+	  		$("#pvtTeamMsg").fadeIn();
+	  	} else {
+	  		$("#pvtTeamMsg").fadeOut();
+	  	}	  	
+	  }
+	  
+	  function confirmTeamPick(){	  
+	  	$.when(app.joinTeam(team.id)).done(function(results){
+	  		//Navigate to next view depending on Open/Close state of team
+	  		if(!results){
+	  			$("#err").fadeIn();
+	  			return;
+	  		}
+	  		
+	  		if(team.isPublic){
+	  			//Once added, you can participate immediately (no approval)
+	  			//Go straight to app
+	  			app.app.navigate("");
+	  		}else{
+	  			//Need to wait on owner approval
+	  			app.app.navigate("wait.html");
+	  		}
+	  	});
+	  }
+	</script>
+</body>
+</html>

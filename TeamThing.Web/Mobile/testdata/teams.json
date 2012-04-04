@@ -1,0 +1,12 @@
+[
+	{
+		"name":"Kendo UI Team",
+		"id": 1,
+		"imagePath":"iconTeam.png"		
+	},
+	{
+		"name":"Team Awesome",
+		"id": 2,
+		"imagePath":"iconAwesome.png"
+	}
+]

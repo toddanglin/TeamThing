@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team</title>
+</head>
+<body>
+
+<div data-role="view" id="vwTeam" data-init="loadTeamView">
+     <div id="teamContainer"></div>
+</div>
+
+<script type="text/x-kendo-template" id="tmplTeam">
+	<h1>#= data.name #</h1>
+	<div id="teamScroll">
+	#for(var i = 0;i < data.teamMembers.length;i++){#
+	<div class="teamMember">
+	<h2>#= data.teamMembers[i].firstName #</h2>
+	</div>
+	#}#	
+	</div>
+</script>
+
+<script>
+	function loadTeamView(){
+		var ele = $("#teamContainer"),
+			tmpl = kendo.template($("#tmplTeam").html());
+			
+		teamThingApp.loadTeamView(tmpl,ele);
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">	
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team Thing</title>
+	<link rel="apple-touch-startup-image" sizes="640x920" href="Default.png">
+	
+	<!--<link href="http://cdn.kendostatic.com/2012.1.124/styles/kendo.common.min.css" rel="stylesheet"/>
+	<link href="http://cdn.kendostatic.com/2012.1.124/styles/kendo.default.min.css" rel="stylesheet"/>
+	<link href="http://cdn.kendostatic.com/2012.1.124/styles/kendo.mobile.all.min.css" rel="stylesheet"/>-->
+	
+	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	<link href="../Content/mobile/kendo.common.min.css" rel="stylesheet"/>
+	<link href="../Content/mobile/kendo.metro.min.css" rel="stylesheet"/>
+	<link href="css/kendo.mobile.all.min.css" rel="stylesheet"/>
+	<link href="css/mobile.css" rel="stylesheet" />
+	<link href="css/add2home.css" rel="stylesheet" />
+</head>
+<body class="tt">
+	<div data-role="view" id="vwThings" data-show="listThingsInit" data-title="Team Thing">
+	     <ul id="lstThings" class="things">      	
+	     </ul>
+	     <div id="msgNoThings" style="width: 250px;text-align:center;margin: 50px auto;display: none;">
+	     	<h2>No<b>thing</b> to do!</h2>
+	     	<p>
+	     	What are you doing here? Don't you have some mad birds to throw?
+	     	</p>
+	     </div>
+	</div>
+	
+	<div data-role="view" id="vwAdd" data-title="Add Thing" data-transition="overlay:down" data-layout="title" data-show="initAddView">
+		<div class="wrapper" style="margin-top:10%">
+		<h2>What are you working on?</h2>
+	     <textarea style="width:90%;height: 175px;margin-bottom: 30px;" 
+	     	autofocus required
+	     	placeholder="Enter new thing" class="km-text" id="txtNewThing">
+	     </textarea>
+	     <button class="km-button" id="btnAddCreate">Create</button>
+	     <button class="km-button" id="btnAddCancel">Cancel</button>
+	     </div>
+	</div>
+	
+	<script type="text/x-kendo-template" id="tmplThingItem">
+		<a href="thingDetail.html?id=#= data.id #" data-role="listview-link" class="km-listview-link">	
+			<div class="thingTitle">#= data.description #</div>
+		</a>
+	</script>
+	
+	<div data-role="layout" data-id="rootLayout">
+		<header data-role="header">
+			<div data-role="navbar">
+			Team Thing
+			<a data-role="button" style="background-color: #444;visibility: hidden;" data-align="right" id="btnAdd" data-icon="add" href="#vwAdd"></a>
+			</div>		
+		</header>
+		<div id="content"></div>
+		<footer data-role="footer">
+			<div data-role="tabstrip">
+		    	<a href="#vwThings" data-icon="organize">Things</a>
+		    	<a href="team.html" data-icon="contacts">Team</a>
+		    	<a href="settings.html" data-icon="settings">Settings</a>
+		   </div>
+		</footer>
+	</div>
+	
+	<div data-role="layout" data-id="nested">
+		<header data-role="header">			
+			<div data-role="navbar">
+			<a href="index.html" data-role="backbutton" data-align="left">Back</a>
+			Team Thing
+			</div>
+		</header>
+		<div id="content"></div>
+		<footer data-role="footer">
+			<div data-role="tabstrip">
+		    	<a href="#vwThings" data-icon="organize">Things</a>
+		    	<a href="team.html" data-icon="contacts">Team</a>
+		    	<a href="settings.html" data-icon="settings">Settings</a>
+		   </div>
+		</footer>
+	</div>
+	
+	<div data-role="layout" data-id="title">
+		<header data-role="header">			
+			<div data-role="navbar">	
+			<a data-role="backbutton" id="btnBack" data-align="left">Back</a>		
+			<span data-role="view-title">Team Thing</span>
+			</div>
+		</header>
+		<div id="content"></div>
+	</div>
+
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="http://cdn.kendostatic.com/2012.1.124/js/kendo.all.min.js"></script>-->
+	<script src="../scripts/jquery-1.7.1.min.js"></script>
+	<script src="../scripts/kendo-2012.1.322.all.min.js"></script> 
+	<script src="../scripts/localStore.js"></script>
+	<script src="../scripts/mobile/teamthing.data.js"></script>
+	<script src="../scripts/mobile/teamthing.app.js"></script>
+	
+	<script type="text/javascript">
+	var addToHomeConfig = {
+		autostart:false
+	};
+	</script>
+	<script src="../scripts/mobile/add2home.js"></script>
+	
+	<script>
+		$(function(){
+			// Set a timeout...
+			setTimeout(function(){
+			    // Hide the address bar!
+			    window.scrollTo(0, 0.9);
+			}, 0);
+
+			var app = new kendo.mobile.Application($(document.body), {
+				layout:'rootLayout', 
+				transition: 'slide',
+				icon:'apple-touch-icon.png'
+				});				
+			
+			 window.teamThingApp = new TeamThing(app);
+			 teamThingApp.init();
+			 
+			 $("body").delegate("button","click",function(e){
+			 	var action = $(e.currentTarget).data("action");
+			 	if(action === undefined) return;
+			 	
+			 	if(action === "logout"){
+			 		teamThingApp.clearUser();
+			 		app.navigate("login.html");
+			 		return;
+			 	}
+			 	else if (action === "changeTeam") {
+			 		teamThingApp.clearTeam();
+			 		app.navigate("teamChoose.html");
+			 		return;
+			 	}
+			 });			 
+			 
+			 if(!teamThingApp.getRemember()){
+			 	console.log("CLEAR");
+			 	teamThingApp.clearUser();
+			 }
+			 
+			 if(teamThingApp.getCurrentUser() == null){
+			 	//Show the login screen
+			 	app.navigate("login.html");
+			 }
+		});
+	   	   
+	   function listThingsInit(){
+	   		var app = teamThingApp,
+	   			user = app.getCurrentUser(),
+	   			team = app.getCurrentTeam();
+	   		
+	   		console.log("INDEX INIT", user, team);
+	   		
+	   		if(user == null){
+	   			//User needs to re-login
+	   			app.app.navigate("login.html");
+	   			return;
+	   		}	
+	   		
+	   		if(team == null){
+	   			//User needs to select a team
+	   			app.app.navigate("teamChoose.html")
+	   			return;
+	   		}
+	   		
+	   		//Load things for current user/team	
+	   		teamThingApp.loadThingsView();   
+	   		
+	   		//Show Add button on main index view
+	   		$("#btnAdd").css("visibility","visible");
+	   		
+	   		//Show install prompt
+	   		addToHome.show();
+	   }	
+	   
+	   function initAddView() {
+	   	//Hide the back button for this view
+	   	$("#btnBack").css("visibility","hidden");
+	   	
+	   	$("#btnAddCancel").bind("click", function(){
+	   		var app = teamThingApp,
+	   			history = window.history;
+	   		
+	   		if(history.length < 1){
+	   			app.app.navigate("");
+	   		}else{
+	   			history.back(-1);
+	   		}
+	   	});
+	   	
+	   	$("#btnAddCreate").bind("click", function(){
+	   		var app = teamThingApp,
+	   			textEle = $("#txtNewThing"),
+	   			txt = textEle.val();
+	   			
+	   		if(txt == ""){
+	   			alert("Oops! You've got to type something first.");
+	   			return;
+	   		}
+	   		
+	   		app.showLoading("Saving...");
+	   		
+	   		$.when(app.createThing(txt)).then(function(result) {
+		   		app.hideLoading();
+		   		
+		   		if(result){
+		   			app.app.navigate("");
+		   		}else{
+		   			alert("Technical glitch. Save failed.");
+		   		}
+	   		});
+	   	});
+	   }   	   
+	</script>
+</body>
+</html>

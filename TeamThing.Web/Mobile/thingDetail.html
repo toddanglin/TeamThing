@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Thing Detail</title>
+</head>
+<body>
+
+<div data-role="view" id="vwThingDetail" data-layout="nested"
+	data-show="loadThingDetail">
+     <div id="thingDetail"></div>
+</div>
+
+<script type="text/x-kendo-template" id="tmplThingDetail">
+	<h2>#= data.description #</h2>
+	<span class="status">
+	Status: #= data.status #
+	</span>
+	
+	<div style="margin:20px;width:90%;text-align:center;">
+		<a href="javascript:void(0)" data-role="button" data-action="Delete" class="delete">Delete</a>
+		# if(data.Status != "Complete") {#
+		<a href="javascript:void(0)" data-role="button" data-action="Complete" class="complete">Complete</a>
+		<a href="javascript:void(0)" data-role="button" data-action="Delay" class="delay">Delay</a>
+		#}else{#
+		<a href="javascript:void(0)" data-role="button" data-action="InProgress" class="complete">In Progress</a>
+		#}#
+	</div>	
+</script>
+
+<script> 
+	function loadThingDetail(args){
+		var ele = $(args.view.element[0]).find("#thingDetail"),
+			id = parseInt(args.view.params.id),
+			tmpl = kendo.template($("#tmplThingDetail").html());
+			
+		console.log("THING DETAIL", args);
+		console.log(id);
+				
+		teamThingApp.loadDetail(id, tmpl, ele);
+		
+		$("#thingDetail").delegate("a", "click", updateStatus);
+	}		
+	
+	function updateStatus(e){
+		var app = teamThingApp,
+			action = $(e.currentTarget).data("action"),
+			id = parseInt(app.app.view.params.id);
+		
+		app.showLoading("Updating...");
+		
+		console.log("THING UPDATE", e, action, id);
+		
+		$.when(app.updateThingStatus(id, action)).then(function(result){
+			app.hideLoading();
+			
+			if(result){
+				app.app.navigate("");
+			}else{
+				alert("Technical glitch. Check your connection and try again later.");
+			}
+		});
+		
+		return false;
+	}
+</script>
+</body>
+</html>

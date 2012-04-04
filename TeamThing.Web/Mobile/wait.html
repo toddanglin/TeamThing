@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team Thing</title>
+	
+</head>
+<body class="tt">	
+	<div data-role="view" id="vwWait" data-layout="title" data-transition="slide" data-title="Approval Pending" data-show="viewLoad">	
+		<div class="wrapper">		
+			<h1>Time to Wait</h1>
+			<p>
+				You just joined a private team.
+			</p>
+			<p>
+				The team owner has been notified of your request to 
+				join. As soon as they approve your membership, you will 
+				be able to use TeamThing for this team.
+			</p>
+			<p>
+				Next time you launch the app you will see the status of 
+				your approval.
+			</p>
+	    </div>
+	</div>
+	
+	<script>
+	  $(function(){
+	  	// Set a timeout...
+	  	setTimeout(function(){
+	  	    // Hide the address bar!
+	  	    window.scrollTo(0, 1);
+	  	}, 0);
+	  });
+	  
+	  function viewLoad(){
+	  	//Hide the back button for this view
+	  	$("#btnBack").css("visibility","hidden");
+	  	
+	  }
+	</script>
+</body>
+</html>

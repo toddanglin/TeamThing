@@ -216,6 +216,31 @@
     <Content Include="Scripts\plugins.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Scripts\teamThing.js" />
+    <Content Include="Mobile\apple-touch-icon.png" />
+    <Content Include="Mobile\createTeam.html" />
+    <Content Include="Mobile\css\add2home.css" />
+    <Content Include="Mobile\css\images\android-sprite.png" />
+    <Content Include="Mobile\css\images\bkgndCarbon.png" />
+    <Content Include="Mobile\css\images\bkgndLogin.png" />
+    <Content Include="Mobile\css\images\bkgndLogin_320.png" />
+    <Content Include="Mobile\css\images\iconLock.png" />
+    <Content Include="Mobile\css\images\iconmasks.svg" />
+    <Content Include="Mobile\css\images\ios-sprite.png" />
+    <Content Include="Mobile\css\kendo.mobile.all.min.css" />
+    <Content Include="Mobile\css\mobile.css" />
+    <Content Include="Mobile\Default.png" />
+    <Content Include="Mobile\img\defaultTeam.jpg" />
+    <Content Include="Mobile\img\teamAwesome.jpg" />
+    <Content Include="Mobile\index.html" />
+    <Content Include="Mobile\js\add2home.js" />
+    <Content Include="Mobile\login.html" />
+    <Content Include="Mobile\settings.html" />
+    <Content Include="Mobile\team.html" />
+    <Content Include="Mobile\teamChoose.html" />
+    <Content Include="Mobile\teamPath.html" />
+    <Content Include="Mobile\teamPick.html" />
+    <Content Include="Mobile\thingDetail.html" />
+    <Content Include="Mobile\wait.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -260,6 +285,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_ThingListItem.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mobile\testdata\newUserLogin.json" />
+    <None Include="Mobile\testdata\team.json" />
+    <None Include="Mobile\testdata\teams.json" />
+    <None Include="Mobile\testdata\teamSearch.json" />
+    <None Include="Mobile\testdata\userLogin.json" />
+    <None Include="Mobile\testdata\userteamthings.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

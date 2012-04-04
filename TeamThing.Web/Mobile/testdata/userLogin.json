@@ -1,0 +1,22 @@
+{
+	"firstName":"Todd",
+	"lastName": "Anglin",
+	"emailAddress": "anglin@telerik.com",
+	"id": 1,
+	"imagePath": "person.jpg",
+	"color": "#23452",
+	"teams":[
+		{
+			"name":"Kendo UI Team",
+			"id": 1,
+			"imagePath":"defaultTeam.jpg",
+			"isOpen": false	
+		},
+		{
+			"name":"Team Awesome",
+			"id": 2,
+			"imagePath":"teamAwesome.jpg",
+			"isOpen": true
+		}
+	]
+}

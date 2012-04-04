@@ -1,0 +1,38 @@
+[
+	{
+		"name":"Kendo UI Team",
+		"id": 1,
+		"imagePath":"defaultTeam.jpg",
+		"isOpen": false	
+	},
+	{
+		"name":"Team Awesome",
+		"id": 2,
+		"imagePath":"teamAwesome.jpg",
+		"isOpen": true
+	},
+	{
+		"name":"HTML5ers",
+		"id": 3,
+		"imagePath":"teamAwesome.jpg",
+		"isOpen": true
+	},
+	{
+		"name":"Going Places",
+		"id": 4,
+		"imagePath":"teamAwesome.jpg",
+		"isOpen": true
+	},
+	{
+		"name":"Kendo Social",
+		"id": 5,
+		"imagePath":"teamAwesome.jpg",
+		"isOpen": true
+	},
+	{
+		"name":"Kendo Anti-Social",
+		"id": 6,
+		"imagePath":"teamAwesome.jpg",
+		"isOpen": false
+	}
+]

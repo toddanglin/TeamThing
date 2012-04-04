@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<entityDiagramsDiagram dslVersion="2.0.0.0" absoluteBounds="0, 0, 11, 9.375" name="TeamThing">
+  <DomainModelMoniker name="/TeamThingModel" />
+  <nestedChildShapes>
+    <classShape Id="161f495d-0be9-4c5d-8e0c-ee2b7a09a372" absoluteBounds="0.75, 0.5, 1.5, 2.1473746744791664" fillColor="253, 184, 119" outlineColor="213, 71, 0">
+      <DomainClassMoniker name="/TeamThingModel/Team" />
+      <nestedChildShapes>
+        <elementListCompartment Id="65f22f3e-7063-4901-86d8-429659b1e0ae" absoluteBounds="0.7649999999999999, 1.01, 1.4700000000000002, 1.0185953776041665" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="e4d25195-e38e-4331-9003-79d6bffe2510" absoluteBounds="0.765, 2.0385953776041665, 1.4700000000000002, 0.2493896484375" name="ImplementationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="0a6279aa-b53d-4f03-bd18-c02320db8fa1" absoluteBounds="0.765, 2.2979850260416663, 1.4700000000000002, 0.2493896484375" name="NavigationCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <interfaceShape Id="2b829c74-deeb-4849-a2f8-d198fd098e08" absoluteBounds="3.125, 0.875, 1.5, 1.8208968098958334" fillColor="208, 208, 208" outlineColor="99, 99, 99">
+      <InterfaceMoniker name="/TeamThingModel/IThing" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b75088f8-2f90-40aa-b01e-4161f5e2b2f4" absoluteBounds="3.1399999999999997, 1.3849999999999998, 1.4700000000000002, 1.2108968098958333" name="PropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </interfaceShape>
+    <classShape Id="62254b39-470b-4d15-ad2b-2d6b971b572a" absoluteBounds="0.625, 3, 1.5, 2.9165804036458329" fillColor="253, 184, 119" outlineColor="213, 71, 0">
+      <DomainClassMoniker name="/TeamThingModel/TeamMember" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a80207f6-6782-4c48-abd8-4828eb7d3c4b" absoluteBounds="0.64000000000000012, 3.51, 1.4700000000000002, 1.7878011067708333" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="709ee60d-6321-4972-9191-6be14ce34529" absoluteBounds="0.64000000000000012, 5.3078011067708335, 1.4700000000000002, 0.2493896484375" name="ImplementationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="84cba23c-6d87-406f-afae-81105a481fe6" absoluteBounds="0.64000000000000012, 5.5671907552083333, 1.4700000000000002, 0.2493896484375" name="NavigationCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a9d596c7-a87d-4063-8de2-4ed75decfe8e" absoluteBounds="3.125, 3, 1.5, 2.2473095454772309" fillColor="253, 184, 119" outlineColor="213, 71, 0">
+      <DomainClassMoniker name="/TeamThingModel/ThingBase" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b6a88752-7f44-40db-bac2-aa5917eb9747" isExpanded="false" absoluteBounds="3.14, 3.51, 1.4700000000000002, 0.2493896484375" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="7efca3fe-da52-440d-bc28-c3ffceff7175" absoluteBounds="3.14, 3.7693896484374996, 1.4700000000000002, 1.1185302486022313" name="ImplementationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="5179eedb-7ab4-416b-abdf-82ab2ec00b1d" absoluteBounds="3.14, 4.8979198970397313, 1.4700000000000002, 0.2493896484375" name="NavigationCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <implementationConnector edgePoints="[(3.875 : 2.69589680989583); (3.875 : 3)]" fixedFrom="NotFixed" fixedTo="NotFixed" TargetRelationshipDomainClassId="d04df256-109e-4195-8b2d-57fabb139178">
+      <nodes>
+        <interfaceShapeMoniker Id="2b829c74-deeb-4849-a2f8-d198fd098e08" />
+        <classShapeMoniker Id="a9d596c7-a87d-4063-8de2-4ed75decfe8e" />
+      </nodes>
+    </implementationConnector>
+    <classShape Id="b20a56ff-d291-42ce-a2bb-9ef6ad9d666d" absoluteBounds="2.75, 6, 1.5, 2.9165804036458329" fillColor="253, 184, 119" outlineColor="213, 71, 0">
+      <DomainClassMoniker name="/TeamThingModel/ThingSource" />
+      <nestedChildShapes>
+        <elementListCompartment Id="be7de9c4-c555-4d11-9528-857dcdf93c5d" absoluteBounds="2.7649999999999997, 6.51, 1.4700000000000002, 1.7878011067708333" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f75ea5e5-9c50-4d42-a6c1-751575362df3" absoluteBounds="2.7649999999999997, 8.3078011067708335, 1.4700000000000002, 0.2493896484375" name="ImplementationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ff8b1af8-f49a-4e6c-86d3-edf9ca3d9132" absoluteBounds="2.7649999999999997, 8.5671907552083333, 1.4700000000000002, 0.2493896484375" name="NavigationCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5c5d15ba-2ee2-49d0-a67f-6ba54a15a7f1" absoluteBounds="6, 2.375, 1.5, 1.7627718098958329" fillColor="253, 184, 119" outlineColor="213, 71, 0">
+      <DomainClassMoniker name="/TeamThingModel/Task" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e557c50a-9723-458a-8607-c81e1338d9f7" absoluteBounds="6.015, 2.885, 1.4700000000000002, 0.63399251302083326" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8cb4df4e-4053-48f4-b5af-5540dc0bdd82" absoluteBounds="6.015, 3.5289925130208335, 1.4700000000000002, 0.2493896484375" name="ImplementationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8c92a100-7d21-4fd5-ae96-a2c32374711d" absoluteBounds="6.015, 3.7883821614583333, 1.4700000000000002, 0.2493896484375" name="NavigationCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <generalizationConnector edgePoints="[(4.625 : 3.56888590494792); (6 : 3.56888590494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <inheritanceMoniker Id="35393c1b-1e61-4353-a377-f7594162baa8" />
+      <nodes>
+        <classShapeMoniker Id="a9d596c7-a87d-4063-8de2-4ed75decfe8e" />
+        <classShapeMoniker Id="5c5d15ba-2ee2-49d0-a67f-6ba54a15a7f1" />
+      </nodes>
+    </generalizationConnector>
+    <classShape Id="89cab16e-221b-4b94-9685-44172c896536" absoluteBounds="6, 4.5, 1.5, 1.570470377604166" fillColor="253, 184, 119" outlineColor="213, 71, 0">
+      <DomainClassMoniker name="/TeamThingModel/Obstacle" />
+      <nestedChildShapes>
+        <elementListCompartment Id="87ac27e2-7b5a-407c-b88f-a0f67fd78f9f" absoluteBounds="6.015, 5.01, 1.4700000000000002, 0.44169108072916663" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="cc931824-89b0-4951-94e8-f2f23fffb950" absoluteBounds="6.015, 5.4616910807291665, 1.4700000000000002, 0.2493896484375" name="ImplementationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f2a3a1ab-d294-46bc-b6b7-616eedd7f872" absoluteBounds="6.015, 5.7210807291666663, 1.4700000000000002, 0.2493896484375" name="NavigationCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <generalizationConnector edgePoints="[(4.625 : 4.87365477273862); (6 : 4.87365477273862)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <inheritanceMoniker Id="2ba7e19a-41e1-48bb-94bd-361f81a02947" />
+      <nodes>
+        <classShapeMoniker Id="a9d596c7-a87d-4063-8de2-4ed75decfe8e" />
+        <classShapeMoniker Id="89cab16e-221b-4b94-9685-44172c896536" />
+      </nodes>
+    </generalizationConnector>
+    <classShape Id="5bc3e496-8c57-4004-8af8-fc103b8e4788" absoluteBounds="0.625, 6.375, 1.5, 2.7242789713541651" fillColor="253, 184, 119" outlineColor="213, 71, 0">
+      <DomainClassMoniker name="/TeamThingModel/EmailLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0d217055-38a7-4508-bef4-a2877b2f4ddb" absoluteBounds="0.64, 6.885, 1.4700000000000002, 1.5954996744791665" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="23d8b5b6-e694-43cc-b908-e49334917558" absoluteBounds="0.64, 8.4904996744791674, 1.4700000000000002, 0.2493896484375" name="ImplementationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="1325bc80-935a-4098-adb7-37510e01f952" absoluteBounds="0.64, 8.7498893229166654, 1.4700000000000002, 0.2493896484375" name="NavigationCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</entityDiagramsDiagram>

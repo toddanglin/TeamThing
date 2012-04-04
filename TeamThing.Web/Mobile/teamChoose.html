@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--Mobile Meta Tags-->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width" name="viewport">
+
+	<title>Team Thing</title>
+		
+</head>
+<body class="tt">	
+	<div data-role="view" id="vwTeamChoose" data-layout="title" data-transition="slide" data-title="Choose Team" data-show="viewLoad">	
+		<div class="wrapper" style="margin-top: 20px;">	
+			<ul class="teamChooseList" id="lstTeams" style="background:#FFF;">
+			</ul>	
+			<button class="km-button" id="btnChoose" style="margin-top: 30px;" disabled>Confirm Selection</button>
+	    </div>	    
+	</div>
+	
+	<script type="text/x-kendo-template" id="tmplTeamChoose">
+		<div class="teamListItem">
+		<img src="#= data.imagePath #" />
+		<p>#= data.name #</p>
+		</div>
+	</script>
+	
+	<script>
+	  var tmpTeam = null;
+	  
+	  $(function(){
+	  	// Set a timeout...
+	  	setTimeout(function(){
+	  	    // Hide the address bar!
+	  	    window.scrollTo(0, 1);
+	  	}, 0);
+	  });
+	  
+	  function viewLoad(){
+	  	//Hide the back button for this view
+	  	$("#btnBack").css("visibility","hidden");
+	  	
+	  	//Load all teams the user currently belongs to
+	  	var app = teamThingApp,
+	  		user = app.getCurrentUser(),
+	  		teams = user.teams,
+	  		lstEle = $("#lstTeams"),
+	  		dsTeams = null;
+	  		
+	  	
+	  	//If teams collect is null, should go to TeamPath
+	  	if(teams == null || teams.length < 1){
+	  		app.app.navigate("teamPath.html");
+	  		//return;
+	  	}
+	  	
+	  	dsTeams = new kendo.data.DataSource({
+	  		data: teams,
+	  		schema:{
+	  			model:{
+	  				id:"id"
+	  			}
+	  		}
+	  	});
+	  	
+	  	lstEle.kendoMobileListView({
+	  		style:"inset",
+	  		dataSource: dsTeams,
+	  		template: kendo.template($("#tmplTeamChoose").html()),
+			click: teamSelect	  		
+	  	});
+	  	
+	  	$("#btnChoose").bind("click", function(){
+	  		if(tmpTeam == null) return;
+	  		
+	  		$.when(app.changeTeam(tmpTeam.id)).then(function(result){
+	  			//TODO: Handle failure to assign
+	  			app.app.navigate("");
+	  			return;
+	  		});
+	  	});
+	  }
+	  
+	  function teamSelect(e){
+	  	console.log("T", $(e.dataItem)[0]);
+	  	
+	  	$("#lstTeams li").removeClass("selected");
+	  	$(e.item[0]).addClass("selected");
+	  	
+	  	tmpTeam = e.dataItem;
+	  	
+	  	$("#btnChoose").removeAttr("disabled")
+	  }
+	</script>
+</body>
+</html>

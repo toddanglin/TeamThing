@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DomainModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="2.0.0.0" name="TeamThingModel" namespace="TeamThing.Model" showPropertiesCompartment="true" xmlns="http://www.telerik.com/ORM">
+  <orm:orm name="TeamThingModel" backend="mssql" xmlns:orm="http://tempuri.org/ORM">
+    <orm:namespace name="TeamThing.Model" default="true">
+      <orm:class name="Team" behavior="readwrite" use-default-mapping="true" uniqueId="9d4b9219-b969-4a73-bbfa-f2486dacc8df">
+        <orm:identity>
+          <orm:single-field field-name="_teamId" />
+        </orm:identity>
+        <orm:field name="_teamId" property="TeamId" behavior="readwrite" uniqueId="30a0810b-a762-475d-b7cd-73b436d1ed9c" type="System.Int32">
+          <orm:column name="team_id" sql-type="int" nullable="false" length="0" scale="0" primary-key="true" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_teamMembers" property="TeamMembers" behavior="readwrite" uniqueId="c272b2d8-f269-4a93-83e2-1f84caa2b91e" type="IList&lt;TeamMember&gt;">
+          <orm:column name="team_members" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_teamName" property="TeamName" behavior="readwrite" uniqueId="3b46c4da-3d4f-477d-bf7f-bd1322c346ed" type="System.String">
+          <orm:column name="team_name" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_isEnabled" property="IsEnabled" behavior="readwrite" uniqueId="078c774c-cc1e-4149-9b16-0ecd53d14012" type="bool">
+          <orm:column name="is_enabled" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+      </orm:class>
+      <orm:class name="TeamMember" behavior="readwrite" use-default-mapping="true" uniqueId="34505763-5e22-4f6b-a88d-c7a09abdd8f5">
+        <orm:identity>
+          <orm:single-field field-name="_teamMemberId" />
+        </orm:identity>
+        <orm:field name="_firstName" property="FirstName" behavior="readwrite" uniqueId="b098fa61-232a-4631-89b4-7a1935208ae7" type="System.String">
+          <orm:column name="first_name" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_lastName" property="LastName" behavior="readwrite" uniqueId="e3e27ba5-1b43-464d-9f82-7eeb1beacc20" type="System.String">
+          <orm:column name="last_name" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_email" property="Email" behavior="readwrite" uniqueId="1d188d24-997c-40c2-8e05-d4e547a034d4" type="System.String">
+          <orm:column name="email" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_profileColor" property="ProfileColor" behavior="readwrite" uniqueId="d49434e0-f6ee-40d1-bad0-dacda17b2dca" type="System.String">
+          <orm:column name="profile_color" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_teamMemberId" property="TeamMemberId" behavior="readwrite" uniqueId="af967e99-5b06-4daf-93f8-b9895e4ce687" type="System.Int32">
+          <orm:column name="team_member_id" sql-type="int" nullable="false" length="0" scale="0" primary-key="true" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_things" property="Things" behavior="readwrite" uniqueId="79315aad-6609-45ca-8b57-542d38612388" type="IList&lt;ThingBase&gt;">
+          <orm:column name="things" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_team" property="Team" behavior="readwrite" uniqueId="5f6bb6b3-8d0a-4ef3-8ada-d2b6eb8e2d78" type="Team">
+          <orm:column name="team" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_apiKey" property="ApiKey" behavior="readwrite" uniqueId="bd39c5ac-4b45-4e83-9c6a-1e732564a15c" type="System.Guid">
+          <orm:column name="api_key" sql-type="uniqueidentifier" nullable="true" length="0" scale="0" converter="OpenAccessRuntime.Data.GuidConverter" ado-type="Guid" />
+        </orm:field>
+      </orm:class>
+      <orm:class name="ThingSource" behavior="readwrite" use-default-mapping="true" uniqueId="5d503679-8540-40b7-8022-1f4e30c1db16">
+        <orm:identity>
+          <orm:single-field field-name="_thingSourceId" />
+        </orm:identity>
+        <orm:field name="_things" property="Things" behavior="readwrite" uniqueId="557f6d30-c653-460a-9310-fdff233dc125" type="IList&lt;ThingBase&gt;">
+          <orm:column name="things" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_thingSourceId" property="ThingSourceId" behavior="readwrite" uniqueId="43af5c7f-ea11-4a22-9519-6279aa12cda8" type="System.Int32">
+          <orm:column name="thing_source_id" sql-type="int" nullable="false" length="0" scale="0" primary-key="true" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_messageId" property="MessageId" behavior="readwrite" uniqueId="07619b46-425a-450b-b8a4-ca37f6944948" type="System.String">
+          <orm:column name="message_id" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_fromAddress" property="FromAddress" behavior="readwrite" uniqueId="f0bf6328-e975-4f7b-a5da-6ab026f3d8d9" type="System.String">
+          <orm:column name="from_address" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_messageDate" property="MessageDate" behavior="readwrite" uniqueId="847291b2-5241-4d2c-9e14-9c6b5319a655" type="System.DateTime">
+          <orm:column name="message_date" sql-type="datetime" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.MssqlMinDateConverter" ado-type="DateTime" />
+        </orm:field>
+        <orm:field name="_messageBody" property="MessageBody" behavior="readwrite" uniqueId="88a7ae22-5bd0-4185-98b0-74f00087c4a2" type="System.String">
+          <orm:column name="message_body" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_dateImported" property="DateImported" behavior="readwrite" uniqueId="63f8e77d-6d93-45f4-9b9d-2e86e09097ba" type="System.DateTime">
+          <orm:column name="date_imported" sql-type="datetime" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.MssqlMinDateConverter" ado-type="DateTime" />
+        </orm:field>
+        <orm:field name="_teamMember" property="TeamMember" behavior="readwrite" uniqueId="37e018f4-171e-4e68-97c9-0310b58a8a94" type="TeamMember">
+          <orm:column name="team_member" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+      </orm:class>
+      <orm:class name="Task" behavior="readwrite" uniqueId="db0bf23b-63f8-429c-8860-428c423d4a80" persistent-baseclass="TeamThing.Model.ThingBase" inheritance="baseclass-table">
+        <orm:table name="thing_base" />
+        <orm:identity>
+          <orm:internal>
+            <orm:column name="thing_id" sql-type="int" nullable="false" primary-key="true" length="0" scale="0" ado-type="" />
+          </orm:internal>
+        </orm:identity>
+        <orm:field name="_status" property="Status" behavior="readwrite" uniqueId="d437b4bd-0604-4b14-927a-a7cb0ff67dc7" type="TaskStatus">
+          <orm:column name="status" sql-type="int" nullable="true" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_taskType" property="TaskType" behavior="readwrite" uniqueId="75983dae-26f9-4826-95c2-aabd715b5a8c" type="TaskType">
+          <orm:column name="task_type" sql-type="int" nullable="true" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+      </orm:class>
+      <orm:class name="Obstacle" uniqueId="1161ab23-c44f-45b9-bccd-1c3e663d92c5" persistent-baseclass="TeamThing.Model.ThingBase">
+        <orm:table name="thing_base" />
+        <orm:identity>
+          <orm:internal>
+            <orm:column name="thing_id" sql-type="int" nullable="false" primary-key="true" length="0" scale="0" ado-type="" />
+          </orm:internal>
+        </orm:identity>
+        <orm:field name="_isCleared" property="IsCleared" uniqueId="dd563dec-2da3-48c3-83cb-5d471ab7ef0d" type="bool">
+          <orm:column name="is_cleared" sql-type="int" nullable="true" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+      </orm:class>
+      <orm:class name="EmailLog" use-default-mapping="true" uniqueId="f6bac532-f93f-4c8c-abc6-067e6669a543">
+        <orm:identity>
+          <orm:single-field field-name="_emailLogId" />
+        </orm:identity>
+        <orm:field name="_emailLogId" property="EmailLogId" uniqueId="b46966ba-6536-4eb4-a3ff-43a8d0810804" type="System.Int32">
+          <orm:column name="email_log_id" sql-type="int" nullable="false" length="0" scale="0" primary-key="true" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_subject" property="Subject" uniqueId="39bfe37b-ccdd-418f-b1ae-835bd656f028" type="System.String">
+          <orm:column name="subject" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_toAddress" property="ToAddress" uniqueId="11255cab-a7a1-477a-89e8-00a48f0524c6" type="System.String">
+          <orm:column name="to_address" sql-type="varchar" nullable="true" length="255" scale="0" converter="OpenAccessRuntime.Data.VariableLengthStringConverter" ado-type="Varchar" />
+        </orm:field>
+        <orm:field name="_sendDate" property="SendDate" uniqueId="ace518a6-b23a-4bd6-afe4-62041a8da8b4" type="System.DateTime">
+          <orm:column name="send_date" sql-type="datetime" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.MssqlMinDateConverter" ado-type="DateTime" />
+        </orm:field>
+        <orm:field name="_team" property="Team" uniqueId="20d248f3-8ab2-48d5-8293-37308866c664" type="Team">
+          <orm:column name="team" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_teamMember" property="TeamMember" uniqueId="8b7d17bb-9fa2-43e7-a7c2-271c9f6b376f" type="TeamMember">
+          <orm:column name="team_member" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+        <orm:field name="_emailType" property="EmailType" uniqueId="19db0d70-54f5-4a51-9e39-1d0897f606ff" type="EmailType">
+          <orm:column name="email_type" sql-type="int" nullable="false" length="0" scale="0" converter="OpenAccessRuntime.Data.IntConverter" ado-type="Int32" />
+        </orm:field>
+      </orm:class>
+      <orm:class name="ThingBase" uniqueId="33f0e4c6-5a05-4be1-86c3-fb42f3d7dd25">
+        <orm:table name="thing_base" />
+        <orm:identity>
+          <orm:internal>
+            <orm:column name="thing_id" sql-type="int" nullable="false" primary-key="true" length="0" scale="0" ado-type="" />
+          </orm:internal>
+        </orm:identity>
+        <orm:field name="_taskType" property="Task_type" uniqueId="42da2ed8-b7d2-4d25-a9ec-08a279b6a74c" type="System.String">
+          <orm:column nullable="false" scale="0" length="0" sql-type="int" name="task_type" ado-type="" />
+        </orm:field>
+        <orm:field name="_thingId" property="ThingId" behavior="readwrite" member-definition-type="TeamThing.Model.IThing" type="System.Int32">
+          <orm:column name="thing_id" sql-type="int" nullable="false" primary-key="true" length="0" scale="0" ado-type="" />
+        </orm:field>
+        <orm:field name="_description" property="Description" behavior="readwrite" member-definition-type="TeamThing.Model.IThing" type="System.String">
+          <orm:column name="description" sql-type="varchar" nullable="true" length="0" scale="0" ado-type="" />
+        </orm:field>
+        <orm:field name="_teamMember" property="TeamMember" behavior="readwrite" member-definition-type="TeamThing.Model.IThing" type="TeamMember">
+          <orm:column name="team_member" sql-type="int" nullable="false" length="0" scale="0" ado-type="" />
+        </orm:field>
+        <orm:field name="_dateCreated" property="DateCreated" behavior="readwrite" member-definition-type="TeamThing.Model.IThing" type="System.DateTime">
+          <orm:column name="date_created" sql-type="datetime" nullable="false" length="0" scale="0" ado-type="" />
+        </orm:field>
+        <orm:field name="_thingSource" property="ThingSource" behavior="readwrite" member-definition-type="TeamThing.Model.IThing" type="ThingSource">
+          <orm:column name="thing_source" sql-type="int" nullable="false" length="0" scale="0" ado-type="" />
+        </orm:field>
+        <orm:implements name="TeamThing.Model.IThing" />
+      </orm:class>
+      <orm:interface name="IThing" uniqueId="86f4f3a9-f22a-4f7c-94bf-17d358259387">
+        <orm:field name="_thingId" property="ThingId" behavior="readwrite" uniqueId="20f2af57-9427-4e02-9fcd-e362c93f589f" type="System.Int32" />
+        <orm:field name="_description" property="Description" behavior="readwrite" uniqueId="28a8c300-cdb3-47af-81f1-32956f614580" type="System.String" />
+        <orm:field name="_teamMember" property="TeamMember" behavior="readwrite" uniqueId="fbc1e9fb-dc67-46e0-ac68-61653f3e904c" type="TeamMember" />
+        <orm:field name="_dateCreated" property="DateCreated" behavior="readwrite" uniqueId="c9697a77-5020-42cd-b0c5-88916498c737" type="System.DateTime" />
+        <orm:field name="_thingSource" property="ThingSource" behavior="readwrite" uniqueId="12a9ca28-cd29-46a2-b681-f982f95f53c4" type="ThingSource" />
+      </orm:interface>
+    </orm:namespace>
+    <orm:schema schema="">
+      <orm:table name="thing_base">
+        <orm:column name="thing_id" sql-type="int" nullable="false" primary-key="true" length="0" scale="0" ado-type="" />
+        <orm:column name="description" sql-type="varchar" nullable="true" length="0" scale="0" ado-type="" />
+        <orm:column name="team_member" sql-type="int" nullable="false" length="0" scale="0" ado-type="" />
+        <orm:column name="date_created" sql-type="datetime" nullable="false" length="0" scale="0" ado-type="" />
+        <orm:column name="thing_source" sql-type="int" nullable="false" length="0" scale="0" ado-type="" />
+        <orm:column nullable="false" scale="0" length="0" sql-type="int" name="task_type" ado-type="" />
+      </orm:table>
+    </orm:schema>
+  </orm:orm>
+  <ModelSettings xmlns="">
+    <SaveConnectionStringInAppConfig>false</SaveConnectionStringInAppConfig>
+    <NamingSettings>
+      <ClassRules>
+        <CaseMode>PascalCase</CaseMode>
+        <PluralizationMode>Singularize</PluralizationMode>
+      </ClassRules>
+      <FieldRules>
+        <AddPrefix>_</AddPrefix>
+        <CaseMode>CamelCase</CaseMode>
+      </FieldRules>
+      <PropertyRules>
+        <CaseMode>PascalCase</CaseMode>
+      </PropertyRules>
+    </NamingSettings>
+    <CodeGenerationSettings>
+      <ShouldGenerateContext>false</ShouldGenerateContext>
+      <MappingDefinitionType>Fluent</MappingDefinitionType>
+    </CodeGenerationSettings>
+    <SchemaUpdateSettings>
+      <ExecuteScript>true</ExecuteScript>
+      <DeploymentProject>TeamThing.Model</DeploymentProject>
+    </SchemaUpdateSettings>
+    <BackendConfigurationSettings>
+      <BackendConfiguration>
+        <Backend>mssql</Backend>
+        <ProviderName>System.Data.SqlClient</ProviderName>
+        <Logging>
+          <MetricStoreSnapshotInterval>0</MetricStoreSnapshotInterval>
+        </Logging>
+      </BackendConfiguration>
+    </BackendConfigurationSettings>
+  </ModelSettings>
+  <Types>
+    <DomainClass Id="9d4b9219-b969-4a73-bbfa-f2486dacc8df" name="Team" namespace="TeamThing.Model" showPropertiesCompartment="true" showNavigationCompartment="true" showImplementationCompartment="true">
+      <Property Id="30a0810b-a762-475d-b7cd-73b436d1ed9c" name="TeamId" type="int" label="TeamId : int" identity="true" />
+      <Property Id="c272b2d8-f269-4a93-83e2-1f84caa2b91e" name="TeamMembers" type="IList&lt;TeamMember&gt;" label="TeamMembers : IList&lt;TeamMember&gt;" />
+      <Property Id="3b46c4da-3d4f-477d-bf7f-bd1322c346ed" name="TeamName" type="string" label="TeamName : string" />
+      <Property Id="078c774c-cc1e-4149-9b16-0ecd53d14012" name="IsEnabled" type="bool" label="IsEnabled : bool" />
+    </DomainClass>
+    <Interface Id="86f4f3a9-f22a-4f7c-94bf-17d358259387" name="IThing" showPropertiesCompartment="true">
+      <Property Id="20f2af57-9427-4e02-9fcd-e362c93f589f" name="ThingId" type="int" label="ThingId : int" identity="true" />
+      <Property Id="28a8c300-cdb3-47af-81f1-32956f614580" name="Description" type="string" label="Description : string" />
+      <Property Id="fbc1e9fb-dc67-46e0-ac68-61653f3e904c" name="TeamMember" type="TeamMember" label="TeamMember : TeamMember" />
+      <Property Id="c9697a77-5020-42cd-b0c5-88916498c737" name="DateCreated" type="DateTime" label="DateCreated : DateTime" />
+      <Property Id="12a9ca28-cd29-46a2-b681-f982f95f53c4" name="ThingSource" type="ThingSource" label="ThingSource : ThingSource" />
+      <implementors>
+        <DomainClassMoniker name="/TeamThingModel/ThingBase" />
+      </implementors>
+    </Interface>
+    <DomainClass Id="34505763-5e22-4f6b-a88d-c7a09abdd8f5" name="TeamMember" namespace="TeamThing.Model" showPropertiesCompartment="true" showNavigationCompartment="true" showImplementationCompartment="true">
+      <Property Id="b098fa61-232a-4631-89b4-7a1935208ae7" name="FirstName" type="string" label="FirstName : string" />
+      <Property Id="e3e27ba5-1b43-464d-9f82-7eeb1beacc20" name="LastName" type="string" label="LastName : string" />
+      <Property Id="1d188d24-997c-40c2-8e05-d4e547a034d4" name="Email" type="string" label="Email : string" />
+      <Property Id="d49434e0-f6ee-40d1-bad0-dacda17b2dca" name="ProfileColor" type="string" label="ProfileColor : string" />
+      <Property Id="af967e99-5b06-4daf-93f8-b9895e4ce687" name="TeamMemberId" type="int" label="TeamMemberId : int" identity="true" />
+      <Property Id="79315aad-6609-45ca-8b57-542d38612388" name="Things" type="IList&lt;ThingBase&gt;" label="Things : IList&lt;ThingBase&gt;" />
+      <Property Id="5f6bb6b3-8d0a-4ef3-8ada-d2b6eb8e2d78" name="Team" type="Team" label="Team : Team" />
+      <Property Id="bd39c5ac-4b45-4e83-9c6a-1e732564a15c" name="ApiKey" type="Guid" label="ApiKey : Guid" />
+    </DomainClass>
+    <DomainClass Id="33f0e4c6-5a05-4be1-86c3-fb42f3d7dd25" name="ThingBase" namespace="TeamThing.Model" inheritanceModifier="Abstract" showPropertiesCompartment="true" showNavigationCompartment="true" showImplementationCompartment="true">
+      <Property Id="42da2ed8-b7d2-4d25-a9ec-08a279b6a74c" name="Task_type" label="Task_type : String" kind="Persistent" fieldName="_taskType" />
+      <inheritors>
+        <inheritance Id="35393c1b-1e61-4353-a377-f7594162baa8">
+          <DomainClassMoniker name="/TeamThingModel/Task" />
+        </inheritance>
+        <inheritance Id="2ba7e19a-41e1-48bb-94bd-361f81a02947">
+          <DomainClassMoniker name="/TeamThingModel/Obstacle" />
+        </inheritance>
+      </inheritors>
+      <implementedProperty Id="70e30c51-03f3-4208-9cb7-bde575da34cd" name="ThingId" type="int" label="ThingId : int" identity="true" providingTypeName="IThing" />
+      <implementedProperty Id="0154321c-0c53-4606-b796-bae48df3a6e4" name="Description" type="string" label="Description : string" providingTypeName="IThing" />
+      <implementedProperty Id="afd354e4-4007-462b-ac70-e5bcc4b2d71c" name="TeamMember" type="TeamMember" label="TeamMember : TeamMember" providingTypeName="IThing" />
+      <implementedProperty Id="077b9333-20e5-48f4-b67f-ff3fbb2ee367" name="DateCreated" type="DateTime" label="DateCreated : DateTime" providingTypeName="IThing" />
+      <implementedProperty Id="d12c00bd-592f-40a2-b790-e3706415e927" name="ThingSource" type="ThingSource" label="ThingSource : ThingSource" providingTypeName="IThing" />
+    </DomainClass>
+    <DomainClass Id="5d503679-8540-40b7-8022-1f4e30c1db16" name="ThingSource" namespace="TeamThing.Model" showPropertiesCompartment="true" showNavigationCompartment="true" showImplementationCompartment="true">
+      <Property Id="557f6d30-c653-460a-9310-fdff233dc125" name="Things" type="IList&lt;ThingBase&gt;" label="Things : IList&lt;ThingBase&gt;" />
+      <Property Id="43af5c7f-ea11-4a22-9519-6279aa12cda8" name="ThingSourceId" type="int" label="ThingSourceId : int" identity="true" />
+      <Property Id="07619b46-425a-450b-b8a4-ca37f6944948" name="MessageId" type="string" label="MessageId : string" />
+      <Property Id="f0bf6328-e975-4f7b-a5da-6ab026f3d8d9" name="FromAddress" type="string" label="FromAddress : string" />
+      <Property Id="847291b2-5241-4d2c-9e14-9c6b5319a655" name="MessageDate" type="DateTime" label="MessageDate : DateTime" />
+      <Property Id="88a7ae22-5bd0-4185-98b0-74f00087c4a2" name="MessageBody" type="string" label="MessageBody : string" />
+      <Property Id="63f8e77d-6d93-45f4-9b9d-2e86e09097ba" name="DateImported" type="DateTime" label="DateImported : DateTime" />
+      <Property Id="37e018f4-171e-4e68-97c9-0310b58a8a94" name="TeamMember" type="TeamMember" label="TeamMember : TeamMember" />
+    </DomainClass>
+    <DomainClass Id="db0bf23b-63f8-429c-8860-428c423d4a80" name="Task" namespace="TeamThing.Model" showPropertiesCompartment="true" showNavigationCompartment="true" showImplementationCompartment="true">
+      <Property Id="d437b4bd-0604-4b14-927a-a7cb0ff67dc7" name="Status" type="TaskStatus" label="Status : TaskStatus" />
+      <Property Id="75983dae-26f9-4826-95c2-aabd715b5a8c" name="TaskType" type="TaskType" label="TaskType : TaskType" />
+    </DomainClass>
+    <DomainClass Id="1161ab23-c44f-45b9-bccd-1c3e663d92c5" name="Obstacle" namespace="TeamThing.Model" showPropertiesCompartment="true" showNavigationCompartment="true" showImplementationCompartment="true">
+      <Property Id="dd563dec-2da3-48c3-83cb-5d471ab7ef0d" name="IsCleared" type="bool" label="IsCleared : bool" />
+    </DomainClass>
+    <DomainClass Id="f6bac532-f93f-4c8c-abc6-067e6669a543" name="EmailLog" namespace="TeamThing.Model" showPropertiesCompartment="true" showNavigationCompartment="true" showImplementationCompartment="true">
+      <Property Id="b46966ba-6536-4eb4-a3ff-43a8d0810804" name="EmailLogId" type="int" label="EmailLogId : int" identity="true" />
+      <Property Id="39bfe37b-ccdd-418f-b1ae-835bd656f028" name="Subject" type="string" label="Subject : string" />
+      <Property Id="11255cab-a7a1-477a-89e8-00a48f0524c6" name="ToAddress" type="string" label="ToAddress : string" />
+      <Property Id="ace518a6-b23a-4bd6-afe4-62041a8da8b4" name="SendDate" type="DateTime" label="SendDate : DateTime" />
+      <Property Id="20d248f3-8ab2-48d5-8293-37308866c664" name="Team" type="Team" label="Team : Team" />
+      <Property Id="8b7d17bb-9fa2-43e7-a7c2-271c9f6b376f" name="TeamMember" type="TeamMember" label="TeamMember : TeamMember" />
+      <Property Id="19db0d70-54f5-4a51-9e39-1d0897f606ff" name="EmailType" type="EmailType" label="EmailType : EmailType" />
+    </DomainClass>
+  </Types>
+  <domainContext>
+    <domainModelHasDomainContext Id="8d4488a0-d2c0-47b1-98a0-46c6ce94e038">
+      <domainContainer name="TeamThingModel" namespace="TeamThing.Model" showPropertiesCompartment="true">
+        <entitySetProperty name="Teams" namespace="TeamThing.Model" type="Team" label="Teams : IQueryable&lt;TeamThing.Model.Team&gt;" />
+        <entitySetProperty name="TeamMembers" namespace="TeamThing.Model" type="TeamMember" label="TeamMembers : IQueryable&lt;TeamThing.Model.TeamMember&gt;" />
+        <entitySetProperty name="ThingBases" namespace="TeamThing.Model" type="ThingBase" label="ThingBases : IQueryable&lt;TeamThing.Model.ThingBase&gt;" />
+        <entitySetProperty name="ThingSources" namespace="TeamThing.Model" type="ThingSource" label="ThingSources : IQueryable&lt;TeamThing.Model.ThingSource&gt;" />
+        <entitySetProperty name="Tasks" namespace="TeamThing.Model" type="Task" label="Tasks : IQueryable&lt;TeamThing.Model.Task&gt;" />
+        <entitySetProperty name="Obstacles" namespace="TeamThing.Model" type="Obstacle" label="Obstacles : IQueryable&lt;TeamThing.Model.Obstacle&gt;" />
+        <entitySetProperty name="EmailLogs" namespace="TeamThing.Model" type="EmailLog" label="EmailLogs : IQueryable&lt;TeamThing.Model.EmailLog&gt;" />
+      </domainContainer>
+    </domainModelHasDomainContext>
+  </domainContext>
+</DomainModel>

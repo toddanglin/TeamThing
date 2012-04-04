@@ -1,0 +1,194 @@
+/*Customize the Title Bar styles*/
+.km-ios .km-navbar{
+	background-color: #777;	
+}
+
+.tt.km-ios .km-view-title{
+	font-family: 'Lobster', cursive;
+	font-size:  1.6rem;
+}
+
+/*Customize the navbar tabstrip styles*/
+.km-ios .km-footer .km-tabstrip{
+	background-color: #555;
+	background-image: -webkit-gradient(linear,50% 0,50% 100%,color-stop(0,rgba(100, 100, 100, 0.7)),color-stop(0.5,rgba(200, 200, 200, 0.5)),color-stop(0.5,rgba(0, 0, 0, 0)),color-stop(1,rgba(0, 0, 0, 0)));
+}
+
+/*List Item Styles*/
+.tt .km-listview, .tt .km-list{
+	background: #444;
+}
+
+.tt .km-listview li{
+	color: #EEE;
+	border-color: #222;
+}
+
+.tt .km-listgroup > li, .tt .km-group-title {
+	background-color:  #999;
+}
+
+.tt .km-listview {
+	box-shadow: 0px 3px 3px #111;
+}
+
+.tt .things.km-listview li > a{
+	color: #EEE;
+}
+
+.tt .km-content, body {
+	background: #111 url(images/bkgndCarbon.png) repeat;
+}
+
+.tt .loginList{
+	background: #FFF;
+}
+
+.tt .loginList li{
+	color: #000;
+	font-size: 15px;
+	border: none;
+	text-align: left;
+}
+
+.tt .loginList li input[type="email"], .tt .loginList li input[type="password"]{
+	float: right;
+	border: none;
+	width: 65%;
+	height: 24px;
+	font-size: 14px;
+	-webkit-appearance: none; /*Needed for iOS*/
+	border-radius: 0; /*Needed for iOS*/
+}
+
+.teamChooseList li{
+	padding: 0;
+}
+
+.teamChooseList li:first-of-type{
+	border-radius: 10px 10px 0 0;
+}
+.teamChooseList li:last-of-type{
+	border-radius: 0 0 10px 10px;
+}
+
+.teamChooseList .selected{
+	background-color: #73c1da;
+}
+
+/*Customize button color*/
+.km-ios .km-button{
+	background-color: #73c1da;
+}
+
+.km-ios .km-button:active{
+	background-color: #2a6c81;
+}
+
+.km-ios .km-button:disabled{
+	background-color: #BBB;
+	color: #CCC;
+}
+
+.km-ios .km-button.delete{
+	background-color: red;
+}
+
+.km-ios .km-button.complete{
+	background-color: green;
+}
+
+.km-ios .km-button.delay{
+	background-color: #999;
+}
+
+/*AUTOCOMPLETE LIST ITEM STYLES*/
+.teamListItem{
+	height: 50px;
+	vertical-align: middle;
+}
+
+.teamListItem p{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #000000;
+	display: inline-block;
+	position: relative;
+	top: -20%;
+}
+
+.teamListItem img{
+	margin: 10px 10px 0 0;
+	width: 30px;
+	height: 30px;
+}
+
+.teamListItem.private{
+	background-image: url(images/iconLock.png);
+	background-repeat: no-repeat;
+	background-position: 100% 50%;
+}
+
+/*ELEMENT STYLES*/
+body{
+	color: #EEE;
+}
+
+textarea{
+	font-size: 18px;
+}
+
+/*CUSTOM STYLES*/
+.status{
+	padding: 3px;
+	margin: 5px 0 5px 15px;
+	border-radius: 3px;
+	background: #999;
+}
+
+#teamScroll{
+	width: 100%;
+	margin-top: 5px;
+}
+
+#teamScroll .teamMember{
+	height: 245px;
+	width:  96%;
+	border-radius: 10px;
+	border: solid 1px #000;
+	text-align: center;
+	background: #444;
+	display: inline-block;
+	margin: 0 4px;
+}
+
+#teamScroll .teamMember:first-of-type{
+	margin-left: 5px;
+}
+
+#vwLogin .km-content{
+	background: url(images/bkgndLogin_320.png) no-repeat 50% 0, url(images/bkgndCarbon.png) repeat;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2){
+	#vwLogin .km-content{
+		background: url(images/bkgndLogin.png) no-repeat 50% 0,url(images/bkgndCarbon.png) repeat;
+	}
+}
+
+.km-content .wrapper{
+	text-align: center;
+	width: 100%;
+	margin: 180px auto 0 auto;
+}
+
+#vwTeamPath .km-content .wrapper{
+	margin-top: 150px;
+}
+
+.km-content .wrapper button{
+	width: 90%;
+	height: 40px;
+	font-size: 20px;
+	margin-bottom: 15px;
+}

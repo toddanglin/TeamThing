@@ -1,0 +1,9 @@
+{
+	"firstName":"John",
+	"lastName": "Appleseed",
+	"emailAddress": "demo@telerik.com",
+	"id": 2,
+	"imagePath": "person.jpg",
+	"color": "#23452",
+	"teams":[]
+}
