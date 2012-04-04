@@ -173,6 +173,7 @@ textarea{
 @media only screen and (-webkit-min-device-pixel-ratio: 2){
 	#vwLogin .km-content{
 		background: url(images/bkgndLogin.png) no-repeat 50% 0,url(images/bkgndCarbon.png) repeat;
+		background-size: 50%, 50%;
 	}
 }
 
