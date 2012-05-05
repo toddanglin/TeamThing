@@ -28,6 +28,10 @@
 	background-color:  #999;
 }
 
+.tt.km-android .km-listview {
+	margin:0;
+}
+
 .tt .km-listview {
 	box-shadow: 0px 3px 3px #111;
 }
@@ -100,6 +104,11 @@
 
 .km-ios .km-button.delay{
 	background-color: #999;
+}
+
+.km-android input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):not([type="checkbox"]):not([type="radio"]), .km-android select:not([multiple]), .km-android .k-dropdown
+{
+    color:#000;
 }
 
 /*AUTOCOMPLETE LIST ITEM STYLES*/
@@ -184,7 +193,7 @@ textarea{
 .km-content .wrapper{
 	text-align: center;
 	width: 100%;
-	margin: 180px auto 0 auto;
+	margin: 25% auto 0 auto;
 }
 
 #vwTeamPath .km-content .wrapper{

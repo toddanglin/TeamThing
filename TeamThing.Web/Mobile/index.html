@@ -55,7 +55,24 @@
 		<header data-role="header">
 			<div data-role="navbar">
 			Team Thing
-			<a data-role="button" style="background-color: #444;visibility: hidden;" data-align="right" id="btnAdd" data-icon="add" href="#vwAdd"></a>
+            <a data-role="button" style="background-color: #444;visibility: hidden;" data-align="right" id="btnAdd" class="btnAdd" data-icon="add" href="#vwAdd"></a>
+			</div>		
+		</header>
+		<div id="content"></div>
+		<footer data-role="footer">
+			<div data-role="tabstrip">
+		    	<a href="#vwThings" data-icon="organize">Things</a>
+		    	<a href="team.html" data-icon="contacts">Team</a>
+		    	<a href="settings.html" data-icon="settings">Settings</a>
+		   </div>
+		</footer>
+	</div>
+
+    <div data-role="layout" data-id="rootLayout" data-platform="android">
+		<header data-role="header">
+			<div data-role="navbar">
+			Team Thing
+			<a data-role="button" style="background-color: #444;visibility: hidden;" data-align="right" id="btnAdd" class="btnAdd" data-icon="add" href="#vwAdd">Add</a>
 			</div>		
 		</header>
 		<div id="content"></div>
