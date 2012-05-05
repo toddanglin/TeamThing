@@ -150,7 +150,7 @@ var TeamThingData = function () {
 
             route.path = route.path.replace(/{key}/g, thingId);
 
-            _private.load(route.path, route.verb, {DeletedById: uid})
+            _private.load(route.path, route.verb, { DeletedById: uid })
 				.success(function (data) {
 				    dfd.resolve(data);
 				})
@@ -162,7 +162,7 @@ var TeamThingData = function () {
         },
         updateThingStatus: function (thingId, uid, newStatus) {
             var dfd = new $.Deferred(),
-				route = _paths.updateThingStatus;
+				route = $.extend({}, _paths.updateThingStatus);
 
             //Handle Delete uniquely
             if (newStatus == "Delete") return this.deleteThing(thingId, uid);
