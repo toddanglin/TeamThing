@@ -69,6 +69,14 @@ namespace TeamThing.Model
             this.History.Add(log);
         }
 
+        public void UpdateStatus(int userId, ThingStatus status)
+        {
+            var log = new ThingLog(userId, this.Id);
+            log.Action = (status == ThingStatus.Completed) ? ThingAction.Completed : ThingAction.StatusChanged;
+            this.Status = status;
+            this.History.Add(log);
+        }
+
         public void ChangeOwner(User user, User newOwner)
         {
             SetOwner(newOwner);

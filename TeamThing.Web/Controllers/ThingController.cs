@@ -122,7 +122,7 @@ namespace TeamThing.Web.Controllers
                 return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
             }
 
-            thing.Complete(updateStatusParameters.UserId);
+            thing.UpdateStatus(updateStatusParameters.UserId, realStatus);
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();

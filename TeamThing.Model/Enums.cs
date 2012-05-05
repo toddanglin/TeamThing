@@ -25,6 +25,7 @@ namespace TeamThing.Model
         OwnerChanged,
         Completed,
         Deleted,
-        Delayed
+        Delayed,
+        StatusChanged
     }
 }
