@@ -17,7 +17,7 @@ var TeamThingData = function(){
 			getUserThings: {path: "user/{key}/things?teamId={teamId}", verb: "GET"},
 			getThing: {path: "thing/{key}", verb: "GET"},
 			createThing: {path: "thing", verb: "POST"},
-			updateThingStatus: {path: "thing/{key}/complete", verb: "PUT"}
+			updateThingStatus: {path: "thing/{key}/updatestatus", verb: "PUT"}
 		},
 		_testPaths = {
 			searchTeam: {path: "teamSearch.json", verb: "GET"},
@@ -83,7 +83,7 @@ var TeamThingData = function(){
 		},
 		getTeam: function(tid){
 			var dfd = new $.Deferred(),
-				route = _paths.Team;
+				route = _paths.getTeam;
 			
 			//TODO: Check for cache before loading
 			
