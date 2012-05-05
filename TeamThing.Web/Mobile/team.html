@@ -11,23 +11,30 @@
 </head>
 <body>
 
-<div data-role="view" id="vwTeam" data-init="loadTeamView">
+<div data-role="view" id="vwTeam" data-show="initTeamView">
      <div id="teamContainer"></div>
 </div>
 
 <script type="text/x-kendo-template" id="tmplTeam">
 	<h1>#= data.name #</h1>
+    <p>#= data.teamMembers.length # members</p>
 	<div id="teamScroll">
 	#for(var i = 0;i < data.teamMembers.length;i++){#
-	<div class="teamMember">
-	<h2>#= data.teamMembers[i].firstName #</h2>
-	</div>
+	    <div class="teamMember">
+        # var hash = MD5(data.teamMembers[i].emailAddress); var gravatar = "http://www.gravatar.com/avatar/"+ hash +"?s=160"; var name = data.teamMembers[i].fullName.trim();#
+        <img src="#= gravatar #" />
+        # if(name == "") { name = "[Name Not Set]"; }#
+	    <h2>#= name #</h2>
+	    </div>
 	#}#	
 	</div>
 </script>
 
 <script>
-	function loadTeamView(){
+    function initTeamView() {
+        //Hide Add button on main index view
+        $(".btnAdd").css("visibility", "hidden");
+
 		var ele = $("#teamContainer"),
 			tmpl = kendo.template($("#tmplTeam").html());
 			

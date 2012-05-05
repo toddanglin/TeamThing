@@ -171,6 +171,17 @@ textarea{
 	margin: 0 4px;
 }
 
+#teamScroll .teamMember img
+{
+    margin-top:1em;
+    margin-top:1rem;
+}
+
+.km-android #teamScroll .teamMember
+{
+    border-radius:0;
+}
+
 #teamScroll .teamMember:first-of-type{
 	margin-left: 5px;
 }
