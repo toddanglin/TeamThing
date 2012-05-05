@@ -35,21 +35,21 @@
 	</div>	
 </script>
 
-<script> 
+<script>
 	function loadThingDetail(args){
 		var ele = $(args.view.element[0]).find("#thingDetail"),
 			id = parseInt(args.view.params.id),
 			tmpl = kendo.template($("#tmplThingDetail").html());
+
+        $(ele).delegate("a", "click", updateStatus)
 			
 		console.log("THING DETAIL", args);
 		console.log(id);
 				
-		teamThingApp.loadDetail(id, tmpl, ele);
-		
-		$("#thingDetail").delegate("a", "click", updateStatus);
-	}		
-	
-	function updateStatus(e){
+		teamThingApp.loadDetail(id, tmpl, ele);				
+	}
+
+	function updateStatus(e) {
 		var app = teamThingApp,
 			action = $(e.currentTarget).data("action"),
 			id = parseInt(app.app.view.params.id);
