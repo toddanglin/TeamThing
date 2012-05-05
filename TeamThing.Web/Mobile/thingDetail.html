@@ -23,8 +23,10 @@
 	</span>
 	
 	<div style="margin:20px;width:90%;text-align:center;">
+        # if(data.status != "Deleted") {#
 		<a data-role="button" data-action="Delete" class="delete">Delete</a>
-		# if(data.status != "Completed") {#
+        # } #
+		# if(data.status != "Completed" && data.status != "Deleted") {#
 		<a data-role="button" data-action="Complete" class="complete">Complete</a>
 		<a data-role="button" data-action="Delay" class="delay">Delay</a>
 		#}else{#
@@ -55,15 +57,15 @@
 		app.showLoading("Updating...");
 		
 		console.log("THING UPDATE", e, action, id);
-		
-		$.when(app.updateThingStatus(id, action)).then(function(result){
-			app.hideLoading();
-			
-			if(result){
-				app.app.navigate("");
-			}else{
-				alert("Technical glitch. Check your connection and try again later.");
-			}
+
+		$.when(app.updateThingStatus(id, action)).then(function (result) {
+		    app.hideLoading();
+
+		    if (result || action == "Delete") {
+		        app.app.navigate("");
+		    } else {
+		        alert("Technical glitch. Check your connection and try again later.");
+		    }
 		});
 		
 		return false;
