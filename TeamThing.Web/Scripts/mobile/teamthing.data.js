@@ -55,7 +55,7 @@ var TeamThingData = function () {
     return {
         getUserTeamThings: function (uid, tid) {
             var dfd = new $.Deferred(),
-			    route = _paths.getUserThings;
+			    route = $.extend({}, _paths.getUserThings);
 
             route.path = route.path.replace(/{key}/g, uid);
             route.path = route.path.replace(/{teamId}/g, tid);
@@ -84,7 +84,7 @@ var TeamThingData = function () {
         },
         getTeam: function (tid) {
             var dfd = new $.Deferred(),
-				route = _paths.getTeam;
+				route = $.extend({}, _paths.getTeam);
 
             //TODO: Check for cache before loading
 
@@ -101,7 +101,7 @@ var TeamThingData = function () {
         },
         joinTeam: function (teamId, userId) {
             var dfd = new $.Deferred(),
-				route = _paths.joinTeam;
+				route = $.extend({}, _paths.joinTeam);
 
             route.path = route.path.replace(/{key}/g, teamId);
 
@@ -132,7 +132,7 @@ var TeamThingData = function () {
         },
         createThing: function (teamId, userId, txt) {
             var dfd = new $.Deferred(),
-				route = _paths.createThing;
+				route = $.extend({}, _paths.createThing);
 
             _private.load(route.path, route.verb, { CreatedById: userId, Description: txt, AssignedTo: [userId], teamId: teamId })
 				.success(function (data) {
@@ -146,7 +146,7 @@ var TeamThingData = function () {
         },
         deleteThing: function (thingId, uid) {
             var dfd = new $.Deferred(),
-				route = _paths.deleteThing;
+				route = $.extend({}, _paths.deleteThing);
 
             route.path = route.path.replace(/{key}/g, thingId);
 
@@ -181,7 +181,7 @@ var TeamThingData = function () {
         },
         searchTeams: function (userId, query) {
             var dfd = new $.Deferred(),
-				route = _paths.searchTeam;
+				route = $.extend({}, _paths.searchTeam);
 
             route.path = route.path.replace(/{q}/g, query);
 
@@ -195,7 +195,7 @@ var TeamThingData = function () {
         },
         validateUser: function (email, pass) {
             var dfd = new $.Deferred(),
-				route = _paths.userLogin;
+				route = $.extend({}, _paths.userLogin);
 
             //DEMO HACKERY
             //var json = (email == "anglin@telerik.com") ? "userLogin.json" : "newUserLogin.json";	
