@@ -179,6 +179,7 @@
     <Content Include="Images\unlocked.png" />
     <Content Include="Scripts\kendo-2012.1.322.all.min.js" />
     <Content Include="Scripts\localStore.js" />
+    <Content Include="Scripts\mobile\MD5.js" />
     <Content Include="Scripts\mobile\teamthing.app.js" />
     <Content Include="Scripts\mobile\teamthing.data.js" />
     <Content Include="thingEditor.html" />
