@@ -129,17 +129,11 @@
 	<script src="../scripts/mobile/add2home.js"></script>
 	
 	<script>
-		$(function(){
-			// Set a timeout...
-			setTimeout(function(){
-			    // Hide the address bar!
-			    window.scrollTo(0, 0.9);
-			}, 0);
-
+	    $(function () {
 			var app = new kendo.mobile.Application($(document.body), {
 				layout:'rootLayout', 
 				transition: 'slide',
-				icon:'apple-touch-icon.png'
+				icon: 'apple-touch-icon.png'
 				});				
 			
 			 window.teamThingApp = new TeamThing(app);
