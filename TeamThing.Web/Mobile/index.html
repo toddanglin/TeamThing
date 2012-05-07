@@ -32,9 +32,9 @@
 	     	</p>
 	     </div>
 	</div>
-	
-	<div data-role="view" id="vwAdd" data-title="Add Thing" data-transition="overlay:down" data-layout="title" data-show="initAddView">
-		<div class="wrapper" style="margin-top:10%">
+
+	<div data-role="view" id="vwAdd" data-title="Add Thing" data-transition="overlay:down" data-layout="title" data-show="initAddView" style="visibility:hidden;">
+		<div class="wrapper" style="margin-top:10%;">
 		<h2>What are you working on?</h2>
 	     <textarea style="width:90%;height: 175px;margin-bottom: 30px;" 
 	     	autofocus required
@@ -44,7 +44,7 @@
 	     <button class="km-button" id="btnAddCancel">Cancel</button>
 	     </div>
 	</div>
-	
+
 	<script type="text/x-kendo-template" id="tmplThingItem">
 		<a href="thingDetail.html?id=#= data.id #" data-role="listview-link" class="km-listview-link">	
 			<div class="thingTitle">#= data.description #</div>
@@ -196,7 +196,10 @@
 	   		teamThingApp.loadThingsView();   
 	   		
 	   		//Show Add button on main index view
-	   		$(".btnAdd").css("visibility","visible");
+	   		$(".btnAdd").css("visibility", "visible");
+
+	   		//Remove hidden visibility from "Add" view (hidden on load to prevent FOUJUI)
+	   		$("#vwAdd").css("visibility", "visible");	
 	   		
 	   		//Show install prompt
 	   		addToHome.show();
