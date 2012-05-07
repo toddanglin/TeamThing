@@ -1,4 +1,46 @@
+#TeamThing&trade; Demo App
+
+The TeamThing demo app is designed to show-off the capabilities of [Kendo UI Mobile](http://www.kendoui.com/mobile), a HTML5 mobile app framework that helps developers create apps that automatically adapt to the look-and-feel of different devices.
+
+**NOTE: TeamThing is not an official Kendo UI product. It is an unsupported demo, meant to be used as a learning tool. Use at your own risk.**
+
+##What is TeamThing?
+TeamThing is an app that helps teams easily keep track of what everyone is doing. It's like a task list for teams.
+
+Users can do the following things in the TeamThing app:
+
+* Join a team
+* Create new Things
+* Update Thing status (InProgress/Completed/Delayed/Deleted)
+* Browse personal Things for current team
+* View other team members
+
+##How do you use TeamThing?
+To use TeamThing, simply browse to the [TeamThing app](http://teamthing.apphb.com/mobile/index.html) from any supported mobile device. In the current version, iOS, Android, and BlackBerry are supported.
+
+To use the demo, you can log-in with the following credentials:
+
+* **User:** demo@demo.com
+* **Pass:** 1234
+
+TeamThing will automatically adapt to the look-and-feel of your device, providing a "native" experience wherever you use it. No need for separate apps or code for each device.
+
+##How is TeamThing built?
+TeamThing consists of two primary pieces:
+
+1. Kendo UI Mobile powered HTML/JavaScript front-end app
+2. JSON REST API (using Web API)
+
+The demo app is deployed to AppHarbor. An additional browser-based admin interface is also being developed.
+
+#Improving the Demo
+TeamThing is a living demo, far from finished or perfect. You can help make the demo better! Take a look at the existing Issues on GitHub and make your own suggestions for improvement.
+
+[TeamThing Issues on GitHub](https://github.com/toddanglin/TeamThing/issues)
+
+
 #TeamThing Service API
+Documentation of the TeamThing RESTful API
 
 ##User Methods
 **Search Users**  
