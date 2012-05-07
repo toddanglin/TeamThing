@@ -3,6 +3,11 @@
 	background-color: #777;	
 }
 
+.km-blackberry .km-view-title
+{
+    display:block; /*Bug?*/
+}
+
 .tt.km-ios .km-view-title{
 	font-family: 'Lobster', cursive;
 	font-size:  1.6rem;
