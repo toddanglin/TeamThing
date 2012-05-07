@@ -97,11 +97,13 @@ var TeamThing = function (kendoApp) {
         },
         createThing: function (txt) {
             var tid = this.getCurrentTeam(),
-				uid = this.getCurrentUser().id;
+				uid = this.getCurrentUser().id,
+                that = this;
 
             return $.when(_data.createThing(tid, uid, txt)).then(function (result) {
                 console.log("SAVE THING", result);
                 if (result) {
+                    that.setThingsRefreshFlag();
                     return true;
                 } else {
                     return false;
@@ -109,10 +111,12 @@ var TeamThing = function (kendoApp) {
             });
         },
         updateThingStatus: function (thingId, newStatus) {
-            var uid = this.getCurrentUser().id;
-           
+            var uid = this.getCurrentUser().id,
+                that = this;
+
             return $.when(_data.updateThingStatus(thingId, uid, newStatus)).then(function (result) {
                 if (result) {
+                    that.setThingsRefreshFlag();
                     return true;
                 } else {
                     return false;
