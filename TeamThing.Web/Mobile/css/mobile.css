@@ -195,6 +195,16 @@ textarea{
 	background: url(images/bkgndLogin_320.png) no-repeat 50% 0, url(images/bkgndCarbon.png) repeat;
 }
 
+#vwLogin .km-content .wrapper
+{
+    margin-top:180px;
+}
+
+.tt.km-android #vwLogin .km-listview
+{
+    margin:0 5% 0 5%;
+}
+
 @media only screen and (-webkit-min-device-pixel-ratio: 2){
 	#vwLogin .km-content{
 		background: url(images/bkgndLogin.png) no-repeat 50% 0,url(images/bkgndCarbon.png) repeat;
@@ -206,10 +216,12 @@ textarea{
 	}
 }
 
-.km-content .wrapper{
-	text-align: center;
-	width: 100%;
-	margin: 25% auto 0 auto;
+.km-content .wrapper
+{
+    text-align:center;
+    width:100%;
+    margin:25% auto 0 auto;
+    max-width:480px;
 }
 
 #vwTeamPath .km-content .wrapper{
