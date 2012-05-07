@@ -33,10 +33,33 @@ TeamThing consists of two primary pieces:
 
 The demo app is deployed to AppHarbor. An additional browser-based admin interface is also being developed.
 
+###Kendo UI Mobile App
+You can find the files specific the Kendo UI Mobile app in:
+
+(Root) > TeamThing.Web > Mobile
+
+This folder contains the HTML, JavaScript, and CSS needed for the mobile app.
+
+The bulk of the app's logic is contained in two files:
+
+* teamthing.app.js
+* teamthing.data.js
+
+The starting point for the app, which includes the Kendo UI Mobile Application initialization is contained in: 
+
+* index.html
+
+###REST API
+The TeamThing RESTful API is built using ASP.NET MVC 4's Web API and [Telerik's free OpenAccess ORM](http://www.telerik.com/orm) communicating with a cloud-hosted SQL Server instance. The primary app endpoints can be found in:
+
+(Root) > TeamThing.Web > Controllers > Thing/Team/UserController.cs
+
 #Improving the Demo
 TeamThing is a living demo, far from finished or perfect. You can help make the demo better! Take a look at the existing Issues on GitHub and make your own suggestions for improvement.
 
 [TeamThing Issues on GitHub](https://github.com/toddanglin/TeamThing/issues)
+
+There are a number of features planned but not yet implemented, including things like data security and federated log-in.
 
 
 #TeamThing Service API
