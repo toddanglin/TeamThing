@@ -166,18 +166,8 @@
   <ItemGroup>
     <Content Include="Content\mobile\html5reset-1.6.1.css" />
     <Content Include="Content\mobile\img\bkgndCarbon.png" />
-    <Content Include="Content\mobile\kendo.common.min.css" />
-    <Content Include="Content\mobile\kendo.metro.min.css" />
-    <Content Include="Content\mobile\Metro\editor.png" />
-    <Content Include="Content\mobile\Metro\imagebrowser.png" />
-    <Content Include="Content\mobile\Metro\loading-image.gif" />
-    <Content Include="Content\mobile\Metro\loading.gif" />
-    <Content Include="Content\mobile\Metro\slider-h.gif" />
-    <Content Include="Content\mobile\Metro\slider-v.gif" />
-    <Content Include="Content\mobile\Metro\sprite.png" />
     <Content Include="Images\locked.png" />
     <Content Include="Images\unlocked.png" />
-    <Content Include="Scripts\kendo-2012.1.322.all.min.js" />
     <Content Include="Scripts\localStore.js" />
     <Content Include="Scripts\mobile\MD5.js" />
     <Content Include="Scripts\mobile\teamthing.app.js" />
@@ -235,14 +225,10 @@
     <Content Include="Mobile\apple-touch-icon.png" />
     <Content Include="Mobile\createTeam.html" />
     <Content Include="Mobile\css\add2home.css" />
-    <Content Include="Mobile\css\images\android-sprite.png" />
     <Content Include="Mobile\css\images\bkgndCarbon.png" />
     <Content Include="Mobile\css\images\bkgndLogin.png" />
     <Content Include="Mobile\css\images\bkgndLogin_320.png" />
     <Content Include="Mobile\css\images\iconLock.png" />
-    <Content Include="Mobile\css\images\iconmasks.svg" />
-    <Content Include="Mobile\css\images\ios-sprite.png" />
-    <Content Include="Mobile\css\kendo.mobile.all.min.css" />
     <Content Include="Mobile\css\mobile.css" />
     <Content Include="Mobile\Default.png" />
     <Content Include="Mobile\img\defaultTeam.jpg" />
