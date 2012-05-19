@@ -18,6 +18,13 @@
 	<div data-role="view" id="vwThings" data-show="listThingsInit" data-title="Team Thing">
 	     <ul id="lstThings" class="things">      	
 	     </ul>
+		<ul data-role="actionsheet" id="thingActions" data-open="onOpen">
+	        <li class="km-actionsheet-title">Status:</li>
+	        <li><a href="#" data-action="deleteThing" class="km-button delete">Delete</a></li>
+	        <li><a href="#" data-action="markCompleted">Mark Complete</a></li>
+	        <li><a href="#" data-action="markDelayed">Mark Delayed</a></li>
+	        <li><a href="#" data-action="markInProgress">Mark In-Progress</a></li>
+	    </ul>
 	     <div id="msgNoThings" style="width: 250px;text-align:center;margin: 50px auto;display: none;">
 	     	<h2>No<b>thing</b> to do!</h2>
 	     	<p>
@@ -39,7 +46,11 @@
 	</div>
 
 	<script type="text/x-kendo-template" id="tmplThingItem">
-		<a href="thingDetail.html?id=#= data.id #" data-role="listview-link" class="km-listview-link">	
+		<a class="km-listview-link"
+		   data-role="listview-link"
+		   data-rel="actionsheet"
+		   href="\\#thingActions"
+		   data-actionsheet-context="#:data.id#">
 			<div class="thingTitle">#= data.description #</div>
 		</a>
 	</script>
