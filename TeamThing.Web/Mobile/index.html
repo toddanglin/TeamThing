@@ -18,7 +18,7 @@
 	<div data-role="view" id="vwThings" data-show="listThingsInit" data-title="Team Thing">
 	     <ul id="lstThings" class="things">      	
 	     </ul>
-		<ul data-role="actionsheet" id="thingActions" data-open="onOpen">
+		<ul data-role="actionsheet" id="thingActions">
 	        <li class="km-actionsheet-title">Status:</li>
 	        <li><a href="#" data-action="deleteThing" class="km-button delete">Delete</a></li>
 	        <li><a href="#" data-action="markCompleted">Mark Complete</a></li>
@@ -132,6 +132,32 @@
 	<script src="../scripts/mobile/add2home.js"></script>
 	
 	<script>
+		function deleteThing(e) {
+			updateThingStatusHelper(e.context, "Delete");
+		}
+
+		function markDelayed(e) {
+			updateThingStatusHelper(e.context, "Delayed");
+		}
+
+		function markCompleted(e) {
+			updateThingStatusHelper(e.context, "Completed");
+		}
+
+		function markInProgress(e) {
+			updateThingStatusHelper(e.context, "InProgress");
+		}
+
+		function updateThingStatusHelper(id, action) {
+			var app = window.teamThingApp;
+			app.showLoading("Updating...");
+			$.when(app.updateThingStatus(id, action)).then(function (result) {
+				app.setThingsRefreshFlag();
+				app.hideLoading();
+				app.loadThingsView();
+			});
+		}
+
 	    $(function () {
 			var app = new kendo.mobile.Application($(document.body), {
 				layout:'rootLayout', 
