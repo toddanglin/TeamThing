@@ -7,9 +7,9 @@
 	<link rel="apple-touch-startup-image" href="Default-320.png">
 	
 	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-	<link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.common.min.css" rel="stylesheet"/>
-	<link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.default.min.css" rel="stylesheet"/>
-	<link href="http://cdn.kendostatic.com/2012.1.322/styles/kendo.mobile.all.min.css" rel="stylesheet"/>
+	<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.common.min.css" rel="stylesheet"/>
+	<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.default.min.css" rel="stylesheet"/>
+	<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.mobile.all.min.css" rel="stylesheet"/>
 
 	<link href="css/mobile.css" rel="stylesheet" />
 	<link href="css/add2home.css" rel="stylesheet" />
@@ -18,6 +18,13 @@
 	<div data-role="view" id="vwThings" data-show="listThingsInit" data-title="Team Thing">
 	     <ul id="lstThings" class="things">      	
 	     </ul>
+		<ul data-role="actionsheet" id="thingActions">
+	        <li class="km-actionsheet-title">Status:</li>
+	        <li><a href="#" data-action="deleteThing" class="km-button delete">Delete</a></li>
+	        <li><a href="#" data-action="markCompleted">Mark Complete</a></li>
+	        <li><a href="#" data-action="markDelayed">Mark Delayed</a></li>
+	        <li><a href="#" data-action="markInProgress">Mark In-Progress</a></li>
+	    </ul>
 	     <div id="msgNoThings" style="width: 250px;text-align:center;margin: 50px auto;display: none;">
 	     	<h2>No<b>thing</b> to do!</h2>
 	     	<p>
@@ -39,11 +46,15 @@
 	</div>
 
 	<script type="text/x-kendo-template" id="tmplThingItem">
-		<a href="thingDetail.html?id=#= data.id #" data-role="listview-link" class="km-listview-link">	
+		<a class="km-listview-link"
+		   data-role="listview-link"
+		   data-rel="actionsheet"
+		   href="\\#thingActions"
+		   data-actionsheet-context="#:data.id#">
 			<div class="thingTitle">#= data.description #</div>
 		</a>
 	</script>
-	
+
 	<div data-role="layout" data-id="rootLayout">
 		<header data-role="header">
 			<div data-role="navbar">
@@ -106,7 +117,7 @@
 	</div>
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
+	<script src="http://cdn.kendostatic.com/2012.1.515/js/kendo.all.min.js"></script>
 
 	<script src="../scripts/localStore.js"></script>
 	<script src="../scripts/mobile/teamthing.data.js"></script>
@@ -121,6 +132,32 @@
 	<script src="../scripts/mobile/add2home.js"></script>
 	
 	<script>
+		function deleteThing(e) {
+			updateThingStatusHelper(e.context, "Delete");
+		}
+
+		function markDelayed(e) {
+			updateThingStatusHelper(e.context, "Delayed");
+		}
+
+		function markCompleted(e) {
+			updateThingStatusHelper(e.context, "Completed");
+		}
+
+		function markInProgress(e) {
+			updateThingStatusHelper(e.context, "InProgress");
+		}
+
+		function updateThingStatusHelper(id, action) {
+			var app = window.teamThingApp;
+			app.showLoading("Updating...");
+			$.when(app.updateThingStatus(id, action)).then(function (result) {
+				app.setThingsRefreshFlag();
+				app.hideLoading();
+				app.loadThingsView();
+			});
+		}
+
 	    $(function () {
 			var app = new kendo.mobile.Application($(document.body), {
 				layout:'rootLayout', 

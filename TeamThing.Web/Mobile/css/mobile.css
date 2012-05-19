@@ -101,6 +101,8 @@
 
 .km-ios .km-button.delete{
 	background-color: red;
+	color: white;
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, .5);
 }
 
 .km-ios .km-button.complete{
