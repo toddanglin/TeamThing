@@ -28,7 +28,7 @@
 
         function memberApproved(user) {
             that.team.teamMembers.push(user);
-            that.team.pendingTeamMembers = $.grep(that.team.pendingTeamMembers, function (e) { return e.id != user.id });            
+            that.team.pendingTeamMembers = $.grep(that.team.pendingTeamMembers, function (e) { return e.id != user.id });
             that.refresh();
         }
 
@@ -52,7 +52,7 @@
             //ToDO: will this cause a memory leak?!
             application.dataProvider.updateResource("/api/team/" + teamId + "/denymember", approvalInfo, this.refresh);
         };
-        
+
         this.approveMember = function (user) {
             var teamId = that.team.id;
             var approvalInfo = { userId: user.id };
@@ -94,7 +94,7 @@
         };
 
         return this;
-    };
+    }
 
     function UserDashboard(_user) {
         var that = this;
@@ -182,7 +182,7 @@
                     var currentUserId = application.user.id;
 
                     //create the team object
-                    var team = { userId: currentUserId, id:this.foundTeamId };
+                    var team = { userId: currentUserId, id: this.foundTeamId };
                     var vm = this;
                     //save the new team back to the server
                     application.dataProvider.updateResource("/api/team/" + this.foundTeamId + "/join", team, function (result) {
@@ -326,7 +326,7 @@
         this.thingList = new ThingListViewModel(this, this.user);
 
         return this;
-    };
+    }
 
     function ThingListViewModel(parent, _thingContainer) {
 
@@ -406,7 +406,7 @@
         this.remove = function (thing) {
             if (confirm("SRSLY?")) {
                 var currentUserId = application.user.id;
-                application.dataProvider.removeResource('/api/thing/' + thing.id, { deletedById: currentUserId, id:thing.id }, function () {
+                application.dataProvider.removeResource('/api/thing/' + thing.id, { deletedById: currentUserId, id: thing.id }, function () {
                     thingRemoved(thing);
                 });
             }
@@ -471,7 +471,7 @@
         this.userCanComplete = function () {
             var applicationUser = application.user;
 
-            if (this.isDone==true){
+            if (this.isDone == true) {
                 return false;
             }
 
@@ -479,16 +479,14 @@
                 return thingMember.id;
             });
 
-            if ( applicationUser != null && $.inArray(applicationUser.id, assignedToIds) != -1) {
+            if (applicationUser != null && $.inArray(applicationUser.id, assignedToIds) != -1) {
                 return true;
             }
             return false;
         };
 
-       
-
         return this;
-    };
+    }
 
     function TeamListItemViewModel(team, userController) {
 
@@ -512,7 +510,7 @@
             //TODO: check user team status
             return true;
         };
-    };
+    }
 
     function PendingMemberListItemViewModel(pendingMember, teamController) {
         var parent = teamController;
@@ -529,7 +527,7 @@
 
             return false;
         };
-    };
+    }
 
     function TeamMemberListItemViewModel(user, teamController) {
         var parent = teamController;
@@ -558,7 +556,7 @@
 
         //    return false;
         //};
-    };
+    }
 
     function SignInViewModel() {
         this.userName = "";
@@ -577,8 +575,11 @@
         }
 
         function userLoaded(user) {
-            application.user = user;
-            application.loadUser(user);
+
+            if (user != null) {
+                application.user = user;
+                application.loadUser(user);
+            }
         }
 
         this.signInUser = function () {
@@ -588,6 +589,45 @@
                 //todo: this is kinda ugly
                 application.dataProvider.post("/api/user/signin", userInfo, userLoaded);
             }
+        };
+
+        this.signIn = function (authToken, provider) {
+            var userInfo = { Provider: provider, AuthToken: authToken };
+            application.dataProvider.post("/api/user/oauth", userInfo, userLoaded);
+        };
+
+        //this.getUserInfo = function(auth) {
+        //    $.ajax({ url: resourceHost + '/userinfo?access_token=' + token
+        //            , beforeSend: function (xhr) {
+        //                xhr.setRequestHeader('Authorization', "Bearer " + token);
+        //                xhr.setRequestHeader('Accept', "application/json");
+        //            },
+        //            success: function (response) {
+        //                var container = $('span.user');
+        //                if (response) {
+        //                    container.text(response.name + ", " + response.email + ", "+ response.id);
+        //                } else {
+        //                    container.text("An error occurred.");
+        //                }
+        //            });
+        //};
+
+        this.connectUserWithFacebook = function () {
+
+
+            var auth = new OAuthProvider(null);
+            auth.signIn('facebook');
+            ////TODO: that should be changed to this after release
+            //var userInfo = { EmailAddress: that.userName };
+            ////todo: this is kinda ugly
+            //application.dataProvider.post("/api/user/openidAuth?provider=facebook", userInfo, userLoaded);
+
+        };
+
+        this.connectUserWithGoogle = function () {
+            var auth = new OAuthProvider(null);
+            auth.signIn('google');
+            //location.href = "https://accounts.google.com/o/oauth2/auth?state=authHandled&response_type=token&client_id=1071592151045.apps.googleusercontent.com&redirect_uri=http://localhost:5079/&scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email";
         };
 
         this.registerUser = function () {
@@ -603,7 +643,7 @@
     }
 
     function TeamThingApplication(_context) {
-
+        this.authProvider;
         this.dataProvider;
         this.user = null;
 
@@ -612,6 +652,11 @@
         var isOnline;
         var context = _context;
         var that = this;
+        var activeUserViewModel; //TODO: get rid of this
+
+        this.appViewModel = {
+            user: null
+        };
 
         function changeContent(templateName, viewModel) {
 
@@ -696,16 +741,24 @@
         };
 
         this.showLogin = function () {
+
+            var authProviderStatus = that.authProvider.getStatus();
             var signInViewModel = new SignInViewModel(that);
-            changeContent("userSignInTemplate", signInViewModel);
-            kendo.bind($("#userLogin"), signInViewModel);
+            if (authProviderStatus.signedIn) {
+                signInViewModel.signIn(authProviderStatus.accessToken, authProviderStatus.provider);
+            }
+            else {
 
-            $('#navigation').hide(); //TODO: should be able to do style binding?
+                changeContent("userSignInTemplate", signInViewModel);
+                kendo.bind($("#userLogin"), signInViewModel);
 
-            //TODO: remove this after the release as you will be able to bind in templates :)
-            $("#userLogin").delegate("#userName", "change", function () {
-                signInViewModel.userName = this.value;
-            });
+                $('#navigation').hide(); //TODO: should be able to do style binding?
+
+                //TODO: remove this after the release as you will be able to bind in templates :)
+                $("#userLogin").delegate("#userName", "change", function () {
+                    signInViewModel.userName = this.value;
+                });
+            }
         };
 
         //        this.previous = function () {
@@ -728,7 +781,6 @@
             alert(strErrors);
         };
 
-        var activeUserViewModel; //TODO: get rid of this
         this.loadUser = function (user) {
 
             if (activeUserViewModel != null) {
@@ -743,34 +795,35 @@
             kendo.bind($("#userDashboard"), activeUserViewModel);
         };
 
-        this.appViewModel = {
-            user: null
-        };
-
-        function init() {
+        this.init = function () {
 
             kendo.bind(context, that);
 
             configureRoutes();
             configureDataProvider();
             configureConnectivityDetection();
+            configureAuthProvider();
 
             that.showLogin();
         };
 
         function configureDataProvider() {
             that.dataProvider = new DataProvider(that.showErrors);
-        };
+        }
+
+        function configureAuthProvider() {
+            that.authProvider = new OAuthProvider();
+        }
 
         function connectivityChanged() {
-            //here would swap out the data provider, and wire up some sync operations if needed
+            //TODO: here would swap out the data provider, and wire up some sync operations if needed
             if (navigator.onLine) {
                 alert('online');
             }
             else {
                 alert('offline');
             }
-        };
+        }
 
         function configureConnectivityDetection() {
             setInterval(function () {
@@ -780,12 +833,12 @@
 
                 isOnline = navigator.onLine;
             }, 1000);
-        };
+        }
 
         function configureRoutes() {
 
             // Here we define our routes.  You'll notice that I only define three routes, even
-            // though there are four links.  Each route has an action assigned to it (via the 
+            // though there are four links.  Each route has an action assigned to it (via the
             // `to` method, as well as an `enter` method.  The `enter` method is called before
             // the route is performed, which allows you to do any setup you need (changes classes,
             // performing AJAX calls, adding animations, etc.
@@ -802,7 +855,6 @@
                 location.href = Path.history.initial.URL;
             });
 
-
             Path.map("/team/:teamId").to(function () {
                 that.dataProvider.get('/api/team/' + this.params["teamId"], that.showTeam);
             }).enter(function () {
@@ -812,8 +864,20 @@
                 }
             });
 
+            Path.map("/").to(function () {
+                Path.root("/");
+                that.showLogin();
+                return false;
+            });
+
+            Path.map("/index.html").to(function () {
+                Path.root("/index.html");
+                that.showLogin();
+                return false;
+            });
+
+
             Path.rescue(notFound);
-            Path.root("/");
 
             Path.history.listen();
 
@@ -821,140 +885,23 @@
                 event.preventDefault();
                 Path.history.pushState({}, "", $(this).attr("href"));
             });
-        };
+        }
 
         function notFound() {
             alert("BAD PAGE DOOODE");
-        };
-
-        init(context);
-        return this;
-    };
-
-    //TODO: can I leverage the datasource here?!
-    function DataProvider(failback) {
-        var that = this;
-        this.failback = failback
-
-        function handleErrors(errors, failback) {
-            if (failback == null) {
-                that.failback(errors);
-            }
-            else {
-                failback(errors);
-            }
         }
 
-        this.createResource = function (url, model, success, fail) {
-            $.ajax({
-                url: url,
-                data: JSON.stringify(model),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    201: function (newResource) {
-                        if (success) {
-                            success(newResource);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        this.updateResource = function (url, model, success, fail) {
-            $.ajax({
-                url: url,
-                type: "PUT",
-                data: JSON.stringify(model),
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (result) {
-                        if (success) {
-                            success(result);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        this.removeResource = function (url, data, success, fail) {
-            $.ajax({
-                url: url,
-                type: "DELETE",
-                data: JSON.stringify(data),
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (resource) {
-                        if (success) {
-                            success(resource);
-                        }
-                    },
-                    204: function (resource) {
-                        if (success) {
-                            success(resource);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        this.get = function (url, success, fail) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (resource) {
-                        if (success) {
-                            success(resource);
-                        }
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
-        //TODO: is this needed?! the only diff between it and create is handling 200 and 201?!
-        this.post = function (url, data, success, fail) {
-            $.ajax({
-                url: url,
-                data: JSON.stringify(data),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                statusCode: {
-                    200: function (resource) {
-                        success(resource);
-                    },
-                    400: function (xhr) {
-                        var errors = JSON.parse(xhr.responseText);
-                        handleErrors(errors, fail);
-                    }
-                }
-            });
-        };
-
+        //init(context);
         return this;
-    };
+    }
 
     teamThing.init = function ($contextEl) {
         application = new TeamThingApplication($contextEl);
+        application.init();
     }
 
     return teamThing;
 
-} (window.teamThing = window.teamThing || {}, jQuery, kendo));
+}(window.teamThing = window.teamThing || {}, jQuery, kendo));
+
+

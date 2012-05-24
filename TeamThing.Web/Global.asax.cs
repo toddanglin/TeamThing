@@ -15,6 +15,9 @@ namespace TeamThing.Web
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        public const string FACEBOOK_APP_ID = "384951088223271";
+        public const string FACEBOOK_APP_SECRET = "6f53e4d257507ee2ba6acc2690f09ce3";
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
@@ -40,11 +43,11 @@ namespace TeamThing.Web
             routes.MapHttpRoute(
                 name: "SingleResourceApi",
                 routeTemplate: "api/{controller}/{id}/{action}",
-                defaults: new {  },
+                defaults: new { },
                 constraints: new { id = @"\d+" }
-            ); 
-            
-           
+            );
+
+
 
             routes.MapHttpRoute(
                 name: "HeaderBasedApi",
@@ -124,6 +127,7 @@ namespace TeamThing.Web
 
             var index = config.Formatters.IndexOf(config.Formatters.JsonFormatter);
             config.Formatters[0] = new JsonNetFormatter();
+
         }
     }
 }

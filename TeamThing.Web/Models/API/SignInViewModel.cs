@@ -1,7 +1,9 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace TeamThing.Web.Models.API
 {
+    [Obsolete]
     public class SignInViewModel
     {
         [Required(ErrorMessage = "Email Address is required!")]
@@ -16,4 +18,4 @@ namespace TeamThing.Web.Models.API
         //[StringLength(255, MinimumLength = 5, ErrorMessage = "Passwords must be between 5 and 255 characters")]
 //[Required(ErrorMessage = "Password required!")]
       }
- }
+}

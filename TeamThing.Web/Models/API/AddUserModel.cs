@@ -1,7 +1,9 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace TeamThing.Web.Models.API
 {
+    [Obsolete]
     public class AddUserModel
     {
         [Required(ErrorMessage = "Email Address is required!")]

@@ -12,6 +12,7 @@ using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
+    [Authorize]
     public class ThingController : ApiController
     {
         private readonly DomainModel.TeamThingContext context;

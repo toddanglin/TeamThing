@@ -44,10 +44,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -76,6 +72,7 @@
       <Private>True</Private>
       <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -143,23 +140,45 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\DashboardController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Core\Security\AuthFactory.cs" />
+    <Compile Include="Core\Security\BasicUserData.cs" />
+    <Compile Include="Core\Security\FacebookAuthProvider.cs" />
+    <Compile Include="Core\Security\GoogleAuthProvider.cs" />
+    <Compile Include="Core\Security\IOAuthProvider.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\ThingController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Core\Helpers\ModalStateHelpers.cs" />
     <Compile Include="Core\JsonNetFormatter.cs" />
     <Compile Include="Core\Mappers\DomainToServiceModel.cs" />
+    <Compile Include="Core\Security\AccessTokenValidator.cs" />
+    <Compile Include="Core\Security\RequireOAuthAuthorization.cs" />
+    <Compile Include="Core\Security\OAuthOperationHandler.cs" />
+    <Compile Include="Core\Security\OAuthMessageHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\API\AddTeamViewModel.cs" />
+    <Compile Include="Models\API\AddThingViewModel.cs" />
     <Compile Include="Models\API\AddUserModel.cs" />
+    <Compile Include="Models\API\CompleteThingViewModel.cs" />
+    <Compile Include="Models\API\DeleteTeamViewModel.cs" />
+    <Compile Include="Models\API\DeleteThingViewModel.cs" />
+    <Compile Include="Models\API\JoinTeamViewModel.cs" />
+    <Compile Include="Models\API\MemberApprovalViewModel.cs" />
+    <Compile Include="Models\API\OAuthSignInModel.cs" />
     <Compile Include="Models\API\SignInViewModel.cs" />
     <Compile Include="Models\API\Team.cs" />
+    <Compile Include="Models\API\TeamBasic.cs" />
     <Compile Include="Models\API\TeamMember.cs" />
     <Compile Include="Models\API\TeamMemberBasic.cs" />
     <Compile Include="Models\API\Thing.cs" />
+    <Compile Include="Models\API\ThingBasic.cs" />
+    <Compile Include="Models\API\UpdateTeamViewModel.cs" />
+    <Compile Include="Models\API\UpdateThingStatusViewModel.cs" />
+    <Compile Include="Models\API\UpdateThingViewModel.cs" />
+    <Compile Include="Models\API\User.cs" />
+    <Compile Include="Models\API\UserBasic.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -174,33 +193,6 @@
     <Content Include="Scripts\mobile\teamthing.data.js" />
     <Content Include="thingEditor.html" />
     <Content Include="Content\Site.css" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
-    <Content Include="Content\themes\base\jquery.ui.all.css" />
-    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
-    <Content Include="Content\themes\base\jquery.ui.base.css" />
-    <Content Include="Content\themes\base\jquery.ui.button.css" />
-    <Content Include="Content\themes\base\jquery.ui.core.css" />
-    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
-    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
-    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
-    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
-    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
-    <Content Include="Content\themes\base\jquery.ui.slider.css" />
-    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
-    <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
     <Content Include="Images\GenericUserImage.gif" />
     <Content Include="joinTeam.html" />
@@ -220,7 +212,6 @@
     <Content Include="Scripts\path.js" />
     <Content Include="Scripts\path.min.js" />
     <Content Include="Scripts\plugins.js" />
-    <Content Include="Scripts\script.js" />
     <Content Include="Scripts\teamThing.js" />
     <Content Include="Mobile\apple-touch-icon.png" />
     <Content Include="Mobile\createTeam.html" />
