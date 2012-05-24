@@ -812,8 +812,21 @@
                 }
             });
 
+          
+            Path.map("/").to(function () {
+                Path.root("/");
+                that.showLogin();
+                return false;
+            });
+
+            Path.map("/index.html").to(function () {
+                Path.root("/index.html");
+                that.showLogin();
+                return false;
+            });
+
+
             Path.rescue(notFound);
-            Path.root("/");
 
             Path.history.listen();
 
