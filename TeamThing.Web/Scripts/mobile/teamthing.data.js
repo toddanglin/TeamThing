@@ -20,18 +20,6 @@ var TeamThingData = function () {
 		    updateThingStatus: { path: "thing/{key}/updatestatus", verb: "PUT" },
 		    deleteThing: { path: "thing/{key}", verb: "DELETE" }
 		},
-		_testPaths = {
-		    searchTeam: { path: "teamSearch.json", verb: "GET" },
-		    getTeam: { path: "team/{key}", verb: "GET" },
-		    createTeam: { path: "team", verb: "POST" },
-		    updateTeam: { path: "team/{key}", verb: "PUT" },
-		    deleteTeam: { path: "team/{key}", verb: "DELETE" },
-		    joinTeam: { path: "team/{key}/join", verb: "PUT" },
-		    userLogin: { path: "user/signin", verb: "POST" },
-		    registerUser: { path: "user/register", verb: "POST" },
-		    getThing: { path: "thing/{key}", verb: "GET" },
-		    createThing: { path: "thing", verb: "POST" }
-		},
 		_paths = _onlinePaths;
 
     _private = {
