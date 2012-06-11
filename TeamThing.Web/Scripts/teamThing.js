@@ -18,7 +18,7 @@
 
         this.refresh = function () {
             //TODO: Memory leak?!?
-            application.showTeam(that.team);
+            application.showTeam(that.team);  
         }
 
         function thingAdded(thing) {
