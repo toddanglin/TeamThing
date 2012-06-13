@@ -28,8 +28,8 @@
         path += '&client_id=' + provider.clientId;
         path += '&scope=' + provider.scope;
         path += '&state=' + provider.name;
-        path += '&redirect_uri=http://localhost:5079/';
-        //path += '&redirect_uri=http://teamthing.apphb.com/';
+        //path += '&redirect_uri=http://localhost:5079/';
+        path += '&redirect_uri=http://teamthing.apphb.com/';
 
         return path;
     }
