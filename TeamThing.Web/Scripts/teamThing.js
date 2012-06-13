@@ -812,7 +812,7 @@
                 }
             });
 
-          
+
             Path.map("/").to(function () {
                 Path.root("/");
                 that.showLogin();
@@ -834,7 +834,7 @@
                 event.preventDefault();
                 Path.history.pushState({}, "", $(this).attr("href"));
             });
-        };
+        }
 
         function notFound() {
             alert("BAD PAGE DOOODE");
