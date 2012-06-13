@@ -205,6 +205,7 @@
     <Content Include="Images\GenericUserImage.gif" />
     <Content Include="joinTeam.html" />
     <Content Include="teamEditor.html" />
+    <Content Include="go9media.html" />
     <Content Include="OAuthExample.htm" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
