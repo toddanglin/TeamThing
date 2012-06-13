@@ -47,12 +47,16 @@
             Team Stats</h2>
         <ul class="statlist">
             <li><span>@Model.UserAssignedThings.Count</span> things today</li>
-            <li><span>@Model.UserAssignedThings.Select(t => t.Thing).Where(t => t.Status == TeamThing.Model.ThingStatus.Completed).Count()</span>
-                things done</li>
+        <li>
+          <span>@Model.UserAssignedThings.Select(t => t.Thing).Where(t => t.Status == TeamThing.Model.ThingStatus.Completed).Count()</span>
+          things done
+        </li>
             @* <li><span>@Model.Obstacles.Count %></span> obstacles</li>*@
-            <li><span>@Model.UserAssignedThings.Select(t => t.Thing).Where(t => t.DateCreated.Date == DateTime.Now.AddDays(-1).Date && t.Status == TeamThing.Model.ThingStatus.Completed).Count()
-                / @Model.UserAssignedThings.Select(t => t.Thing).Where(t => t.DateCreated == DateTime.Now.AddDays(-1)).Count()</span>
-                done yesterday</li>
+        <li>
+          <span>@Model.UserAssignedThings.Select(t => t.Thing).Where(t => t.DateCreated.Date == DateTime.Now.AddDays(-1).Date && t.Status == TeamThing.Model.ThingStatus.Completed).Count()
+            / @Model.UserAssignedThings.Select(t => t.Thing).Where(t => t.DateCreated == DateTime.Now.AddDays(-1)).Count()</span>
+                done yesterday
+</li>
         </ul>
     </div>
 }

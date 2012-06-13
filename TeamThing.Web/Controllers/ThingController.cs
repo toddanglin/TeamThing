@@ -13,13 +13,12 @@ using TeamThing.Web.Core.Helpers;
 namespace TeamThing.Web.Controllers
 {
     [Authorize]
-    public class ThingController : ApiController
+    public class ThingController : TeamThingApiController
     {
-        private readonly DomainModel.TeamThingContext context;
 
         public ThingController()
+            : base(new DomainModel.TeamThingContext())
         {
-            this.context = new DomainModel.TeamThingContext();
         }
 
         public IQueryable<ServiceModel.Thing> Get()
@@ -36,20 +35,20 @@ namespace TeamThing.Web.Controllers
             if (thing == null)
             {
                 ModelState.AddModelError("", "Invalid Thing");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var sThing = thing.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
             return response;
         }
-       
+
         public HttpResponseMessage Post(ServiceModel.AddThingViewModel newThing)
         {
             if (!ModelState.IsValid)
             {
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var thingCreator = context.GetAll<DomainModel.User>()
@@ -58,7 +57,7 @@ namespace TeamThing.Web.Controllers
             if (thingCreator == null)
             {
                 ModelState.AddModelError("", "Invalid Creator");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var team = context.GetAll<DomainModel.Team>()
@@ -67,7 +66,7 @@ namespace TeamThing.Web.Controllers
             if (team == null)
             {
                 ModelState.AddModelError("", "Invalid Team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
 
@@ -82,7 +81,7 @@ namespace TeamThing.Web.Controllers
                 if (assignedTo == null)
                 {
                     ModelState.AddModelError("", "Invalid User Assigned to Thing");
-                    return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
                 }
 
                 thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingCreator));
@@ -92,7 +91,7 @@ namespace TeamThing.Web.Controllers
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, sThing);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
             return response;
         }
@@ -108,26 +107,26 @@ namespace TeamThing.Web.Controllers
             if (!Enum.TryParse<DomainModel.ThingStatus>(updateStatusParameters.Status, true, out realStatus))
             {
                 ModelState.AddModelError("", "Invalid Status");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             if (thing == null)
             {
                 ModelState.AddModelError("", "Invalid Thing");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             if (!thing.AssignedTo.Any(at => at.AssignedToUserId == updateStatusParameters.UserId))
             {
                 ModelState.AddModelError("", "A thing can only be removed by its owner.");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             thing.UpdateStatus(updateStatusParameters.UserId, realStatus);
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
             return response;
         }
@@ -142,20 +141,20 @@ namespace TeamThing.Web.Controllers
             if (thing == null)
             {
                 ModelState.AddModelError("", "Invalid Thing");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             if (!thing.AssignedTo.Any(at => at.AssignedToUserId == viewModel.UserId))
             {
                 ModelState.AddModelError("", "A thing can only be removed by its owner.");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             thing.Complete(viewModel.UserId);
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
             return response;
         }
@@ -184,7 +183,7 @@ namespace TeamThing.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             foreach (var userId in viewModel.AssignedTo)
@@ -198,7 +197,7 @@ namespace TeamThing.Web.Controllers
 
                 if (assignedTo == null)
                 {
-                    throw new HttpResponseException("Invalid User Assigned to Thing", HttpStatusCode.NotFound);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid User Assigned to Thing"));
                 }
 
                 thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingEditor));
@@ -215,7 +214,7 @@ namespace TeamThing.Web.Controllers
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Thing>(sThing, HttpStatusCode.OK);
+            var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
             return response;
         }
@@ -225,7 +224,7 @@ namespace TeamThing.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var thing = context.GetAll<DomainModel.Thing>()
@@ -234,12 +233,12 @@ namespace TeamThing.Web.Controllers
             //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
             if (thing == null)
             {
-                throw new HttpResponseException("Invalid Thing", HttpStatusCode.BadRequest);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Thing"));
             }
 
             if (thing.OwnerId != viewModel.DeletedById)
             {
-                throw new HttpResponseException("A thing can only be removed by its owner.", HttpStatusCode.BadRequest);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "A thing can only be removed by its owner."));
             }
 
             thing.Delete(viewModel.DeletedById);
@@ -247,5 +246,5 @@ namespace TeamThing.Web.Controllers
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
-    }  
+    }
 }

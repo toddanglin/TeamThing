@@ -3,6 +3,8 @@ using System.Json;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Web.Http.ModelBinding;
+using Newtonsoft.Json.Linq;
 
 namespace TeamThing.Web.Controllers
 {
@@ -63,15 +65,15 @@ namespace TeamThing.Web.Controllers
 
             var formatter = new JsonMediaTypeFormatter();
             formatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/javascript"));
-            var userInfo = profileResponse.Content.ReadAsAsync<JsonValue>(new[] { formatter }).Result;
+            var userInfo = profileResponse.Content.ReadAsAsync<JToken>(new[] { formatter }).Result;
 
             return
             new BasicUserData
             {
-                UserId = userInfo["id"].ReadAs<string>(),
-                UserName = userInfo["name"].ReadAs<string>(),
-                PictureUrl = userInfo["picture"].ReadAs<string>(),
-                Email = userInfo["email"].ReadAs<string>()
+                UserId = userInfo["id"].Value<string>(),
+                UserName = userInfo["name"].Value<string>(),
+                PictureUrl = userInfo["picture"].Value<string>(),
+                Email = userInfo["email"].Value<string>()
             };
         }
     }

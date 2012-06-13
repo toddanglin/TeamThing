@@ -45,7 +45,7 @@ namespace TeamThing.ModelBootstrapper
                 context.SaveChanges();
 
                 newTeam = new Team("Closed Team", newUser, false);
-                newTeam.TeamMembers.Add(new TeamUser(newTeam, newUser2));
+                newTeam.Members.Add(new TeamUser(newTeam, newUser2));
                 context.Add(newTeam);
                 context.SaveChanges();
 
@@ -83,7 +83,7 @@ namespace TeamThing.ModelBootstrapper
                 Debug.Assert(newUser2.Teams.Count > 0);
                 Debug.Assert(newUser2.Things.Count > 0);
 
-                Debug.Assert(newTeam.TeamMembers.Count > 0);
+                Debug.Assert(newTeam.Members.Count > 0);
                 //Debug.Assert(newTeam.TeamThings.Count > 0);
 
                 Debug.Assert(thing.AssignedTo.Count > 0);

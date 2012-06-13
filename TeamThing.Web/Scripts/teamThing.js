@@ -701,7 +701,6 @@
             }
         };
 
-
         //TODO: maybe we should move the binding outside of this?!
         this.showDialog = function (bindingTargetSelector, title, url, viewModel) {
 

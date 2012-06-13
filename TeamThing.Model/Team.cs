@@ -11,7 +11,7 @@ namespace TeamThing.Model
         private Team()
         {
 
-            this.TeamMembers = new List<TeamUser>();
+            this.Members = new List<TeamUser>();
         }
 
         public Team(string name, User owner, bool isOpen = false)
@@ -26,7 +26,7 @@ namespace TeamThing.Model
 
         public string ImagePath { get; set; }
         public int Id { get; private set; }
-        public IList<TeamUser> TeamMembers { get; private set; }
+        public IList<TeamUser> Members { get; private set; }
         //public IList<TeamUser> ApprovedTeamMembers
         //{
         //    get
@@ -46,7 +46,7 @@ namespace TeamThing.Model
         public int OwnerId { get; private set; }
         public bool IsOpen { get; set; }
         public DateTime DateCreated { get; private set; }
-        public IList<Thing> TeamThings
+        public IList<Thing> Things
         {
             get;
             private set;
@@ -59,7 +59,7 @@ namespace TeamThing.Model
             var teamUser = new TeamUser(this, newOwner);
             teamUser.Status = TeamUserStatus.Approved;
             teamUser.Role = TeamUserRole.Administrator;
-            this.TeamMembers.Add(teamUser);
+            this.Members.Add(teamUser);
         }
     }
 }
