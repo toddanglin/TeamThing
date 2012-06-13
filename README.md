@@ -13,7 +13,7 @@ Users can do the following things in the TeamThing app:
 * Create new Things
 * Update Thing status (InProgress/Completed/Delayed/Deleted)
 * Browse personal Things for current team
-* View other team members
+* View other team members 
 
 ##How do you use TeamThing?
 To use TeamThing, simply browse to the [TeamThing app](http://teamthing.apphb.com/mobile/index.html) from any supported mobile device. In the current version, iOS, Android, and BlackBerry are supported.
