@@ -863,6 +863,7 @@
                 }
             });
 
+
             Path.map("/").to(function () {
                 Path.root("/");
                 that.showLogin();
@@ -874,6 +875,7 @@
                 that.showLogin();
                 return false;
             });
+
 
 
             Path.rescue(notFound);
