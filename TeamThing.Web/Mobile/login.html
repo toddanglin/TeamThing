@@ -65,7 +65,7 @@
 	   	 	if(navigator.onLine){
 	   	 		app.showLoading("Validating...");
 		   	 	var auth = new OAuthProvider(null);
-	            auth.signIn('google');
+	            auth.signIn('google', 'http://teamthing.apphb.com/mobile/index.html');
             }else{
             	alert("You must be online to sign-in.");
             } 	 		

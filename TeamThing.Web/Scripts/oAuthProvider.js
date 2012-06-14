@@ -34,8 +34,12 @@ function OAuthProvider() {
         return path;
     }
 
-    function signIn(providerName) {
+    function signIn(providerName, redirectUrl) {
         var provider;
+
+        if(redirectUrl !== undefined){
+            appUrl = redirectUrl;
+        }
 
         switch (providerName) {
             case "google":
