@@ -1222,7 +1222,7 @@
        teamThing.init($("#teamThing"));
 	   
 	   $.ajax({
-  			url: '/api/team/5',
+  			url: '/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
   			success: function(data) {
 				console.log(data);
 			}
