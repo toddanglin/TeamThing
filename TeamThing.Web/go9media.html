@@ -309,6 +309,22 @@
 <script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>    
 <script src="/Scripts/oAuthProvider.js"></script>
 <script src="/Scripts/dataProvider.js"></script>
+<script>
+    $(function () {
+       teamThing.init($("#teamThing"));
+		
+		APPURL = 'http://teamthing.apphb.com';
+		
+		$.get(
+    		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
+    		function(data) { 
+				console.log(data);
+				$('#dummy-output').html(data);
+			}
+		);
+		
+    });
+</script>
 <script type="text/javascript">
 (function (application, $, kendo, undefined) {
     "use strict";
@@ -1217,20 +1233,5 @@
 
 }(window.teamThing = window.teamThing || {}, jQuery, kendo));
 </script>
-<script>
-    $(function () {
-       teamThing.init($("#teamThing"));
-	   
-	  /* $.ajax({
-  			url: '/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
-  			success: function(data) {
-				console.log(data);
-			}
-		});*/
-		$.get(
-    		'http://teamthing.apphb.com/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
-    		function(data) { console.log(data); }
-		);
-    });
-</script>
+<div id="#dummy-output"></div>
 </html>
