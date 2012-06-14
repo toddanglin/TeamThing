@@ -1,7 +1,8 @@
 ﻿function OAuthProvider() {
+    var appUrl = "http://localhost:8888/mobile/index.html"; //Change for PROD
 
     var fbAuthBase = "https://www.facebook.com/dialog/oauth?client_id=YOUR_APP_ID &redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token";
-    var googleAuthBase = "https://accounts.google.com/o/oauth2/auth?state=authHandled&response_type=token&client_id=&redirect_uri=http://localhost:5079/&scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email";
+    var googleAuthBase = "https://accounts.google.com/o/oauth2/auth?state=authHandled&response_type=token&client_id=&redirect_uri="+ appUrl +"&scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email";
 
     var providers = {
         google: {
@@ -28,7 +29,7 @@
         path += '&client_id=' + provider.clientId;
         path += '&scope=' + provider.scope;
         path += '&state=' + provider.name;
-        path += '&redirect_uri=http://localhost:5079/';
+        path += '&redirect_uri='+ appUrl;
 
         return path;
     }
