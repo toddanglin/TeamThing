@@ -23,7 +23,7 @@
     <script src="/Scripts/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
-
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
     <div id="header" class="bkgnd-smooth-dark">
         <h1>TeamThing</h1>
          <div id="navigation" class="navigation">
@@ -131,12 +131,16 @@
         <div id="userLogin">
         <h2>Please Login</h2>
             <ol class="formFieldList">
-                <li>
+                <!--<li>
                     <input id="userName" type="text" data-bind="value:userName" class="k-textbox" />
-                </li>
+                </li>-->
                 <li class="commands">
-                    <button class="k-button" data-bind="click:registerUser">Register</button>
-                    <button class="k-button" data-bind="click:signInUser">Sign In</button>
+                   <!--<button class="k-button" data-bind="click:registerUser">Register</button>-->
+                    <!--<button class="k-button" data-bind="click:signInUser">Sign In</button>-->
+                    <div>
+                        <button class="k-button" data-bind="click:connectUserWithFacebook">Facebook</button>
+                        <button class="k-button" data-bind="click:connectUserWithGoogle">Google</button>
+                    </div>
                 </li>
             </ol>
         </div>
@@ -222,9 +226,11 @@
     </script>
     <script type="text/x-kendo-tmpl" id="userDashboardTemplate">
         <div id="userDashboard">
-            <h2 data-bind="text:user.emailAddress">
-            </h2>
-           
+            <div class="subHeader clearfix">
+                <img class="" data-bind="attr:{src:user.imagePath}"/>
+                <h2 data-bind="text:user.emailAddress">                    
+                </h2>
+           </div>
             <div id="right">
                 <h3>My Teams</h3>
                   #if( pendingTeams.length > 0 || teams.length > 0 ) { #
@@ -300,11 +306,13 @@
 </body>
 <script src="/Scripts/path.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
+<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>    
+<script src="/Scripts/oAuthProvider.js"></script>
+<script src="/Scripts/dataProvider.js"></script>
 <script src="/Scripts/teamThing.js"></script>
 <script>
     $(function () {
-        teamThing.init($("#teamThing"));
+       teamThing.init($("#teamThing"));
     });
 </script>
 </html>
