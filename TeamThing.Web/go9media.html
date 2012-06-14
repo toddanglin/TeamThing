@@ -320,7 +320,7 @@
 		APPURL = 'http://teamthing.apphb.com';
 		
 		$.get(
-    		APPURL+'/api/team?$filter=Name ne null',
+    		APPURL+'/api/team?$filter=Name ne null and tolower(Name) eq \'closed team\'',
     		function(data) { 
 				console.log(data);
 				console.log('Profile Image: ' + data[1].imagePath);
