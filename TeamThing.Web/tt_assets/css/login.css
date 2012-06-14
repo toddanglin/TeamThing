@@ -1,0 +1,100 @@
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: ALTERNATIVE TO CSS DIVET ON SIGN IN BOX
+|--------------------------------------------------------------------------
+*/
+/*.arrow_box:after {
+	top:0;
+	border:none;
+	content:'';
+	height: 0;
+	width: 0;
+	position:relative;
+	pointer-events:none;
+}
+
+.arrow_box:after {	
+	padding-top:0;
+	z-index:0;
+	left:0;
+	margin-left:0;
+	border:none;
+}
+
+.arrow_box #login-divet {
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:0;
+	left:19.5%;
+	display:block;
+}*/
+/*
+|--------------------------------------------------------------------------
+|	END: ALTERNATIVE TO CSS DIVET ON SIGN IN BOX
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: SIGN IN STYLES
+|--------------------------------------------------------------------------
+*/
+#google-signin-btn {
+	width:212px;
+	position:relative;
+	display:block;
+	margin:30px auto 0 auto;
+	padding:0;
+}
+
+.displaylogo {
+	width:281px;
+	height:48px;
+	margin:0 auto;
+	z-index:0;
+	position:relative;
+	display:block;
+}
+
+#wrapper {
+	clear:both;
+	width:100%;
+	height:auto;
+	margin:0;
+	padding:0;
+	position:relative;
+	display:block;
+	overflow:hidden;
+	list-style:none;
+}
+
+#wrapper #signin-slides {
+	width:100%;
+	margin:0;
+	padding:0;
+	position:relative;
+	display:block;
+	overflow:visible;
+	list-style:none;
+}
+
+#wrapper #signin-slides li {
+	width:650px;
+	min-width:650px;
+	height:auto;
+	margin:0 auto;
+	padding:0;
+	position:relative;
+	float:left;
+	overflow:visible;
+}
+
+.clear-float {
+	clear:both;
+}
+/*
+|--------------------------------------------------------------------------
+|	END: SIGN IN STYLES
+|--------------------------------------------------------------------------
+*/

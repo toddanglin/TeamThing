@@ -1,0 +1,83 @@
+@charset "UTF-8";
+/* CSS Document */
+
+ 
+ /* v and h centered display box */
+html,
+body {
+	width:100%; /* Needed to avoid a redrawing bug in Firefox when resizing windows */
+	height:100%;
+	margin:0;
+	padding:0;
+	background:#e8e8e8;
+}
+
+a {text-decoration:none;}
+
+body {
+	display:-webkit-box;
+	-webkit-box-pack:center;
+	-webkit-box-align:center;
+	display:-moz-box;
+	-moz-box-pack:center;
+	-moz-box-align:center;
+	display:box;
+	box-pack:center;
+	box-align:center;
+}
+#displaybox {
+	-webkit-box-flex:1;
+	-moz-box-flex:1; /* Needed to make this element flexible in Firefox */
+	box-flex:1;
+	max-width:600px;
+	margin:0 auto;
+	padding:1em;
+	color:#000;
+	text-align:center;
+}
+
+.displaylogo {position:relative;
+top:10px;
+z-index:300;}
+
+.arrow_box {
+	position: relative;
+	background: #ffffff;
+	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	z-index:100;
+	-moz-box-shadow: -3px 3px 2px #d8d8d8;
+-webkit-box-shadow: -3px 3px 2px #d8d8d8;
+box-shadow: -3px 3px 2px #d8d8d8;
+padding-top:33px;
+padding-bottom:10px;
+}
+.arrow_box:after {
+	top: 0%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {	
+	padding-top:30px;
+	z-index:200;
+	left: 50%;
+	margin-left: -220px;
+	border-left: 220px solid transparent;
+	border-right: 220px solid transparent;
+	border-top: 25px solid #e8e8e8;
+}
+
+.signin {width:260px; float:right; padding:0px 20px 20px 20px; text-align:left;}
+.intro {width:257px; padding:0px 20px 20px 20px; border-right: 2px solid #e7e7e7; text-align:left;}
+
+h1 {font-family: 'Oleo Script', cursive; color:#348fff; font-size: 40px; padding:0; margin:0;}
+p{font-family: 'Cabin Condensed', sans-serif;}
+
+
