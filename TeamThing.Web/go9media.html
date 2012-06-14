@@ -320,6 +320,7 @@
     		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
     		function(data) { 
 				console.log(data);
+				console.log('Profile Image: ' + data[1].imagePath);
 				$('#dummy-output').html('<img src="'+data[1].imagePath+'">');
 			}
 		);
