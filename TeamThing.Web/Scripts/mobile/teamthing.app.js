@@ -6,6 +6,9 @@ var TeamThing = function (kendoApp) {
 		_remember = new localStore("uRemember"),
         _refreshThings = new localStore("refreshThings"),
     _showInstallPrompt = new localStore("installPrompt"),
+        _authProvider = new OAuthProvider(),
+        _authStatus = null,
+        _authInfo = new localStore("authInfo"),
     //ELEMENT CACHE
 		_eleThingList = $("#lstThings"),
 		_eleNoThingsMsg = $("#msgNoThings"),
@@ -35,7 +38,7 @@ var TeamThing = function (kendoApp) {
                             console.log("THINGS DATA", data);
                             that.hideLoading();
                             if (data.length < 1) _eleNoThingsMsg.show();
-                            options.success(data);
+                            if (options != null) options.success(data);
                         });
                     }
                 },
@@ -82,6 +85,39 @@ var TeamThing = function (kendoApp) {
             $.when(_data.validateUser(email, pass)).then(function (user) {
                 if (user == null) {
                     dfd.resolve(null);
+                } else {
+                    console.log("R", remember);
+                    if (remember) {
+                        _remember.set(remember);
+                    }
+
+                    that.setCurrentUser(user);
+                    dfd.resolve(user);
+                }
+            });
+
+            return dfd;
+        },
+        validateOauthUser: function (token, provider) {
+            var dfd = new $.Deferred,
+                userInfo = { provider: provider, authToken: token },
+                that = this,
+                authInfo = that.getAuthInfo(),
+                remember = true; //Always remember OAuth users for now
+
+            //Save OAuth token
+            if (authInfo == null || authInfo.authToken != token) {
+                console.log("SET AUTH INFO", userInfo);
+                that.setAuthInfo(userInfo);
+            }
+
+            //This step checks the auth token server-side to ensure it 
+            //is still valid with the provider
+            //TODO: Maybe skip this check if we're within the expiration window of the token?
+            $.when(_data.validateOauthUser(userInfo)).then(function (user) {
+                if (user == null) {
+                    dfd.resolve(null);
+                    console.log("OAuth User Validate Error")
                 } else {
                     console.log("R", remember);
                     if (remember) {
@@ -162,11 +198,19 @@ var TeamThing = function (kendoApp) {
                 this.app.loader.find("h1").text(txt);
             }
 
-            this.app.showLoading();
+            try {
+                this.app.showLoading();
+            } catch (e) {
+                //App currently showing loader - don't throw error
+            }
         },
         hideLoading: function () {
-            this.app.hideLoading();
-            this.app.loader.find("h1").text("Loading...");
+            try {
+                this.app.hideLoading();
+                this.app.loader.find("h1").text("Loading...");
+            } catch (e) {
+                //App not currently showing loader - don't throw error
+            }
         },
         getCurrentUser: function () { return _currentUser.get(); },
         setCurrentUser: function (val) { _currentUser.set(val); },
@@ -174,6 +218,11 @@ var TeamThing = function (kendoApp) {
         getRemember: function () { return _remember.get(); },
         getShowInstallPrompt: function () { return _showInstallPrompt.get(); },
         setThingsRefreshFlag: function () { _refreshThings.set(true); return; },
+        getAuthProvider: function () { return _authProvider; },
+        getAuthStatus: function () { return _authStatus; },
+        setAuthStatus: function (val) { _authStatus = val; return; },
+        getAuthInfo: function () { return _authInfo.get(); },
+        setAuthInfo: function (val) { _authInfo.set(val); return; },
         app: _app,
         data: _data
     }

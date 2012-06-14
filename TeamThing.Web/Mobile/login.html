@@ -5,64 +5,112 @@
 	<title>Team Thing</title>	
 </head>
 <body class="tt">
-	<div data-role="view" id="vwLogin" data-layout="login" data-transition="overlay:down">	
+	<div data-role="view" id="vwLogin" data-layout="login" data-transition="overlay:down" data-init="loginViewInit">	
 		<div class="wrapper">		
-			<ul data-role="listview" data-style="inset" class="loginList">
+			<ul data-role="listview" data-style="inset" class="loginList" style="display:none;">
 				<li>Email <input type="email" id="txtEmail" placeholder="email@example.com" autocapitalize="off" autocorrect="off" autofocus /></li>
 				<li>Password<input type="password" id="txtPass" placeholder="*****" /></li>
 				<li>
-				
+			
 				Remember Me? <input type="checkbox" id="chkRemember" data-role="switch" data-on-label="YES" data-off-label="NO" checked />
 				</li>
 			</ul>
 			
-			<button class="km-button" onclick="login()" id="btnLogin">Sign In</button>
+			<button class="km-button" id="btnLogin">Sign In with Google</button>
 	    </div>
 	</div>
 	
 	<script>
+		function loginViewInit(){
+			$("#btnLogin").bind("click", login);
+
+			//Check for auth token from identity provider
+			//(Token will be cached in app by index.html)
+		 	var authStatus = teamThingApp.getAuthStatus(),
+		 		authInfo = teamThingApp.getAuthInfo();
+
+		 	console.log("AUTH STATUS", authStatus);
+		 	console.log("AUTH INFO", authInfo);
+		 	
+		 	if(authInfo != null && authInfo.authToken != null){
+		 		//If a cached token is already available, use it to revalidate user automatically
+		 		validateToken(authInfo.authToken, authInfo.provider);
+		 	}
+		 	else if (authStatus != null && authStatus.signedIn) {
+		 		//New Oauth token, not yet cached (Do we need two paths for this code? Probably not. Needs some refactoring.)
+            	validateToken(authStatus.accessToken, authStatus.provider);
+        	}
+
+        	//Otherwise, no token available. User needs to begin the 
+     		//OAuth process
+		}
+
+		function validateToken(token, provider){
+			$.when(teamThingApp.validateOauthUser(token, provider)).then(function(user){
+            		//Route the user properly based on user object
+            		afterLogin(user);
+            	});
+		}
+
 	   	 function login(){
 	   	 	var validator = $("#vwLogin").kendoValidator().data("kendoValidator"),
 	   	 		email = $("#txtEmail").val(),
 	   	 		pass = $("#txtPass").val(),
 	   	 		remember = $("#chkRemember")[0].checked,
-	   	 		app = teamThingApp;	   	 		
+	   	 		app = teamThingApp;	  
+
+	   	 	//OAuth Login Process
+	   	 	//The call to signIn will redirect the window (requires internet)
+	   	 	//TODO: Add check for network connectivity
+	   	 	if(navigator.onLine){
+	   	 		app.showLoading("Validating...");
+		   	 	var auth = new OAuthProvider(null);
+	            auth.signIn('google');
+            }else{
+            	alert("You must be online to sign-in.");
+            } 	 		
 	   	 	
-	   	 	if(validator.validate()){
+	   	 	//Old log-in code
+	   	 	/*if(validator.validate()){
 	   	 		app.showLoading("Validating...");
 	   	 		
 	   	 		$.when(app.validateUser(email, pass, remember)).then(function(user){
-	   	 			
-	   	 			app.hideLoading();
-	   	 			
-	   	 			console.log("USER", user);
-	   	 			if(!(user == null)){
-	   	 				//Re-show the app
-	   	 				if(user.teams.length < 1){
-	   	 					//User not associated with any teams yet
-	   	 					teamThingApp.app.navigate("teamPath.html");
-	   	 					return;
-	   	 				}
-	   	 				
-	   	 				if(user.teams.length == 1){
-	   	 					//User only associated with ONE team
-	   	 					//(no need to pick a team - go straight to app)
-	   	 				$.when(app.changeTeam(user.teams[0].id)).done(function(){
-	   	 						app.app.navigate("");
-	   	 					});	   	 				
-	   	 				}else{
-	   	 					//User is associated with more than one team
-	   	 					//(Needs to choose a team)
-	   	 					app.app.navigate("teamChoose.html");
-	   	 				}	   	 			
-	   	 			}else{
-	   	 				alert("Sorry, this email is not associated with a TeamThing Team.");
-	   	 			}
+	   	 			afterLogin(user);
 	   	 		});	   	 			   	 			   	 		
 	   	 	}else{
 	   	 		alert("Please enter a valid email.");
-	   	 	}	   	 	
-	   	 } 	   
+	   	 	}*/	   	 	
+	   	 } 	
+
+	   	 function afterLogin(user){
+	   	 	var app = teamThingApp;	 
+
+	   	 	app.hideLoading();
+	   	 			
+ 			console.log("USER", user);
+ 			if(!(user == null)){
+ 				//Re-show the app
+ 				if(user.teams.length < 1){
+ 					//User not associated with any teams yet
+ 					app.app.navigate("teamPath.html");
+ 					return;
+ 				}
+ 				
+ 				if(user.teams.length == 1){
+ 					//User only associated with ONE team
+ 					//(no need to pick a team - go straight to app)
+ 				$.when(app.changeTeam(user.teams[0].id)).done(function(){
+ 						app.app.navigate("");
+ 					});	   	 				
+ 				}else{
+ 					//User is associated with more than one team
+ 					//(Needs to choose a team)
+ 					app.app.navigate("teamChoose.html");
+ 				}	   	 			
+ 			}else{
+ 				alert("Sorry, we were unable to validate this TeamThing user.");
+ 			}
+	   	 }
 	</script>
 </body>
 </html>

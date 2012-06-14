@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <system.web>
+    <httpModules>
+      <add name="AspNet.SuppressFormsRedirect" type="System.Web.SuppressFormsAuthenticationRedirectModule, AspNet.SuppressFormsRedirect"/>
+    </httpModules>
+  </system.web>
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <add name="AspNet.SuppressFormsRedirect" type="System.Web.SuppressFormsAuthenticationRedirectModule, AspNet.SuppressFormsRedirect" preCondition="managedHandler"/>
+    </modules>
+  </system.webServer>
+</configuration>

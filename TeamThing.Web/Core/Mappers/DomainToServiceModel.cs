@@ -22,6 +22,13 @@ namespace TeamThing.Web.Core.Mappers
         public static IEnumerable<ServiceModel.ThingBasic> MapToBasicServiceModel(this IEnumerable<DomainModel.Thing> things)
         {
             return things.Select(MapToBasicServiceModel);
+        } 
+        
+       
+
+        public static IQueryable<ServiceModel.ThingBasic> MapToBasicServiceModel(this IQueryable<DomainModel.Thing> things)
+        {
+            return things.Select(MapToBasicServiceModel).AsQueryable();
         }
 
         public static IEnumerable<ServiceModel.TeamMemberBasic> MapToServiceModel(this IQueryable<DomainModel.TeamUser> teamMembers)
@@ -115,11 +122,11 @@ namespace TeamThing.Web.Core.Mappers
                 Id = t.Id,
                 Name = t.Name,
                 IsPublic = t.IsOpen,
-                TeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToBasicServiceModel).ToList(),
-                PendingTeamMembers = t.TeamMembers.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToBasicServiceModel).ToList(),
-                Administrators = t.TeamMembers.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray(),
+                TeamMembers = t.Members.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToBasicServiceModel).ToList(),
+                PendingTeamMembers = t.Members.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToBasicServiceModel).ToList(),
+                Administrators = t.Members.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray(),
                 Owner = t.Owner.MapToBasicServiceModel(),
-                Things = t.TeamThings.MapToServiceModel().ToList()
+                Things = t.Things.MapToServiceModel().ToList()
             };
         }
 
@@ -133,7 +140,7 @@ namespace TeamThing.Web.Core.Mappers
                 OwnerId = t.OwnerId,
                 IsPublic = t.IsOpen,
                 ImagePath = t.ImagePath ?? "/images/GenericUserImage.gif",
-                Administrators = t.TeamMembers.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray()
+                Administrators = t.Members.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray()
             };
         }
 

@@ -1,25 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using TeamThing.Model.Helpers;
 using TeamThing.Web.Core.Mappers;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
-using System.Json;
 using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
-    public class TeamController : ApiController
+    [Authorize]
+    public class TeamController : TeamThingApiController
     {
-        private readonly DomainModel.TeamThingContext context;
 
         public TeamController()
+            : base(new DomainModel.TeamThingContext())
         {
-            this.context = new DomainModel.TeamThingContext();
         }
 
         public IQueryable<ServiceModel.TeamBasic> Get()
@@ -30,24 +28,103 @@ namespace TeamThing.Web.Controllers
         public HttpResponseMessage Get(int id)
         {
             var item = context.GetAll<TeamThing.Model.Team>()
-                              .FirstOrDefault(t => t.Id == id);
+                           .FirstOrDefault(t => t.Id == id);
             if (item == null)
             {
                 ModelState.AddModelError("", "Invalid Team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var sTeam = item.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
+            var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
+        }
+
+        // GET /api/team/5/things/{status}
+        [Authorize]
+        [HttpGet]
+        public IQueryable<ServiceModel.ThingBasic> Things(int id, string status)
+        {
+            //get user
+            var user = base.GetCurrentUser();
+            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Unauthorized));
+
+            var team = user.Teams.ActiveTeams().FirstOrDefault(t => t.Id == id);
+            if (team == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+
+            if (status != null)
+            {
+                return team.Things
+                           .WithStatus(status)
+                           .MapToBasicServiceModel()
+                           .AsQueryable();
+            }
+
+            return team.Things
+                       .Active()
+                       .MapToBasicServiceModel()
+                       .AsQueryable();
+        }
+
+        // GET /api/team/5/members/{status}
+        [Authorize]
+        [HttpGet]
+        public IQueryable<ServiceModel.UserBasic> Members(int id, string status)
+        {
+            //get user
+            var user = base.GetCurrentUser();
+            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Unauthorized));
+
+            var team = user.Teams.ActiveTeams().FirstOrDefault(t => t.Id == id);
+            if (team == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+
+            if (status != null)
+            {
+                return team.Members
+                           .UsersWithStatus(status)
+                           .MapToBasicServiceModel()
+                           .AsQueryable();
+            }
+
+            return team.Members
+                       .ActiveUsers()
+                       .MapToBasicServiceModel()
+                       .AsQueryable();
+        }
+
+        // GET /api/team/5/stats/{status}
+        [Authorize]
+        [HttpGet]
+        public IQueryable<ServiceModel.UserStat> Stats(int id, string status)
+        {
+            try
+            {
+                //get user
+                var user = base.GetCurrentUser();
+                if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Unauthorized));
+
+                var team = user.Teams.ActiveTeams().FirstOrDefault(t => t.Id == id);
+                if (team == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
+
+                var realStatus = DomainModel.ThingAction.Completed;
+
+                return context.GetAll<DomainModel.ThingLog>()
+                              .Where(t => t.Action == realStatus)
+                              .GroupBy(t=>t.EditedBy)
+                              .Select(t => new ServiceModel.UserStat() { User = t.Key.MapToBasicServiceModel(), ThingCount = t.Count() });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public HttpResponseMessage Post(ServiceModel.AddTeamViewModel addTeamViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var existingTeam = context.GetAll<DomainModel.Team>()
@@ -56,7 +133,7 @@ namespace TeamThing.Web.Controllers
             if (existingTeam != null)
             {
                 ModelState.AddModelError("", "Team name already in use");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var teamCreator = context.GetAll<DomainModel.User>()
@@ -65,7 +142,7 @@ namespace TeamThing.Web.Controllers
             if (teamCreator == null)
             {
                 ModelState.AddModelError("", "Invalid Team Owner Specified");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var team = new DomainModel.Team(addTeamViewModel.Name, teamCreator);
@@ -74,17 +151,17 @@ namespace TeamThing.Web.Controllers
             context.SaveChanges();
 
             var sTeam = team.MapToBasicServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.TeamBasic>(sTeam, HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, sTeam);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
         }
-                
+
         [HttpPut]
         public HttpResponseMessage Join(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var team = context.GetAll<DomainModel.Team>()
@@ -93,7 +170,7 @@ namespace TeamThing.Web.Controllers
             if (team == null)
             {
                 ModelState.AddModelError("", "Invalid Team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var user = context.GetAll<DomainModel.User>()
@@ -102,13 +179,13 @@ namespace TeamThing.Web.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid User");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             if (user.Teams.Any(ut => ut.TeamId == team.Id))
             {
                 ModelState.AddModelError("", "User already added to team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var newTeamMember = new DomainModel.TeamUser(team, user);
@@ -116,11 +193,11 @@ namespace TeamThing.Web.Controllers
             {
                 newTeamMember.Status = DomainModel.TeamUserStatus.Approved;
             }
-            team.TeamMembers.Add(newTeamMember);
+            team.Members.Add(newTeamMember);
             context.SaveChanges();
 
             var sTeam = team.MapToBasicServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.TeamBasic>(sTeam, HttpStatusCode.OK);
+            var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
         }
@@ -133,14 +210,14 @@ namespace TeamThing.Web.Controllers
 
             if (team == null)
             {
-                throw new HttpResponseException("Invalid Team", HttpStatusCode.NotFound);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid Team"));
             }
 
-            var teamMember = team.TeamMembers.FirstOrDefault(t => t.UserId == viewModel.UserId);
+            var teamMember = team.Members.FirstOrDefault(t => t.UserId == viewModel.UserId);
 
             if (teamMember == null)
             {
-                throw new HttpResponseException("Invalid Team Member", HttpStatusCode.NotFound);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid Team Member"));
             }
 
             teamMember.Status = DomainModel.TeamUserStatus.Approved;
@@ -155,19 +232,19 @@ namespace TeamThing.Web.Controllers
 
             if (team == null)
             {
-                throw new HttpResponseException("Invalid Team", HttpStatusCode.NotFound);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid Team"));
             }
 
-            var teamMember = team.TeamMembers.FirstOrDefault(t => t.UserId == viewModel.UserId);
+            var teamMember = team.Members.FirstOrDefault(t => t.UserId == viewModel.UserId);
 
             if (teamMember == null)
             {
-                throw new HttpResponseException("Invalid Team Member", HttpStatusCode.NotFound);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid Team Member"));
             }
 
             if (team.OwnerId == teamMember.UserId)
             {
-                throw new HttpResponseException("Can not deny access to the team owner", HttpStatusCode.BadRequest);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Can not deny access to the team owner"));
             }
 
             teamMember.Status = DomainModel.TeamUserStatus.Denyed;
@@ -179,7 +256,7 @@ namespace TeamThing.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                throw new HttpResponseException(ModelState.ToJson().ToString(), HttpStatusCode.BadRequest);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString()));
             }
 
             var existingTeam = context.GetAll<DomainModel.Team>()
@@ -188,7 +265,7 @@ namespace TeamThing.Web.Controllers
             if (existingTeam != null)
             {
                 ModelState.AddModelError("", "Team name already in use");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var team = context.GetAll<DomainModel.Team>()
@@ -197,16 +274,16 @@ namespace TeamThing.Web.Controllers
             if (team == null)
             {
                 ModelState.AddModelError("", "Invalid team edited");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
-            var editor = team.TeamMembers
+            var editor = team.Members
                              .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == viewModel.UpdatedById);
 
             if (editor == null)
             {
                 ModelState.AddModelError("", "User does not have permissions to edit team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             team.Name = viewModel.Name;
@@ -215,7 +292,7 @@ namespace TeamThing.Web.Controllers
             context.SaveChanges();
 
             var sTeam = team.MapToServiceModel();
-            var response = new HttpResponseMessage<ServiceModel.Team>(sTeam, HttpStatusCode.OK);
+            var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
         }
@@ -225,7 +302,7 @@ namespace TeamThing.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             var team = context.GetAll<DomainModel.Team>()
@@ -234,16 +311,16 @@ namespace TeamThing.Web.Controllers
             //rest spec says we should not throw an error in this case ( delete requests should be idempotent)
             if (team == null)
             {
-                throw new HttpResponseException("Invalid Team", HttpStatusCode.BadRequest);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Team"));
             }
 
-            var editor = team.TeamMembers
+            var editor = team.Members
                              .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == deleteParameters.UserId);
 
             if (editor == null)
             {
                 ModelState.AddModelError("", "User does not have permissions to edit team");
-                return new HttpResponseMessage<JsonValue>(ModelState.ToJson(), HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
             context.Delete(team);
@@ -251,5 +328,5 @@ namespace TeamThing.Web.Controllers
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
-    }    
+    }
 }

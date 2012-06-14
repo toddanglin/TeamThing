@@ -6,49 +6,65 @@ var TeamThingData = function () {
 		_isTest = false,
 		_endpoint = "http://teamthing.apphb.com/api/",
 		_onlinePaths = {
-		    searchTeam: { path: "team?$filter=substringof('{q}',Name)%20eq%20True", verb: "GET" },
-		    getTeam: { path: "team/{key}", verb: "GET" },
-		    createTeam: { path: "team", verb: "POST" },
-		    updateTeam: { path: "team/{key}", verb: "PUT" },
-		    deleteTeam: { path: "team/{key}", verb: "DELETE" },
-		    joinTeam: { path: "team/{key}/join", verb: "PUT" },
-		    userLogin: { path: "user/signin", verb: "POST" },
-		    registerUser: { path: "user/register", verb: "POST" },
-		    getUserThings: { path: "user/{key}/things?teamId={teamId}", verb: "GET" },
-		    getThing: { path: "thing/{key}", verb: "GET" },
-		    createThing: { path: "thing", verb: "POST" },
-		    updateThingStatus: { path: "thing/{key}/updatestatus", verb: "PUT" },
-		    deleteThing: { path: "thing/{key}", verb: "DELETE" }
+		    searchTeam: { path: "team?$filter=substringof('{q}',Name)%20eq%20True", verb: "GET", token: false },
+		    getTeam: { path: "team/{key}", verb: "GET", token: false },
+		    createTeam: { path: "team", verb: "POST", token: false },
+		    updateTeam: { path: "team/{key}", verb: "PUT", token: false },
+		    deleteTeam: { path: "team/{key}", verb: "DELETE", token: false },
+		    joinTeam: { path: "team/{key}/join", verb: "PUT", token: false },
+		    userLogin: { path: "user/signin", verb: "POST", token: false },
+		    userOauth: { path: "user/oauth", verb: "POST", token: true },
+		    registerUser: { path: "user/register", verb: "POST", token: false },
+		    getUserThings: { path: "user/{key}/things?teamId={teamId}", verb: "GET", token: false },
+		    getThing: { path: "thing/{key}", verb: "GET", token: false },
+		    createThing: { path: "thing", verb: "POST", token: false },
+		    updateThingStatus: { path: "thing/{key}/updatestatus", verb: "PUT", token: false },
+		    deleteThing: { path: "thing/{key}", verb: "DELETE", token: false }
 		},
-		_testPaths = {
-		    searchTeam: { path: "teamSearch.json", verb: "GET" },
-		    getTeam: { path: "team/{key}", verb: "GET" },
-		    createTeam: { path: "team", verb: "POST" },
-		    updateTeam: { path: "team/{key}", verb: "PUT" },
-		    deleteTeam: { path: "team/{key}", verb: "DELETE" },
-		    joinTeam: { path: "team/{key}/join", verb: "PUT" },
-		    userLogin: { path: "user/signin", verb: "POST" },
-		    registerUser: { path: "user/register", verb: "POST" },
-		    getThing: { path: "thing/{key}", verb: "GET" },
-		    createThing: { path: "thing", verb: "POST" }
-		},
-		_paths = _onlinePaths;
+		_paths = _onlinePaths,
+		_authInfo = new localStore("authInfo");
 
     _private = {
-        load: function (path, verb, options) {
+        load: function (route, options) {
             console.log("GETTING");
 
-            var _url = (_isTest) ? path : _endpoint + path;
+            var path = route.path,
+            	verb = route.verb,
+            	requiresToken = route.token,
+            	url = (_isTest) ? path : _endpoint + path,
+            	info = _authInfo.get(),
+                dfd = new $.Deferred();
+
+            //Append token to options if required
+            if (requiresToken) {
+                //If token is missing, abort processing
+                if (info.authToken == null) {
+                    var msg = "Unable to process request due to missing client OAuth token";
+                    console.log("AUTH ERROR", msg, info.authToken);
+                    dfd.reject(msg);
+                }
+
+                options = options || {};
+                options.accessToken = info.authToken;
+                options.provider = info.provider;
+            }
 
             //TODO: Use cached data before re-querying (if fresh)
-            return $.ajax({
-                type: verb,
-                url: _url,
-                data: options,
-                dataType: "json"
-            }).error(function (e, r, m) {
-                console.log("ERROR", e, r, m);
-            });
+            if (!dfd.isRejected()) {
+                $.ajax({
+                    type: verb,
+                    url: url,
+                    data: options,
+                    dataType: "json"
+                }).success(function (data, code, xhr) {
+                    dfd.resolve(data, code, xhr);
+                }).error(function (e, r, m) {
+                    console.log("ERROR", e, r, m);
+                    dfd.reject(m);
+                });
+            }
+
+            return dfd.promise();
         }
     };
 
@@ -60,8 +76,8 @@ var TeamThingData = function () {
             route.path = route.path.replace(/{key}/g, uid);
             route.path = route.path.replace(/{teamId}/g, tid);
 
-            _private.load(route.path, route.verb, {})
-				.success(function (data) {
+            _private.load(route, {})
+				.done(function (data) {
 				    var tmpDate = new Date(),
 						_expires = tmpDate.setMinutes(tmpDate.getMinutes() + 10);
 
@@ -69,7 +85,7 @@ var TeamThingData = function () {
 
 				    dfd.resolve(data);
 				})
-				.error(function (err) {
+				.fail(function (err) {
 				    console.log("GET THINGS ERROR", err);
 				    dfd.resolve(null);
 				});
@@ -90,8 +106,8 @@ var TeamThingData = function () {
 
             route.path = route.path.replace(/{key}/g, tid);
 
-            _private.load(route.path, route.verb, {})
-				.success(function (data) {
+            _private.load(route, {})
+				.done(function (data) {
 				    //TODO: Cache
 				    console.log("TEAM", data);
 				    dfd.resolve(data);
@@ -105,12 +121,12 @@ var TeamThingData = function () {
 
             route.path = route.path.replace(/{key}/g, teamId);
 
-            _private.load(route.path, route.verb, { UserId: userId })
-				.success(function (data) {
+            _private.load(route, { UserId: userId })
+				.done(function (data) {
 				    console.log("JOIN TEAM", data);
 				    dfd.resolve(data);
 				})
-				.error(function (err) {
+				.fail(function (err) {
 				    console.log("JOIN TEAM ERROR", err);
 				    dfd.resolve(null);
 				});
@@ -134,11 +150,11 @@ var TeamThingData = function () {
             var dfd = new $.Deferred(),
 				route = $.extend({}, _paths.createThing);
 
-            _private.load(route.path, route.verb, { CreatedById: userId, Description: txt, AssignedTo: [userId], teamId: teamId })
-				.success(function (data) {
+            _private.load(route, { CreatedById: userId, Description: txt, AssignedTo: [userId], teamId: teamId })
+				.done(function (data) {
 				    dfd.resolve(data);
 				})
-				.error(function (err) {
+				.fail(function (err) {
 				    dfd.resolve(null);
 				});
 
@@ -150,11 +166,11 @@ var TeamThingData = function () {
 
             route.path = route.path.replace(/{key}/g, thingId);
 
-            _private.load(route.path, route.verb, { DeletedById: uid })
-				.success(function (data) {
+            _private.load(route, { DeletedById: uid })
+				.done(function (data) {
 				    dfd.resolve(data);
 				})
-				.error(function (err) {
+				.fail(function (err) {
 				    dfd.resolve(null);
 				});
 
@@ -169,11 +185,11 @@ var TeamThingData = function () {
 
             route.path = route.path.replace(/{key}/g, thingId);
 
-            _private.load(route.path, route.verb, { UserId: uid, Status: newStatus })
-				.success(function (data) {
+            _private.load(route, { UserId: uid, Status: newStatus })
+				.done(function (data) {
 				    dfd.resolve(data);
 				})
-				.error(function (err) {
+				.fail(function (err) {
 				    dfd.resolve(null);
 				});
 
@@ -185,8 +201,8 @@ var TeamThingData = function () {
 
             route.path = route.path.replace(/{q}/g, query);
 
-            _private.load(route.path, route.verb, {})
-				.success(function (data) {
+            _private.load(route, {})
+				.done(function (data) {
 				    console.log("TEAM SEARCH", data);
 				    dfd.resolve(data);
 				});
@@ -199,11 +215,27 @@ var TeamThingData = function () {
 
             //DEMO HACKERY
             //var json = (email == "anglin@telerik.com") ? "userLogin.json" : "newUserLogin.json";	
-            _private.load(route.path, route.verb, { EmailAddress: email })
-				.success(function (data) {
+            _private.load(route, { EmailAddress: email })
+				.done(function (data) {
 				    dfd.resolve(data);
 				})
-				.error(function (err) {
+				.fail(function (err) {
+				    dfd.resolve(null);
+				});
+
+            return dfd;
+        },
+        validateOauthUser: function (userInfo) {
+            var dfd = new $.Deferred(),
+				route = $.extend({}, _paths.userOauth);
+
+            //Send userInfo object to server (token, provider)
+            //to get back the TeamThing user object
+            _private.load(route, userInfo)
+				.done(function (data) {
+				    dfd.resolve(data);
+				})
+				.fail(function (err) {
 				    dfd.resolve(null);
 				});
 

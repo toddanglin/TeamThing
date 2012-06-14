@@ -22,6 +22,7 @@ namespace TeamThing.Model
             this.SetOwner(owner);
         }
 
+        public bool IsStarred { get; set; }
         public string Description { get; set; }
         public DateTime DateCreated { get; set; }
         public bool IsDeleted { get; private set; }

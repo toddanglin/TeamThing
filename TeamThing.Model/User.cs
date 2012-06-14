@@ -12,17 +12,28 @@ namespace TeamThing.Model
             this.DateCreated = DateTime.Now;
         }
 
+        public User(string oAuthProvider, string oAuthUserId)
+            : this()
+        {
+            this.OAuthProvider = oAuthProvider;
+            this.OAuthUserId = oAuthUserId;
+            this.DateCreated = DateTime.Now;
+        }
+
         private User()
         {
             this.Things = new List<UserThing>();
             this.Teams = new List<TeamUser>();
         }
 
+        public string OAuthProvider { get; set; }
+        public string OAuthUserId { get; set; }
+
         public string ImagePath { get; set; }
         //public string PasswordHash { get; set; }
         //public string PasswordSalt { get; set; }
         public int Id { get; private set; }
-        public string EmailAddress { get; private set; }
+        public string EmailAddress { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateCreated { get; private set; }

@@ -108,6 +108,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
 
+	<script src="../scripts/oAuthProvider.js"></script>
 	<script src="../scripts/localStore.js"></script>
 	<script src="../scripts/mobile/teamthing.data.js"></script>
 	<script src="../scripts/mobile/teamthing.app.js"></script>
@@ -122,50 +123,64 @@
 	
 	<script>
 	    $(function () {
-			var app = new kendo.mobile.Application($(document.body), {
-				layout:'rootLayout', 
-				transition: 'slide',
-				icon: 'apple-touch-icon.png'
-				});				
-			
-			 window.teamThingApp = new TeamThing(app);
-			 teamThingApp.init();
-			 
-			 $("body").delegate("button","click",function(e){
-			 	var action = $(e.currentTarget).data("action");
-			 	if(action === undefined) return;
-			 	
-			 	if(action === "logout"){
-			 		teamThingApp.clearUser();
-			 		app.navigate("login.html");
-			 		return;
-			 	}
-			 	else if (action === "changeTeam") {
-			 		teamThingApp.clearTeam();
-			 		app.navigate("teamChoose.html");
-			 		return;
-			 	}
-			 });			 
-			 
-			 if(!teamThingApp.getRemember()){
-			 	console.log("CLEAR");
-			 	teamThingApp.clearUser();
-			 }
-			 
-			 if(teamThingApp.getCurrentUser() == null){
-			 	//Show the login screen
-			 	app.navigate("login.html");
-			 }
-		});
+	        var app = new kendo.mobile.Application($(document.body), {
+	            layout: 'rootLayout',
+	            transition: 'slide',
+	            icon: 'apple-touch-icon.png'
+	        });
+
+	        window.teamThingApp = new TeamThing(app);
+	        teamThingApp.init();
+
+            //Handle unauthorized Ajax errors by redirecting to login
+	        $(document).ajaxError(function (e, xhr, settings, exception) {
+	            if (xhr.status == 401) { app.navigate("login.html"); return; }
+	        });
+
+	        $("body").delegate("button", "click", function (e) {
+	            var action = $(e.currentTarget).data("action");
+	            if (action === undefined) return;
+
+	            if (action === "logout") {
+	                teamThingApp.clearUser();
+	                app.navigate("login.html");
+	                return;
+	            }
+	            else if (action === "changeTeam") {
+	                teamThingApp.clearTeam();
+	                app.navigate("teamChoose.html");
+	                return;
+	            }
+	        });
+
+	        if (!teamThingApp.getRemember()) {
+	            console.log("CLEAR");
+	            teamThingApp.clearUser();
+	        }
+
+	        if (teamThingApp.getCurrentUser() == null || teamThingApp.getAuthInfo() == null) {
+	            //oAuthStatus will contain token + provider if 
+	            //present in URL querystring (finishing step from
+	            //OAuth login). Needs to be done here to prevent error 
+	            //with Kendo UI Mobile navigation
+	            console.log("AUTH REQUIRED", "Null user and/or token");
+	            var oAuthStatus = teamThingApp.getAuthProvider().getStatus();
+	            teamThingApp.setAuthStatus(oAuthStatus);
+
+	            //Show the login screen (we'll process the token here)
+	            app.navigate("login.html");
+	        }
+	    });
 	   	   
 	   function listThingsInit(){
-	   		var app = teamThingApp,
+	       var app = teamThingApp,
 	   			user = app.getCurrentUser(),
-	   			team = app.getCurrentTeam();
+	   			team = app.getCurrentTeam(),
+                token = app.getAuthInfo();
 	   		
-	   		console.log("INDEX INIT", user, team);
+	   		console.log("INDEX INIT", user, team, token);
 	   		
-	   		if(user == null){
+	   		if(user == null || token == null){
 	   			//User needs to re-login
 	   			app.app.navigate("login.html");
 	   			return;
