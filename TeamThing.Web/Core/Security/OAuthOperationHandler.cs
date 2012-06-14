@@ -60,7 +60,7 @@ public class OAuthFacebookOpHandler : System.Web.Http.AuthorizeAttribute
 
         if (!this.AuthorizeCore(principle))
         {
-            throw new HttpResponseException(HttpStatusCode.Forbidden);
+            throw new HttpResponseException(actionContext.Request.CreateResponse(HttpStatusCode.Forbidden));
         }
     }
 

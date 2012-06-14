@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using TeamThing.Web.Core;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace TeamThing.Web
 {
@@ -42,12 +41,10 @@ namespace TeamThing.Web
            );
             routes.MapHttpRoute(
                 name: "SingleResourceApi",
-                routeTemplate: "api/{controller}/{id}/{action}",
-                defaults: new { },
+                routeTemplate: "api/{controller}/{id}/{action}/{status}",
+                defaults: new { status = RouteParameter.Optional },
                 constraints: new { id = @"\d+" }
             );
-
-
 
             routes.MapHttpRoute(
                 name: "HeaderBasedApi",
@@ -125,8 +122,14 @@ namespace TeamThing.Web
             // Add Json.net formatter - add at the top so it fires first!
             // This leaves the old one in place so JsonValue/JsonObject/JsonArray still are handled
 
-            var index = config.Formatters.IndexOf(config.Formatters.JsonFormatter);
-            config.Formatters[0] = new JsonNetFormatter();
+            config.Formatters.JsonFormatter.SerializerSettings =
+                new JsonSerializerSettings
+                    {
+                        ContractResolver =
+                            new CamelCasePropertyNamesContractResolver()
+                    };
+
+            //config.Formatters[0] = new JsonNetFormatter();
 
         }
     }

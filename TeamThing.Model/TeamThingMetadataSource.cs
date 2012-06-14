@@ -67,9 +67,11 @@ namespace TeamThing.Model
 
             mapping.HasAssociation(m => m.Thing)
                    .WithOpposite(t=>t.History)
+                   .IsManaged()
                    .ToColumn("ThingId");
 
             mapping.HasAssociation(m => m.EditedBy)
+                .IsManaged()
                    .ToColumn("EditedByUserId");
 
             mapping.HasProperty(m => m.Action)
@@ -131,7 +133,7 @@ namespace TeamThing.Model
                    .ToColumn("OwnerId");
 
             mapping.HasAssociation(m => m.Team)
-                   .WithOpposite(m=>m.TeamThings)
+                   .WithOpposite(m=>m.Things)
                    .ToColumn("TeamId");
 
             mapping.HasProperty(m => m.Status)
@@ -156,7 +158,7 @@ namespace TeamThing.Model
             });
 
             mapping.HasAssociation(m => m.Team)
-                   .WithOpposite(t => t.TeamMembers)
+                   .WithOpposite(t => t.Members)
                    .IsManaged()
                    .IsDependent()
                    .ToColumn("TeamId");
@@ -198,11 +200,11 @@ namespace TeamThing.Model
                    .IsManaged()
                    .ToColumn("OwnerId");
 
-            mapping.HasAssociation(m => m.TeamThings)
+            mapping.HasAssociation(m => m.Things)
                    .IsManaged()
                    .ToColumn("TeamId");
 
-            mapping.HasAssociation(m => m.TeamMembers)
+            mapping.HasAssociation(m => m.Members)
                    .WithOpposite(t => t.Team)
                    .IsManaged()
                    .IsDependent()

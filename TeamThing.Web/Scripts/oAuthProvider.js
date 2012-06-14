@@ -1,4 +1,4 @@
-﻿function OAuthProvider() {
+function OAuthProvider() {
     var appUrl = "http://localhost:8888/mobile/index.html"; //Change for PROD
 
     var fbAuthBase = "https://www.facebook.com/dialog/oauth?client_id=YOUR_APP_ID &redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token";

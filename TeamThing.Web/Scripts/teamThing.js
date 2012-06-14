@@ -18,7 +18,7 @@
 
         this.refresh = function () {
             //TODO: Memory leak?!?
-            application.showTeam(that.team);
+            application.showTeam(that.team);  
         }
 
         function thingAdded(thing) {
@@ -700,7 +700,6 @@
                       .close();
             }
         };
-
 
         //TODO: maybe we should move the binding outside of this?!
         this.showDialog = function (bindingTargetSelector, title, url, viewModel) {

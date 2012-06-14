@@ -1,5 +1,6 @@
 ﻿@model IList<TeamThing.Model.Thing>
-@foreach (var t in Model){
+@foreach (var t in Model)
+{
         <li class="@t.Status.ToString().ToLower() %>">
             <div class="teamProfile fontborder" style='background-color:@t.AssignedTo.First().AssignedToUser.Color'>
             <ul>
@@ -8,9 +9,9 @@
                     <li>@u.AssignedToUser.FirstName  @u.AssignedToUser.LastName</li>
                 }
                 </ul>
-            </div>
-            @if (t.Status != TeamThing.Model.ThingStatus.InProgress)
-            {
+  </div>
+      @if (t.Status != TeamThing.Model.ThingStatus.InProgress)
+      {
                <div class="status">@t.Status.ToString()</div>
             }
             <span class="tasktext">@t.Description</span>
