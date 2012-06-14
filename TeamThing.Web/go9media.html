@@ -1220,6 +1220,13 @@
 <script>
     $(function () {
        teamThing.init($("#teamThing"));
+	   
+	   $.ajax({
+  			url: '/api/team/5',
+  			success: function(data) {
+				console.log(data);
+			}
+		});
     });
 </script>
 </html>
