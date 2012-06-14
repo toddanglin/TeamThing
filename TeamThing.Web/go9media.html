@@ -23,6 +23,7 @@
     <script src="/Scripts/modernizr-2.5.3.min.js"></script>
 </head>
 <body>
+<div id="#dummy-output" style="color:#eee;">[Function Call Output]</div>
     <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
     <div id="header" class="bkgnd-smooth-dark">
         <h1>TeamThing</h1>
@@ -319,7 +320,7 @@
     		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
     		function(data) { 
 				console.log(data);
-				$('#dummy-output').html(data);
+				$('#dummy-output').append(data);
 			}
 		);
 		
@@ -1233,5 +1234,5 @@
 
 }(window.teamThing = window.teamThing || {}, jQuery, kendo));
 </script>
-<div id="#dummy-output"></div>
+
 </html>
