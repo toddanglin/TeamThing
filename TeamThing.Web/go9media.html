@@ -1221,12 +1221,16 @@
     $(function () {
        teamThing.init($("#teamThing"));
 	   
-	   $.ajax({
+	  /* $.ajax({
   			url: '/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
   			success: function(data) {
 				console.log(data);
 			}
-		});
+		});*/
+		$.get(
+    		'http://teamthing.apphb.com/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
+    		function(data) { console.log(data); }
+		);
     });
 </script>
 </html>
