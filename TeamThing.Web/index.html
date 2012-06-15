@@ -47,8 +47,9 @@
 		<!--<div id="login-divet"><img src="tt_assets/images/login-panel-divet-top.jpg" width="358" height="26"></div>-->
 		<div class="signin">
 			<h1>Sign-In</h1>
-            <input type="text" name="username" id="username" value=""><label for="username"></label>
-            <input type="password" name="password" id="password" value=""><label for="password"></label>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut mi sem. In pellentesque dapibus quam nec volutpat.</p>
+            <!--<input type="text" name="username" id="username" value=""><label for="username"></label>
+            <input type="password" name="password" id="password" value=""><label for="password"></label>-->
         	<a id="google-signin-btn" href="#"><img src="tt_assets/images/google-signin-btn.jpg" width="212" height="38" alt="Sign In with Google"></a>
         </div>
 		<div class="intro">
@@ -69,9 +70,9 @@
 			<h1>Select A Team</h1>
             <select name="jumpMenu" id="jumpMenu" onChange="JumpToMain(this.value)"></select>
         </div>
-		<div class="intro">
+		<div class="intro" id="create-team">
 			<h1>Create a Team</h1>
-			<input type="text" name="teamname" id="teamname" value=""><label for="teamname"></label>
+			<input type="text" name="teamname" id="teamname" value="" required validationMessage="Please provide Team name"/><span class="k-invalid-msg" data-for="teamname"></span><label for="teamname"></label>
             <input type="submit" name="submit" value="Create Team">
         </div>
 	</div>
@@ -448,7 +449,7 @@ $(document).ready(function(){
 |	BEGIN: LOG IN FUNCTIONS
 |--------------------------------------------------------------------------
 */
-	UsernameLabel = 'Username';
+	/*UsernameLabel = 'Username';
 	$('#username').next('label').html('').css('height', '0px').html(UsernameLabel);
 	PasswordLabel = 'Password';
 	$('#password').next('label').html('').css('height', '0px').html(PasswordLabel);
@@ -475,7 +476,18 @@ $(document).ready(function(){
 		if($(this).val() == '') {
 			$(this).next('label').html(TeamNameLabel);
 		}
+	});*/
+	
+	var validator = $("#create-team").kendoValidator().data("kendoValidator"), status = $(".status");
+
+	$("submit").click(function() {
+		if (validator.validate()) {
+			//status.text("Hooray! Your tickets has been booked!").addClass("valid");
+		} else {
+			//status.text("Oops! There is invalid data in the form.").addClass("invalid");
+		}
 	});
+	
 /*
 |--------------------------------------------------------------------------
 |	END: LOG IN FUNCTIONS
