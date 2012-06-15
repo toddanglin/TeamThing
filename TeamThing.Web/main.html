@@ -4,24 +4,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Team*Thing | Main</title>
 
-<script src="Scripts/path.min.js"></script> 
-<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
 <!-- BEGIN: PAGE PRESENTATION FILES -->
 <link href='http://fonts.googleapis.com/css?family=Cabin+Condensed|Oleo+Script:700' rel='stylesheet' type='text/css'>
 <link href="tt_assets/css/mainstyle.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="tt_assets/css/uniform.aristo.css" type="text/css" media="screen" charset="utf-8" />
-<script src="tt_assets/js/jquery.uniform.min.js" type="text/javascript"></script>
 <!-- END: PAGE PRESENTATION FILES -->
+
+<script src="Scripts/path.min.js"></script> 
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <!-- BEGIN: KENDO UI FILES -->
 <link href="tt_assets/kendoui/styles/kendo.common.min.css" rel="stylesheet">
 <link href="tt_assets/kendoui/styles/kendo.default.min.css" rel="stylesheet">
+<link href="tt_assets/kendoui/styles/kendo.blueopal.min.css" rel="stylesheet">
 <script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
 <!-- END: KENDO UI FILES -->
 
 <!-- BEGIN: KENDO UI INSERTED FILES -->
-
 <script src="Scripts/oAuthProvider.js"></script>
 <script src="Scripts/dataProvider.js"></script>
 <script src="Scripts/teamThing.js"></script>
@@ -48,7 +46,7 @@
 
 <a href="#"><div id="creatething">Create a Thing</div></a>
 <div id="teamlist">
- <select name="jumpMenu" id="jumpMenu" onChange="JumpToMain(this.value)"></select>
+ <select id="jumpMenu" onChange="JumpToMain(this.value)"></select>
     </div>
 <img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo">
 </header>
@@ -440,12 +438,27 @@ $(document).ready(function() {
 		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
     	function(data) { 
 			//console.log('Profile Image: ' + data[1].imagePath);
-			TeamsOutput = '';
+			/*TeamsOutput = '';
 			for(i=0;i<data.length;i++) {
 				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
 			}
 			$('#jumpMenu').append(TeamsOutput, function() {
 					
+			});*/
+			
+			TeamsOutput = { TeamsList: [] };
+			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
+			for(i=0;i<data.length;i++) {
+				TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
+			}
+			
+			console.log('Teams Listing 3: ' + TeamsOutput.TeamsList);
+			
+			$("#jumpMenu").kendoComboBox({
+				dataTextField: "TeamsListLabel",
+				dataValueField: "TeamsListValue",
+				dataSource: TeamsOutput.TeamsList,
+				index: 0
 			});
 		}
 	);
@@ -522,7 +535,7 @@ $(document).ready(function() {
 					
 					});
 					
-					$("select#jumpMenu").uniform();
+					//$("select#jumpMenu").uniform();
 					
                 });
             </script>
