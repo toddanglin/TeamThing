@@ -543,7 +543,7 @@ $(document).ready(function() {
 	$.get(
 		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
     	function(data) { 
-			console.log('Account 1: ' + data);
+			console.log('Account 1: ' + data[0]);
 		}
 	);
 });
