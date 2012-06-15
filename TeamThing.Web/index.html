@@ -392,12 +392,21 @@ $(document).ready(function(){
     	function(data) { 
 			//console.log('Profile Image: ' + data[1].imagePath);
 			TeamsOutput = '';
+			TeamsOutput+='{ text: "Select a Team...", value: "" },';
 			for(i=0;i<data.length;i++) {
-				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+				TeamsOutput+='{ text: "'+data[i].name+'", value: "'+data[i].id+'" },';
 			}
-			$('#jumpMenu').append(TeamsOutput, function() {
+			/*$('#jumpMenu').append(TeamsOutput, function() {
 				$("#jumpMenu").kendoComboBox();
-			});
+			});*/
+			$("#jumpMenu").kendoComboBox({
+                        dataTextField: "text",
+                        dataValueField: "value",
+                        dataSource: [TeamsOutput],
+                        filter: "contains",
+                        suggest: true,
+                        index: 0
+                    });
 		}
 	);
 	
@@ -508,7 +517,7 @@ $(document).ready(function(){
 	$.get(
 		APPURL+'/api/team/10/things',
     	function(data) { 
-			console.log(data);
+			console.log('Test Script: ' + data);
 		}
 	);
 	
