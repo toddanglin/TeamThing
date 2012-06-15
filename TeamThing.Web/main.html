@@ -139,7 +139,7 @@
        
        
 <div id="createthinginfo">
-    <textarea id="editor" rows="10" cols="30"></textarea>
+    <textarea id="editor" rows="15" cols="50"></textarea>
 </div>      
        
 <div id="header" class="bkgnd-smooth-dark">
@@ -552,7 +552,14 @@ $(document).ready(function() {
 		}
 	);
 	
-	$("#editor").kendoEditor();
+	$("#editor").kendoEditor({
+         tools: [
+             "bold",
+             "italic",
+             "underline",
+             "foreColor"
+         ]
+      });
 });
 </script>
             
