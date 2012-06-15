@@ -451,7 +451,7 @@ $(document).ready(function() {
 	);
 	
 	$.get(
-		APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
+		APPURL+"/api/team/10/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
     	function(data) { 
 			console.log(data);
 			TeamThingsOutput = '';
