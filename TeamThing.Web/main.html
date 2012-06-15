@@ -545,10 +545,10 @@ $(document).ready(function() {
 	$.get(
 		APPURL+'/api/user',
     	function(UserInfo) {
-			console.log('UserInfo 1: ' + UserInfo[0].length); 
+			console.log('UserInfo 2: ' + UserInfo[0].name); 
 			for(i=0;i<UserInfo.length;i++)
 			{
-				console.log(UserInfo[i].name);
+				//console.log(UserInfo[i].name);
 			}
 		}
 	);
