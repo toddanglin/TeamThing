@@ -376,7 +376,7 @@ function AdjustLayout(WindowWidth,WindowHeight) {
 
 function JumpToMain(TeamID) {
 	
-	if (TeamID != '' && TeamID.length > 0)
+	if (TeamID != '' && TeamID.length > 0 && !isNaN(TeamID))
 	{
 		location.href="main.html?teamid="+TeamID;
 	}
