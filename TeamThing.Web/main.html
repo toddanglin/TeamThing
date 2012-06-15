@@ -545,7 +545,7 @@ $(document).ready(function() {
 	$.get(
 		APPURL+'/api/users',
     	function(UserInfo) {
-			console.log('UserInfo: ' + UserInfo.length); 
+			console.log('UserInfo Length: ' + UserInfo.length); 
 			for(i=0;i<UserInfo.length;i++)
 			{
 				console.log(UserInfo[i].name);
