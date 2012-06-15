@@ -138,8 +138,8 @@
        
        
        
-            <div id="createthinginfo">
-    Ok...here is how you create a THING
+<div id="createthinginfo">
+    <textarea id="editor" rows="10" cols="30"></textarea>
 </div>      
        
 <div id="header" class="bkgnd-smooth-dark">
@@ -551,6 +551,8 @@ $(document).ready(function() {
 			$('#userinfo').html(UserInfo[0].emailAddress);
 		}
 	);
+	
+	$("#editor").kendoEditor();
 });
 </script>
             
