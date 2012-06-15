@@ -505,6 +505,13 @@ $(document).ready(function(){
 		AdjustLayout($(window).width(),$(window).height())
 	});
 	
+	$.get(
+		APPURL+'/api/team/10/things',
+    	function(data) { 
+			console.log(data);
+		}
+	);
+	
 });
 </script>
 
