@@ -319,11 +319,12 @@
 		
 		APPURL = 'http://teamthing.apphb.com';
 		
-		$.post(
+		$.GET(
     		//APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
-			APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
+			//APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
 			//APPURL+'/api/team?$filter=IsPublic eq true',
 			//APPURL+'/api/user/register?EmailAddress=newUser@test.com',
+			APPURL+"/api/team?$filter=Name ne null and tolower(Name) eq \'closed team\'",
     		function(data) { 
 				console.log(data);
 				console.log('Profile Image: ' + data[1].imagePath);
