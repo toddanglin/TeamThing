@@ -425,7 +425,11 @@
 <script>
 
 function JumpToMain(TeamID) {
-	location.href="../main.html?teamid="+TeamID;
+	
+	if (TeamID != '' && TeamID.length > 0 && !isNaN(TeamID))
+	{
+		location.href="../main.html?teamid="+TeamID;
+	}
 }
 
 $(document).ready(function() {
