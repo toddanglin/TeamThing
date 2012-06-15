@@ -451,7 +451,7 @@ $(document).ready(function() {
 	);
 	
 	$.get(
-		APPURL+"/api/team/10/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
+		APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
     	function(data) { 
 			console.log(data);
 			TeamThingsOutput = '';
@@ -476,9 +476,9 @@ $(document).ready(function() {
 			$('.list').each(function(index) {
 				if (index == 0) {
 					$(this).html(TeamThingsOutput);
-				}/* else {
+				} else {
 					$(this).html(TeamThingsOutput);
-				}*/
+				}
 			});
 		}
 	);
