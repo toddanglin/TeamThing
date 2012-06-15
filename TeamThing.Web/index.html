@@ -67,7 +67,7 @@
 		<!--<div id="login-divet"><img src="tt_assets/images/login-panel-divet-top.jpg" width="358" height="26"></div>-->
 		<div class="signin">
 			<h1>Select A Team</h1>
-            <div style="height:15px;">&nbsp;</div>
+            <div style="height:17px;">&nbsp;</div>
             <select id="jumpMenu" onChange="JumpToMain(this.value)"></select>
         </div>
 		<div class="intro" id="create-team">
@@ -391,23 +391,25 @@ $(document).ready(function(){
 	$.get(
 		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
     	function(data) { 
-			//console.log('Profile Image: ' + data[1].imagePath);
-			TeamsOutput = '';
-			TeamsOutput+='{ text: "Select a Team...", value: "" },';
-			for(i=0;i<data.length;i++) {
-				TeamsOutput+='{ text: "'+data[i].name+'", value: "'+data[i].id+'" },';
-			}
 			/*$('#jumpMenu').append(TeamsOutput, function() {
 				$("#jumpMenu").kendoComboBox();
 			});*/
+			
+			TeamsOutput = { TeamsList: [] };
+			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
+			for(i=0;i<data.length;i++) {
+				//TeamsOutput+='{ text: "'+data[i].name+'", value: "'+data[i].id+'" },';
+				TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
+			}
+			
 			$("#jumpMenu").kendoComboBox({
-                        dataTextField: "text",
-                        dataValueField: "value",
-                        dataSource: [TeamsOutput],
-                        filter: "contains",
-                        suggest: true,
-                        index: 0
-                    });
+				dataTextField: "text",
+				dataValueField: "value",
+				dataSource: [TeamsOutput],
+				filter: "contains",
+				suggest: true,
+				index: 0
+			});
 		}
 	);
 	
@@ -516,7 +518,7 @@ $(document).ready(function(){
 	});
 	
 	$.get(
-		APPURL+'/api/team/10/thing',
+		APPURL+'/api/team/10/things',
     	function(data) { 
 			console.log('Test Script: ' + data);
 		}
