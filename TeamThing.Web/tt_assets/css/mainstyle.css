@@ -208,7 +208,7 @@ width:960px;}
 
 
 
-#userinfo {float:right; width:auto; text-align:right; font-size:18px; padding-bottom:5px;overflow: hidden;text-overflow: ellipsis;}
+#userinfo {float:right; width:100px; text-align:right; font-size:18px; padding-bottom:5px;overflow: hidden;text-overflow: ellipsis;}
 
 .usernav {white-space:nowrap; font-size:14px;}
 
