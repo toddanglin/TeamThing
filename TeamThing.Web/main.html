@@ -541,12 +541,12 @@ $(document).ready(function() {
 					
 					//$("select#jumpMenu").uniform();
 	$.get(
-		APPURL+'/api/user',
-    	function(data) {
-			console.log('Length: ' + data.toString()); 
-			for(i=0;i<data[0].length;i++)
+		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
+    	function(UserInfo) {
+			console.log('UserInfo to String: ' + UserInfo.toString()); 
+			for(i=0;i<UserInfo.length;i++)
 			{
-				console.log(data[0][i].EmailAddress);
+				console.log(UserInfo[i].EmailAddress);
 			}
 		}
 	);
