@@ -337,6 +337,13 @@
 			}
 		);
 		
+		$.get(
+			APPURL+'/api/user',
+    		function(UserInfo) {
+				console.log(UserInfo);
+			}
+		);
+		
     });
 </script>
 <script type="text/javascript">
