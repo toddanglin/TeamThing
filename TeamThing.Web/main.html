@@ -543,9 +543,9 @@ $(document).ready(function() {
 					
 	APPURL = 'http://teamthing.apphb.com';
 	$.get(
-		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
+		APPURL+'/api/users',
     	function(UserInfo) {
-			console.log('UserInfo: ' + UserInfo); 
+			console.log('UserInfo: ' + UserInfo.length); 
 			for(i=0;i<UserInfo.length;i++)
 			{
 				console.log(UserInfo[i].name);
