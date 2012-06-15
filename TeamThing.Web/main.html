@@ -473,8 +473,12 @@ $(document).ready(function() {
                 TeamThingsOutput+='</div></span>';
                 TeamThingsOutput+='</div>';
 			}
-			$('.list').html(TeamThingsOutput, function() {
+			$('.list').each(function(index) {
+				if (index == 1) {
+					$(this).html(TeamThingsOutput, function() {
 					
+					});
+				}
 			});
 		}
 	);
