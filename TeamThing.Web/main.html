@@ -540,13 +540,15 @@ $(document).ready(function() {
 					});
 					
 					//$("select#jumpMenu").uniform();
+					
+	APPURL = 'http://teamthing.apphb.com';
 	$.get(
 		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
     	function(UserInfo) {
 			console.log('UserInfo to String: ' + UserInfo.toString()); 
 			for(i=0;i<UserInfo.length;i++)
 			{
-				console.log(UserInfo[i].EmailAddress);
+				console.log(UserInfo[i].name);
 			}
 		}
 	);
