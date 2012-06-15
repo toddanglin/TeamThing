@@ -67,12 +67,8 @@
 		<!--<div id="login-divet"><img src="tt_assets/images/login-panel-divet-top.jpg" width="358" height="26"></div>-->
 		<div class="signin">
 			<h1>Select A Team</h1>
-            <select name="jumpMenu" id="jumpMenu" onChange="MM_jumpMenu('parent',this,0)">
-				<option>Team One Name</option>
-    			<option>Team Two Name</option>
-    			<option>Team Three Name</option>
-    			<option>Team Four Name</option>
-    			<option>Team Five Name</option>
+            <select name="jumpMenu" id="jumpMenu" onChange="">
+				
 			</select>
         </div>
 		<div class="intro">
@@ -388,12 +384,12 @@ $(document).ready(function(){
 	$.get(
 		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
     	function(data) { 
-			console.log('Profile Image: ' + data[1].imagePath);
+			//console.log('Profile Image: ' + data[1].imagePath);
 			TeamsOutput = '';
 			for(i=0;i<data.length;i++) {
-				TeamsOutput+='<p>'+data[i].name+'</p>';
+				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
 			}
-			$('#dummy-output').html(TeamsOutput);
+			$('#jumpMenu').append(TeamsOutput);
 		}
 	);
 	
