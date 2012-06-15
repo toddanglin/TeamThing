@@ -450,8 +450,8 @@ $(document).ready(function() {
 		}
 	);
 	
-	$.post(
-		APPURL+"/api/team/10/things",
+	$.get(
+		APPURL+"/api/team/10/things?$filter=Description ne null and indexof(Description, 'd') ge 1",
     	function(data) { 
 			console.log(data);
 			TeamThingsOutput = '';
