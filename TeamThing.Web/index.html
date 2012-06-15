@@ -405,11 +405,9 @@ $(document).ready(function(){
 			console.log('Teams Listing 2: ' + TeamsOutput.TeamsList);
 			
 			$("#jumpMenu").kendoComboBox({
-				dataTextField: "text",
-				dataValueField: "value",
+				dataTextField: "TeamsListLabel",
+				dataValueField: "TeamsListValue",
 				dataSource: TeamsOutput.TeamsList,
-				filter: "contains",
-				suggest: true,
 				index: 0
 			});
 		}
