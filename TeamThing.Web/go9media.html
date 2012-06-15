@@ -329,7 +329,11 @@
     		function(data) { 
 				console.log(data);
 				console.log('Profile Image: ' + data[1].imagePath);
-				$('#dummy-output').append('<img src="'+data[1].imagePath+'" />');
+				TeamsOutput = '';
+				for(i=0;i<data.length;i++) {
+					TeamsOutput+='<p>'+data[i].name+'</p>';
+				}
+				$('#dummy-output').html(TeamsOutput);
 			}
 		);
 		
