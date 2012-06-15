@@ -545,7 +545,7 @@ $(document).ready(function() {
 	$.get(
 		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
     	function(UserInfo) {
-			console.log('UserInfo to String: ' + UserInfo.toString()); 
+			console.log('UserInfo: ' + UserInfo); 
 			for(i=0;i<UserInfo.length;i++)
 			{
 				console.log(UserInfo[i].name);
