@@ -470,7 +470,7 @@ $(document).ready(function() {
 	$.get(
 		APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
     	function(data) { 
-			console.log(data);
+			//console.log(data);
 			TeamThingsOutput = '';
 			for(i=0;i<data.length;i++) {
 				TeamThingsOutput+='<div class="thing">';
