@@ -546,11 +546,9 @@ $(document).ready(function() {
 		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'toddanglin@gmail.com\'',
     	function(UserInfo) {
 			console.log(UserInfo);
-			console.log('UserInfo 7: ' + UserInfo[0].imagePath); 
-			/*for(i=0;i<UserInfo.length;i++)
-			{
-				console.log(UserInfo[i].emailAddress);
-			}*/
+			console.log('UserInfo 8: ' + UserInfo[0].imagePath); 
+			$('#userpic img').attr('src',UserInfo[0].imagePath);
+			$('#userinfo').html(UserInfo[0].emailAddress);
 		}
 	);
 });
