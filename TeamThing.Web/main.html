@@ -540,9 +540,14 @@ $(document).ready(function() {
 					});
 					
 					//$("select#jumpMenu").uniform();
-					
-                });
-            </script>
+	$.get(
+		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
+    	function(data) { 
+			console.log('Account 1: ' + data);
+		}
+	);
+});
+</script>
             
             <script>
        
