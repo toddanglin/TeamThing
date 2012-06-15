@@ -21,13 +21,14 @@ namespace TeamThing.Web.Controllers
         {
         }
 
+        //[Authorize]
         public IQueryable<ServiceModel.UserBasic> Get()
         {
             return context.GetAll<DomainModel.User>().MapToServiceModel();
         }
 
         // GET /api/user/5
-        [Authorize]
+        //[Authorize]
         public HttpResponseMessage Get(int id)
         {
             var item = context.GetAll<TeamThing.Model.User>()
@@ -45,7 +46,7 @@ namespace TeamThing.Web.Controllers
         }
 
         // GET /api/user/5/things/{status}
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public IQueryable<ServiceModel.ThingBasic> Things(int id, string status)
         {
@@ -69,7 +70,7 @@ namespace TeamThing.Web.Controllers
 
 
         // GET /api/user/5/teams/{status}
-        [Authorize]
+        ////[Authorize]
         [HttpGet]
         public IQueryable<ServiceModel.TeamBasic> Teams(int id, string status)
         {
@@ -197,13 +198,13 @@ namespace TeamThing.Web.Controllers
         }
 
         // PUT /api/user/5
-        [Authorize]
+        //[Authorize]
         public void Put(int id, string value)
         {
         }
 
         // DELETE /api/user/5
-        [Authorize]
+        //[Authorize]
         public void Delete(int id)
         {
 

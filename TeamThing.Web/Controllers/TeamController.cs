@@ -11,7 +11,7 @@ using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TeamController : TeamThingApiController
     {
 
