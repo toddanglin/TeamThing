@@ -546,10 +546,10 @@ $(document).ready(function() {
 		APPURL+'/api/user',
     	function(UserInfo) {
 			console.log(UserInfo);
-			console.log('UserInfo 5: ' + UserInfo[1].EmailAddress); 
+			console.log('UserInfo 6: ' + UserInfo[1].emailAddress); 
 			for(i=0;i<UserInfo.length;i++)
 			{
-				//console.log(UserInfo[i].name);
+				console.log(UserInfo[i].emailAddress);
 			}
 		}
 	);
