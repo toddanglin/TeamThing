@@ -67,9 +67,7 @@
 		<!--<div id="login-divet"><img src="tt_assets/images/login-panel-divet-top.jpg" width="358" height="26"></div>-->
 		<div class="signin">
 			<h1>Select A Team</h1>
-            <select name="jumpMenu" id="jumpMenu" onChange="">
-				
-			</select>
+            <select name="jumpMenu" id="jumpMenu" onChange="JumpToMain(this.value)"></select>
         </div>
 		<div class="intro">
 			<h1>Create a Team</h1>
@@ -375,6 +373,10 @@ function AdjustLayout(WindowWidth,WindowHeight) {
 	$('#signin-slides li').css('width', NewCarouselWidth+'px');
 }
 
+function JumpToMain(TeamID) {
+	location.href="main.html?teamid="+TeamID;
+}
+
 $(document).ready(function(){
 	
 	teamThing.init($("#teamThing"));
@@ -389,7 +391,9 @@ $(document).ready(function(){
 			for(i=0;i<data.length;i++) {
 				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
 			}
-			$('#jumpMenu').append(TeamsOutput);
+			$('#jumpMenu').append(TeamsOutput, function() {
+					
+			});
 		}
 	);
 	
