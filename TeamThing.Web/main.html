@@ -542,10 +542,11 @@ $(document).ready(function() {
 					//$("select#jumpMenu").uniform();
 	$.get(
 		APPURL+'/api/user',
-    	function(data) { 
-			for(i=0;i<data.length;i++)
+    	function(data) {
+			console.log('Length: ' + data.toString()); 
+			for(i=0;i<data[0].length;i++)
 			{
-				console.log(data[i].EmailAddress);
+				console.log(data[0][i].EmailAddress);
 			}
 		}
 	);
