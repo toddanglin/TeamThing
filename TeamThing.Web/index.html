@@ -520,7 +520,7 @@ $(document).ready(function(){
 	});
 	
 	$.get(
-		APPURL+'/api/team/10/things',
+		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'todd.anglin@telerik.com\'',
     	function(data) { 
 			console.log('Test Script: ' + data);
 		}
