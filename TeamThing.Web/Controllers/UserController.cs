@@ -22,6 +22,7 @@ namespace TeamThing.Web.Controllers
         }
 
         //[Authorize]
+        [Queryable]
         public IQueryable<ServiceModel.UserBasic> Get()
         {
             return context.GetAll<DomainModel.User>().MapToServiceModel();
@@ -48,6 +49,7 @@ namespace TeamThing.Web.Controllers
         // GET /api/user/5/things/{status}
         //[Authorize]
         [HttpGet]
+        [Queryable]
         public IQueryable<ServiceModel.ThingBasic> Things(int id, string status)
         {
             var user = GetCurrentUser();
@@ -72,6 +74,7 @@ namespace TeamThing.Web.Controllers
         // GET /api/user/5/teams/{status}
         ////[Authorize]
         [HttpGet]
+        [Queryable]
         public IQueryable<ServiceModel.TeamBasic> Teams(int id, string status)
         {
             var user = GetCurrentUser();

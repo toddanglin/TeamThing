@@ -21,6 +21,7 @@ namespace TeamThing.Web.Controllers
         {
         }
 
+        [Queryable]
         public IQueryable<ServiceModel.Thing> Get()
         {
             //TODO: We chould grab the current user here probably?
