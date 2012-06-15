@@ -456,9 +456,24 @@ $(document).ready(function() {
 			console.log(data);
 			TeamThingsOutput = '';
 			for(i=0;i<data.length;i++) {
-				TeamThingsOutput+='<p>'+data[i].description+'</p>';
+				TeamThingsOutput+='<div class="thing">';
+                TeamThingsOutput+='<img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">';
+                TeamThingsOutput+='<span class="listitem">';
+                TeamThingsOutput+='<div class="thingcontrols">';
+                TeamThingsOutput+='<span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>';
+				if (data[i].staus == 'InProgress') {
+                	TeamThingsOutput+='<span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+				} else {
+					TeamThingsOutput+='<span class="controls"><input type="checkbox" data-icon1="Delayed" data-icon2="In Progress" />';
+				}
+				TeamThingsOutput+='<br />';
+                TeamThingsOutput+='<span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>';
+                TeamThingsOutput+='</span>';
+                TeamThingsOutput+='</div> <div class="thingdesc">'+data[i].description;
+                TeamThingsOutput+='</div></span>';
+                TeamThingsOutput+='</div>';
 			}
-			$('.list').append(TeamThingsOutput, function() {
+			$('.list').html(TeamThingsOutput, function() {
 					
 			});
 		}
