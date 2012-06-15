@@ -321,8 +321,8 @@
 		
 		$.post(
     		//APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'jholt456@gmail.com\'',
-			//APPURL+'/api/team?$filter=Name ne null and tolower(Name) eq \'closed team\'',
-			APPURL+'/api/team?$filter=IsPublic eq true',
+			APPURL+'/api/team?$filter=Name ne null and tolower(Name) eq \'closed team\'',
+			//APPURL+'/api/team?$filter=IsPublic eq true',
 			//APPURL+'/api/user/register?EmailAddress=newUser@test.com',
     		function(data) { 
 				console.log(data);
