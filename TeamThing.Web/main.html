@@ -548,7 +548,7 @@ $(document).ready(function() {
 			//console.log(UserInfo);
 			//console.log('UserInfo 8: ' + UserInfo[0].imagePath); 
 			$('#userpic img').attr('src',UserInfo[0].imagePath);
-			$('#userinfo').html(UserInfo[0].emailAddress);
+			$('#userinfo').html(UserInfo[0].emailAddress+'<br /><span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>');
 		}
 	);
 	
