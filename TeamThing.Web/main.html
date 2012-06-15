@@ -543,14 +543,14 @@ $(document).ready(function() {
 					
 	APPURL = 'http://teamthing.apphb.com';
 	$.get(
-		APPURL+'/api/user',
+		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'toddanglin@gmail.com\'',
     	function(UserInfo) {
 			console.log(UserInfo);
-			console.log('UserInfo 6: ' + UserInfo[1].emailAddress); 
-			for(i=0;i<UserInfo.length;i++)
+			console.log('UserInfo 6: ' + UserInfo[0].imagePath); 
+			/*for(i=0;i<UserInfo.length;i++)
 			{
 				console.log(UserInfo[i].emailAddress);
-			}
+			}*/
 		}
 	);
 });
