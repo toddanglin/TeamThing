@@ -402,12 +402,12 @@ $(document).ready(function(){
 				TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
 			}
 			
-			console.log('Teams Listing: ' + TeamsOutput);
+			console.log('Teams Listing: ' + TeamsOutput.TeamsList);
 			
 			$("#jumpMenu").kendoComboBox({
 				dataTextField: "text",
 				dataValueField: "value",
-				dataSource: [TeamsOutput],
+				dataSource: TeamsOutput.TeamsList,
 				filter: "contains",
 				suggest: true,
 				index: 0
