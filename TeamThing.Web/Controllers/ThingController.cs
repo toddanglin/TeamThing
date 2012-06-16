@@ -15,7 +15,6 @@ namespace TeamThing.Web.Controllers
     //[Authorize]
     public class ThingController : TeamThingApiController
     {
-
         public ThingController()
             : base(new DomainModel.TeamThingContext())
         {
@@ -152,6 +151,28 @@ namespace TeamThing.Web.Controllers
             }
 
             thing.Complete(viewModel.UserId);
+            context.SaveChanges();
+
+            var sThing = thing.MapToServiceModel();
+            var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
+            return response;
+        }  
+        
+        [HttpPut]
+        public HttpResponseMessage Star(int id)
+        {
+
+            var thing = context.GetAll<DomainModel.Thing>()
+                               .FirstOrDefault(u => u.Id == id);
+
+            if (thing == null)
+            {
+                ModelState.AddModelError("", "Invalid Thing");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
+            }
+
+            thing.IsStarred = true;
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();

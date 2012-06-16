@@ -161,6 +161,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\API\AddMemberViewModel.cs" />
     <Compile Include="Models\API\AddTeamViewModel.cs" />
     <Compile Include="Models\API\AddThingViewModel.cs" />
     <Compile Include="Models\API\AddUserModel.cs" />
@@ -188,6 +189,7 @@
   <ItemGroup>
     <Content Include="Content\mobile\html5reset-1.6.1.css" />
     <Content Include="Content\mobile\img\bkgndCarbon.png" />
+    <Content Include="EndPointTester.html" />
     <Content Include="Images\locked.png" />
     <Content Include="Images\unlocked.png" />
     <Content Include="index_ORIG.html" />

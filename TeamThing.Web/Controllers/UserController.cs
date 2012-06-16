@@ -15,7 +15,6 @@ namespace TeamThing.Web.Controllers
 {
     public class UserController : TeamThingApiController
     {
-
         public UserController()
             : base(new TeamThing.Model.TeamThingContext())
         {
@@ -33,7 +32,7 @@ namespace TeamThing.Web.Controllers
         public HttpResponseMessage Get(int id)
         {
             var item = context.GetAll<TeamThing.Model.User>()
-                           .FirstOrDefault(t => t.Id == id);
+                              .FirstOrDefault(u => u.Id == id);
             if (item == null)
             {
                 ModelState.AddModelError("", "Invalid User");
@@ -52,8 +51,8 @@ namespace TeamThing.Web.Controllers
         [Queryable]
         public IQueryable<ServiceModel.ThingBasic> Things(int id, string status)
         {
-            var user = GetCurrentUser();
-            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Unauthorized));
+            var user = context.GetAll<DomainModel.User>().FirstOrDefault(u => u.Id == id);
+            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid User"));
 
             if (status != null)
             {
@@ -70,31 +69,28 @@ namespace TeamThing.Web.Controllers
 
         }
 
-
         // GET /api/user/5/teams/{status}
-        ////[Authorize]
+        //[Authorize]
         [HttpGet]
         [Queryable]
         public IQueryable<ServiceModel.TeamBasic> Teams(int id, string status)
         {
-            var user = GetCurrentUser();
-            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Unauthorized));
+            var user = context.GetAll<DomainModel.User>().FirstOrDefault(u => u.Id == id);
+            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid User"));
 
             if (status != null)
             {
                 return user.Teams
-                           .TeamsWithStatus(status)
+                           .TeamMembersWithStatus(status)
                            .MapToBasicServiceModel()
                            .AsQueryable();
             }
 
             return user.Teams
-                       .ActiveTeams()
+                       .ActiveTeamMembers()
                        .MapToBasicServiceModel()
                        .AsQueryable();
         }
-
-
 
         [HttpPost, Obsolete("Use oauth sign in")]
         public HttpResponseMessage SignIn(ServiceModel.SignInViewModel model)
@@ -116,6 +112,7 @@ namespace TeamThing.Web.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, existingUser.MapToServiceModel());
         }
 
+        //POST /api/user
         [HttpPost]
         public HttpResponseMessage OAuth(ServiceModel.OAuthSignInModel model)
         {
@@ -202,15 +199,28 @@ namespace TeamThing.Web.Controllers
 
         // PUT /api/user/5
         //[Authorize]
-        public void Put(int id, string value)
-        {
-        }
+        //public void Put(int id, string value)
+        //{
+        //    var user = context.GetAll<TeamThing.Model.User>()
+        //                      .FirstOrDefault(u => u.Id == id);
+
+        //    if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid User"));
+        //}
 
         // DELETE /api/user/5
         //[Authorize]
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            var user = context.GetAll<TeamThing.Model.User>()
+                              .FirstOrDefault(u => u.Id == id);
 
+            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid User"));
+
+            context.Delete(user);
+            context.SaveChanges();
+
+
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }

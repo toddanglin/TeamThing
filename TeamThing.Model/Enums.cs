@@ -9,7 +9,7 @@ namespace TeamThing.Model
     {
         Approved,
         Pending,
-        Denyed
+        Denied
     }
 
     public enum ThingStatus

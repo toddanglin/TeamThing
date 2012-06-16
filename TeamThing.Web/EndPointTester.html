@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>End Point Tester</title>
+</head>
+<body>
+    <p><label for="responsesType"><input type="radio"  name="responsesType" value="XML" />XML</label>
+    <label for="responsesType"><input type="radio" name="responsesType" value="JSON" checked/>JSON</label></p>
+
+    <p><label for="address">Path<input type="text" name="path" id="path" style="width:400px;" /></label></p>
+    <input type="button" id="run" value="Run"/>
+    <p><textarea id="result" style="width:400px; height:400px;">
+
+    </textarea></p>
+    <script type="text/javascript" src="Scripts/jquery-1.7.1.min.js"></script>
+    <script>
+
+        $('#run').click(function () {
+                var url = $("#path").val();
+               $.ajax({
+                    url: url,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType:$("#responsesType").val() }).success(function(result) {
+                        $("#result").val(JSON.stringify(result));
+                    }).error(function(result) {
+                        $("#result").val(result);
+                    });
+            });
+    </script>
+</body>
+</html>

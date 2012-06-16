@@ -70,6 +70,7 @@ namespace TeamThing.Web.Core.Mappers
                 Description = t.Description,
                 Status = t.Status.ToString(),
                 DateCreated = t.DateCreated,
+                IsStarred = t.IsStarred,
                 AssignedTo = t.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel(),
                 Owner = t.Owner.MapToBasicServiceModel(),
                 Team = t.Team.MapToBasicServiceModel()
@@ -82,7 +83,8 @@ namespace TeamThing.Web.Core.Mappers
             {
                 Id = t.Id,
                 Description = t.Description,
-                Status = t.Status.ToString()
+                Status = t.Status.ToString(),
+                IsStarred = t.IsStarred
             };
         }
 

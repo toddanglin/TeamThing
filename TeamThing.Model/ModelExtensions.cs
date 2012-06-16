@@ -59,12 +59,12 @@ namespace TeamThing.Model.Helpers
             return userThings.Select(t => t.Thing).WithStatus(status);
         }
 
-        public static IEnumerable<Team> ActiveTeams(this IEnumerable<TeamUser> userTeams)
+        public static IEnumerable<Team> ActiveTeamMembers(this IEnumerable<TeamUser> userTeams)
         {
             return userTeams.Where(tu => tu.Status == TeamUserStatus.Approved).Select(t => t.Team);
         }
 
-        public static IEnumerable<Team> TeamsWithStatus(this IEnumerable<TeamUser> userTeams, string status)
+        public static IEnumerable<Team> TeamMembersWithStatus(this IEnumerable<TeamUser> userTeams, string status)
         {
             TeamUserStatus realStatus;
             if (Enum.TryParse(status, true, out realStatus))
@@ -78,6 +78,11 @@ namespace TeamThing.Model.Helpers
         public static IEnumerable<User> ActiveUsers(this IEnumerable<TeamUser> userTeams)
         {
             return userTeams.Where(tu => tu.Status == TeamUserStatus.Approved).Select(t => t.User);
+        }
+
+        public static IEnumerable<User> Admins(this IEnumerable<TeamUser> userTeams)
+        {
+            return userTeams.Where(tu => tu.Role == TeamUserRole.Administrator).Select(t => t.User);
         }
 
         public static IEnumerable<User> UsersWithStatus(this IEnumerable<TeamUser> userTeams, string status)
