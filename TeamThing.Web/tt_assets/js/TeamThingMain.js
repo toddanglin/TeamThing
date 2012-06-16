@@ -127,7 +127,7 @@ $("#editor").kendoEditor({
 		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'toddanglin@gmail.com\'',
     	function(UserInfo) {
 			console.log(UserInfo);
-			//console.log('UserInfo 8: ' + UserInfo[0].imagePath); 
+			console.log('UserInfo 1: ' + UserInfo); 
 			$('#userpic img').attr('src',UserInfo[0].imagePath);
 			$('#userinfo').html(UserInfo[0].emailAddress+'<br /><span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>');
 		}
