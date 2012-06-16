@@ -55,7 +55,7 @@ $("#editor").kendoEditor({
 |--------------------------------------------------------------------------
 */
 	$.get(
-		APPURL+'api/user/22/teams',
+		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
     	function(data) { 
 			TeamsOutput = { TeamsList: [] };
 			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
