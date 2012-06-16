@@ -55,25 +55,13 @@ $("#editor").kendoEditor({
 |--------------------------------------------------------------------------
 */
 	$.get(
-		APPURL+'api/user/12/teams',
+		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
     	function(data) { 
-			//console.log('Profile Image: ' + data[1].imagePath);
-			/*TeamsOutput = '';
-			for(i=0;i<data.length;i++) {
-				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
-			}
-			$('#jumpMenu').append(TeamsOutput, function() {
-					
-			});*/
-			
 			TeamsOutput = { TeamsList: [] };
 			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
 			for(i=0;i<data.length;i++) {
 				TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
 			}
-			
-			//console.log('Teams Listing 3: ' + TeamsOutput.TeamsList);
-			
 			$("#jumpMenu").kendoComboBox({
 				dataTextField: "TeamsListLabel",
 				dataValueField: "TeamsListValue",
@@ -94,7 +82,7 @@ $("#editor").kendoEditor({
 |--------------------------------------------------------------------------
 */
 	$.get(
-		APPURL+"api/team/10/things",
+		APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
     	function(data) { 
 			//console.log(data);
 			TeamThingsOutput = '';
