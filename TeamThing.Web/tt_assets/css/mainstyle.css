@@ -208,7 +208,7 @@ width:960px;}
 
 
 
-#userinfo {float:right; width:auto; text-align:right; font-size:18px; padding-bottom:5px;}
+#userinfo {float:right; width:150px; text-align:right; font-size:18px; padding-bottom:5px;overflow: hidden;text-overflow: ellipsis;}
 
 .usernav {white-space:nowrap; font-size:14px;}
 
@@ -278,7 +278,7 @@ width:960px;}
 	background: #358fff;
 	color:#ffffff;
 	border: 1px solid #c2e1f5;
-	padding:5px 15px;
+	padding:1px 3px;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;

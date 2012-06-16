@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Team*Thing | Main</title>
@@ -7,17 +7,29 @@
 <!-- BEGIN: PAGE PRESENTATION FILES -->
 <link href='http://fonts.googleapis.com/css?family=Cabin+Condensed|Oleo+Script:700' rel='stylesheet' type='text/css'>
 <link href="tt_assets/css/mainstyle.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="tt_assets/js/jquery-min.js"></script>
-<link rel="stylesheet" href="tt_assets/css/uniform.aristo.css" type="text/css" media="screen" charset="utf-8" />
-<script src="tt_assets/js/jquery.uniform.min.js" type="text/javascript"></script>
 <!-- END: PAGE PRESENTATION FILES -->
+
+<script src="Scripts/path.min.js"></script> 
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <!-- BEGIN: KENDO UI FILES -->
 <link href="tt_assets/kendoui/styles/kendo.common.min.css" rel="stylesheet">
 <link href="tt_assets/kendoui/styles/kendo.default.min.css" rel="stylesheet">
-<script src="tt_assets/kendoui/js/kendo.web.min.js"></script>
+<link href="tt_assets/kendoui/styles/kendo.silver.min.css" rel="stylesheet">
+<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
 <!-- END: KENDO UI FILES -->
 
+<!-- BEGIN: KENDO UI INSERTED FILES -->
+<script src="Scripts/oAuthProvider.js"></script>
+<script src="Scripts/dataProvider.js"></script>
+<script src="Scripts/teamThing.js"></script>
+<!-- BEGIN: KENDO UI INSERTED FILES -->
+
+<style type="text/css">
+.bkgnd-smooth-dark {
+	display:none;
+}
+</style>
 </head>
 
 <body>
@@ -34,13 +46,7 @@
 
 <a href="#"><div id="creatething">Create a Thing</div></a>
 <div id="teamlist">
- <select name="jumpMenu" id="jumpMenu" onChange="MM_jumpMenu('parent',this,0)">
-	<option>Team One Name</option>
-    <option>Team Two Name</option>
-    <option>Team Three Name</option>
-    <option>Team Four Name</option>
-    <option>Team Five Name</option>
-</select>
+ <select id="jumpMenu" onChange="JumpToMain(this.value)"></select>
     </div>
 <img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo">
 </header>
@@ -125,32 +131,405 @@
 					</div>
 					
 				</div>
-		
-		
-  
-  
-  
-  
-  
- 
        
-           <div id="addtoteam">
+<div id="addtoteam">
     Pick me!!! Pick me!!!
 </div>
        
        
        
-            <div id="createthinginfo">
-    Ok...here is how you create a THING
+<div id="createthinginfo">
+    <textarea id="editor" rows="15" cols="55"></textarea>
 </div>      
        
-         
-	
+<div id="header" class="bkgnd-smooth-dark">
+        <h1>TeamThing</h1>
+         <div id="navigation" class="navigation">
+            <!--<span data-bind="{text:user.EmailAddress}"></span>-->
+            <a href="/my" class="k-button nav">
+                Home</a>
+             <a href="/logout" class="k-button nav">Logout</a>
+        </div>
+    </div>
+    <div id="teamThing">
+        <div id="appFrame">
+        </div>
+    </div>
+    <div id="dialog" class="window">
+    </div>
+<script type="text/x-kendo-tmpl" id="teamListTemplate">
+        <div class="listItem teamListItem">
+            <div class="commands">
+             <!--   <a href="/team/#= team.id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
 
-	
+                #if( userCanEditTeam() ) { #
+                    <button class="k-button k-edit-button" title="Edit Team" data-bind="click:editTeam"><span class="k-icon k-edit"></span></button>
+                    <button class="k-button k-delete-button" title="Delete Team" data-bind="click:removeTeam"><span class="k-icon k-delete"></span></button>
+                # } #
+            </div>
+            <div class="details">
+            <a href="/team/#= team.id #" title="View Team" data-bind="{text:team.name}" class="nav # if(team.isPublic) { #
+                            publicTeam
+                      # } else { #
+                            closedTeam
+                       # } #"/>
+            </div>        
+        </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="pendingTeamListTemplate">
+        <div class="listItem teamListItem">
+            <div class="commands">
+             <!--   <a href="/team/#= team.id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
 
-    <script>
-                $(document).ready(function() {
+                #if( userCanEditTeam() ) { #
+                    <button class="k-button k-edit-button" title="Edit Team" data-bind="click:editTeam"><span class="k-icon k-edit"></span></button>
+                    <button class="k-button k-delete-button" title="Delete Team" data-bind="click:removeTeam"><span class="k-icon k-delete"></span></button>
+                # } #
+            </div>
+            <div class="details">
+            <span data-bind="{text:team.name}" class="nav # if(team.isPublic) { #
+                            publicTeam
+                      # } else { #
+                            closedTeam
+                       # } #"/>
+            </div>        
+        </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="thingListTemplate">
+        <div class="listItem thingListItem" data-role="droptarget">
+            <div class="commands">
+                <button class="k-button k-view-button" title="View Thing" data-bind="click:view"><span class="k-icon k-search"></span></button>
+
+                 #if(!isDone()) { #
+                     #if( userCanComplete() ) { #
+                        <button class="k-button k-complete-button" title="Complete Thing" data-bind="click:complete"><span class="k-icon k-update"></span></button>
+                    # } #
+                    #if( userCanEdit() ) { #
+                        <button class="k-button k-edit-button" title="Edit Thing" data-bind="click:edit"><span class="k-icon k-edit"></span></button>
+                    # } #
+                    #if( userCanRemove() ) { #
+                        <button class="k-button k-delete-button" title="Delete Thing" data-bind="click:remove"><span class="k-icon k-delete"></span></button>
+                    # } #
+                # } #
+            </div>
+            <div class="details">
+                <span data-bind="{text:thing.description}" class="info"/>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="teamUserListTemplate">
+        <div class="listItem userListItem" data-role="draggable" data-draggable-hint="hint" data-hint="hint">
+            <div class="commands">
+                <button class="k-button k-edit-button" title="Edit Team Memeber" data-bind="click:editUser"><span class="k-icon k-edit"></span></button>
+                # if( userCanApprove()) { #
+                    <button class="k-button k-delete-button" title="Remove Team Member" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
+                # } #
+            </div>
+            <div class="details user">
+                <img data-bind="{attr:{src:user.imagePath}}"/>
+                <span data-bind="{text:user.emailAddress}" class="info"/>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="teamPendingUserListTemplate">
+        <div class="listItem pendingUserListItem">
+            <div class="commands">
+                # if( userCanApprove() ) { #
+                        <button class="k-button k-view-button" title="Approve User" data-bind="click:approveUser"><span class="k-icon k-update"></span></button>
+                        <button class="k-button k-delete-button" title="Deny User" data-bind="click:denyUser"><span class="k-icon k-cancel"></span></button>
+                # } #
+            </div>
+            <div class="details user">
+                <img data-bind="{attr:{src:user.imagePath}}" class="image"/>
+                <span data-bind="{text:user.emailAddress}" class="info"/>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="userSignInTemplate">
+        <div id="userLogin">
+        <h2>Please Login</h2>
+            <ol class="formFieldList">
+                <!--<li>
+                    <input id="userName" type="text" data-bind="value:userName" class="k-textbox" />
+                </li>-->
+                <li class="commands">
+                   <!--<button class="k-button" data-bind="click:registerUser">Register</button>-->
+                    <!--<button class="k-button" data-bind="click:signInUser">Sign In</button>-->
+                    <div>
+                        <button class="k-button" data-bind="click:connectUserWithFacebook">Facebook</button>
+                        <button class="k-button" data-bind="click:connectUserWithGoogle">Google</button>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="teamDashboardTemplate">
+       <div id="teamDashboard">
+            <h2 data-bind="text:team.name">
+            </h2>
+
+            <div id="right">
+                <h3>Team Members</h3>
+               
+                <div data-role="tabstrip">
+                    <ul>
+                      <li class="k-state-active">Approved</li>
+                      #if(pendingTeamMembers.length > 0 ) { #
+                          <li>Pending</li>
+                      # } #
+                    </ul>
+                    <div id="teamUserList" data-template="teamUserListTemplate" data-role="listview" data-bind="source:teamMembers">
+                    </div>
+                    #if(pendingTeamMembers.length > 0 ) { #
+                        <div id="teamPendingUserList" data-template="teamPendingUserListTemplate" data-role="listview" data-bind="source:pendingTeamMembers">
+                        </div>
+                    # } #
+                </div>
+            </div>
+            <div id="left">
+               <h3>Team Things</h3>
+                <div class="listCommands">
+                    # if(thingList.completedThings.length > 0 || thingList.activeThings.length > 0 ) { #
+                        <button class="k-button k-add-button" data-bind="click:addThing" title="Create a Thing">
+                            <span class="k-icon k-add"></span>
+                        </button> 
+                    # } #
+                </div>
+                <div data-role="tabstrip">
+                        # if(thingList.completedThings.length > 0 || thingList.activeThings.length > 0 ) { #
+                            <ul>
+                                #if(thingList.activeThings.length > 0 ) { #
+                                    <li class="k-state-active">Active</li>
+                                # } #
+                                #if(thingList.completedThings.length > 0 ) { #
+                                    <li
+                                     #if(thingList.activeThings.length == 0 ) { #
+                                        class="k-state-active"
+                                     # } #
+                                    >Completed</li>
+                                # } #
+                            </ul>
+                        #if(thingList.activeThings.length > 0 ) { #
+                            <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
+                            </div>
+                        # } #
+                        #if(thingList.completedThings.length > 0 ) { #
+                            <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
+                            </div>
+                        # } #
+                     # } else { #
+                        <br/><!---Yea its a br...deal with it :)--->
+                        <em>Nothing to do yet! </em>
+                        <br/>
+                         <button data-bind="click:addThing" class="k-button">
+                            Add a Thing
+                        </button> 
+                     # } #
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="noTeamsTemplate">
+    <div>
+        <br/><!---Yea its a br...deal with it :)--->
+        <em>You Have Not Joined Any Teams, yet!</em>
+        <br/>
+        <a data-bind="click:createTeam">
+            Create a Team
+        </a> 
+        <a data-bind="click:joinTeam">
+            Join a Team
+        </a>
+    </div>
+    </script>
+    <script type="text/x-kendo-tmpl" id="userDashboardTemplate">
+        <div id="userDashboard">
+            <div class="subHeader clearfix">
+                <img class="" data-bind="attr:{src:user.imagePath}"/>
+                <h2 data-bind="text:user.emailAddress">                    
+                </h2>
+           </div>
+            <div id="right">
+                <h3>My Teams</h3>
+                  #if( pendingTeams.length > 0 || teams.length > 0 ) { #
+                      <div class="listCommands">
+                        <button class="k-button k-add-button" data-bind="click:createTeam" title="Create a Team">
+                            <span class="k-icon k-add"></span>
+                        </button> 
+                        <button class="k-button k-createLink-button" data-bind="click:joinTeam" title="Join a Team">
+                            <span class="k-icon k-createLink"></span>
+                        </button>
+                    </div>
+                    <div data-role="tabstrip">
+                        <ul>
+                            <li class="k-state-active">Active</li>
+                            #if(pendingTeams.length > 0 ) { #
+                                <li>Pending</li>
+                            # } #
+                        </ul>
+                        <div id="teamListView" class="teamListView" data-template="teamListTemplate" data-role="listview" data-bind="source:teams">
+                        </div>
+                        #if(pendingTeams.length > 0 ) { #
+                            <div id="pendingTeamListView" class="pendingTeamListView" data-template="pendingTeamListTemplate" data-role="listview" data-bind="source:pendingTeams">
+                            </div>
+                        # } #
+                    </div>
+                # } else { #
+                    <!---Nested Template doesn't work!--->
+                      <div>
+                       <br/><!---Yea its a br...deal with it :)--->
+                        <em>You Have Not Joined Any Teams, yet!</em>
+                        <br/>
+                        <button data-bind="click:createTeam" class="k-button">
+                            Create a Team
+                        </button> &nbsp;
+                        <button data-bind="click:joinTeam" class="k-button">
+                            Join a Team
+                        </button>
+                    </div>
+                # } #
+            </div>
+            <div id="left">
+                <h3>My Things</h3>
+                  <div data-role="tabstrip">
+                        # if(thingList.completedThings.length > 0 || thingList.activeThings.length > 0 ) { #
+                            <ul>
+                                #if(thingList.activeThings.length > 0 ) { #
+                                    <li class="k-state-active">Active</li>
+                                # } #
+                                #if(thingList.completedThings.length > 0 ) { #
+                                    <li
+                                     #if(thingList.activeThings.length == 0 ) { #
+                                        class="k-state-active"
+                                     # } #
+                                    >Completed</li>
+                                # } #
+                            </ul>
+                        #if(thingList.activeThings.length > 0 ) { #
+                            <div id="activeThings" data-template="thingListTemplate" data-role="listview"  data-bind="source:thingList.activeThings">
+                            </div>
+                        # } #
+                        #if(thingList.completedThings.length > 0 ) { #
+                            <div id="completedThings" data-template="thingListTemplate" data-role="listview" data-bind="source:thingList.completedThings">
+                            </div>
+                        # } #
+                     # } else { #
+                        <br/>
+                        <em>Nothing to do yet! </em>
+                     # } #
+                </div>
+            </div>
+        </div>
+    </script>
+
+<script>
+
+function JumpToMain(TeamID) {
+	
+	if (TeamID != '' && TeamID.length > 0 && !isNaN(TeamID))
+	{
+		location.href="../main.html?teamid="+TeamID;
+	}
+}
+
+$(document).ready(function() {
+	
+	//teamThing.init($("#teamThing"));
+	
+	APPURL = 'http://teamthing.apphb.com';
+		
+	$.get(
+		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
+    	function(data) { 
+			//console.log('Profile Image: ' + data[1].imagePath);
+			/*TeamsOutput = '';
+			for(i=0;i<data.length;i++) {
+				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+			}
+			$('#jumpMenu').append(TeamsOutput, function() {
+					
+			});*/
+			
+			TeamsOutput = { TeamsList: [] };
+			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
+			for(i=0;i<data.length;i++) {
+				TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
+			}
+			
+			//console.log('Teams Listing 3: ' + TeamsOutput.TeamsList);
+			
+			$("#jumpMenu").kendoComboBox({
+				dataTextField: "TeamsListLabel",
+				dataValueField: "TeamsListValue",
+				dataSource: TeamsOutput.TeamsList,
+				index: 0
+			});
+		}
+	);
+	
+	$.get(
+		APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
+    	function(data) { 
+			//console.log(data);
+			TeamThingsOutput = '';
+			for(i=0;i<data.length;i++) {
+				TeamThingsOutput+='<div class="thing">';
+                TeamThingsOutput+='<img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">';
+                TeamThingsOutput+='<span class="listitem">';
+                TeamThingsOutput+='<div class="thingcontrols">';
+                TeamThingsOutput+='<span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>';
+				
+                	TeamThingsOutput+='<span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+				
+				TeamThingsOutput+='<br />';
+                TeamThingsOutput+='<span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>';
+                TeamThingsOutput+='</span>';
+                TeamThingsOutput+='</div> <div class="thingdesc">'+data[i].description;
+                TeamThingsOutput+='</div></span>';
+                TeamThingsOutput+='</div>';
+			}
+			$('.list').each(function(index) {
+				if (index == 0) {
+					$(this).html(TeamThingsOutput);
+				} else {
+					$(this).html(TeamThingsOutput);
+				}
+			});
+		}
+	);
+	
+	/*$.get(
+		APPURL+"/api/team/10/things?$filter ",
+    	function(data) { 
+			console.log(data);
+			TeamThingsOutput = '';
+			for(i=0;i<data.length;i++) {
+				TeamThingsOutput+='<div class="thing">';
+                TeamThingsOutput+='<img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">';
+                TeamThingsOutput+='<span class="listitem">';
+                TeamThingsOutput+='<div class="thingcontrols">';
+                TeamThingsOutput+='<span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>';
+				if (data[i].staus == 'InProgress') {
+                	TeamThingsOutput+='<span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+				} else {
+					TeamThingsOutput+='<span class="controls"><input type="checkbox" data-icon1="Delayed" data-icon2="In Progress" />';
+				}
+				TeamThingsOutput+='<br />';
+                TeamThingsOutput+='<span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>';
+                TeamThingsOutput+='</span>';
+                TeamThingsOutput+='</div> <div class="thingdesc">'+data[i].description;
+                TeamThingsOutput+='</div></span>';
+                TeamThingsOutput+='</div>';
+			}
+			$('.list').each(function(index) {
+				if (index == 0) {
+					$(this).html(TeamThingsOutput);
+				} else {
+					$(this).html(TeamThingsOutput);
+				}
+			});
+		}
+	);*/
                     $("#tabstrip").kendoTabStrip({
 						animation:	{
 							open: {
@@ -160,16 +539,34 @@
 					
 					});
 					
-					$("select#jumpMenu").uniform();
+					//$("select#jumpMenu").uniform();
 					
-                });
-            </script>
+	APPURL = 'http://teamthing.apphb.com';
+	$.get(
+		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'toddanglin@gmail.com\'',
+    	function(UserInfo) {
+			//console.log(UserInfo);
+			//console.log('UserInfo 8: ' + UserInfo[0].imagePath); 
+			$('#userpic img').attr('src',UserInfo[0].imagePath);
+			$('#userinfo').html(UserInfo[0].emailAddress+'<br /><span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>');
+		}
+	);
+	
+	$("#editor").kendoEditor({
+         tools: [
+             "bold",
+             "italic",
+             "underline"
+         ]
+      });
+});
+</script>
             
             <script>
        
       $(document).ready(function(){
     var window = $("#addtoteam").kendoWindow({
-        height: "400px",
+        height: "220px",
         title: "Add to My Team",
         visible: false,
         width: "400px"
@@ -184,7 +581,7 @@ $(".plus").click(function(){
       
 	        $(document).ready(function(){
     var window = $("#createthinginfo").kendoWindow({
-        height: "400px",
+        height: "220px",
         title: "Create a Thing",
         visible: false,
         width: "400px"
