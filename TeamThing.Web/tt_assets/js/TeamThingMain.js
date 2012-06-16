@@ -55,7 +55,7 @@ $("#editor").kendoEditor({
 |--------------------------------------------------------------------------
 */
 	$.get(
-		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
+		APPURL+'api/user/12/teams',
     	function(data) { 
 			//console.log('Profile Image: ' + data[1].imagePath);
 			/*TeamsOutput = '';
@@ -94,7 +94,7 @@ $("#editor").kendoEditor({
 |--------------------------------------------------------------------------
 */
 	$.get(
-		APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
+		APPURL+"api/team/10/things",
     	function(data) { 
 			//console.log(data);
 			TeamThingsOutput = '';
@@ -138,7 +138,7 @@ $("#editor").kendoEditor({
 	$.get(
 		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'toddanglin@gmail.com\'',
     	function(UserInfo) {
-			//console.log(UserInfo);
+			console.log(UserInfo);
 			//console.log('UserInfo 8: ' + UserInfo[0].imagePath); 
 			$('#userpic img').attr('src',UserInfo[0].imagePath);
 			$('#userinfo').html(UserInfo[0].emailAddress+'<br /><span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>');
