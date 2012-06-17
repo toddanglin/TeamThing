@@ -111,7 +111,7 @@ input[type="checkbox"]:after {
 /* Active */
 input[type="checkbox"]:before {
 	color: #fff;
-	text-shadow: 	rgba(0,0,0,.5) 0 1px 1px, #0589c8 0 0 10px;
+	text-shadow: 	rgba(0,0,0,.5) 0 1px 1px, #696969 0 0 10px;
 	-webkit-transform: none;
 	background-image: -webkit-gradient( linear, left top, left bottom,
 		from( 	hsl(100,44%,44%) ), to( hsl(100,40%,60%) )
@@ -437,7 +437,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 */	
 
 
-.plus {float:right; border-left: 1px solid #cccccc; padding:3px 10px;}
+.plus {float:right; border-left: 1px solid #cccccc; padding:3px 15px;}
 
 
 #mainsection {width:660px;}
@@ -634,7 +634,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 /* ---------- USERS TRAY ---------- */
 .thing .users-tray {
 	margin:0 0 5px 110px;
-	padding:5px;
+	padding:8px;
 	background-color:#e6e6e6;
 	border:1px #999 solid;
 	-webkit-border-radius: 0px 0px 5px 5px;
@@ -649,7 +649,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 .userpic {
 	/*-webkit-mask: url(../images/picmask.png);*/
 	float:left;
-	margin-right:5px;
+	margin-right:8px;
 	border: 1px solid #fff;
 	-webkit-box-shadow: 0px 1px 2px 0px #9c9c9c;
 	box-shadow: 0px 1px 2px 0px #9c9c9c;
