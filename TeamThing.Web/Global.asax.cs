@@ -102,6 +102,9 @@ namespace TeamThing.Web
             );
 
             RegisterApis(GlobalConfiguration.Configuration);
+
+            //Set error reporting policy for Web API (which doesn't use Web.Config settings)
+            GlobalConfiguration.Configuration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
         }
 
         protected void Application_Start()
