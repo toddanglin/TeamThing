@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Management;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Newtonsoft.Json;
@@ -115,6 +116,22 @@ namespace TeamThing.Web
             RegisterRoutes(RouteTable.Routes);
 
             BundleTable.Bundles.EnableDefaultBundles();
+        }
+
+        protected void Application_Error(object sender, EventArgs e) 
+        {
+          Exception exception = Server.GetLastError();
+          Response.Clear();
+        
+          //Log errors in a way that is visible on AppHarbor
+          HttpException httpException = exception as HttpException;
+          if(httpException != null){
+            var errLog = new WebRequestErrorEvent(null, null, 100001, httpException);
+            errLog.Raise();
+          }    
+        
+          // clear error on server
+          Server.ClearError();
         }
 
         public static void RegisterApis(HttpConfiguration config)
