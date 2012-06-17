@@ -71,7 +71,7 @@ namespace TeamThing.Web.Core.Mappers
                 Status = t.Status.ToString(),
                 DateCreated = t.DateCreated,
                 IsStarred = t.IsStarred,
-                AssignedTo = t.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel(),
+                AssignedTo = t.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel().ToList(),
                 Owner = t.Owner.MapToBasicServiceModel(),
                 Team = t.Team.MapToBasicServiceModel()
             };
@@ -96,7 +96,7 @@ namespace TeamThing.Web.Core.Mappers
                 Id = t.ThingId,
                 Description = t.Thing.Description,
                 Status = t.Thing.Status.ToString(),
-                AssignedTo = t.Thing.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel(),
+                AssignedTo = t.Thing.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel().ToList(),
                 Owner = t.Thing.Owner.MapToBasicServiceModel(),
                 Team = t.Thing.Team.MapToBasicServiceModel()
             };
