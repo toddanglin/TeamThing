@@ -428,22 +428,26 @@ padding:20px;
 }
 
 .thing .users-count {
-	width:12px;
-	height:12px;
+	width:26px;
+	height:26px;
 	font-family:Helvetica, Arial, sans-serif;
-	font-size:9px;
-	line-height:12px;
-	color:#000;
+	font-size:11px;
+	line-height:26px;
+	color:#fff;
 	text-align:center;
-	background-color:#bcd963;
-	border-radius: 12px;
-	-moz-border-radius: 12px;
-	-webkit-border-radius: 12px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dd705c), color-stop(100%,#ae4d3b));
+	background: -webkit-linear-gradient(top, #dd705c 0%,#ae4d3b 100%);
+	background-color:#AE4D3B;
+    text-shadow: 0px 1px 2px #8d3727;
+    filter: dropshadow(color=#8d3727, offx=0, offy=1);
+	border-radius: 26px;
+	-moz-border-radius: 26px;
+	-webkit-border-radius: 26px;
 	position:absolute;
-	bottom:0;
-	left:70px;
+	bottom:4px;
+	left:60px;
 	display:block;
-	border:2px solid #000;
+	border:1px solid #fff;
 }
 
 .thingcontrols {float:right;}
@@ -524,7 +528,7 @@ padding:20px;
 #mainsection .list .thing img.listpic, #mainsection .list .thing img.listpic img{
 	width: 83px;
 	height: 83px;
-	-webkit-border-radius:40px;
+	-webkit-border-radius:240px;
 }
 
 
@@ -546,6 +550,7 @@ width:510px;
 	height:74px;
 	
 }
+
 .listitem:after, .listitem:before {
 	right: 99.5%;
 	border: solid transparent;
