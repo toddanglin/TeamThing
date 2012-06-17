@@ -256,6 +256,7 @@
     <Content Include="tt_assets\images\google-signin-btn.jpg" />
     <Content Include="tt_assets\images\jquery-uniform-sprite-tt.png" />
     <Content Include="tt_assets\images\listpic.png" />
+	<Content Include="tt_assets\images\listpic-default.png" />
     <Content Include="tt_assets\images\listpicmask.png" />
     <Content Include="tt_assets\images\login-panel-divet-top.jpg" />
     <Content Include="tt_assets\images\my-things.png" />
