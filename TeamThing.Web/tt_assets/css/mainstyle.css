@@ -533,7 +533,7 @@ width:510px;
 .thing img.listpic, .thing img.listpic img {
 	width: 83px;
 	height: 83px;
-	-webkit-border-radius:15px;
+	-webkit-border-radius:480px;
 }
 
 .thing .users-count {
