@@ -379,11 +379,20 @@ box-shadow: 0px 2px 2px #d8d8d8;
 }
 
 
-.myteam {color:#cccccc;
+.myteam {
+	color:#cccccc;
 	border: 1px solid #c7c8ca;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
-	border-radius: 7px;}
+	border-radius: 7px;
+}
+
+.myteam #myteam-members {
+	padding:6px;
+	position:relative;
+	display:block;
+	overflow:visible;
+}
 	
 /*
 |--------------------------------------------------------------------------
