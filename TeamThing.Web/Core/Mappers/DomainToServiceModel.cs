@@ -128,8 +128,7 @@ namespace TeamThing.Web.Core.Mappers
                 TeamMembers = t.Members.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToBasicServiceModel).ToList(),
                 PendingTeamMembers = t.Members.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToBasicServiceModel).ToList(),
                 Administrators = t.Members.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray(),
-                Owner = t.Owner.MapToBasicServiceModel(),
-                Things = t.Things.MapToServiceModel().ToList()
+                Owner = t.Owner.MapToBasicServiceModel()
             };
         }
 
