@@ -103,9 +103,9 @@ $("#editor").kendoEditor({
 			}
 			$('.list').each(function(index) {
 				if (index == 0) {
-					$(this).html(TeamThingsOutput);
+					//$(this).html(TeamThingsOutput);
 				} else {
-					$(this).html(TeamThingsOutput);
+					//$(this).html(TeamThingsOutput);
 				}
 			});
 		}
