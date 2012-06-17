@@ -660,7 +660,6 @@ font-family: Helvetica, helvetica; padding:10px;}
 .icon_complete {
 	width: 25px; 
 	height: 16px;
-	background: url(../images/complete.png) 0 0 no-repeat;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
@@ -668,6 +667,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .icon_complete a {
+	background: url(../images/complete.png) 0 0 no-repeat;
 	display:block;
 }
 
@@ -678,7 +678,6 @@ font-family: Helvetica, helvetica; padding:10px;}
 .icon_delete {
 	width: 18px; 
 	height: 16px;
-	background:url(../images/delete.png) 0 0 no-repeat;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:5px;
@@ -686,6 +685,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .icon_delete a {
+	background:url(../images/delete.png) 0 0 no-repeat;
 	display:block;
 }
 
@@ -696,7 +696,6 @@ font-family: Helvetica, helvetica; padding:10px;}
 .icon_edit {
 	width:19px; 
 	height: 16px;
-	background: url(../images/edit.png) 0 0 no-repeat;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
@@ -704,6 +703,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .icon_edit a {
+	background: url(../images/edit.png) 0 0 no-repeat;
 	display:block;
 }
 
@@ -714,7 +714,6 @@ font-family: Helvetica, helvetica; padding:10px;}
 .icon_share {
 	width: 19px;
 	height: 16px;
-	background: url(../images/share.png) 0 0 no-repeat;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
@@ -722,6 +721,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .icon_share a {
+	background: url(../images/share.png) 0 0 no-repeat;
 	display:block;
 }
 
