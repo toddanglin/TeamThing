@@ -9,7 +9,7 @@
 <link href="tt_assets/css/mainstyle.css" rel="stylesheet" type="text/css">
 <!-- END: PAGE PRESENTATION FILES -->
 
-<script src="Scripts/path.min.js"></script> 
+<script src="Scripts/path.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 
 <!-- BEGIN: KENDO UI FILES -->
@@ -33,131 +33,118 @@
 </head>
 
 <body>
-
 <div id="headercontainer">
-<header class="mainheader">
-
-<div id="userpic"><img src="tt_assets/images/toddpic.png" width="55" height="55" alt=""></div>
-
-<div id="userinfo">John Doe<br />
-<span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>
-</div>
-
-
-<a href="#"><div id="creatething">Create a Thing</div></a>
-<div id="teamlist">
- <select id="jumpMenu" onChange="JumpToMain(this.value)"></select>
+  <header class="mainheader">
+    <div id="userpic"><img src="tt_assets/images/toddpic.png" width="55" height="55" alt=""></div>
+    <div id="userinfo">John Doe<br />
+      <span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span> </div>
+    <a href="#">
+    <div id="creatething">Create a Thing</div>
+    </a>
+    <div id="teamlist">
+      <select id="jumpMenu" onChange="JumpToMain(this.value)">
+      </select>
     </div>
-<img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo">
-</header>
+    <img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo"> </header>
 </div>
 <div id="main">
-<aside><div class="myteam">
-    <header class="section"><span class="plus">+</span><img src="tt_assets/images/myteam.png" width="17" height="16" alt=""> My Team</header><p>content</p><p>content</p><p>content</p><p>content</p><p>content</p><p>content</p>
-    
-    
-
-
-    
-    
-    
-    </div></aside>
-
-<div id="mainsection">
-  
-  
-  
-  
-  		
-				<div id="tabstrip">
-					<ul>
-						<li class="k-state-active">
-							<span class="mythingslink"><div class="me-icon">&nbsp;</div> My Things
-						</span></li>
-						<li>
-						<span class="myteamsthingslink"><div class="team-icon">&nbsp;</div> My Team's Things </span></li>
-					
-					</ul>					<div class="mythingslist">
-                          <div class="list">
-                           <div class="thing">
-                          <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">
-                          <span class="listitem">
-                              <div class="thingcontrols">
-                                <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>
-                                      <span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" /><br />
-                                      <span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>
-                                      </span>
-                              </div> <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description
-                          </div></span>
-                          </div>
-                          <div class="thing">
-                          <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">
-                          <span class="listitem">
-                              <div class="thingcontrols">
-                                <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>
-                                      <span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" /><br />
-                                      <span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>
-                                      </span>
-                              </div> <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description
-                          </div></span>
-                          </div>
-      <div class="thing">
-                          <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">
-                          <span class="listitem">
-                              <div class="thingcontrols">
-                                <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>
-                                      <span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" /><br />
-                                      <span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>
-                                      </span>
-                              </div> <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description
-                          </div></span>
-                          </div>
-       <div class="thing">
-                          <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">
-                          <span class="listitem">
-                              <div class="thingcontrols">
-                                <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>
-                                      <span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" /><br />
-                                      <span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>
-                                      </span>
-                              </div> <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description
-                          </div></span>
-                          </div></div>
-					</div>
-					<div clas="myteamsthingslist">
-                         <div class="list"><div class="thing"><img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"><span class="listitem"><span class="thingcontrols"><span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span><span class="controls">Delayed<br />H G B V</span></span>item description</span></div>
-     <div class="thing"><img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"><span class="listitem">item description</span></div>
-       <div class="thing"><img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"><span class="listitem">item description</span></div></div>
-					</div>
-					
-				</div>
-       
-<div id="addtoteam">
-    Pick me!!! Pick me!!!
-</div>
-       
-       
-       
-<div id="createthinginfo">
-    <textarea id="editor" rows="15" cols="55"></textarea>
-</div>      
-       
-<div id="header" class="bkgnd-smooth-dark">
-        <h1>TeamThing</h1>
-         <div id="navigation" class="navigation">
-            <!--<span data-bind="{text:user.EmailAddress}"></span>-->
-            <a href="/my" class="k-button nav">
-                Home</a>
-             <a href="/logout" class="k-button nav">Logout</a>
+  <aside>
+    <div class="myteam">
+      <header class="section"><span class="plus">+</span><img src="tt_assets/images/myteam.png" width="17" height="16" alt=""> My Team</header>
+      <p>content</p>
+      <p>content</p>
+      <p>content</p>
+      <p>content</p>
+      <p>content</p>
+      <p>content</p>
+    </div>
+  </aside>
+  <div id="mainsection">
+    <div id="tabstrip">
+      <ul>
+        <li class="k-state-active"> <span class="mythingslink">
+          <div class="me-icon">&nbsp;</div>
+          My Things </span></li>
+        <li> <span class="myteamsthingslink">
+          <div class="team-icon">&nbsp;</div>
+          My Team's Things </span></li>
+      </ul>
+      <div class="mythingslist">
+        <div class="list">
+          <div class="thing"> <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"> <span class="listitem">
+            <div class="thingcontrols"> <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span> <span class="controls">
+              <input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />
+              <br />
+              <span class="iconcontrols">
+              <div class="icon_delete"><a href="#">delete</a></div>
+              <div class="icon_edit"><a href="#">edit</a></div>
+              <div class="icon_share"><a href="#">share</a></div>
+              <div class="icon_complete"><a href="#">complete</a></div>
+              </span> </span> </div>
+            <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description </div>
+            </span> </div>
+          <div class="thing"> <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"> <span class="listitem">
+            <div class="thingcontrols"> <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span> <span class="controls">
+              <input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />
+              <br />
+              <span class="iconcontrols">
+              <div class="icon_delete"><a href="#">delete</a></div>
+              <div class="icon_edit"><a href="#">edit</a></div>
+              <div class="icon_share"><a href="#">share</a></div>
+              <div class="icon_complete"><a href="#">complete</a></div>
+              </span> </span> </div>
+            <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description </div>
+            </span> </div>
+          <div class="thing"> <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"> <span class="listitem">
+            <div class="thingcontrols"> <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span> <span class="controls">
+              <input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />
+              <br />
+              <span class="iconcontrols">
+              <div class="icon_delete"><a href="#">delete</a></div>
+              <div class="icon_edit"><a href="#">edit</a></div>
+              <div class="icon_share"><a href="#">share</a></div>
+              <div class="icon_complete"><a href="#">complete</a></div>
+              </span> </span> </div>
+            <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description </div>
+            </span> </div>
+          <div class="thing"> <img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"> <span class="listitem">
+            <div class="thingcontrols"> <span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span> <span class="controls">
+              <input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />
+              <br />
+              <span class="iconcontrols">
+              <div class="icon_delete"><a href="#">delete</a></div>
+              <div class="icon_edit"><a href="#">edit</a></div>
+              <div class="icon_share"><a href="#">share</a></div>
+              <div class="icon_complete"><a href="#">complete</a></div>
+              </span> </span> </div>
+            <div class="thingdesc">my thing's item description my thing's item description my thing's item description my thing's item description my thing's item description ption my thing's item description my thing's item description my thing's item description </div>
+            </span> </div>
         </div>
+      </div>
+      <div clas="myteamsthingslist">
+        <div class="list">
+          <div class="thing"><img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"><span class="listitem"><span class="thingcontrols"><span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span><span class="controls">Delayed<br />
+            H G B V</span></span>item description</span></div>
+          <div class="thing"><img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"><span class="listitem">item description</span></div>
+          <div class="thing"><img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic"><span class="listitem">item description</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="addtoteam"> Pick me!!! Pick me!!! </div>
+    <div id="createthinginfo">
+      <textarea id="editor" rows="15" cols="55"></textarea>
+    </div>
+    <div id="header" class="bkgnd-smooth-dark">
+      <h1>TeamThing</h1>
+      <div id="navigation" class="navigation"> 
+        <!--<span data-bind="{text:user.EmailAddress}"></span>--> 
+        <a href="/my" class="k-button nav"> Home</a> <a href="/logout" class="k-button nav">Logout</a> </div>
     </div>
     <div id="teamThing">
-        <div id="appFrame">
-        </div>
+      <div id="appFrame"> </div>
     </div>
-    <div id="dialog" class="window">
-    </div>
-<script type="text/x-kendo-tmpl" id="teamListTemplate">
+    <div id="dialog" class="window"> </div>
+    <script type="text/x-kendo-tmpl" id="teamListTemplate">
         <div class="listItem teamListItem">
             <div class="commands">
              <!--   <a href="/team/#= team.id #" title="View Team" class="nav k-button k-view-button"><span class="k-icon k-search"></span></a>-->
@@ -175,7 +162,7 @@
                        # } #"/>
             </div>        
         </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="pendingTeamListTemplate">
         <div class="listItem teamListItem">
             <div class="commands">
@@ -194,7 +181,7 @@
                        # } #"/>
             </div>        
         </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="thingListTemplate">
         <div class="listItem thingListItem" data-role="droptarget">
             <div class="commands">
@@ -216,7 +203,7 @@
                 <span data-bind="{text:thing.description}" class="info"/>
             </div>
         </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="teamUserListTemplate">
         <div class="listItem userListItem" data-role="draggable" data-draggable-hint="hint" data-hint="hint">
             <div class="commands">
@@ -230,7 +217,7 @@
                 <span data-bind="{text:user.emailAddress}" class="info"/>
             </div>
         </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="teamPendingUserListTemplate">
         <div class="listItem pendingUserListItem">
             <div class="commands">
@@ -244,7 +231,7 @@
                 <span data-bind="{text:user.emailAddress}" class="info"/>
             </div>
         </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="userSignInTemplate">
         <div id="userLogin">
         <h2>Please Login</h2>
@@ -262,7 +249,7 @@
                 </li>
             </ol>
         </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="teamDashboardTemplate">
        <div id="teamDashboard">
             <h2 data-bind="text:team.name">
@@ -328,7 +315,7 @@
                 </div>
             </div>
         </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="noTeamsTemplate">
     <div>
         <br/><!---Yea its a br...deal with it :)--->
@@ -341,7 +328,7 @@
             Join a Team
         </a>
     </div>
-    </script>
+    </script> 
     <script type="text/x-kendo-tmpl" id="userDashboardTemplate">
         <div id="userDashboard">
             <div class="subHeader clearfix">
@@ -420,15 +407,9 @@
                 </div>
             </div>
         </div>
-    </script>
-
+    </script> 
+  </div>
 </div>
-
-
-</div>
-
 <script src="tt_assets/js/TeamThingMain.js"></script>
-
 </body>
 </html>
-

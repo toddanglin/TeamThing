@@ -76,7 +76,7 @@ input[type="checkbox"] {
 
 
 input[type="checkbox"]:before, input[type="checkbox"]:after {
-	font: normal 10px helvetica;
+	font: normal 12px helvetica;
 	
 	text-align: 	center;
 	
@@ -435,10 +435,6 @@ left: 16px;
 	position:relative;
 	display:block;
 	overflow:visible;
-}
-
-.controls checkbox {
-	font-size:12px;
 }
 
 .thingdesc {width:330px;}
