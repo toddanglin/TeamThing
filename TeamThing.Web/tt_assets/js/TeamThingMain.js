@@ -200,20 +200,20 @@ $('a.users-count').bind("click", function(event) {
 	
 	function draggableOnDragStart(e) {
        $("#draggable").addClass("hollow");
-		$("#userpic-dropzone").text("(Drop here)");
+		//$("#userpic-dropzone").text("(Drop here)");
 	}
 
 	function droptargetOnDragEnter(e) {
-		$("#userpic-dropzone").text("Now you can drop it.");
+		//$("#userpic-dropzone").text("Now you can drop it.");
 	}
 
 	function droptargetOnDragLeave(e) {
-		$("#userpic-dropzone").text("(Drop here)");
+		//$("#userpic-dropzone").text("(Drop here)");
 	}
 
 	function droptargetOnDrop(e) {
 		//$("#userpic-dropzone").text("You did great!");
-		$("#draggable").removeClass("hollow");
+		//$("#draggable").removeClass("hollow");
 		alert('On Target');
 	}
 

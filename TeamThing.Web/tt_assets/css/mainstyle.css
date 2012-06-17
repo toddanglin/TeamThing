@@ -65,6 +65,25 @@
 
 /*
 |--------------------------------------------------------------------------
+|	BEGIN: LIST FILTER TOOLS
+|--------------------------------------------------------------------------
+*/
+
+#tabstrip .list-filters {
+	position:absolute;
+	top:0;
+	right:0;
+	display:block;
+}
+
+/*
+|--------------------------------------------------------------------------
+|	END: LIST FILTER TOOLS
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
 |	BEGIN: THING STATUS CHECKBOX
 |--------------------------------------------------------------------------
 */
@@ -378,11 +397,17 @@ aside p {padding:5px 20px;}
 	line-height:16px;
 }
 
-.myteam #myteam-members .userpic {
+.userpic {
 	border: 1px solid #fff;
 	-webkit-box-shadow: 0px 1px 2px 0px #9c9c9c;
 	box-shadow: 0px 1px 2px 0px #9c9c9c;
 }
+
+/*.myteam #myteam-members .userpic {
+	border: 1px solid #fff;
+	-webkit-box-shadow: 0px 1px 2px 0px #9c9c9c;
+	box-shadow: 0px 1px 2px 0px #9c9c9c;
+}*/
 
 .myteam #myteam-members .userpic, .myteam #myteam-members .userpic img {
 	width: 55px;
@@ -682,9 +707,6 @@ font-family: Helvetica, helvetica; padding:10px;}
 	/*-webkit-mask: url(../images/picmask.png);*/
 	float:left;
 	margin-right:8px;
-	border: 1px solid #fff;
-	-webkit-box-shadow: 0px 1px 2px 0px #9c9c9c;
-	box-shadow: 0px 1px 2px 0px #9c9c9c;
 }
 
 .thing .users-tray .userpic, .thing .users-tray .userpic img {
