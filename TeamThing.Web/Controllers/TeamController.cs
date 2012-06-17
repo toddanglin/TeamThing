@@ -36,7 +36,7 @@ namespace TeamThing.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
-            var sTeam = item.MapToServiceModel();
+            var sTeam = item.MapToBasicServiceModel();
             var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
