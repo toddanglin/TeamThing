@@ -664,6 +664,8 @@ font-family: Helvetica, helvetica; padding:10px;}
 .userpic-dropzone {
 	width: 55px;
 	height: 55px;
+	float:left;
+	margin-right:8px;
 	background:url(../images/add-team-member.png) 0 0 no-repeat;
 }
 /*
