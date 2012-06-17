@@ -214,14 +214,22 @@ width:960px;}
 
 
 #userpic {
-	width:55px; height: 55px;
-	-webkit-mask: url(../images/picmask.png); 
+	width:55px; 
+	height: 55px;
+	/*-webkit-mask: url(../images/picmask.png);*/ 
 	float:right;
 	margin-left:10px;
+	border: 2px solid #fff;
 	/*border:1px solid #ffffff;
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
   	box-shadow:         3px 3px 5px 6px #ccc;*/
+}
+
+#userpic, #userpic img{
+	width: 55px;
+	height: 55px;
+	-webkit-border-radius: 30px;
 }
 
 #creatething:before {
