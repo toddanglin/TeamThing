@@ -188,7 +188,7 @@ $("#creatething").click(function(){
 
 $('a.users-count').bind("click", function(event) {
   	event.preventDefault();
-	$(this).parent('.thing').children('.users-tray').slideToggle(500);
+	$(this).parent('.thing').children('.users-tray').slideToggle(250);
 });
 	
 

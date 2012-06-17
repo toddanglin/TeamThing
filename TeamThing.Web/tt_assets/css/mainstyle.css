@@ -540,7 +540,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 .listitem { 
 	width:510px;
 	height:74px;
-	margin:5px 65px 0 100px;
+	margin:5px 65px 0 65px;
 	background: #ffffff;
 	color:#333;
 	border: 1px solid #cccccc;
@@ -549,8 +549,8 @@ font-family: Helvetica, helvetica; padding:10px;}
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
 	position:relative;
+	left:35px;
 	display:block;
-	
 }
 
 .listitem:after, .listitem:before {
@@ -661,7 +661,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	width: 25px; 
 	height: 16px;
 	background: url(../images/complete.png) 0 0 no-repeat;
-	text-indent:-9999px;
+	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
 	cursor:pointer;
@@ -679,7 +679,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	width: 18px; 
 	height: 16px;
 	background:url(../images/delete.png) 0 0 no-repeat;
-	text-indent:-9999px;
+	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:5px;
 	cursor:pointer;
@@ -697,7 +697,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	width:19px; 
 	height: 16px;
 	background: url(../images/edit.png) 0 0 no-repeat;
-	text-indent:-9999px;
+	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
 	cursor:pointer;
@@ -715,7 +715,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	width: 19px;
 	height: 16px;
 	background: url(../images/share.png) 0 0 no-repeat;
-	text-indent:-9999px;
+	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
 	cursor:pointer;
