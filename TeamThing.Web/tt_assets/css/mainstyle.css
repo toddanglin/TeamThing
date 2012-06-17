@@ -349,7 +349,7 @@ aside p {padding:5px 20px;}
 	margin-top: -14px;
 }
 
-.plus {float:right; border-left: 1px solid #cccccc; padding:3px 0 0 15px;}
+.plus {float:right; border-left: 1px solid #cccccc; padding:0 10px 0 15px;}
 
 /*
 |--------------------------------------------------------------------------
