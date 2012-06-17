@@ -186,9 +186,68 @@ $("#creatething").click(function(){
 |--------------------------------------------------------------------------
 */
 
-	$('a.users-count').bind("click", function(event) {
-  		event.preventDefault();
-		$(this).parent('.thing').children('.users-tray').slideToggle(500);
+$('a.users-count').bind("click", function(event) {
+  	event.preventDefault();
+	$(this).parent('.thing').children('.users-tray').slideToggle(500);
+});
+	
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: ADD THING WINDOW AND FUNCTIONS
+|--------------------------------------------------------------------------
+*/
+	
+	function draggableOnDragStart(e) {
+       $("#draggable").addClass("hollow");
+		$("#userpic-dropzone").text("(Drop here)");
+	}
+
+	function droptargetOnDragEnter(e) {
+		$("#userpic-dropzone").text("Now you can drop it.");
+	}
+
+	function droptargetOnDragLeave(e) {
+		$("#userpic-dropzone").text("(Drop here)");
+	}
+
+	function droptargetOnDrop(e) {
+		$("#userpic-dropzone").text("You did great!");
+		$("#draggable").removeClass("hollow");
+	}
+
+	function draggableOnDragEnd(e) {
+		var draggable = $("#draggable");
+		if (!draggable.data("kendoDraggable").dropped) {
+    		// drag ended outside of any droptarget
+     		$("#userpic-dropzone").text("Try again!");
+		}
+
+		draggable.removeClass("hollow");
+	}
+
+	$("#draggable").kendoDraggable({
+		hint: function() {
+			return $("#draggable").clone();
+        },
+   		dragstart: draggableOnDragStart,
+    	dragend: draggableOnDragEnd
+	});
+
+	$("#userpic-dropzone").kendoDropTarget({
+    	dragenter: droptargetOnDragEnter,
+    	dragleave: droptargetOnDragLeave,
+    	drop: droptargetOnDrop
+	});
+
+	var draggable = $("#draggable").data("kendoDraggable");
+
+	$("#cursorOffset").click(function(e) {
+		if (this.checked) {
+			draggable.options.cursorOffset = { top: 10, left: 10 };
+		} else {
+			draggable.options.cursorOffset = null;
+		}
 	});
 
 });
