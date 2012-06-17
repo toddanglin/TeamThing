@@ -443,6 +443,12 @@ font-family: Helvetica, helvetica; padding:10px;}
 	box-shadow: 0px 1px 2px 0px #9c9c9c;
 }
 
+.thing .users-count:hover, .thing .users-count.over,  .thing .users-count:active,  .thing .users-count:visited {
+	color:#fff;
+	text-decoration:underline;
+	text-shadow:none;
+}
+
 .thingcontrols {float:right;}
 
 .star {float:right;
