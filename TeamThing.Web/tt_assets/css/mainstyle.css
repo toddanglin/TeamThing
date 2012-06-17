@@ -658,15 +658,14 @@ font-family: Helvetica, helvetica; padding:10px;}
 .iconcontrols {margin-left:0px; width:150px;display:block;}
 
 .icon_complete {
-	width: 25px; 
-	height: 16px;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
-	cursor:pointer;
 }
 
 .icon_complete a {
+	width: 25px; 
+	height: 16px;
 	background: url(../images/complete.png) 0 0 no-repeat;
 	display:block;
 }
@@ -676,15 +675,14 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .icon_delete {
-	width: 18px; 
-	height: 16px;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:5px;
-	cursor:pointer;
 }
 
 .icon_delete a {
+	width: 18px; 
+	height: 16px;
 	background:url(../images/delete.png) 0 0 no-repeat;
 	display:block;
 }
@@ -694,15 +692,14 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .icon_edit {
-	width:19px; 
-	height: 16px;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
-	cursor:pointer;
 }
 
 .icon_edit a {
+	width:19px; 
+	height: 16px;
 	background: url(../images/edit.png) 0 0 no-repeat;
 	display:block;
 }
@@ -712,15 +709,14 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .icon_share {
-	width: 19px;
-	height: 16px;
 	/*text-indent:-9999px;*/
 	float:right;
 	margin-right:13px;
-	cursor:pointer;
 }
 
 .icon_share a {
+	width: 19px;
+	height: 16px;
 	background: url(../images/share.png) 0 0 no-repeat;
 	display:block;
 }
