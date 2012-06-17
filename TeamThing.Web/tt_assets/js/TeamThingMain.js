@@ -199,7 +199,7 @@ $('a.users-count').bind("click", function(event) {
 */
 	
 	function draggableOnDragStart(e) {
-		$("#draggable img").attr('src','tt_assets/images/listpic-halo.png');
+		//$("#draggable img").attr('src','tt_assets/images/listpic-halo.png');
 		//$("#userpic-dropzone").text("(Drop here)");
 	}
 
@@ -242,13 +242,5 @@ $('a.users-count').bind("click", function(event) {
 	});
 
 	var draggable = $("#draggable").data("kendoDraggable");
-
-	$("#cursorOffset").click(function(e) {
-		if (this.checked) {
-			draggable.options.cursorOffset = { top: 10, left: 10 };
-		} else {
-			draggable.options.cursorOffset = null;
-		}
-	});
 
 });
