@@ -564,7 +564,7 @@ width:510px;
 
 .thing .users-count, .thing .users-count:hover, .thing .users-count.over, .thing .users-count:active, .thing .users-count:visited {
 	color:#fff;
-	text-decoration:underline;
+	text-decoration:none;
 	text-shadow:none;
 }
 
