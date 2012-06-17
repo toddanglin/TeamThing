@@ -68,11 +68,11 @@ $("#statusfilterlist").kendoDropDownList();
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: GET ALL PUBLIC TEAMS FOR PULLDOWN
+|	BEGIN: GET ALL TEAMS FOR PULLDOWN
 |--------------------------------------------------------------------------
 */
 	$.get(
-		APPURL+'/api/team?$filter=IsPublic%20eq%20true',
+		APPURL+'/api/team',
     	function(data) { 
 			TeamsOutput = { TeamsList: [] };
 			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
@@ -100,7 +100,7 @@ $("#statusfilterlist").kendoDropDownList();
 */
 function GetTeamThings(TeamID) {
 	$.get(
-		APPURL+'/api/team/10/things',
+		APPURL+'/api/team/'+TeamID+'/things',
     	function(TeamThingsData) { 
 			console.log(TeamThingsData);
 			TeamThingsOutput = '';
@@ -158,41 +158,64 @@ GetTeamThings(10);
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: GET ALL THINGS FOR MY THINGS LIST
+|	BEGIN: GET MY THINGS AND LIST THEM OUT
 |--------------------------------------------------------------------------
 */
+function GetMyThings(UserID) {
 	$.get(
-		APPURL+"/api/thing?$filter=Description ne null and indexof(Description, 'd') ge 1",
-    	function(data) { 
+		APPURL+'/api/user/'+UserID+'/things',
+    	function(TeamThingsData) { 
+			console.log(TeamThingsData);
 			TeamThingsOutput = '';
-			for(i=0;i<data.length;i++) {
-				TeamThingsOutput+='<div class="thing">';
-                TeamThingsOutput+='<img src="tt_assets/images/listpic.png" width="83" height="83" alt="" class="listpic">';
+			for(i=0;i<TeamThingsData.length;i++) {
+				
+				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
+          		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
                 TeamThingsOutput+='<span class="listitem">';
-                TeamThingsOutput+='<div class="thingcontrols">';
-                TeamThingsOutput+='<span class="star"><img src="tt_assets/images/star.png" width="30" height="31" alt="star"></span>';
-				
-                	TeamThingsOutput+='<span class="controls"><input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
-				
-				TeamThingsOutput+='<br />';
-                TeamThingsOutput+='<span class="iconcontrols"><div class="icon_delete"><a href="#">delete</a></div><div class="icon_edit"><a href="#">edit</a></div><div class="icon_share"><a href="#">share</a></div><div class="icon_complete"><a href="#">complete</a></div></span>';
-                TeamThingsOutput+='</span>';
-                TeamThingsOutput+='</div> <div class="thingdesc">'+data[i].description;
-                TeamThingsOutput+='</div></span>';
+            		TeamThingsOutput+='<div class="thingcontrols">';
+                        if(TeamThingsData[i].isStarred == true) {
+							TeamThingsOutput+='<a class="star active" href="#"></a>';
+						} else {
+							TeamThingsOutput+='<a class="star" href="#"></a>';
+						}
+                        TeamThingsOutput+='<span class="controls">';
+						if(TeamThingsData[i].status == 'Delayed') {
+             				TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+						} else if(TeamThingsData[i].status == 'InProgress') {
+							TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+						}
+              				TeamThingsOutput+='<br />';
+              				TeamThingsOutput+='<span class="iconcontrols">';
+              					TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
+								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
+								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
+								TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
+              				TeamThingsOutput+='</span>';
+                       TeamThingsOutput+='</span>';
+                    TeamThingsOutput+='</div>';
+            		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
+				TeamThingsOutput+='</span>';
+                TeamThingsOutput+='<div class="users-tray">';
+                	TeamThingsOutput+='<div class="userpic"><img src="tt_assets/images/listpic-default.png" width="55" height="55" alt=""></div>';
+                    TeamThingsOutput+='<div class="userpic"><img src="tt_assets/images/listpic-default.png" width="55" height="55" alt=""></div>';
+                    TeamThingsOutput+='<div class="userpic"><img src="tt_assets/images/listpic-default.png" width="55" height="55" alt=""></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" id="userpic-dropzone"></div>';
+                    TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
+                TeamThingsOutput+='<a class="users-count" href="#">?</a>';
+          	TeamThingsOutput+='</div>';
 			}
-			$('.list').each(function(index) {
-				if (index == 0) {
-					//$(this).html(TeamThingsOutput);
-				} else {
-					//$(this).html(TeamThingsOutput);
-				}
-			});
+			
+			$('.mythingslist .list').html(TeamThingsOutput);
+			ActivateListViewButtons();
 		}
 	);
+}
+
+GetMyThings(11);
 /*
 |--------------------------------------------------------------------------
-|	END: GET ALL THINGS FOR MY THINGS LIST
+|	END: GET MY THINGS AND LIST THEM OUT
 |--------------------------------------------------------------------------
 */
 
