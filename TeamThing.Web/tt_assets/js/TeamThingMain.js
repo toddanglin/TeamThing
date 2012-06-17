@@ -199,7 +199,7 @@ $('a.users-count').bind("click", function(event) {
 */
 	
 	function draggableOnDragStart(e) {
-       $("#draggable").addClass("hollow");
+		$("#draggable img").attr('src','tt_assets/images/listpic-halo.png');
 		//$("#userpic-dropzone").text("(Drop here)");
 	}
 
