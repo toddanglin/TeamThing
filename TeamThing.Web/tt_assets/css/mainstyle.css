@@ -538,11 +538,9 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 
 .listitem { 
-	display:block;
-	position:relative;
-	left:35px;
 	width:510px;
-	position: relative;
+	height:74px;
+	margin:5px 65px 0 100px;
 	background: #ffffff;
 	color:#333;
 	border: 1px solid #cccccc;
@@ -550,9 +548,9 @@ font-family: Helvetica, helvetica; padding:10px;}
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
-	z-index:200;
-	margin:5px 65px 0 65px;
-	height:74px;
+	position:relative;
+	display:block;
+	
 }
 
 .listitem:after, .listitem:before {
