@@ -419,14 +419,17 @@ padding:20px;
 
 }
 
-.thing {margin-bottom:20px;}
+.thing {
+	clear:both;
+	margin-bottom:20px;
+}
 
 .thingcontrols {float:right;}
 
 .star {float:right;
-position: relative;
-top: -7px;
-left: 16px;
+	position: relative;
+	top: -7px;
+	left: 16px;
 }
 
 .controls {
