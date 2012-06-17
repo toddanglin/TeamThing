@@ -650,10 +650,19 @@ font-family: Helvetica, helvetica; padding:10px;}
 /* ---------- THING CONTROLS ---------- */
 .thingcontrols {float:right;}
 
-.star {float:right;
-	position: relative;
-	top: -7px;
-	left: 16px;
+.star {
+	width:30px;
+	height:31px;
+	float:right;
+	position: absolute;
+	top:0;
+	right:0;
+	display:block;
+	background:url(../images/star.png) 0 0 no-repeat;
+}
+
+.star:hover, .star.over, .star.active {
+	background:url(../images/star.png) 0 -31px no-repeat;
 }
 
 .controls {
@@ -663,12 +672,12 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .thingdesc {width:330px;}
 
-.iconcontrols {margin-left:0px; width:150px;display:block;}
+.iconcontrols {margin-left:6px; width:150px;height:16px;display:block;}
 
 .icon_complete {
 	/*text-indent:-9999px;*/
-	float:right;
-	margin-right:13px;
+	float:left;
+	margin-right:11px;
 }
 
 .icon_complete a {
@@ -684,7 +693,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .icon_delete {
 	/*text-indent:-9999px;*/
-	float:right;
+	float:left;
 	margin-right:5px;
 }
 
@@ -701,8 +710,8 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .icon_edit {
 	/*text-indent:-9999px;*/
-	float:right;
-	margin-right:13px;
+	float:left;
+	margin-right:11px;
 }
 
 .icon_edit a {
@@ -718,7 +727,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .icon_share {
 	/*text-indent:-9999px;*/
-	float:right;
+	float:left;
 	margin-right:13px;
 }
 

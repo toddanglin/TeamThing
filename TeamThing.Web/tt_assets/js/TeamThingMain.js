@@ -10,6 +10,20 @@ function JumpToMain(TeamID) {
 		location.href="../main.html?teamid="+TeamID;
 	}
 }
+
+function ActivateListViewButtons() {
+	$('.users-tray').hide();
+	
+	$('a.users-count').bind("click", function(event) {
+  		event.preventDefault();
+		$(this).parent('.thing').children('.users-tray').slideToggle(250);
+	});
+	
+	$('a.star').bind("click", function(event) {
+  		event.preventDefault();
+		$(this).addClass('active');
+	});
+}
 /*
 |--------------------------------------------------------------------------
 |	END: FUNCTION JUNCTION
@@ -45,7 +59,6 @@ $("#editor").kendoEditor({
 
 $("#statusfilterlist").kendoDropDownList();
 
-$('.users-tray').hide();
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +90,69 @@ $('.users-tray').hide();
 /*
 |--------------------------------------------------------------------------
 |	END: GET ALL PUBLIC TEAMS FOR PULLDOWN
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
+|--------------------------------------------------------------------------
+*/
+function GetTeamThings(TeamID) {
+	$.get(
+		APPURL+'/api/team/10/things',
+    	function(TeamThingsData) { 
+			console.log(TeamThingsData);
+			TeamThingsOutput = '';
+			for(i=0;i<TeamThingsData.length;i++) {
+				
+				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
+          		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
+                TeamThingsOutput+='<span class="listitem">';
+            		TeamThingsOutput+='<div class="thingcontrols">';
+                        if(TeamThingsData[i].isStarred == true) {
+							TeamThingsOutput+='<a class="star active" href="#"></a>';
+						} else {
+							TeamThingsOutput+='<a class="star" href="#"></a>';
+						}
+                        TeamThingsOutput+='<span class="controls">';
+						if(TeamThingsData[i].status == 'Delayed') {
+             				TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+						} else if(TeamThingsData[i].status == 'InProgress') {
+							TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+						}
+              				TeamThingsOutput+='<br />';
+              				TeamThingsOutput+='<span class="iconcontrols">';
+              					TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
+								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
+								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
+								TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
+              				TeamThingsOutput+='</span>';
+                       TeamThingsOutput+='</span>';
+                    TeamThingsOutput+='</div>';
+            		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
+				TeamThingsOutput+='</span>';
+                TeamThingsOutput+='<div class="users-tray">';
+                	TeamThingsOutput+='<div class="userpic"><img src="tt_assets/images/listpic-default.png" width="55" height="55" alt=""></div>';
+                    TeamThingsOutput+='<div class="userpic"><img src="tt_assets/images/listpic-default.png" width="55" height="55" alt=""></div>';
+                    TeamThingsOutput+='<div class="userpic"><img src="tt_assets/images/listpic-default.png" width="55" height="55" alt=""></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" id="userpic-dropzone"></div>';
+                    TeamThingsOutput+='<div class="clear-float"></div>';
+                TeamThingsOutput+='</div>';
+                TeamThingsOutput+='<a class="users-count" href="#">?</a>';
+          	TeamThingsOutput+='</div>';
+			}
+			
+			$('.myteamsthingslist .list').html(TeamThingsOutput);
+			ActivateListViewButtons();
+		}
+	);
+}
+
+GetTeamThings(10);
+/*
+|--------------------------------------------------------------------------
+|	END: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
 |--------------------------------------------------------------------------
 */
 
@@ -188,10 +264,7 @@ $("#creatething").click(function(){
 |--------------------------------------------------------------------------
 */
 
-$('a.users-count').bind("click", function(event) {
-  	event.preventDefault();
-	$(this).parent('.thing').children('.users-tray').slideToggle(250);
-});
+
 	
 
 /*
