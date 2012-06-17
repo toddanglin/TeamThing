@@ -122,14 +122,16 @@ namespace TeamThing.Web
         protected void Application_Error(object sender, EventArgs e) 
         {
           Exception exception = Server.GetLastError();
-          Response.Clear();
         
           //Log errors in a way that is visible on AppHarbor
           HttpException httpException = exception as HttpException;
           if(httpException != null){
             var errLog = new LogEvent(httpException);
             errLog.Raise();
-          }    
+          }else{
+            var errLog = new LogEvent(exception);
+            errLog.Raise();
+          }
         
           // clear error on server
           Server.ClearError();
