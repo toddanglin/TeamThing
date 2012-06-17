@@ -562,7 +562,7 @@ width:510px;
 	box-shadow: 0px 1px 2px 0px #9c9c9c;
 }
 
-.thing .users-count:hover, .thing .users-count.over,  .thing .users-count:active,  .thing .users-count:visited {
+.thing .users-count, .thing .users-count:hover, .thing .users-count.over, .thing .users-count:active, .thing .users-count:visited {
 	color:#fff;
 	text-decoration:underline;
 	text-shadow:none;
@@ -597,7 +597,7 @@ width:510px;
 }
 	
 .icon_complete:hover {
-	background-position:-25px 0;
+	background-position:-27px 0;
 }
 
 .icon_delete {
@@ -611,7 +611,7 @@ width:510px;
 }
 	
 .icon_delete:hover {
-	background-position:-18px 0px;
+	background-position:-20px 0px;
 }
 
 .icon_edit {
@@ -625,7 +625,7 @@ width:510px;
 	}
 	
 .icon_edit:hover {
-	background-position:-19px 0px;
+	background-position:-21px 0px;
 }
 
 .icon_share {
@@ -639,7 +639,7 @@ width:510px;
 	}
 	
 .icon_share:hover {
-	background-position:-19px 0px;
+	background-position:-21px 0px;
 }
 
 /* ---------- USERS TRAY ---------- */

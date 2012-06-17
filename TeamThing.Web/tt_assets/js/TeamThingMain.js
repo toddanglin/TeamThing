@@ -184,7 +184,8 @@ $("#creatething").click(function(){
 |--------------------------------------------------------------------------
 */
 
-	$('.users-count').live("click", function(){
+	$('.users-count').bind("click", function(event) {
+  		event.preventDefault();
 		$(this).closest('.users-tray').slideToggle(1500);
 	});
 
