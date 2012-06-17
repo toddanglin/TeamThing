@@ -268,12 +268,6 @@ width:960px;}
 	margin-top: -14px;
 }
 
-
-
-
-
-
-
 #teamlist {float:right; width:auto;}
 
 #teamlist:before {
@@ -323,9 +317,6 @@ width:960px;}
 aside {float:right; width: 260px;}
 
 aside p {padding:5px 20px;}
-
-
-	
 
 header.section { color:#808080; padding:10px;margin-top:3px; border-bottom:1px solid #cccccc;
 background-color:f9f9f9;
@@ -470,7 +461,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 .iconcontrols {margin-left:0px; width:150px;}
 
 .icon_complete {
-	width: 23px; 
+	width: 25px; 
 	height: 16px;
 	background: url(../images/complete.png) 0 0 no-repeat;
 	text-indent:-9999px;
@@ -480,37 +471,40 @@ font-family: Helvetica, helvetica; padding:10px;}
 }
 	
 .icon_complete:hover {
-	background-position:22px 0px;
+	background-position:-25px 0;
 }
 
 .icon_delete {
-	width: 15px; 
+	width: 18px; 
 	height: 16px;
-	background: url(../images/delete.png) 0 0 no-repeat;
-	text-indent:-100px;
+	background:url(../images/delete.png) 0 0 no-repeat;
+	text-indent:-9999px;
 	float:right;
 	margin-right:5px;
 	cursor:pointer;
 }
 	
 .icon_delete:hover {
-	background-position:15px 0px;
+	background-position:-18px 0px;
 }
 
 .icon_edit {
-	width: 16px; 
+	width:19px; 
 	height: 16px;
 	background: url(../images/edit.png) 0 0 no-repeat;
-	text-indent:-9999px; float:right;
+	text-indent:-9999px;
+	float:right;
 	margin-right:13px;
 	cursor:pointer;
 	}
 	
 .icon_edit:hover {
-	background-position:16px 0px;
+	background-position:-19px 0px;
 }
 
-.icon_share {width: 16px; height: 16px;
+.icon_share {
+	width: 19px;
+	height: 16px;
 	background: url(../images/share.png) 0 0;
 	text-indent:-9999px;
 	float:right;
@@ -519,16 +513,14 @@ font-family: Helvetica, helvetica; padding:10px;}
 	}
 	
 .icon_share:hover {
-	background-position:16px 0px;
+	background-position:-19px 0px;
 }
 
 #mainsection .list .thing img.listpic {
 	width:83px; 
 	height: 83px;
 	/*-webkit-mask: url(../images/listpicmask.png); */
-	float:left; 
-	width: 83px; 
-	height: 83px; 
+	float:left;
 	position:relative; 
 	z-index:260;
 	border:2px solid #fff;
@@ -539,7 +531,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 #mainsection .list .thing img.listpic, #mainsection .list .thing img.listpic img {
 	width: 83px;
 	height: 83px;
-	-webkit-border-radius:300px;
+	-webkit-border-radius:30px;
 }
 
 
