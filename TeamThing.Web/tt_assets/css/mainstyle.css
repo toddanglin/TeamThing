@@ -422,6 +422,28 @@ padding:20px;
 .thing {
 	clear:both;
 	margin-bottom:20px;
+	position:relative;
+	display:block;
+	overflow:visible;
+}
+
+.thing .users-count {
+	width:12px;
+	height:12px;
+	font-family:Helvetica, Arial, sans-serif;
+	font-size:9px;
+	line-height:12px;
+	color:#000;
+	text-align:center;
+	background-color:#bcd963;
+	border-radius: 12px;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	position:absolute;
+	bottom:0;
+	left:70px;
+	display:block;
+	border:2px solid #000;
 }
 
 .thingcontrols {float:right;}
