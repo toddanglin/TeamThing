@@ -15,6 +15,10 @@
 	background-image: url(../images/my-things.png);
 }
 
+#tabstrip {
+	position:relative;
+}
+
 #tabstrip li.k-state-active .me-icon{background-position-x: -27px;}
 
 .team-icon {	
