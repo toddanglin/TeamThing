@@ -586,7 +586,9 @@ width:510px;
 	-webkit-border-radius: 0px 0px 5px 5px;
 	border-radius: 0px 0px 5px 5px;
 	position:relative;
-	display:block;
+	display:none;
+	overflow:visible;
+	text-align:left;
 }
 
 .thing .users-tray .userpic {
