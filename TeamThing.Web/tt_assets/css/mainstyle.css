@@ -348,6 +348,9 @@ aside p {padding:5px 20px;}
 	top: 50%;
 	margin-top: -14px;
 }
+
+.plus {float:right; border-left: 1px solid #cccccc; padding:3px 0 0 15px;}
+
 /*
 |--------------------------------------------------------------------------
 |	END: SIDEBAR TEAM LIST POD
@@ -443,11 +446,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 |--------------------------------------------------------------------------
 |	END: TAB STRIP STRUCTURE
 |--------------------------------------------------------------------------
-*/	
-
-
-.plus {float:right; border-left: 1px solid #cccccc; padding:3px 15px;}
-
+*/
 
 #mainsection {width:660px;}
 
