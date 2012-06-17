@@ -439,15 +439,15 @@ padding:20px;
 	background: -webkit-linear-gradient(top, #dd705c 0%,#ae4d3b 100%);
 	background-color:#AE4D3B;
     text-shadow: 0px 1px 2px #8d3727;
-    filter: dropshadow(color=#8d3727, offx=0, offy=1);
 	border-radius: 26px;
 	-moz-border-radius: 26px;
 	-webkit-border-radius: 26px;
 	position:absolute;
 	bottom:4px;
-	left:60px;
+	left:50px;
 	display:block;
 	border:1px solid #fff;
+	z-index:1000;
 }
 
 .thingcontrols {float:right;}
@@ -599,7 +599,7 @@ width:510px;
 	box-shadow: 0px 1px 2px 0px #9c9c9c;	
 }
 
-.thing .users-tray .userpic img{
+.thing .users-tray .userpic img {
 	width: 55px;
 	height: 55px;
 	-webkit-border-radius: 55px;
