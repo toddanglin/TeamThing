@@ -127,7 +127,7 @@ namespace TeamThing.Web
           //Log errors in a way that is visible on AppHarbor
           HttpException httpException = exception as HttpException;
           if(httpException != null){
-            var errLog = new WebRequestErrorEvent(null, null, 100001, httpException);
+            var errLog = new LogEvent(httpException);
             errLog.Raise();
           }    
         
@@ -152,6 +152,14 @@ namespace TeamThing.Web
 
             //config.Formatters[0] = new JsonNetFormatter();
 
+        }
+    }
+
+    public class LogEvent : WebRequestErrorEvent
+    {
+        public LogEvent(Exception ex)
+            : base(null, null, 100001, ex)
+        {
         }
     }
 }
