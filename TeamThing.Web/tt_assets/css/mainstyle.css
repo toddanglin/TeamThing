@@ -429,7 +429,17 @@ top: -7px;
 left: 16px;
 }
 
-.controls {padding:0px; width:150px;}
+.controls {
+	padding:0px; 
+	width:150px;
+	position:relative;
+	display:block;
+	overflow:visible;
+}
+
+.controls checkbox {
+	font-size:12px;
+}
 
 .thingdesc {width:330px;}
 
@@ -496,7 +506,7 @@ left: 16px;
 #mainsection .list .thing img.listpic, #mainsection .list .thing img.listpic img{
 	width: 83px;
 	height: 83px;
-	-webkit-border-radius:100px;
+	-webkit-border-radius:160px;
 }
 
 
