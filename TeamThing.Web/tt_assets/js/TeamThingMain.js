@@ -212,7 +212,7 @@ $('a.users-count').bind("click", function(event) {
 	}
 
 	function droptargetOnDrop(e) {
-		$("#userpic-dropzone").text("You did great!");
+		//$("#userpic-dropzone").text("You did great!");
 		$("#draggable").removeClass("hollow");
 		alert('On Target');
 	}
@@ -221,7 +221,7 @@ $('a.users-count').bind("click", function(event) {
 		var draggable = $("#draggable");
 		if (!draggable.data("kendoDraggable").dropped) {
     		// drag ended outside of any droptarget
-     		$("#userpic-dropzone").text("Try again!");
+     		//$("#userpic-dropzone").text("Try again!");
 		}
 
 		draggable.removeClass("hollow");
