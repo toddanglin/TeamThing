@@ -85,7 +85,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:before, input[type="checkbox"]:after {
 	font: bold 12px helvetica;
-	line-height:5px;
+	line-height:15px;
 	text-align: 	center;
 	position: 	absolute;
 	z-index: 	1;
