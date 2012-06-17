@@ -655,7 +655,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .thingdesc {width:330px;}
 
-.iconcontrols {margin-left:0px; width:150px;}
+.iconcontrols {margin-left:0px; width:150px;display:block;}
 
 .icon_complete {
 	width: 25px; 
