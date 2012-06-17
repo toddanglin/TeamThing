@@ -214,6 +214,7 @@ $('a.users-count').bind("click", function(event) {
 	function droptargetOnDrop(e) {
 		$("#userpic-dropzone").text("You did great!");
 		$("#draggable").removeClass("hollow");
+		alert('On Target');
 	}
 
 	function draggableOnDragEnd(e) {
