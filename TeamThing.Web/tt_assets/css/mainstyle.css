@@ -220,10 +220,9 @@ width:960px;}
 	float:right;
 	margin-left:10px;
 	border: 2px solid #fff;
-	/*border:1px solid #ffffff;
-	-moz-box-shadow:    3px 3px 5px 6px #ccc;
-  	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
-  	box-shadow:         3px 3px 5px 6px #ccc;*/
+	-moz-box-shadow:    0 1px 3px 3px #696969;
+  	-webkit-box-shadow: 0 1px 3px 3px #696969;
+  	box-shadow:         0 1px 3px 3px #696969;
 }
 
 #userpic, #userpic img{
@@ -481,7 +480,26 @@ left: 16px;
 	background: url(../images/share.png) 16px 0px;
 }
 
-#mainsection .list .thing img.listpic {-webkit-mask: url(../images/listpicmask.png); float:left; width: 83px; height: 83px; position:relative; z-index:260;}
+#mainsection .list .thing img.listpic {
+	width:83px; 
+	height: 83px;
+	/*-webkit-mask: url(../images/listpicmask.png); */
+	float:left; 
+	width: 83px; 
+	height: 83px; 
+	position:relative; 
+	z-index:260;
+	border: 2px solid #fff;
+	-moz-box-shadow:    0 1px 3px 3px #696969;
+  	-webkit-box-shadow: 0 1px 3px 3px #696969;
+  	box-shadow:         0 1px 3px 3px #696969;
+}
+
+#mainsection .list .thing img.listpic, #mainsection .list .thing img.listpic img{
+	width: 83px;
+	height: 83px;
+	-webkit-border-radius: 30px;
+}
 
 
 .listitem { display:block;
