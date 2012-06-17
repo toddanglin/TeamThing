@@ -469,48 +469,57 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .iconcontrols {margin-left:0px; width:150px;}
 
-.icon_complete {width: 23px; height: 16px;
-	background: url(../images/complete.png) 0 0;
-	text-indent:-9999px; float:right;
+.icon_complete {
+	width: 23px; 
+	height: 16px;
+	background: url(../images/complete.png) 0 0 no-repeat;
+	text-indent:-9999px;
+	float:right;
 	margin-right:13px;
 	cursor:pointer;
-	}
+}
 	
 .icon_complete:hover {
-	background: url(../images/complete.png) 22px 0px;
+	background-position:22px 0px;
 }
 
-.icon_delete {width: 15px; height: 16px;
-	background: url(../images/delete.png) 0 0;
-	text-indent:-9999px; float:right;
+.icon_delete {
+	width: 15px; 
+	height: 16px;
+	background: url(../images/delete.png) 0 0 no-repeat;
+	text-indent:-100px;
+	float:right;
 	margin-right:5px;
 	cursor:pointer;
-	}
+}
 	
 .icon_delete:hover {
-	background: url(../images/delete.png) 15px 0px;
+	background-position:15px 0px;
 }
 
-.icon_edit {width: 16px; height: 16px;
-	background: url(../images/edit.png) 0 0;
+.icon_edit {
+	width: 16px; 
+	height: 16px;
+	background: url(../images/edit.png) 0 0 no-repeat;
 	text-indent:-9999px; float:right;
 	margin-right:13px;
 	cursor:pointer;
 	}
 	
 .icon_edit:hover {
-	background: url(../images/edit.png) 16px 0px;
+	background-position:16px 0px;
 }
 
 .icon_share {width: 16px; height: 16px;
 	background: url(../images/share.png) 0 0;
-	text-indent:-9999px; float:right;
+	text-indent:-9999px;
+	float:right;
 	margin-right:13px;
 	cursor:pointer;
 	}
 	
 .icon_share:hover {
-	background: url(../images/share.png) 16px 0px;
+	background-position:16px 0px;
 }
 
 #mainsection .list .thing img.listpic {
