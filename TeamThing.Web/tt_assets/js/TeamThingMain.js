@@ -43,6 +43,8 @@ $("#editor").kendoEditor({
 	]
 });
 
+$('.users-tray').hide();
+
 /*
 |--------------------------------------------------------------------------
 |	END: INIT FUNCTIONS
@@ -186,7 +188,7 @@ $("#creatething").click(function(){
 
 	$('a.users-count').bind("click", function(event) {
   		event.preventDefault();
-		$(this).parent('.thing').children('.users-tray').slideToggle(1500);
+		$(this).parent('.thing').children('.users-tray').slideToggle(500);
 	});
 
 });
