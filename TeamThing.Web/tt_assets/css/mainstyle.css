@@ -218,10 +218,10 @@ width:960px;}
 	-webkit-mask: url(../images/picmask.png); 
 	float:right;
 	margin-left:10px;
-	border:1px solid #ffffff;
+	/*border:1px solid #ffffff;
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
   	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
-  	box-shadow:         3px 3px 5px 6px #ccc;
+  	box-shadow:         3px 3px 5px 6px #ccc;*/
 }
 
 #creatething:before {
