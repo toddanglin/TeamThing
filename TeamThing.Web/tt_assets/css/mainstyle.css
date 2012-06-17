@@ -227,7 +227,7 @@ width:960px;}
 #userpic, #userpic img{
 	width: 55px;
 	height: 55px;
-	-webkit-border-radius: 30px;
+	-webkit-border-radius: 55px;
 }
 
 #creatething:before {
@@ -496,7 +496,7 @@ left: 16px;
 #mainsection .list .thing img.listpic, #mainsection .list .thing img.listpic img{
 	width: 83px;
 	height: 83px;
-	-webkit-border-radius: 90px;
+	-webkit-border-radius: 83px;
 }
 
 
