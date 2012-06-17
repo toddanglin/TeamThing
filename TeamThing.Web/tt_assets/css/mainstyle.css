@@ -408,7 +408,7 @@ box-shadow: 0px 2px 2px #d8d8d8;
 	box-shadow: 0px 1px 2px 0px #9c9c9c;
 }
 
-.thing .users-tray .userpic, .thing .users-tray .userpic img{
+.myteam #myteam-members .userpic, .myteam #myteam-members .userpic img {
 	width: 55px;
 	height: 55px;
 	-webkit-border-radius: 30px;
@@ -690,7 +690,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	width: 55px;
 	height: 55px;
 	float:left;
-	margin:2px 8px 0 0;
+	margin:3px 8px 0 0;
 	background:url(../images/add-team-member.png) 0 0 no-repeat;
 }
 /*
