@@ -1,7 +1,11 @@
 @charset "UTF-8";
 /* CSS Document */
 
-/*Tabs*/
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: TABS
+|--------------------------------------------------------------------------
+*/
 
 .me-icon, .team-icon {float:left; margin-right: 5px;}
 
@@ -53,12 +57,17 @@
 	height: 39px;
 	padding:10px;
 }
+/*
+|--------------------------------------------------------------------------
+|	END: TABS
+|--------------------------------------------------------------------------
+*/
 
-
-/*Checkbox*/
-/* ----------- Checkbox */
-
-
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: THING STATUS CHECKBOX
+|--------------------------------------------------------------------------
+*/
 input[type="checkbox"] {
 	-webkit-appearance:none;
 	outline: none;
@@ -173,6 +182,11 @@ input[type="checkbox"]:checked:hover:after {
 		from( hsl(9,66%,60%) ), to( hsl(9,55%,48%) )
 	);
 }
+/*
+|--------------------------------------------------------------------------
+|	END: THING STATUS CHECKBOX
+|--------------------------------------------------------------------------
+*/
 
 /*Start CSS*/
 
@@ -207,7 +221,11 @@ margin-right:auto;
 width:960px;}
 
 
-
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: USER INFO
+|--------------------------------------------------------------------------
+*/
 #userinfo {float:right; width:150px; text-align:right; font-size:18px; padding-bottom:5px;overflow: hidden;text-overflow: ellipsis;}
 
 .usernav {white-space:nowrap; font-size:14px;}
@@ -229,7 +247,17 @@ width:960px;}
 	height: 55px;
 	-webkit-border-radius: 55px;
 }
+/*
+|--------------------------------------------------------------------------
+|	END: USER INFO
+|--------------------------------------------------------------------------
+*/
 
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: CREATE THING BUTTON
+|--------------------------------------------------------------------------
+*/
 #creatething:before {
 	position: absolute;
 	right:101%;
@@ -267,7 +295,27 @@ width:960px;}
 	top: 50%;
 	margin-top: -14px;
 }
+/*
+|--------------------------------------------------------------------------
+|	END: CREATE THING BUTTON
+|--------------------------------------------------------------------------
+*/
 
+#main {
+	margin-left:auto;
+	margin-right:auto;
+	width:960px;
+}
+
+aside {float:right; width: 260px;}
+
+aside p {padding:5px 20px;}
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: SIDEBAR TEAM LIST POD
+|--------------------------------------------------------------------------
+*/
 #teamlist {float:right; width:auto;}
 
 #teamlist:before {
@@ -308,15 +356,11 @@ width:960px;}
 	top: 50%;
 	margin-top: -14px;
 }
-
-
-#main {margin-left:auto;
-margin-right:auto;
-width:960px;}
-
-aside {float:right; width: 260px;}
-
-aside p {padding:5px 20px;}
+/*
+|--------------------------------------------------------------------------
+|	END: SIDEBAR TEAM LIST POD
+|--------------------------------------------------------------------------
+*/
 
 header.section { color:#808080; padding:10px;margin-top:3px; border-bottom:1px solid #cccccc;
 background-color:f9f9f9;
@@ -349,10 +393,12 @@ box-shadow: 0px 2px 2px #d8d8d8;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;}
 	
-	
-		#tabstrip {background-color:#ffffff; border:0; margin:0; padding:0;}
-	
-	
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: TAB STRIP STRUCTURE
+|--------------------------------------------------------------------------
+*/	
+#tabstrip {background-color:#ffffff; border:0; margin:0; padding:0;}
 
 #tabstrip ul li {color:#808080; padding:10px;margin-top:3px; margin-bottom: -10px; height:23px;
 background-color:f9f9f9;
@@ -392,6 +438,12 @@ background-image: -webkit-gradient(
 font-size:18px;
 text-shadow: 1px 1px 2px #ccc;
 font-family: Helvetica, helvetica; padding:10px;}
+/*
+|--------------------------------------------------------------------------
+|	END: TAB STRIP STRUCTURE
+|--------------------------------------------------------------------------
+*/	
+
 
 .plus {float:right; border-left: 1px solid #cccccc; padding:3px 10px;}
 
@@ -409,12 +461,79 @@ font-family: Helvetica, helvetica; padding:10px;}
 	padding:20px;
 }
 
+.listitem { display:block;
+position:relative;
+left:35px;
+width:510px;
+
+	position: relative;
+	background: #ffffff;
+	color:#333;
+	border: 1px solid #cccccc;
+	padding:6px 15px 6px 0px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	z-index:200;
+	margin: 5px 65px;
+	height:74px;
+	
+}
+
+.listitem:after, .listitem:before {
+	right: 99.5%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	z-index:250;
+}
+
+.listitem:after {
+	border-right-color: #ffffff;
+	border-width: 43px;
+	top: 50%;
+	margin-top: -43px;
+}
+
+.listitem:before {
+	border-right-color: #cccccc;
+	border-width: 44px;
+	top: 50%;
+	margin-top: -44px;
+}	
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: THING POD
+|--------------------------------------------------------------------------
+*/	
 .thing {
 	/*clear:both;*/
 	margin-bottom:20px;
 	position:relative;
 	display:block;
 	overflow:visible;
+}
+
+.thing img.listpic {
+	width:83px; 
+	height: 83px;
+	/*-webkit-mask: url(../images/listpicmask.png); */
+	float:left;
+	position:relative; 
+	z-index:260;
+	border:2px solid #fff;
+	-webkit-box-shadow: 0px 1px 2px 0px #9c9c9c;
+	box-shadow: 0px 1px 2px 0px #9c9c9c;
+}
+
+.thing img.listpic, .thing img.listpic img {
+	width: 83px;
+	height: 83px;
+	-webkit-border-radius:30px;
 }
 
 .thing .users-count {
@@ -449,6 +568,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	text-shadow:none;
 }
 
+/* ---------- THING CONTROLS ---------- */
 .thingcontrols {float:right;}
 
 .star {float:right;
@@ -522,69 +642,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	background-position:-19px 0px;
 }
 
-#mainsection .list .thing img.listpic {
-	width:83px; 
-	height: 83px;
-	/*-webkit-mask: url(../images/listpicmask.png); */
-	float:left;
-	position:relative; 
-	z-index:260;
-	border:2px solid #fff;
-	-webkit-box-shadow: 0px 1px 2px 0px #9c9c9c;
-	box-shadow: 0px 1px 2px 0px #9c9c9c;
-}
-
-#mainsection .list .thing img.listpic, #mainsection .list .thing img.listpic img {
-	width: 83px;
-	height: 83px;
-	-webkit-border-radius:30px;
-}
-
-
-.listitem { display:block;
-position:relative;
-left:35px;
-width:510px;
-
-	position: relative;
-	background: #ffffff;
-	color:#333;
-	border: 1px solid #cccccc;
-	padding:6px 15px 6px 0px;
-	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;
-	border-radius: 7px;
-	z-index:200;
-	margin: 5px 65px;
-	height:74px;
-	
-}
-
-.listitem:after, .listitem:before {
-	right: 99.5%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-	z-index:250;
-}
-
-.listitem:after {
-	border-right-color: #ffffff;
-	border-width: 43px;
-	top: 50%;
-	margin-top: -43px;
-}
-
-.listitem:before {
-	border-right-color: #cccccc;
-	border-width: 44px;
-	top: 50%;
-	margin-top: -44px;
-}
-
+/* ---------- USERS TRAY ---------- */
 .thing .users-tray {
 	margin:0;
 	padding:5px;
@@ -615,3 +673,8 @@ width:510px;
 	height: 55px;
 	-webkit-border-radius: 55px;
 }
+/*
+|--------------------------------------------------------------------------
+|	END: THING POD
+|--------------------------------------------------------------------------
+*/	
