@@ -84,7 +84,8 @@ namespace TeamThing.Web.Core.Mappers
                 Id = t.Id,
                 Description = t.Description,
                 Status = t.Status.ToString(),
-                IsStarred = t.IsStarred
+                IsStarred = t.IsStarred,
+                TeamId = t.TeamId
             };
         }
 

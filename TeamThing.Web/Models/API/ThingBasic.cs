@@ -6,5 +6,6 @@ namespace TeamThing.Web.Models.API
         public string Description { get; set; }
         public bool IsStarred{ get; set; }
         public string Status { get; set; }
+        public int TeamId { get; set; }
     }
 }
