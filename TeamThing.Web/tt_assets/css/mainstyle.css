@@ -85,7 +85,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:before, input[type="checkbox"]:after {
 	font: bold 12px helvetica;
-	line-height:20px;
+	line-height:5px;
 	text-align: 	center;
 	position: 	absolute;
 	z-index: 	1;
@@ -633,12 +633,13 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 /* ---------- USERS TRAY ---------- */
 .thing .users-tray {
-	margin:0 0 5px 100px;
+	margin:0 0 5px 110px;
 	padding:5px;
 	background-color:#e6e6e6;
 	border:1px #999 solid;
 	-webkit-border-radius: 0px 0px 5px 5px;
 	border-radius: 0px 0px 5px 5px;
+	border-top:none;
 	position:relative;
 	display:block;
 	overflow:visible;
