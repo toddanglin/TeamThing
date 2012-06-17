@@ -3,14 +3,6 @@
 |	BEGIN: FUNCTION JUNCTION
 |--------------------------------------------------------------------------
 */
-function JumpToMain(TeamID) {
-	
-	if (TeamID != '' && TeamID.length > 0 && !isNaN(TeamID))
-	{
-		location.href="../main.html?teamid="+TeamID;
-	}
-}
-
 function ActivateListViewButtons() {
 	$('.users-tray').hide();
 	
@@ -23,6 +15,17 @@ function ActivateListViewButtons() {
   		event.preventDefault();
 		$(this).addClass('active');
 	});
+}
+
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
 }
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +88,11 @@ $("#statusfilterlist").kendoDropDownList();
 				dataSource: TeamsOutput.TeamsList,
 				index: 0
 			});
+			var onSelect = function(e) {
+				console.log('Selected:'+e.item);
+    			window.location.href = "../main.html?teamid="+e.item+"";
+			};
+			$("#jumpMenu").data("kendoComboBox").bind("select", onSelect);
 		}
 	);
 /*
@@ -102,7 +110,7 @@ function GetTeamThings(TeamID) {
 	$.get(
 		APPURL+'/api/team/'+TeamID+'/things',
     	function(TeamThingsData) { 
-			console.log(TeamThingsData);
+			console.log('Team ID: ' + TeamID + TeamThingsData);
 			TeamThingsOutput = '';
 			for(i=0;i<TeamThingsData.length;i++) {
 				
@@ -149,7 +157,7 @@ function GetTeamThings(TeamID) {
 	);
 }
 
-GetTeamThings(10);
+GetTeamThings(getQueryVariable('teamid'));
 /*
 |--------------------------------------------------------------------------
 |	END: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
@@ -212,7 +220,7 @@ function GetMyThings(UserID) {
 	);
 }
 
-GetMyThings(11);
+GetMyThings(11); //TO DO: This number needs to be dynamic
 /*
 |--------------------------------------------------------------------------
 |	END: GET MY THINGS AND LIST THEM OUT
