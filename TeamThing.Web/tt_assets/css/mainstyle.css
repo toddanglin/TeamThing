@@ -668,8 +668,12 @@ font-family: Helvetica, helvetica; padding:10px;}
 	margin-right:13px;
 	cursor:pointer;
 }
-	
-.icon_complete:hover {
+
+.icon_complete a {
+	display:block;
+}
+
+.icon_complete a:hover {
 	background-position:-27px 0;
 }
 
@@ -682,8 +686,12 @@ font-family: Helvetica, helvetica; padding:10px;}
 	margin-right:5px;
 	cursor:pointer;
 }
-	
-.icon_delete:hover {
+
+.icon_delete a {
+	display:block;
+}
+
+.icon_delete a:hover {
 	background-position:-20px 0px;
 }
 
@@ -696,8 +704,12 @@ font-family: Helvetica, helvetica; padding:10px;}
 	margin-right:13px;
 	cursor:pointer;
 }
-	
-.icon_edit:hover {
+
+.icon_edit a {
+	display:block;
+}
+
+.icon_edit a:hover {
 	background-position:-21px 0px;
 }
 
@@ -710,8 +722,12 @@ font-family: Helvetica, helvetica; padding:10px;}
 	margin-right:13px;
 	cursor:pointer;
 }
-	
-.icon_share:hover {
+
+.icon_share a {
+	display:block;
+}
+
+.icon_share a:hover {
 	background-position:-21px 0px;
 }
 
