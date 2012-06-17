@@ -73,11 +73,19 @@
 |--------------------------------------------------------------------------
 */
 
-#tabstrip .list-filters {
+#tabstrip #statusfilter {
 	position:absolute;
-	top:0;
+	top:10px;
 	right:0;
+	height:32px;
+	margin:0;
+	padding:0;
 	display:block;
+	background:none;
+}
+
+#statusfilter #statusfilterlist {
+	width:100px;	
 }
 
 /*
@@ -346,7 +354,7 @@ aside p {padding:5px 20px;}
 	background: #358fff;
 	color:#ffffff;
 	border: 1px solid #c2e1f5;
-	padding:1px 3px;
+	padding:5px;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
@@ -756,7 +764,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	width: 55px;
 	height: 55px;
 	float:left;
-	margin:3px 8px 0 0;
+	margin:0 8px 0 0;
 	background:url(../images/add-team-member.png) 0 0 no-repeat;
 }
 /*
@@ -767,4 +775,8 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .clear-float {
 	clear:both;
+}
+
+.k-combobox, #statusfilter #statusfilterlist {
+	font-size:10px!important;
 }

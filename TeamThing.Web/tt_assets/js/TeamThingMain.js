@@ -43,6 +43,8 @@ $("#editor").kendoEditor({
 	]
 });
 
+$("#statusfilterlist").kendoDropDownList();
+
 $('.users-tray').hide();
 
 /*
