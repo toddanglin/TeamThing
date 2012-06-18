@@ -143,6 +143,23 @@ function ActivateListViewButtons() {
 	});
 	// ----/ Complete A Thing ---- //
 	
+	// ---- Delete A Thing ---- //
+	$('.icon_delete a').bind("click", function(event) {
+		event.preventDefault();
+		
+		ThisThing = $(this).parent('.icon_delete').parent('.iconcontrols').parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing'); // traversing the divs
+		ThisThingID = ThisThing.attr('id');
+		
+		console.log(ThisThingID);
+		ThisThingID = ThisThingID.replace('teamthing-','');
+		
+		UpdateThing(ThisThingID,'Deleted');
+		
+		ThisThing.fadeOut(750);
+
+	});
+	// ----/ Delete A Thing ---- //
+	
 	$('#loading-div').remove();
 }
 /*
@@ -323,7 +340,9 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 								}
 								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
 								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
-								TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
+								if(TeamThingsData[i].status != 'Deleted') {
+									TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
+								}
               				TeamThingsOutput+='</span>';
                        TeamThingsOutput+='</span>';
                     TeamThingsOutput+='</div>';
@@ -345,7 +364,6 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 			
 			$(MyTeamThingsListDiv).html(TeamThingsOutput);
 			
-			ActivateListViewButtons();
 		}
 	);
 }
@@ -403,7 +421,9 @@ function GetMyThings(UserID,MyThingsFilter) {
 								}
 								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
 								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
-								TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
+								if(TeamThingsData[i].status != 'Deleted') {
+									TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
+								}
               				TeamThingsOutput+='</span>';
                        TeamThingsOutput+='</span>';
                     TeamThingsOutput+='</div>';
@@ -425,13 +445,13 @@ function GetMyThings(UserID,MyThingsFilter) {
 			
 			$(MyThingsListDiv).html(TeamThingsOutput);
 			
-			ActivateListViewButtons();
+			ActivateListViewButtons();  // We're triggering this function once, procedurally because it's only necesarry to do so once.
 
 		}
 	);
 }
 
-GetMyThings(LoggedInUserID,''); //TO DO: This number needs to be dynamic
+GetMyThings(LoggedInUserID,'');
 /*
 |--------------------------------------------------------------------------
 |	END: GET MY THINGS AND LIST THEM OUT
