@@ -123,6 +123,9 @@ namespace TeamThing.Model
             mapping.HasProperty(m => m.IsDeleted)
                    .HasColumnType("bit");
 
+            mapping.HasProperty(m => m.IsStarred)
+                   .HasColumnType("bit");
+
             mapping.HasAssociation(m => m.AssignedTo)
                    .WithOpposite(t => t.Thing)
                    .IsManaged()

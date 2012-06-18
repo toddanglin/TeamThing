@@ -142,6 +142,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\JasmineController.cs" />
     <Compile Include="Controllers\TeamThingController.cs" />
     <Compile Include="Core\Security\AuthFactory.cs" />
     <Compile Include="Core\Security\BasicUserData.cs" />
@@ -187,6 +188,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\jasmine\jasmine.css" />
+    <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="Content\mobile\html5reset-1.6.1.css" />
     <Content Include="Content\mobile\img\bkgndCarbon.png" />
     <Content Include="EndPointTester.html" />
@@ -194,6 +197,13 @@
     <Content Include="Images\unlocked.png" />
     <Content Include="index_ORIG.html" />
     <Content Include="main.html" />
+    <Content Include="Scripts\endpointTest\testDataProvider.js" />
+    <Content Include="Scripts\endpointTest\ThingSpec.html" />
+    <Content Include="Scripts\endpointTest\ThingSpec.js" />
+    <Content Include="Scripts\endpointTest\Song.js" />
+    <Content Include="Scripts\endpointTest\SpecHelper.js" />
+    <Content Include="Scripts\jasmine\jasmine-html.js" />
+    <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\localStore.js" />
     <Content Include="Scripts\dataProvider.js" />
     <Content Include="Scripts\mobile\MD5.js" />
@@ -256,7 +266,7 @@
     <Content Include="tt_assets\images\google-signin-btn.jpg" />
     <Content Include="tt_assets\images\jquery-uniform-sprite-tt.png" />
     <Content Include="tt_assets\images\listpic.png" />
-	<Content Include="tt_assets\images\listpic-default.png" />
+    <Content Include="tt_assets\images\listpic-default.png" />
     <Content Include="tt_assets\images\listpicmask.png" />
     <Content Include="tt_assets\images\login-panel-divet-top.jpg" />
     <Content Include="tt_assets\images\my-things.png" />
@@ -274,16 +284,16 @@
     <Content Include="tt_assets\images\teamlist.png" />
     <Content Include="tt_assets\images\toddpic.png" />
     <Content Include="tt_assets\images\tt_logo.png" />
-	<Content Include="tt_assets\images\add-team-member.png" />
-	<Content Include="tt_assets\images\plus.png" />
-	<Content Include="tt_assets\images\listpic-halo.png" />
+    <Content Include="tt_assets\images\add-team-member.png" />
+    <Content Include="tt_assets\images\plus.png" />
+    <Content Include="tt_assets\images\listpic-halo.png" />
     <Content Include="tt_assets\images\_notes\dwsync.xml" />
     <Content Include="tt_assets\js\jquery-min.js" />
     <Content Include="tt_assets\js\jquery.easing.1.3.js" />
     <Content Include="tt_assets\js\jquery.uniform.min.js" />
     <Content Include="tt_assets\js\oauth.js" />
-	<Content Include="tt_assets\js\TeamThingMain.js" />
-	<Content Include="tt_assets\js\TeamThingSignIn.js" />
+    <Content Include="tt_assets\js\TeamThingMain.js" />
+    <Content Include="tt_assets\js\TeamThingSignIn.js" />
     <Content Include="tt_assets\js\_notes\dwsync.xml" />
     <Content Include="tt_assets\kendoui\js\cultures\kendo.culture.af-ZA.min.js" />
     <Content Include="tt_assets\kendoui\js\cultures\kendo.culture.af.min.js" />
@@ -815,6 +825,8 @@
     <None Include="Mobile\testdata\teamSearch.json" />
     <None Include="Mobile\testdata\userLogin.json" />
     <None Include="Mobile\testdata\userteamthings.json" />
+    <Content Include="Views\Jasmine\SpecRunner.cshtml" />
+    <Content Include="Scripts\jasmine\MIT.LICENSE" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
