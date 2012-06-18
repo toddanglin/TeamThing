@@ -18,17 +18,24 @@ function ActivateListViewButtons() {
   		event.preventDefault();
 		$(this).addClass('active');
 	});
+	
+	$('#loading-div').remove();
 }
 
-function getQueryVariable(variable)
-{
-       var query = window.location.search.substring(1);
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == variable){return pair[1];}
-       }
-       return(false);
+function SetUpLoadingAnim(ParentDiv) {
+	$(ParentDiv).append('<div id="loading-div"><img src="tt_assets/kendoui/styles/Silver/loading-image.gif"><div>');
+	ParentDivHeight = $(ParentDiv).height();
+	$(ParentDiv+' #loading-div').css('height', ParentDivHeight+'px');
+}
+
+function getQueryVariable(variable){
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+		if(pair[0] == variable){return pair[1];}
+	}
+	return(false);
 }
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +117,9 @@ $("#statusfilterlist").kendoDropDownList();
 |--------------------------------------------------------------------------
 */
 function GetTeamThings(TeamID) {
+	
+	SetUpLoadingAnim('.myteamsthingslist .list');
+	
 	$.get(
 		APPURL+'/api/team/'+TeamID+'/things',
     	function(TeamThingsData) { 
@@ -155,6 +165,7 @@ function GetTeamThings(TeamID) {
 			}
 			
 			$('.myteamsthingslist .list').html(TeamThingsOutput);
+			
 			ActivateListViewButtons();
 		}
 	);
@@ -173,6 +184,9 @@ GetTeamThings(getQueryVariable('teamid'));
 |--------------------------------------------------------------------------
 */
 function GetMyThings(UserID) {
+	
+	SetUpLoadingAnim('.mythingslist .list');
+	
 	$.get(
 		APPURL+'/api/user/'+UserID+'/things',
     	function(TeamThingsData) { 
@@ -218,6 +232,7 @@ function GetMyThings(UserID) {
 			}
 			
 			$('.mythingslist .list').html(TeamThingsOutput);
+			
 			ActivateListViewButtons();
 		}
 	);
@@ -250,8 +265,34 @@ UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
 |--------------------------------------------------------------------------
 |	END: GET LOGGED IN USER'S PROFILE DETAILS
 |--------------------------------------------------------------------------
-*/	
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: UPDATE A THINGS STATUS
+|--------------------------------------------------------------------------
+*/
+function UpdateThing(ThingID,NewStatus) {
 	
+	SetUpLoadingAnim('.mythingslist .list');
+	
+	$.ajax({
+  		url: APPURL+'/api/thing/'+ThingID+'/star',
+  		type: 'PUT',
+  		success: function(TeamThingsData) {
+    		console.log(TeamThingsData);
+			TeamThingsOutput = '';
+  		}
+	});
+	
+}
+UpdateThing(54,'InProgress'); // TO DO: Assign this function to all thing buttons
+/*
+|--------------------------------------------------------------------------
+|	END: UPDATE A THINGS STATUS
+|--------------------------------------------------------------------------
+*/
+
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: ADD TO TEAM WINDOW AND FUNCTIONS
