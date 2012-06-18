@@ -96,7 +96,12 @@
 		</div>
         <!-- END: STATUS FILTER -->
     </div>
-    <div id="addtoteam"> Pick me!!! Pick me!!! </div>
+    
+    <!-- BEGIN: ADD TEAM USERS WINDOW -->
+    <div id="addtoteam">Pick me!!! Pick me!!!</div>
+    <!-- END: ADD TEAM USERS WINDOW -->
+    
+    <!-- BEGIN: CREATE THING WINDOW -->
     <div id="createthinginfo">
     <ul>
     	<li>
@@ -110,8 +115,24 @@
         <li>
         	<button class="k-button" type="submit" id="createthingbtn">Create Thing</button>
         </li>
-        </ul>
-    </div> 
+    </ul>
+    </div>
+    <!-- END: CREATE THING WINDOW -->
+    
+    <!-- BEGIN: EDIT THING WINDOW -->
+    <div id="editthinginfo">
+    <ul>
+    	<li>
+        	<label for="thingdescriptionedit" class="required">Description: </label>
+        	<input type="text" id="thingdescriptionedit" name="thingdescriptionedit" class="k-textbox" required validationMessage="Please enter a description" size="50" style="width:365px;" />
+        </li>
+        <li>
+        	<button class="k-button" type="submit" id="updatethingbtn">Update Thing</button>
+        </li>
+    </ul>
+    </div>
+    <!-- END: EDIT THING WINDOW -->
+    
   </div>
 </div>
 <script src="tt_assets/js/TeamThingMain.js"></script>
