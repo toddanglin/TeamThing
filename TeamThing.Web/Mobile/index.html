@@ -18,6 +18,13 @@
 	<div data-role="view" id="vwThings" data-show="listThingsInit" data-title="Team Thing">
 	     <ul id="lstThings" class="things">      	
 	     </ul>
+         <ul data-role="actionsheet" id="thingActions" data-open="onOpenThingActionSheet">	
+            <li class="km-actionsheet-title">Status:</li>	            
+            <li id="asBtnCompleted"><a data-status="Completed" data-action="updateThingStatusComplete">Complete</a></li>
+            <li id="asBtnInProgress"><a  data-status="InProgress" data-action="updateThingStatusInProgress">In-Progress</a></li>	
+            <li id="asBtnDelayed"><a data-status="Delayed" data-action="updateThingStatusDelay">Delay</a></li>
+            <li id="asBtnDeleted"><a data-status="Deleted" data-action="updateThingStatusDelete" class="km-button delete">Delete</a></li>            
+         </ul>
 	     <div id="msgNoThings" style="width: 250px;text-align:center;margin: 50px auto;display: none;">
 	     	<h2>No<b>thing</b> to do!</h2>
 	     	<p>
@@ -39,7 +46,10 @@
 	</div>
 
 	<script type="text/x-kendo-template" id="tmplThingItem">
-		<a href="thingDetail.html?id=#= data.id #" data-role="listview-link" class="km-listview-link">	
+		<a href="\\#thingActions" 
+            data-actionsheet-context="#:data.id#;#:data.status#"
+            data-rel="actionsheet"
+            data-role="listview-link" class="km-listview-link">	
 			<div class="thingTitle">#= data.description #</div>
 		</a>
 	</script>
@@ -243,7 +253,72 @@
 		   		}
 	   		});
 	   	});
-	   }   	   
+}
+
+var asThingId = null;
+function onOpenThingActionSheet(args) {
+    console.log("ACTION SHEET OPEN", args);
+    var container = args.sender.element,
+        contextArgs = args.context.split(";"),
+		status = contextArgs[1],
+        id = contextArgs[0];
+
+    //$(container).off("click", "a");
+    //$(container).on("click", "a", function (e) { updateThingStatus(e, id); });
+    asThingId = id;
+
+    if(status != "Deleted") {
+		$(container).children("#asBtnDeleted").show();
+    } else {
+        $(container).children("#asBtnDeleted").hide();
+    }
+    
+    if(status != "Completed" && status != "Deleted" && status != "Delayed") {
+		$(container).children("#asBtnCompleted").show();
+		$(container).children("#asBtnDelayed").show();
+		$(container).children("#asBtnInProgress").hide();
+	}else{
+    $(container).children("#asBtnInProgress").show();
+    $(container).children("#asBtnDelayed").hide();
+	}
+}
+
+//Need separate method handlers to distinguish action sheet events (BUG: Need to improve AS behavior)
+function updateThingStatusComplete(args) {
+    updateThingStatus("Completed", args.context.split(";")[0]);
+}
+
+function updateThingStatusDelay(args) {
+    updateThingStatus("Delayed", args.context.split(";")[0]);
+}
+
+function updateThingStatusInProgress(args) {
+    updateThingStatus("InProgress", args.context.split(";")[0]);
+}
+
+function updateThingStatusDelete(args) {
+    updateThingStatus("Deleted", args.context.split(";")[0]);
+}
+
+function updateThingStatus(action, id) {
+    var app = teamThingApp;
+        //action = args, //$(args.target.context).data("status"),
+        //id = asThingId;  //args.context.split(";")[0];
+
+    console.log("THING UPDATE", action, id);
+
+    app.showLoading("Updating...");
+    $.when(app.updateThingStatus(id, action)).then(function (result) {
+        app.hideLoading();
+
+        if (result || action == "Delete") {
+            app.setThingsRefreshFlag();
+            app.loadThingsView();
+        } else {
+            alert("Technical glitch. Check your connection and try again later.");
+        }
+    });
+}	   
 	</script>
 </body>
 </html>
