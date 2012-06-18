@@ -46,7 +46,7 @@
 }
 
 .tt .km-content, body {
-	background: #111 url(images/bkgndCarbon.png) repeat;
+	background: #E8E8E8;
 }
 
 .tt .loginList{
@@ -87,7 +87,7 @@
 
 /*Customize button color*/
 .km-ios .km-button{
-	background-color: #73c1da;
+	background-color: #0199e7;
 }
 
 .km-ios .km-button:active{
@@ -194,7 +194,8 @@ textarea{
 }
 
 #vwLogin .km-content{
-	background: url(images/bkgndLogin_320.png) no-repeat 50% 0, url(images/bkgndCarbon.png) repeat;
+	background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 0 no-repeat;
+	
 }
 
 #vwLogin .km-content .wrapper
@@ -209,7 +210,7 @@ textarea{
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2){
 	#vwLogin .km-content{
-		background: url(images/bkgndLogin.png) no-repeat 50% 0,url(images/bkgndCarbon.png) repeat;
+		background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 0 no-repeat;
 		background-size: 320px, 12px;
 	}
 
