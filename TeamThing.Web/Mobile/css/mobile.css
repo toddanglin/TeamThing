@@ -194,7 +194,8 @@ textarea{
 }
 
 #vwLogin .km-content{
-	background: #E8E8E8
+	background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 0 no-repeat;
+	
 }
 
 #vwLogin .km-content .wrapper
@@ -209,7 +210,7 @@ textarea{
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2){
 	#vwLogin .km-content{
-		background: #E8E8E8;
+		background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 0 no-repeat;
 		background-size: 320px, 12px;
 	}
 
