@@ -21,12 +21,12 @@
 
 /*List Item Styles*/
 .tt .km-listview, .tt .km-list{
-	background: #444;
+	background: #FFF;
 }
 
 .tt .km-listview li{
-	color: #EEE;
-	border-color: #222;
+	color: #292929;
+	border-color: #E8E8E8;
 }
 
 .tt .km-listgroup > li, .tt .km-group-title {
