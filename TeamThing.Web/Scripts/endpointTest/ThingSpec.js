@@ -1,20 +1,35 @@
 
 ///<reference path="../jquery-1.7.1.min.js"/>
 
+var baseAddress = "http://localhost:5079/api/";
+//var baseAddress = "http://teamthing.apphb.com/api/";
+
+
 describe("A thing", function () {
 
-    //var baseAddress = "http://localhost:5079/api";
-    var baseAddress = "http://teamthing.apphb.com/api";
-
+    var baseThingAddress = baseAddress + "thing/";
     var createdThing;
 
     function createdThingBaseAddress() {
         if (createdThing) {
-            return baseAddress + "/thing/" + createdThing.id;
+            return baseThingAddress + createdThing.id;
         }
 
         alert("Created thing is null, all tests will fail.");
     }
+
+    it("should be able to be retrived in a list", function () {
+
+        var successCallback = jasmine.createSpy();
+        get(baseThingAddress, successCallback, null);
+
+        waitsFor(function () {
+            return successCallback.callCount > 0;
+        });
+        runs(function () {
+            expect(successCallback).toHaveBeenCalled();
+        });
+    });
 
     it("should be able to be created", function () {
 
@@ -47,6 +62,21 @@ describe("A thing", function () {
     });
 
     describe("Once created", function () {
+
+        it("should be able to be retrived by its id", function () {
+
+
+            var successCallback = jasmine.createSpy();
+            get(createdThingBaseAddress(), successCallback, null);
+
+            waitsFor(function () {
+                return successCallback.callCount > 0;
+            });
+            runs(function () {
+                expect(successCallback).toHaveBeenCalled();
+            });
+        });
+
         it("should be able to be updated", function () {
             var successCallback = jasmine.createSpy();
 

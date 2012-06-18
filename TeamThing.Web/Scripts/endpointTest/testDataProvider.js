@@ -37,8 +37,24 @@ function put(url, data, successCallback, errorCallback) {
         url: url,
         type: "PUT",
         data: JSON.stringify(data),
-        contentType: "application/json;charset=utf-8"
-    })
+        contentType: "application/json;charset=utf-8" })
+        .success(function (resource) {
+            if (successCallback) {
+                successCallback(resource);
+            }
+        })
+        .error(function (result) {
+            if (errorCallback) {
+                errorCallback(result);
+            }
+        });
+}
+
+function get(url, successCallback, errorCallback) {
+    $.ajax({
+        url: url,
+        type: "GET",
+        contentType: "application/json;charset=utf-8"})
         .success(function (resource) {
             if (successCallback) {
                 successCallback(resource);
