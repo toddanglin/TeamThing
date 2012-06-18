@@ -1,3 +1,6 @@
+
+LoggedInUserID = 22;
+
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: FUNCTION JUNCTION
@@ -220,7 +223,7 @@ function GetMyThings(UserID) {
 	);
 }
 
-GetMyThings(11); //TO DO: This number needs to be dynamic
+GetMyThings(LoggedInUserID); //TO DO: This number needs to be dynamic
 /*
 |--------------------------------------------------------------------------
 |	END: GET MY THINGS AND LIST THEM OUT
@@ -232,15 +235,17 @@ GetMyThings(11); //TO DO: This number needs to be dynamic
 |	BEGIN: GET LOGGED IN USER'S PROFILE DETAILS
 |--------------------------------------------------------------------------
 */
-                    
+function UserProfile(UserID) {                   
 	$.get(
-		APPURL+'/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'toddanglin@gmail.com\'',
+		APPURL+'/api/user/'+UserID,
     	function(UserInfo) {
 			console.log(UserInfo);
-			$('#userpic img').attr('src',UserInfo[0].imagePath);
-			$('#userinfo').html(UserInfo[0].emailAddress+'<br /><span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>');
+			$('#userpic img').attr('src',UserInfo.imagePath);
+			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>');
 		}
 	);
+}
+UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
 /*
 |--------------------------------------------------------------------------
 |	END: GET LOGGED IN USER'S PROFILE DETAILS
