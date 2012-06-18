@@ -5,6 +5,33 @@ MyTeamThingsListDiv = '.myteamsthingslist .list';
 
 /*
 |--------------------------------------------------------------------------
+|	BEGIN: GET ANY THING'S PROPERTIES
+|--------------------------------------------------------------------------
+*/
+function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
+	console.log('Getting Thing ID: ' + ThingID);
+	$.ajax({
+  		url: APPURL+'/api/thing/'+ThingID,
+  		type: 'GET',
+  		success: function(ThingData) {
+			
+			if(ThingFilter == 'assignedTo') {
+ 				//console.log('assignedTo Length: ' + ThingData.assignedTo.length);
+				ThingPropertiesOutput = ThingData.assignedTo.length; // How many Users are assigned to this Thing
+				$(ThisDiv).text(ThingPropertiesOutput);
+			}
+			
+  		}
+	});
+}
+/*
+|--------------------------------------------------------------------------
+|	END: GET ANY THING'S PROPERTIES
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
 |	BEGIN: UPDATE A THING'S STATUS
 |--------------------------------------------------------------------------
 */
@@ -55,7 +82,7 @@ function StarThing(ThingID,NewStatus) {
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: ACTIVATE ALL THING INTERACTIONS (TRIGGERED AFTER THINGS ARE LOADED VIA API
+|	BEGIN: ACTIVATE ALL THING INTERACTIONS (TRIGGERED AFTER THINGS ARE LOADED VIA API)
 |--------------------------------------------------------------------------
 */
 function ActivateListViewButtons() {
@@ -115,11 +142,22 @@ function ActivateListViewButtons() {
 	});
 	// ----/ Complete A Thing ---- //
 	
+	/*AllMyTeamsThings = $("div[id^='teamthing-']");
+	for(i=0;i<AllMyTeamsThings.length;i++) {
+		
+		ThisThingID = AllMyTeamsThings[i].getAttribute('id');
+		ThisThingID = ThisThingID.replace('teamthing-','');
+		
+		ThisThingCount = GetThingProperties(ThisThingID,'assignedTo');
+		console.log('Thing ID: ' + ThisThingID  + ' has ' + ThisThingCount + ' Users assigned to it');
+		$(this).children('.users-count').html(ThisThingCount);
+	}*/
+	
 	$('#loading-div').remove();
 }
 /*
 |--------------------------------------------------------------------------
-|	END: ACTIVATE ALL THING INTERACTIONS (TRIGGERED AFTER THINGS ARE LOADED VIA API
+|	END: ACTIVATE ALL THING INTERACTIONS (TRIGGERED AFTER THINGS ARE LOADED VIA API)
 |--------------------------------------------------------------------------
 */
 
@@ -237,7 +275,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 	$.get(
 		ThisQueryString,
     	function(TeamThingsData) { 
-			console.log('Team ID: ' + TeamID + TeamThingsData);
+			console.log(TeamThingsData);
 			TeamThingsOutput = '';
 			for(i=0;i<TeamThingsData.length;i++) {
 				
@@ -280,7 +318,10 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
                     TeamThingsOutput+='<div class="userpic-dropzone" id="userpic-dropzone"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
-                TeamThingsOutput+='<a class="users-count" href="#">?</a>';
+
+				ThisThingAssignedToCount = GetThingProperties(TeamThingsData[i].id,'assignedTo','#teamthing-'+TeamThingsData[i].id+' a.users-count');
+				
+                TeamThingsOutput+='<a class="users-count" href="#">'+ThisThingAssignedToCount+'</a>';
           	TeamThingsOutput+='</div>';
 			}
 			
@@ -357,7 +398,10 @@ function GetMyThings(UserID,MyThingsFilter) {
                     TeamThingsOutput+='<div class="userpic-dropzone" id="userpic-dropzone"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
-                TeamThingsOutput+='<a class="users-count" href="#">?</a>';
+				
+				ThisThingAssignedToCount = GetThingProperties(TeamThingsData[i].id,'assignedTo','#teamthing-'+TeamThingsData[i].id+' a.users-count');
+				
+                TeamThingsOutput+='<a class="users-count" href="#">'+ThisThingAssignedToCount+'</a>';
           	TeamThingsOutput+='</div>';
 			}
 			
