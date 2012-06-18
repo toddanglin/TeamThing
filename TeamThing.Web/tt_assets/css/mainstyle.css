@@ -802,3 +802,8 @@ font-family: Helvetica, helvetica; padding:10px;}
 .k-combobox, #statusfilter #statusfilterlist {
 	font-size:10px!important;
 }
+
+.completed-status {
+	font-weight:bold;
+	color:#339900;
+}

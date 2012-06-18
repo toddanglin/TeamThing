@@ -1,11 +1,61 @@
-
+APPURL = 'http://teamthing.apphb.com';
 LoggedInUserID = 22;
 MyThingsListDiv = '.mythingslist .list';
 MyTeamThingsListDiv = '.myteamsthingslist .list';
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: FUNCTION JUNCTION
+|	BEGIN: UPDATE A THING'S STATUS
+|--------------------------------------------------------------------------
+*/
+function UpdateThing(ThingID,NewStatus) {
+	console.log('Updating ID: ' + ThingID + ' with Status: ' + NewStatus);
+	$.ajax({
+  		url: APPURL+'/api/thing/'+ThingID+'/updatestatus',
+  		type: 'PUT',
+		data: {
+			"UserId": LoggedInUserID,
+			'Status': NewStatus
+		},
+		dataType: 'json',
+  		success: function(TeamThingsData) {
+    		console.log(TeamThingsData);
+			TeamThingsOutput = '';
+  		}
+	});
+	
+}
+/*
+|--------------------------------------------------------------------------
+|	END: UPDATE A THING'S STATUS
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: STAR A THING
+|--------------------------------------------------------------------------
+*/
+function StarThing(ThingID,NewStatus) {
+	console.log('Updating ID: ' + ThingID + ' with Status: ' + NewStatus);
+	$.ajax({
+  		url: APPURL+'/api/thing/'+ThingID+'/star',
+  		type: 'PUT',
+  		success: function(TeamThingsData) {
+    		console.log(TeamThingsData);
+			TeamThingsOutput = '';
+  		}
+	});
+}
+/*
+|--------------------------------------------------------------------------
+|	END: STAR A THING
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: ACTIVATE ALL THING INTERACTIONS (TRIGGERED AFTER THINGS ARE LOADED VIA API
 |--------------------------------------------------------------------------
 */
 function ActivateListViewButtons() {
@@ -16,13 +66,62 @@ function ActivateListViewButtons() {
 		$(this).parent('.thing').children('.users-tray').slideToggle(250);
 	});
 	
+	// ---- Star A Thing ---- //
 	$('a.star').bind("click", function(event) {
   		event.preventDefault();
-		$(this).addClass('active');
+		
+		ThisThingID = $(this).parent('.thingcontrols').parent('.listitem').parent('.thing').attr('id'); // traversing the divs
+		ThisThingID = ThisThingID.replace('teamthing-','');
+		
+		if($(this).hasClass('active')) {
+			$(this).removeClass('active');
+			// TO DO: Need Function Call to Unstar A Thing
+		} else {
+			$(this).addClass('active');
+			StarThing(ThisThingID,'star')
+		}
+
 	});
+	// ----/ Star A Thing ---- //
+	
+	// ---- Change Thing Status ---- //
+	$("#thingstatus").click(function() {
+		
+		ThisThingID = $(this).parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing').attr('id'); // traversing the divs
+		//console.log(ThisThingID);
+		ThisThingID = ThisThingID.replace('teamthing-','');
+		
+		if($(this).is(":checked")) {
+			UpdateThing(ThisThingID,'Delayed');
+		} else {
+			UpdateThing(ThisThingID,'InProgress');
+		}
+	});
+	// ----/ Change Thing Status ---- //
+	
+	// ---- Complete A Thing ---- //
+	$('.icon_complete a').bind("click", function(event) {
+		event.preventDefault();
+		
+		ThisThingID = $(this).parent('.icon_complete').parent('.iconcontrols').parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing').attr('id'); // traversing the divs
+		console.log(ThisThingID);
+		ThisThingID = ThisThingID.replace('teamthing-','');
+		
+		UpdateThing(ThisThingID,'Completed');
+		
+		GetTeamThings(getQueryVariable('teamid'),'');
+		GetMyThings(LoggedInUserID,'');
+
+	});
+	// ----/ Complete A Thing ---- //
 	
 	$('#loading-div').remove();
 }
+/*
+|--------------------------------------------------------------------------
+|	END: ACTIVATE ALL THING INTERACTIONS (TRIGGERED AFTER THINGS ARE LOADED VIA API
+|--------------------------------------------------------------------------
+*/
 
 function SetUpLoadingAnim(ParentDiv) {
 	$(ParentDiv).append('<div id="loading-div"><img src="tt_assets/kendoui/styles/Silver/loading-image.gif"><div>');
@@ -39,11 +138,6 @@ function getQueryVariable(variable){
 	}
 	return(false);
 }
-/*
-|--------------------------------------------------------------------------
-|	END: FUNCTION JUNCTION
-|--------------------------------------------------------------------------
-*/
 
 
 $(document).ready(function() {
@@ -53,9 +147,6 @@ $(document).ready(function() {
 |	BEGIN: INIT FUNCTIONS
 |--------------------------------------------------------------------------
 */
-
-APPURL = 'http://teamthing.apphb.com';
-
 $("#tabstrip").kendoTabStrip({
 	animation:	{
 		open: {
@@ -88,7 +179,6 @@ function StatusListSelected() {
 		//}
 	}
 };
-
 /*
 |--------------------------------------------------------------------------
 |	END: INIT FUNCTIONS
@@ -161,14 +251,20 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 							TeamThingsOutput+='<a class="star" href="#"></a>';
 						}
                         TeamThingsOutput+='<span class="controls">';
-						if(TeamThingsData[i].status == 'Delayed') {
-             				TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
-						} else if(TeamThingsData[i].status == 'InProgress') {
-							TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+						if(TeamThingsData[i].status != 'Completed') {
+							if(TeamThingsData[i].status == 'Delayed') {
+             					TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+							} else if(TeamThingsData[i].status == 'InProgress') {
+								TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+							}
+						} else {
+							TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
 						}
               				TeamThingsOutput+='<br />';
               				TeamThingsOutput+='<span class="iconcontrols">';
-              					TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
+              					if(TeamThingsData[i].status != 'Completed') {
+									TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
+								}
 								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
 								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
 								TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
@@ -232,14 +328,20 @@ function GetMyThings(UserID,MyThingsFilter) {
 							TeamThingsOutput+='<a class="star" href="#"></a>';
 						}
                         TeamThingsOutput+='<span class="controls">';
-						if(TeamThingsData[i].status == 'Delayed') {
-             				TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
-						} else if(TeamThingsData[i].status == 'InProgress') {
-							TeamThingsOutput+='<input type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+						if(TeamThingsData[i].status != 'Completed') {
+							if(TeamThingsData[i].status == 'Delayed') {
+             					TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+							} else if(TeamThingsData[i].status == 'InProgress') {
+								TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+							}
+						} else {
+							TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
 						}
               				TeamThingsOutput+='<br />';
               				TeamThingsOutput+='<span class="iconcontrols">';
-              					TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
+              					if(TeamThingsData[i].status != 'Completed') {
+									TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
+								}
 								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
 								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
 								TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
@@ -298,31 +400,6 @@ UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: UPDATE A THINGS STATUS
-|--------------------------------------------------------------------------
-*/
-function UpdateThing(ThingID,NewStatus) {
-	
-	$.ajax({
-  		url: APPURL+'/api/thing/'+ThingID+'/star',
-  		type: 'PUT',
-  		success: function(TeamThingsData) {
-    		console.log(TeamThingsData);
-			TeamThingsOutput = '';
-  		}
-	});
-	
-}
-//NOT WORKING
-//UpdateThing(54,'InProgress'); // TO DO: Assign this function to all thing buttons
-/*
-|--------------------------------------------------------------------------
-|	END: UPDATE A THINGS STATUS
-|--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
 |	BEGIN: CREATE A TEAM
 |--------------------------------------------------------------------------
 */
@@ -364,11 +441,11 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
     }).data("kendoWindow");
 
 
-$(".plus").click(function(){
-    var window = $("#addtoteam").data("kendoWindow");
-    window.center();
-    window.open();
-}); 
+	$(".plus").click(function(){
+		var window = $("#addtoteam").data("kendoWindow");
+    	window.center();
+    	window.open();
+	}); 
 /*
 |--------------------------------------------------------------------------
 |	END: ADD TO TEAM WINDOW AND FUNCTIONS
@@ -387,11 +464,11 @@ $(".plus").click(function(){
         width: "400px"
     }).data("kendoWindow");
 
-$("#creatething").click(function(){
-    var window = $("#createthinginfo").data("kendoWindow");
-    window.center();
-    window.open();
-});
+	$("#creatething").click(function(){
+    	var window = $("#createthinginfo").data("kendoWindow");
+    	window.center();
+    	window.open();
+	});
 /*
 |--------------------------------------------------------------------------
 |	END: ADD THING WINDOW AND FUNCTIONS
