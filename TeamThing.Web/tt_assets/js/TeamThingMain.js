@@ -112,7 +112,7 @@ function ActivateListViewButtons() {
 	// ----/ Star A Thing ---- //
 	
 	// ---- Change Thing Status ---- //
-	$("#thingstatus").click(function() {
+	$(".thingstatus").click(function() {
 		
 		ThisThingID = $(this).parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing').attr('id'); // traversing the divs
 		//console.log(ThisThingID);
@@ -130,28 +130,18 @@ function ActivateListViewButtons() {
 	$('.icon_complete a').bind("click", function(event) {
 		event.preventDefault();
 		
-		ThisThingID = $(this).parent('.icon_complete').parent('.iconcontrols').parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing').attr('id'); // traversing the divs
+		ThisThing = $(this).parent('.icon_complete').parent('.iconcontrols').parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing'); // traversing the divs
+		ThisThingID = ThisThing.attr('id');
+		
 		console.log(ThisThingID);
 		ThisThingID = ThisThingID.replace('teamthing-','');
 		
 		UpdateThing(ThisThingID,'Completed');
 		
-		GetTeamThings(getQueryVariable('teamid'),'');
-		GetMyThings(LoggedInUserID,'');
+		ThisThing.fadeOut(750);
 
 	});
 	// ----/ Complete A Thing ---- //
-	
-	/*AllMyTeamsThings = $("div[id^='teamthing-']");
-	for(i=0;i<AllMyTeamsThings.length;i++) {
-		
-		ThisThingID = AllMyTeamsThings[i].getAttribute('id');
-		ThisThingID = ThisThingID.replace('teamthing-','');
-		
-		ThisThingCount = GetThingProperties(ThisThingID,'assignedTo');
-		console.log('Thing ID: ' + ThisThingID  + ' has ' + ThisThingCount + ' Users assigned to it');
-		$(this).children('.users-count').html(ThisThingCount);
-	}*/
 	
 	$('#loading-div').remove();
 }
@@ -225,7 +215,7 @@ function StatusListSelected() {
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: GET ALL TEAMS FOR PULLDOWN
+|	BEGIN: GET ALL TEAMS FOR JUMP MENU
 |--------------------------------------------------------------------------
 */
 function GetUsersTeams(UserID) {
@@ -256,7 +246,35 @@ function GetUsersTeams(UserID) {
 GetUsersTeams(LoggedInUserID);
 /*
 |--------------------------------------------------------------------------
-|	END: GET ALL PUBLIC TEAMS FOR PULLDOWN
+|	END: GET ALL PUBLIC TEAMS FOR JUMP MENU
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: GET ALL TEAMS FOR CREATE TEAM PULLDOWN
+|--------------------------------------------------------------------------
+*/
+function GetUsersTeamsForCreate(UserID) {
+	$.get(
+		APPURL+'/api/user/'+UserID+'/teams',
+    	function(data) { 
+			TeamsOutput='<option></option>';
+			for(i=0;i<data.length;i++) {
+				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+			}
+			$("#thingteamselect").append(TeamsOutput);
+			
+			$("#thingteamselect").kendoDropDownList({
+    			index: 0
+			});
+		}
+	);
+}
+GetUsersTeamsForCreate(LoggedInUserID);
+/*
+|--------------------------------------------------------------------------
+|	END: GET ALL TEAMS FOR CREATE TEAM PULLDOWN
 |--------------------------------------------------------------------------
 */
 
@@ -291,9 +309,9 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
                         TeamThingsOutput+='<span class="controls">';
 						if(TeamThingsData[i].status != 'Completed') {
 							if(TeamThingsData[i].status == 'Delayed') {
-             					TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+             					TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
 							} else if(TeamThingsData[i].status == 'InProgress') {
-								TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+								TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
 							}
 						} else {
 							TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
@@ -371,9 +389,9 @@ function GetMyThings(UserID,MyThingsFilter) {
                         TeamThingsOutput+='<span class="controls">';
 						if(TeamThingsData[i].status != 'Completed') {
 							if(TeamThingsData[i].status == 'Delayed') {
-             					TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+             					TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
 							} else if(TeamThingsData[i].status == 'InProgress') {
-								TeamThingsOutput+='<input id="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+								TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
 							}
 						} else {
 							TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
@@ -473,6 +491,36 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
 
 /*
 |--------------------------------------------------------------------------
+|	BEGIN: CREATE A THING
+|--------------------------------------------------------------------------
+*/
+function CreateThing(CreatedById,Description,AssignedTo,teamId) {
+	
+	$.ajax({
+  		url: APPURL+'/api/thing',
+  		type: 'POST',
+		data: {
+			'CreatedById': CreatedById,
+			'Description': Description,
+			'AssignedTo': AssignedTo,
+			'teamId': teamId
+		},
+  		success: function(CreateThingData) {
+    		console.log(CreateThing);
+			$("#createthinginfo").data("kendoWindow").close();
+			location.reload();
+  		}
+	});
+	
+}
+/*
+|--------------------------------------------------------------------------
+|	END: CREATE A THING
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
 |	BEGIN: ADD TO TEAM WINDOW AND FUNCTIONS
 |--------------------------------------------------------------------------
 */
@@ -498,7 +546,7 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: ADD THING WINDOW AND FUNCTIONS
+|	BEGIN: CREATE THING WINDOW
 |--------------------------------------------------------------------------
 */
     var window = $("#createthinginfo").kendoWindow({
@@ -513,9 +561,19 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
     	window.center();
     	window.open();
 	});
+	
+	validator = $("#createthinginfo").kendoValidator().data("kendoValidator"),
+
+    $("#createthingbtn").click(function() {
+		if (validator.validate()) {
+			CreateThing(LoggedInUserID, $('#thingdescription').val(), LoggedInUserID, $('#thingteamselect').attr('value'));
+		} else {
+             //
+		}
+	});
 /*
 |--------------------------------------------------------------------------
-|	END: ADD THING WINDOW AND FUNCTIONS
+|	END: CREATE THING WINDOW
 |--------------------------------------------------------------------------
 */
 

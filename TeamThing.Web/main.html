@@ -42,7 +42,7 @@
     <div id="creatething">Create a Thing</div>
     </a>
     <div id="teamlist">
-      <select id="jumpMenu"></select>
+		<select id="jumpMenu"></select>
     </div>
     <img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo"> </header>
 </div>
@@ -98,7 +98,19 @@
     </div>
     <div id="addtoteam"> Pick me!!! Pick me!!! </div>
     <div id="createthinginfo">
-      <textarea id="editor" rows="15" cols="55"></textarea>
+    <ul>
+    	<li>
+        	<label for="thingdescription" class="required">Description: </label>
+        	<input type="text" id="thingdescription" name="thingdescription" class="k-textbox" placeholder="Description" required validationMessage="Please enter a description" size="50" style="width:365px;" />
+        </li>
+        <li>     
+        	<label for="thingteamselect" class="required">Team: </label>
+        	<select id="thingteamselect" name="thingteamselect" class="k-dropdown" placeholder="Team" required validationMessage="Please select a team"></select>
+        </li>
+        <li>
+        	<button class="k-button" type="submit" id="createthingbtn">Create Thing</button>
+        </li>
+        </ul>
     </div> 
   </div>
 </div>

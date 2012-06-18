@@ -782,6 +782,35 @@ font-family: Helvetica, helvetica; padding:10px;}
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: CREATE THING POP UP WINDOW EDITOR
+|--------------------------------------------------------------------------
+*/
+#createthinginfo {
+	margin:0;
+	padding:0;
+	background-color:#fff;
+}
+
+#createthinginfo ul {
+	margin:5px;
+	padding:5px;
+	list-style:none;
+	position:relative;
+	display:block;
+}
+
+#createthinginfo ul li {
+	margin-bottom:20px;
+}
+
+/*
+|--------------------------------------------------------------------------
+|	END: CREATE THING POP UP WINDOW EDITOR
+|--------------------------------------------------------------------------
+*/
+
 .mythingslist .list #loading-div {
 	width:100%;
 	margin:0;
