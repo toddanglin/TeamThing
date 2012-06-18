@@ -1,5 +1,7 @@
 
 LoggedInUserID = 22;
+MyThingsListDiv = '.mythingslist .list';
+MyTeamThingsListDiv = '.myteamsthingslist .list';
 
 /*
 |--------------------------------------------------------------------------
@@ -70,8 +72,22 @@ $("#editor").kendoEditor({
 	]
 });
 
-$("#statusfilterlist").kendoDropDownList();
+$("#statusfilterlist").kendoDropDownList({
+    index: 0,
+	change: StatusListSelected
+});
 
+function StatusListSelected() {
+	ThisFilter = $('#statusfilterlist').val();
+	if(ThisFilter != 'undefined' && ThisFilter != null) {
+		//if ($(MyThingsListDiv).is(':visible')){
+			GetMyThings(LoggedInUserID,ThisFilter);
+		//}
+		//if ($(MyTeamThingsListDiv).is(':visible')){
+			GetTeamThings(getQueryVariable('teamid'),ThisFilter);
+		//}
+	}
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -84,8 +100,9 @@ $("#statusfilterlist").kendoDropDownList();
 |	BEGIN: GET ALL TEAMS FOR PULLDOWN
 |--------------------------------------------------------------------------
 */
+function GetUsersTeams(UserID) {
 	$.get(
-		APPURL+'/api/team',
+		APPURL+'/api/user/'+UserID+'/teams',
     	function(data) { 
 			TeamsOutput = { TeamsList: [] };
 			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
@@ -98,13 +115,17 @@ $("#statusfilterlist").kendoDropDownList();
 				dataSource: TeamsOutput.TeamsList,
 				index: 0
 			});
-			var onSelect = function(e) {
-				console.log('Selected:'+e.item);
-    			window.location.href = "../main.html?teamid="+e.item+"";
+			var TeamsListSelected = function(e) {
+				var dataItem = e.item.index()+1;
+				console.log(dataItem);
+                ThisTeamID = $('#jumpMenu :nth-child('+dataItem+')').attr('value');
+    			location.href = "./main.html?teamid="+ThisTeamID;
 			};
-			$("#jumpMenu").data("kendoComboBox").bind("select", onSelect);
+			$("#jumpMenu").data("kendoComboBox").bind("select", TeamsListSelected);
 		}
 	);
+}
+GetUsersTeams(LoggedInUserID);
 /*
 |--------------------------------------------------------------------------
 |	END: GET ALL PUBLIC TEAMS FOR PULLDOWN
@@ -116,12 +137,15 @@ $("#statusfilterlist").kendoDropDownList();
 |	BEGIN: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
 |--------------------------------------------------------------------------
 */
-function GetTeamThings(TeamID) {
+function GetTeamThings(TeamID,TeamThingsFilter) {
 	
-	SetUpLoadingAnim('.myteamsthingslist .list');
+	SetUpLoadingAnim(MyTeamThingsListDiv);
+	
+	ThisQueryString = '';
+	ThisQueryString = APPURL+'/api/team/'+TeamID+'/things/'+TeamThingsFilter;
 	
 	$.get(
-		APPURL+'/api/team/'+TeamID+'/things',
+		ThisQueryString,
     	function(TeamThingsData) { 
 			console.log('Team ID: ' + TeamID + TeamThingsData);
 			TeamThingsOutput = '';
@@ -164,14 +188,14 @@ function GetTeamThings(TeamID) {
           	TeamThingsOutput+='</div>';
 			}
 			
-			$('.myteamsthingslist .list').html(TeamThingsOutput);
+			$(MyTeamThingsListDiv).html(TeamThingsOutput);
 			
 			ActivateListViewButtons();
 		}
 	);
 }
 
-GetTeamThings(getQueryVariable('teamid'));
+GetTeamThings(getQueryVariable('teamid'),'');
 /*
 |--------------------------------------------------------------------------
 |	END: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
@@ -183,12 +207,16 @@ GetTeamThings(getQueryVariable('teamid'));
 |	BEGIN: GET MY THINGS AND LIST THEM OUT
 |--------------------------------------------------------------------------
 */
-function GetMyThings(UserID) {
+function GetMyThings(UserID,MyThingsFilter) {
 	
-	SetUpLoadingAnim('.mythingslist .list');
+	SetUpLoadingAnim(MyThingsListDiv);
+	
+	ThisQueryString = '';
+	ThisQueryString = APPURL+'/api/user/'+UserID+'/things/'+MyThingsFilter;
+	console.log(ThisQueryString);
 	
 	$.get(
-		APPURL+'/api/user/'+UserID+'/things',
+		ThisQueryString,
     	function(TeamThingsData) { 
 			console.log(TeamThingsData);
 			TeamThingsOutput = '';
@@ -231,14 +259,15 @@ function GetMyThings(UserID) {
           	TeamThingsOutput+='</div>';
 			}
 			
-			$('.mythingslist .list').html(TeamThingsOutput);
+			$(MyThingsListDiv).html(TeamThingsOutput);
 			
 			ActivateListViewButtons();
+
 		}
 	);
 }
 
-GetMyThings(LoggedInUserID); //TO DO: This number needs to be dynamic
+GetMyThings(LoggedInUserID,''); //TO DO: This number needs to be dynamic
 /*
 |--------------------------------------------------------------------------
 |	END: GET MY THINGS AND LIST THEM OUT
@@ -274,8 +303,6 @@ UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
 */
 function UpdateThing(ThingID,NewStatus) {
 	
-	SetUpLoadingAnim('.mythingslist .list');
-	
 	$.ajax({
   		url: APPURL+'/api/thing/'+ThingID+'/star',
   		type: 'PUT',
@@ -286,10 +313,40 @@ function UpdateThing(ThingID,NewStatus) {
 	});
 	
 }
-UpdateThing(54,'InProgress'); // TO DO: Assign this function to all thing buttons
+//NOT WORKING
+//UpdateThing(54,'InProgress'); // TO DO: Assign this function to all thing buttons
 /*
 |--------------------------------------------------------------------------
 |	END: UPDATE A THINGS STATUS
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: CREATE A TEAM
+|--------------------------------------------------------------------------
+*/
+function CreateTeam(TeamName,CreatedByID,IsPublic) {
+	
+	$.ajax({
+  		url: APPURL+'/api/team',
+  		type: 'POST',
+		data: {
+			'name':''+TeamName+'',
+			'createdById':CreatedByID,
+			'ispublic':IsPublic
+		},
+  		success: function(CreateTeamData) {
+    		console.log(CreateTeamData);
+			CreateTeamOutput = '';
+  		}
+	});
+	
+}
+//CreateTeam('Graham\'s Test Team', LoggedInUserID, true); // TO DO: Assign this function to all thing buttons
+/*
+|--------------------------------------------------------------------------
+|	END: CREATE A TEAM
 |--------------------------------------------------------------------------
 */
 
