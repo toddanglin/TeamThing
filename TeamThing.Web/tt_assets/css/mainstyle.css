@@ -787,13 +787,13 @@ font-family: Helvetica, helvetica; padding:10px;}
 |	BEGIN: CREATE THING POP UP WINDOW EDITOR
 |--------------------------------------------------------------------------
 */
-#createthinginfo {
+#createthinginfo, #editthinginfo {
 	margin:0;
 	padding:0;
 	background-color:#fff;
 }
 
-#createthinginfo ul {
+#createthinginfo ul, #editthinginfo ul {
 	margin:5px;
 	padding:5px;
 	list-style:none;
@@ -801,7 +801,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	display:block;
 }
 
-#createthinginfo ul li {
+#createthinginfo ul li, #editthinginfo ul li {
 	margin-bottom:20px;
 }
 

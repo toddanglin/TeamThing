@@ -21,6 +21,11 @@ function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
 				$(ThisDiv).text(ThingPropertiesOutput);
 			}
 			
+			if(ThingFilter == '') {
+ 				console.log('assignedTo Length: ' + ThingData);
+				ThingPropertiesOutput = ThingData;
+			}
+			
   		}
 	});
 }
@@ -159,6 +164,29 @@ function ActivateListViewButtons() {
 
 	});
 	// ----/ Delete A Thing ---- //
+	
+	// ---- Edit A Thing ---- //
+	$('.icon_edit a').bind("click", function(event) {
+		event.preventDefault();
+		
+		ThisThing = $(this).parent('.icon_edit').parent('.iconcontrols').parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing'); // traversing the divs
+		ThisThingID = ThisThing.attr('id');
+		
+		CurrentThingEditID = ThisThingID.replace('teamthing-','');
+		
+		console.log('Editing Thing ID: ' + ThisThingID);
+		
+		CurrentDesc = '';
+		CurrentDesc = $('#'+ThisThingID+' .thingdesc').html();
+		console.log(CurrentDesc);
+		$('#thingdescriptionedit').val('');
+		$('#thingdescriptionedit').val(CurrentDesc);
+		
+    	var EditWindow = $("#editthinginfo").data("kendoWindow");
+    	EditWindow.center();
+    	EditWindow.open();
+	});
+	// ----/ Edit A Thing ---- //
 	
 	$('#loading-div').remove();
 }
@@ -526,7 +554,6 @@ function CreateThing(CreatedById,Description,AssignedTo,teamId) {
 			'teamId': teamId
 		},
   		success: function(CreateThingData) {
-    		console.log(CreateThing);
 			$("#createthinginfo").data("kendoWindow").close();
 			location.reload();
   		}
@@ -536,6 +563,35 @@ function CreateThing(CreatedById,Description,AssignedTo,teamId) {
 /*
 |--------------------------------------------------------------------------
 |	END: CREATE A THING
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: EDIT A THING
+|--------------------------------------------------------------------------
+*/
+function EditThing(editedById,Description,assignedTo) {
+	$.ajax({
+  		url: APPURL+'/api/thing/'+CurrentThingEditID,
+  		type: 'PUT',
+		data: {
+			'editedById': editedById,
+			'description': Description,
+			'assignedTo': assignedTo
+		},
+		dataType: 'json',
+  		success: function(ThingData) {
+    		console.log(ThingData);
+			CurrentThingEditID = null;
+			$("#editthinginfo").data("kendoWindow").close();
+			location.reload();
+  		}
+	});
+}
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: EDIT A THING
 |--------------------------------------------------------------------------
 */
 
@@ -594,6 +650,34 @@ function CreateThing(CreatedById,Description,AssignedTo,teamId) {
 /*
 |--------------------------------------------------------------------------
 |	END: CREATE THING WINDOW
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: EDIT THING WINDOW
+|--------------------------------------------------------------------------
+*/
+    var EditWindow = $("#editthinginfo").kendoWindow({
+        height: "220px",
+        title: "Edit Thing",
+        visible: false,
+        width: "400px"
+    }).data("kendoWindow");
+	
+	validator = $("#editthinginfo").kendoValidator().data("kendoValidator"),
+
+    $("#updatethingbtn").click(function() {
+		if (validator.validate()) {
+			ThisUpdatedDescription = $('#thingdescriptionedit').val();
+			EditThing(LoggedInUserID,ThisUpdatedDescription,LoggedInUserID);
+		} else {
+             //
+		}
+	});
+/*
+|--------------------------------------------------------------------------
+|	END: EDIT THING WINDOW
 |--------------------------------------------------------------------------
 */
 
