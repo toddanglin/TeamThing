@@ -7,7 +7,7 @@
 <body>
 
 <div data-role="view" id="vwThingDetail" data-layout="nested"
-	data-show="loadThingDetail">
+	data-show="loadThingDetail" data-init="vwThingDetailInit">
      <div id="thingDetail"></div>
 </div>
 
@@ -31,15 +31,18 @@
 </script>
 
 <script>
+    function vwThingDetailInit(args) {
+        //Only wire-up event handlers on init (if done in 'Show', will wire-up multiple instances)
+        var ele = $(args.view.element[0]).find("#thingDetail");
+        $(ele).delegate("a", "click", updateStatus);
+    }
+    
 	function loadThingDetail(args){
 		var ele = $(args.view.element[0]).find("#thingDetail"),
 			id = parseInt(args.view.params.id),
-			tmpl = kendo.template($("#tmplThingDetail").html());
-
-        $(ele).delegate("a", "click", updateStatus)
+			tmpl = kendo.template($("#tmplThingDetail").html());        
 			
-		console.log("THING DETAIL", args);
-		console.log(id);
+		console.log("THING DETAIL", args, id);
 				
 		teamThingApp.loadDetail(id, tmpl, ele);				
 	}
