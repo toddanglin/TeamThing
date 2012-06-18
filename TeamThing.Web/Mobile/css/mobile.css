@@ -194,7 +194,7 @@ textarea{
 }
 
 #vwLogin .km-content{
-	background: url(images/bkgndLogin_320.png) no-repeat 50% 0, url(images/bkgndCarbon.png) repeat;
+	background: #E8E8E8
 }
 
 #vwLogin .km-content .wrapper
@@ -209,7 +209,7 @@ textarea{
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2){
 	#vwLogin .km-content{
-		background: url(images/bkgndLogin.png) no-repeat 50% 0,url(images/bkgndCarbon.png) repeat;
+		background: #E8E8E8;
 		background-size: 320px, 12px;
 	}
 
