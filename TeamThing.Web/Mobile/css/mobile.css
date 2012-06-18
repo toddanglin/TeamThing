@@ -1,3 +1,7 @@
+.km-listview-link::after, .km-listview-label::after{
+	border-color: #358fff;	
+}
+
 /*Customize the Title Bar styles*/
 .km-ios .km-navbar{
 	background-color: #777;	
