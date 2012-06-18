@@ -3,8 +3,8 @@
 
 describe("A thing", function () {
 
-    var baseAddress = "http://localhost:5079/api";
-    //var baseAddress = "http://teamthing.apphb.com/api";
+    //var baseAddress = "http://localhost:5079/api";
+    var baseAddress = "http://teamthing.apphb.com/api";
 
     var createdThing;
 
