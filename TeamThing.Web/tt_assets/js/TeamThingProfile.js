@@ -17,6 +17,13 @@ function ActivateListViewButtons() {
 		$(this).parent('.listitem').parent('.thing').children('.users-tray').slideToggle(250);
 	});
 	
+	$('a.leave-team-btn').bind("click", function(event) {
+		event.preventDefault();
+		ThisTeamID = $(this).attr('rel');
+		console.log(ThisTeamID);
+		LeaveTeam(ThisTeamID,LoggedInUserID);
+	});
+}
 // ---- Get User's Profile for Main Content Area ---- //
 function UserProfileMain(UserID) {                   
 	$.get(
@@ -37,7 +44,7 @@ UserProfileMain(LoggedInUserID);
 |	END: GET LOGGED IN USER'S PROFILE DETAILS
 |--------------------------------------------------------------------------
 */
-}
+
 /*
 |--------------------------------------------------------------------------
 |	END: INIT FUNCTIONS
@@ -112,7 +119,7 @@ function GetMyTeams(UserID,TeamFilter) {
 				if(TeamsData[i].ownerId == LoggedInUserID) {
 					UserTeamsOutput+='<div class="team-admin-tools"><span class="icon_delete"><a title="Delete Team" href="#"></a></span></div>';
 				} else {
-					UserTeamsOutput+='<div class="team-admin-tools"><a class="leave-team-btn" href="#"><img src="tt_assets/images/icon_x.png" alt="X"></a></div>'
+					UserTeamsOutput+='<div class="team-admin-tools"><a class="leave-team-btn" href="#" rel="'+TeamsData[i].id+'"><img src="tt_assets/images/icon_x.png" alt="X"></a></div>'
 				}
 				
           	UserTeamsOutput+='</div>';
@@ -126,7 +133,7 @@ function GetMyTeams(UserID,TeamFilter) {
 	);
 }
 
-GetMyTeams(getQueryVariable('userid'),'');
+GetMyTeams(LoggedInUserID,'');
 /*
 |--------------------------------------------------------------------------
 |	END: GET A SPECIFIC USER'S TEAMS AND LIST THEM OUT
@@ -155,7 +162,6 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
 	});
 	
 }
-
 /*
 |--------------------------------------------------------------------------
 |	END: CREATE A TEAM
@@ -164,7 +170,7 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: EDIT THING WINDOW
+|	BEGIN: CREATE A TEAM WINDOW
 |--------------------------------------------------------------------------
 */
     CreateWindow = $("#createteamwindow").kendoWindow({
@@ -193,7 +199,36 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
 	});
 /*
 |--------------------------------------------------------------------------
-|	END: EDIT THING WINDOW
+|	END: CREATE A TEAM WINDOW
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: LEAVE A TEAM
+|--------------------------------------------------------------------------
+*/
+function LeaveTeam(TeamID,UserID) {
+	
+	$.ajax({
+  		url: APPURL+'/api/team/'+TeamID+'/leave',
+  		type: 'PUT',
+		data: {
+			'userId':UserID
+		},
+		dataType: 'json',
+  		success: function(LeaveTeamData) {
+			//console.log('User: ' + UserID + ' is leaving Team: ' + TeamID);
+			//console.log(LeaveTeamData);
+			location.reload();
+  		}
+	});
+	
+}
+
+/*
+|--------------------------------------------------------------------------
+|	END: LEAVE A TEAM
 |--------------------------------------------------------------------------
 */
 

@@ -201,11 +201,11 @@ function ActivateListViewButtons() {
 		
 		CurrentThingEditID = ThisThingID.replace('teamthing-','');
 		
-		console.log('Editing Thing ID: ' + ThisThingID);
+		//console.log('Editing Thing ID: ' + ThisThingID);
 		
 		CurrentDesc = '';
 		CurrentDesc = $('#'+ThisThingID+' .thingdesc').html();
-		console.log(CurrentDesc);
+		//console.log(CurrentDesc);
 		$('#thingdescriptionedit').val('');
 		$('#thingdescriptionedit').val(CurrentDesc);
 		
