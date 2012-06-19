@@ -97,13 +97,12 @@ function UpdateThing(ThingID,NewStatus) {
 |--------------------------------------------------------------------------
 */
 function StarThing(ThingID,NewStatus) {
-	console.log('Updating ID: ' + ThingID + ' with Status: ' + NewStatus);
+	//console.log('Updating ID: ' + ThingID + ' with Status: ' + NewStatus);
 	$.ajax({
-  		url: APPURL+'/api/thing/'+ThingID+'/star',
+  		url: APPURL+'/api/thing/'+ThingID+'/'+NewStatus,
   		type: 'PUT',
   		success: function(TeamThingsData) {
-    		console.log(TeamThingsData);
-			TeamThingsOutput = '';
+    		//
   		}
 	});
 }
@@ -135,10 +134,10 @@ function ActivateListViewButtons() {
 		
 		if($(this).hasClass('active')) {
 			$(this).removeClass('active');
-			// TO DO: Need Function Call to Unstar A Thing
+			StarThing(ThisThingID,'unstar');
 		} else {
 			$(this).addClass('active');
-			StarThing(ThisThingID,'star')
+			StarThing(ThisThingID,'star');
 		}
 
 	});
