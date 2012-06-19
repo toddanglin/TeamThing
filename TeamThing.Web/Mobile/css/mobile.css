@@ -1,3 +1,7 @@
+.km-listview-link::after, .km-listview-label::after{
+	border-color: #358fff;	
+}
+
 /*Customize the Title Bar styles*/
 .km-ios .km-navbar{
 	background-color: #777;	
@@ -9,7 +13,7 @@
 }
 
 .tt.km-ios .km-view-title{
-	font-family: 'Lobster', cursive;
+	font-family: Helvetica, sans-serif;
 	font-size:  1.6rem;
 }
 
@@ -21,16 +25,16 @@
 
 /*List Item Styles*/
 .tt .km-listview, .tt .km-list{
-	background: #444;
+	background: #FFF;
 }
 
 .tt .km-listview li{
-	color: #EEE;
-	border-color: #222;
+	color: #292929;
+	border-color: #E8E8E8;
 }
 
 .tt .km-listgroup > li, .tt .km-group-title {
-	background-color:  #999;
+	background-color:  #358fff;
 }
 
 .tt.km-android .km-listview {
@@ -42,7 +46,7 @@
 }
 
 .tt .things.km-listview li > a{
-	color: #EEE;
+	color: #358fff;
 }
 
 .tt .km-content, body {
@@ -147,7 +151,7 @@
 
 /*ELEMENT STYLES*/
 body{
-	color: #EEE;
+	color: #292929;
 }
 
 textarea{

@@ -197,6 +197,7 @@
     <Content Include="index_ORIG.html" />
     <Content Include="main.html" />
     <Content Include="Scripts\endpointTest\TeamSpec.js" />
+	<Content Include="profile.html" />
     <Content Include="Scripts\endpointTest\testDataProvider.js" />
     <Content Include="Scripts\endpointTest\SpecRunner.html" />
     <Content Include="Scripts\endpointTest\ThingSpec.js" />
@@ -255,6 +256,7 @@
     <Content Include="tt_assets\css\form-elements.css" />
     <Content Include="tt_assets\css\login.css" />
     <Content Include="tt_assets\css\mainstyle.css" />
+	<Content Include="tt_assets\css\profile.css" />
     <Content Include="tt_assets\css\style.css" />
     <Content Include="tt_assets\css\uniform.aristo.css" />
     <Content Include="tt_assets\css\_notes\dwsync.xml" />
@@ -263,6 +265,7 @@
     <Content Include="tt_assets\images\delete.png" />
     <Content Include="tt_assets\images\edit.png" />
     <Content Include="tt_assets\images\google-signin-btn.jpg" />
+	<Content Include="tt_assets\images\icon_x.png" />
     <Content Include="tt_assets\images\jquery-uniform-sprite-tt.png" />
     <Content Include="tt_assets\images\listpic.png" />
     <Content Include="tt_assets\images\listpic-default.png" />
@@ -291,7 +294,9 @@
     <Content Include="tt_assets\js\jquery.easing.1.3.js" />
     <Content Include="tt_assets\js\jquery.uniform.min.js" />
     <Content Include="tt_assets\js\oauth.js" />
-    <Content Include="tt_assets\js\TeamThingMain.js" />
+    <Content Include="tt_assets\js\TeamThingGlobal.js" />
+	<Content Include="tt_assets\js\TeamThingMain.js" />
+	<Content Include="tt_assets\js\TeamThingProfile.js" />
     <Content Include="tt_assets\js\TeamThingSignIn.js" />
     <Content Include="tt_assets\js\_notes\dwsync.xml" />
     <Content Include="tt_assets\kendoui\js\cultures\kendo.culture.af-ZA.min.js" />

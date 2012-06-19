@@ -21,31 +21,26 @@
 
 <!-- BEGIN: KENDO UI INSERTED FILES -->
 <script src="Scripts/oAuthProvider.js"></script>
-
 <!-- BEGIN: KENDO UI INSERTED FILES -->
-
-<style type="text/css">
-.bkgnd-smooth-dark {
-	display:none;
-}
-</style>
 
 </head>
 
 <body>
+
+<!-- BEGIN: HEADER BAR -->
 <div id="headercontainer">
-  <header class="mainheader">
-    <div id="userpic"><img src="tt_assets/images/toddpic.png" width="55" height="55" alt=""></div>
-    <div id="userinfo">John Doe<br />
-      <span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span> </div>
-    <a href="#">
-    <div id="creatething">Create a Thing</div>
-    </a>
-    <div id="teamlist">
-		<select id="jumpMenu"></select>
-    </div>
-    <img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo"> </header>
+	<header class="mainheader">
+    	<div id="userpic"><img src="tt_assets/images/toddpic.png" width="55" height="55" alt=""></div>
+    	<div id="userinfo">John Doe<br />
+      		<span class="usernav"></span>
+        </div>
+    	<a href="#"><div id="creatething">Create a Thing</div></a>
+    	<div id="teamlist"><select id="jumpMenu"></select></div>
+    	<img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo"> 
+    </header>
 </div>
+<!-- END: HEADER BAR -->
+
 <div id="main">
   <aside>
     <div class="myteam">
@@ -135,11 +130,9 @@
     
   </div>
 </div>
+
+<script src="tt_assets/js/TeamThingGlobal.js"></script>
 <script src="tt_assets/js/TeamThingMain.js"></script>
-
-
-
-
 
 </body>
 </html>

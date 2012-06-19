@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Team*Thing | Profile</title>
+
+<!-- BEGIN: PAGE PRESENTATION FILES -->
+<link href='http://fonts.googleapis.com/css?family=Cabin+Condensed|Oleo+Script:700' rel='stylesheet' type='text/css'>
+<link href="tt_assets/css/mainstyle.css" rel="stylesheet" type="text/css">
+<link href="tt_assets/css/profile.css" rel="stylesheet" type="text/css">
+<!-- END: PAGE PRESENTATION FILES -->
+
+
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<!-- BEGIN: KENDO UI FILES -->
+<link href="tt_assets/kendoui/styles/kendo.common.min.css" rel="stylesheet">
+<link href="tt_assets/kendoui/styles/kendo.default.min.css" rel="stylesheet">
+<link href="tt_assets/kendoui/styles/kendo.silver.min.css" rel="stylesheet">
+<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
+<!-- END: KENDO UI FILES -->
+
+<!-- BEGIN: KENDO UI INSERTED FILES -->
+<script src="Scripts/oAuthProvider.js"></script>
+<!-- BEGIN: KENDO UI INSERTED FILES -->
+
+</head>
+
+<body>
+
+<!-- BEGIN: HEADER BAR -->
+<div id="headercontainer">
+	<header class="mainheader">
+    	<div id="userpic"><img src="tt_assets/images/toddpic.png" width="55" height="55" alt=""></div>
+    	<div id="userinfo">John Doe<br />
+      		<span class="usernav"></span>
+        </div>
+    	<div id="teamlist"><select id="jumpMenu"></select></div>
+    	<img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo"> 
+    </header>
+</div>
+<!-- END: HEADER BAR -->
+
+<!-- BEGIN: MAIN CONTENT -->
+<div id="main">
+	<aside></aside>
+	<div id="mainsection">
+      	
+        <!-- BEGIN: USER PROFILE DETAILS -->
+        <div id="user-profile-details">
+        	<div id="userpic-profile"><img></div>
+        	<div id="userinfo-profile"></div>
+        	<div class="clear-float"></div>
+        </div>
+        <!-- END: USER PROFILE DETAILS -->
+        
+		<!-- BEGIN: MY TEAMS -->
+		<div class="myteamslist">
+			<div class="list"></div>
+		</div>
+		<!-- END: MY TEAMS -->
+      
+    </div>
+</div>
+<!-- END: MAIN CONTENT -->
+
+<script src="tt_assets/js/TeamThingGlobal.js"></script>
+<script src="tt_assets/js/TeamThingProfile.js"></script>
+
+</body>
+</html>
