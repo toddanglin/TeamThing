@@ -196,10 +196,10 @@
     <Content Include="Images\unlocked.png" />
     <Content Include="index_ORIG.html" />
     <Content Include="main.html" />
+    <Content Include="Scripts\endpointTest\TeamSpec.js" />
     <Content Include="Scripts\endpointTest\testDataProvider.js" />
-    <Content Include="Scripts\endpointTest\ThingSpec.html" />
+    <Content Include="Scripts\endpointTest\SpecRunner.html" />
     <Content Include="Scripts\endpointTest\ThingSpec.js" />
-    <Content Include="Scripts\endpointTest\Song.js" />
     <Content Include="Scripts\endpointTest\SpecHelper.js" />
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />

@@ -233,16 +233,63 @@ namespace TeamThing.Web.Controllers
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
         }
+        
+        [HttpPut]
+        public HttpResponseMessage Leave(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
+            }
+
+            var team = context.GetAll<DomainModel.Team>()
+                              .FirstOrDefault(u => u.Id == id);
+
+            if (team == null)
+            {
+                ModelState.AddModelError("", "Invalid Team");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
+            }
+
+            var user = context.GetAll<DomainModel.User>()
+                              .FirstOrDefault(u => u.Id == joinTeamViewModel.UserId);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Invalid User");
+                return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
+            }
+
+            var teamUser = user.Teams.FirstOrDefault(ut => ut.TeamId == team.Id);
+            if (teamUser != null)
+            {
+                team.Members.Remove(teamUser);
+
+                context.SaveChanges();
+            }
+
+            var sTeam = team.MapToBasicServiceModel();
+            var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
+            response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
+            return response;
+        }
 
         [HttpPut]
         public void ApproveMember(int id, ServiceModel.MemberApprovalViewModel viewModel)
         {
             var team = context.GetAll<DomainModel.Team>()
-                           .FirstOrDefault(u => u.Id == id);
+                              .FirstOrDefault(u => u.Id == id);
 
             if (team == null)
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid Team"));
+            }
+
+            var authorizer = team.Members.FirstOrDefault(tm => tm.UserId == viewModel.StatusChangedByUserId);
+
+            if (authorizer == null || (authorizer.Role != DomainModel.TeamUserRole.Administrator && team.OwnerId != authorizer.UserId ))
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Forbidden, "Only team owners, and admins can approve members."));
             }
 
             var teamMember = team.Members.FirstOrDefault(t => t.UserId == viewModel.UserId);
@@ -277,6 +324,13 @@ namespace TeamThing.Web.Controllers
             if (team.OwnerId == teamMember.UserId)
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Can not deny access to the team owner"));
+            }
+
+            var authorizer = team.Members.FirstOrDefault(tm => tm.UserId == viewModel.StatusChangedByUserId);
+
+            if (authorizer == null || (authorizer.Role != DomainModel.TeamUserRole.Administrator && team.OwnerId != authorizer.UserId))
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Forbidden, "Only team owners, and admins can approve members."));
             }
 
             teamMember.Status = DomainModel.TeamUserStatus.Denied;
@@ -330,7 +384,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpDelete]
-        public HttpResponseMessage Delete(int id, ServiceModel.DeleteTeamViewModel deleteParameters)
+        public HttpResponseMessage Delete(int id, ServiceModel.DeleteTeamViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -347,7 +401,7 @@ namespace TeamThing.Web.Controllers
             }
 
             var editor = team.Members
-                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == deleteParameters.UserId);
+                             .FirstOrDefault(tm => tm.Role == DomainModel.TeamUserRole.Administrator && tm.UserId == viewModel.UserId);
 
             if (editor == null)
             {
