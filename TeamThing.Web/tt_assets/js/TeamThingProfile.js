@@ -149,16 +149,51 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
 			'ispublic':IsPublic
 		},
   		success: function(CreateTeamData) {
-    		console.log(CreateTeamData);
-			CreateTeamOutput = '';
+    		$("#createteamwindow").data("kendoWindow").close();
+			location.reload();
   		}
 	});
 	
 }
-//CreateTeam('Graham\'s Test Team', LoggedInUserID, true); // TO DO: Assign this function to all thing buttons
+
 /*
 |--------------------------------------------------------------------------
 |	END: CREATE A TEAM
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: EDIT THING WINDOW
+|--------------------------------------------------------------------------
+*/
+    CreateWindow = $("#createteamwindow").kendoWindow({
+        height: "220px",
+        title: "Add A Team",
+        visible: false,
+        width: "400px"
+    }).data("kendoWindow");
+	
+	ValidateCreateWindow = $("#createteamwindow").kendoValidator().data("kendoValidator"),
+
+    $("#createteambtn").click(function() {
+		if (ValidateCreateWindow.validate()) {
+			ThisTeamName = $('#teamnameinput').val();
+			CreateTeam(ThisTeamName, LoggedInUserID, true);
+		} else {
+             //
+		}
+	});
+	
+	$('a#add-team-btn').bind("click", function(event) {
+		event.preventDefault();
+		CreateWindow = $("#createteamwindow").data("kendoWindow");
+    	CreateWindow.center();
+    	CreateWindow.open();
+	});
+/*
+|--------------------------------------------------------------------------
+|	END: EDIT THING WINDOW
 |--------------------------------------------------------------------------
 */
 

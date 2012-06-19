@@ -51,6 +51,7 @@
         	<div id="userpic-profile"><img></div>
         	<div id="userinfo-profile"></div>
         	<div class="clear-float"></div>
+            <a href="#" id="add-team-btn"><img src="tt_assets/images/add_team_btn.png" alt="Add A Team"></a>
         </div>
         <!-- END: USER PROFILE DETAILS -->
         
@@ -59,6 +60,20 @@
 			<div class="list"></div>
 		</div>
 		<!-- END: MY TEAMS -->
+        
+        <!-- BEGIN: CREATE TEAM WINDOW -->
+    	<div id="createteamwindow">
+    	<ul>
+    		<li>
+        		<label for="teamnameinput" class="required">Team Name: </label>
+        		<input type="text" id="teamnameinput" name="teamnameinput" class="k-textbox" required validationMessage="Please enter a Team Name" size="50" style="width:365px;" />
+        	</li>
+        	<li>
+        		<button class="k-button" type="submit" id="createteambtn">Add Team</button>
+        	</li>
+   	 	</ul>
+    	</div>
+    	<!-- END: CREATE TEAM WINDOW -->
       
     </div>
 </div>
