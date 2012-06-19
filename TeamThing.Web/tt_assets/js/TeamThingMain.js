@@ -618,13 +618,38 @@ function EditThing(editedById,Description,assignedTo) {
 |--------------------------------------------------------------------------
 */
 	
-
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: ADD THING WINDOW AND FUNCTIONS
+|	BEGIN: RENDER ALL USERS TO SIDEBAR POP UP WINDOW
 |--------------------------------------------------------------------------
 */
+function GetAllUsers(UserFilter) {
 	
+	$.ajax({
+  		url: APPURL+'/api/user/'+UserFilter,
+  		type: 'GET',
+  		success: function(UsersData) {
+			//console.log('Avaiable Users: ' + UsersData.length);
+			AllUsersOutput = '';
+			for(i=0;i<UsersData.length;i++) {
+				if(UsersData[i].imagePath.substring(0, 4) == 'http') {
+					ThisUserImg = UsersData[i].imagePath;
+				} else {
+					ThisUserImg = APPURL+UsersData[i].imagePath;
+				}
+				AllUsersOutput+='<a href="#" class="memberlistitem" rel="'+UsersData[i].id+'"><span class="imgwrap"><img src="'+ThisUserImg+'" width="32" height="32"></span>'+UsersData[i].emailAddress+'</a>';
+			}
+			$('#addtoteam').html(AllUsersOutput);
+  		}
+	});
 	
+}
+GetAllUsers('');
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: RENDER ALL USERS TO SIDEBAR POP UP WINDOW
+|--------------------------------------------------------------------------
+*/
+
 
 });

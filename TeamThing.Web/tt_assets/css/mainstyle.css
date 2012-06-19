@@ -826,6 +826,42 @@ font-family: Helvetica, helvetica; padding:10px;}
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: ADD USERS POPUP LISTING
+|--------------------------------------------------------------------------
+*/
+a.memberlistitem {
+	margin:0;
+	padding:7px 0;
+	position:relative;
+	display:block;
+	overflow:visible;
+	line-height:30px;
+	clear:both;
+}
+
+a.memberlistitem .imgwrap {
+	margin:0 12px 0 0;
+	position:relative;
+	display:block;
+	float:left;
+	border:2px solid #fff;
+	-webkit-box-shadow: 0px 1px 2px 0px #9c9c9c;
+	box-shadow: 0px 1px 2px 0px #9c9c9c;
+}
+
+a.memberlistitem .imgwrap, a.memberlistitem .imgwrap img {
+	width: 32px;
+	height: 32px;
+	-webkit-border-radius:60px;
+}
+/*
+|--------------------------------------------------------------------------
+|	END: ADD USERS POPUP LISTING
+|--------------------------------------------------------------------------
+*/
+
 .mythingslist .list #loading-div {
 	width:100%;
 	margin:0;
