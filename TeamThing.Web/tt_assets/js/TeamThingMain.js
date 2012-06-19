@@ -1,6 +1,7 @@
 
 MyThingsListDiv = '.mythingslist .list';
 MyTeamThingsListDiv = '.myteamsthingslist .list';
+MyTeamMembersPanel = '.myteam #myteam-members';
 
 /*
 |--------------------------------------------------------------------------
@@ -260,7 +261,6 @@ function StatusListSelected() {
 |--------------------------------------------------------------------------
 */
 
-
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
@@ -426,6 +426,57 @@ GetMyThings(LoggedInUserID,'');
 
 /*
 |--------------------------------------------------------------------------
+|	BEGIN: TEAM MEMBERS FOR SIDEBAR PANEL
+|--------------------------------------------------------------------------
+*/
+function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
+	
+	$.ajax({
+  		url: APPURL+'/api/team/'+TeamID,
+  		type: 'GET',
+  		success: function(TeamData) {
+			$('.sidebar-header').text(TeamData.name);
+			
+  			ThisQueryString = '';
+			ThisQueryString = APPURL+'/api/team/'+TeamID+'/members/'+TeamMembersFilter;
+	
+			$.get(
+				ThisQueryString,
+    			function(TeamMembersData) { 
+					console.log(TeamMembersData);
+			
+					TeamMembersDataOutput = '';
+					DraggableOutput = [];
+			
+					for(i=0;i<TeamMembersData.length;i++) {
+				
+						TeamMembersDataOutput+='<div class="member"><div class="userpic">';
+						TeamMembersDataOutput+='<img src="'+TeamMembersData[i].imagePath+'" width="55" height="55" alt="">';
+						TeamMembersDataOutput+='</div>';
+						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
+				
+					}
+					TeamMembersDataOutput+='<div class="clear-float"></div>';
+			
+					$(MyTeamMembersPanel).html(TeamMembersDataOutput);
+					//$('#myteam-members .member').addClass('float');
+					$('.sidebar-header').html();
+
+				}
+			);
+		}
+	});
+}
+
+GetSideBarTeamMembers(getQueryVariable('teamid'),'');
+/*
+|--------------------------------------------------------------------------
+|	END: TEAM MEMBERS FOR SIDEBAR PANEL
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
 |	BEGIN: CREATE A THING
 |--------------------------------------------------------------------------
 */
@@ -525,10 +576,10 @@ function EditThing(editedById,Description,assignedTo) {
     	window.open();
 	});
 	
-	validator = $("#createthinginfo").kendoValidator().data("kendoValidator"),
+	ValidateCreateThing = $("#createthinginfo").kendoValidator().data("kendoValidator"),
 
     $("#createthingbtn").click(function() {
-		if (validator.validate()) {
+		if (ValidateCreateThing.validate()) {
 			CreateThing(LoggedInUserID, $('#thingdescription').val(), LoggedInUserID, $('#thingteamselect').attr('value'));
 		} else {
              //
@@ -552,10 +603,10 @@ function EditThing(editedById,Description,assignedTo) {
         width: "400px"
     }).data("kendoWindow");
 	
-	validator = $("#editthinginfo").kendoValidator().data("kendoValidator"),
+	ValidateEditThing = $("#editthinginfo").kendoValidator().data("kendoValidator"),
 
     $("#updatethingbtn").click(function() {
-		if (validator.validate()) {
+		if (ValidateEditThing.validate()) {
 			ThisUpdatedDescription = $('#thingdescriptionedit').val();
 			EditThing(LoggedInUserID,ThisUpdatedDescription,LoggedInUserID);
 		} else {
@@ -567,8 +618,6 @@ function EditThing(editedById,Description,assignedTo) {
 |	END: EDIT THING WINDOW
 |--------------------------------------------------------------------------
 */
-
-
 	
 
 /*
@@ -577,49 +626,6 @@ function EditThing(editedById,Description,assignedTo) {
 |--------------------------------------------------------------------------
 */
 	
-	function draggableOnDragStart(e) {
-		//$("#draggable img").attr('src','tt_assets/images/listpic-halo.png');
-		//$("#userpic-dropzone").text("(Drop here)");
-	}
-
-	function droptargetOnDragEnter(e) {
-		//$("#userpic-dropzone").text("Now you can drop it.");
-	}
-
-	function droptargetOnDragLeave(e) {
-		//$("#userpic-dropzone").text("(Drop here)");
-	}
-
-	function droptargetOnDrop(e) {
-		//$("#userpic-dropzone").text("You did great!");
-		//$("#draggable").removeClass("hollow");
-		alert('On Target');
-	}
-
-	function draggableOnDragEnd(e) {
-		var draggable = $("#draggable");
-		if (!draggable.data("kendoDraggable").dropped) {
-    		// drag ended outside of any droptarget
-     		//$("#userpic-dropzone").text("Try again!");
-		}
-
-		draggable.removeClass("hollow");
-	}
-
-	$("#draggable").kendoDraggable({
-		hint: function() {
-			return $("#draggable").clone();
-        },
-   		dragstart: draggableOnDragStart,
-    	dragend: draggableOnDragEnd
-	});
-
-	$("#userpic-dropzone").kendoDropTarget({
-    	dragenter: droptargetOnDragEnter,
-    	dragleave: droptargetOnDragLeave,
-    	drop: droptargetOnDrop
-	});
-
-	var draggable = $("#draggable").data("kendoDraggable");
+	
 
 });

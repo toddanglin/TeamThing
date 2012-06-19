@@ -1,3 +1,4 @@
+
 APPURL = 'http://teamthing.apphb.com';
 LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
 
@@ -37,6 +38,8 @@ function getQueryVariable(variable){
 |--------------------------------------------------------------------------
 */
 
+$(document).ready(function() {
+	
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: GET LOGGED IN USER'S PROFILE DETAILS
@@ -46,7 +49,7 @@ function UserProfile(UserID) {
 	$.get(
 		APPURL+'/api/user/'+UserID,
     	function(UserInfo) {
-			console.log(UserInfo);
+			//console.log(UserInfo);
 			$('#userpic img').attr('src',UserInfo.imagePath);
 			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'">View Profile</a> <a href="#">Sign Out</a></span>');
 		}
@@ -95,3 +98,5 @@ GetUsersTeams(LoggedInUserID);
 |	END: GET ALL PUBLIC TEAMS FOR JUMP MENU
 |--------------------------------------------------------------------------
 */
+
+});

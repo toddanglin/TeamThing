@@ -31,7 +31,7 @@ function UserProfileMain(UserID) {
 UserProfileMain(LoggedInUserID);
 // ---- / Get User's Profile for Main Content Area ---- //
 	
-UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
+//UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
 /*
 |--------------------------------------------------------------------------
 |	END: GET LOGGED IN USER'S PROFILE DETAILS

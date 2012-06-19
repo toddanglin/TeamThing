@@ -388,6 +388,10 @@ aside p {padding:5px 20px;}
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
+	position:relative;
+	display:block;
+	overflow:visible;
+	height:auto;
 }
 
 .myteam #myteam-members {
@@ -395,18 +399,26 @@ aside p {padding:5px 20px;}
 	position:relative;
 	display:block;
 	overflow:visible;
+	height:auto;
 }
 
 .myteam #myteam-members .member {
 	/*-webkit-mask: url(../images/picmask.png);*/
 	width: 60px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	float:left;
 	margin:0 11px;
 	padding:10px 0;
 	font-size:11px;
-	color:#666;
+	color:#696969;
 	text-align:center;
 	line-height:16px;
+	position:relative;
+	display:inline;
+}
+.myteam #myteam-members .member.float {
+	float:left;
 }
 
 .userpic {
@@ -672,7 +684,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 .thingdesc {width:330px;}
 
-.iconcontrols {margin-left:6px; width:150px;height:16px;display:block;}
+.iconcontrols {margin:5px 0 0 4px; width:150px;height:16px;display:block;}
 
 .icon_complete {
 	/*text-indent:-9999px;*/
