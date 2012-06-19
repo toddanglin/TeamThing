@@ -1,7 +1,34 @@
-APPURL = 'http://teamthing.apphb.com';
-LoggedInUserID = 22;
+
 MyThingsListDiv = '.mythingslist .list';
 MyTeamThingsListDiv = '.myteamsthingslist .list';
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: GET ALL TEAMS FOR CREATE THING PULLDOWN
+|--------------------------------------------------------------------------
+*/
+function GetUsersTeamsForCreate(UserID) {
+	$.get(
+		APPURL+'/api/user/'+UserID+'/teams',
+    	function(data) { 
+			TeamsOutput='<option></option>';
+			for(i=0;i<data.length;i++) {
+				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
+			}
+			$("#thingteamselect").append(TeamsOutput);
+			
+			$("#thingteamselect").kendoDropDownList({
+    			index: 0
+			});
+		}
+	);
+}
+GetUsersTeamsForCreate(LoggedInUserID);
+/*
+|--------------------------------------------------------------------------
+|	END: GET ALL TEAMS FOR CREATE THING PULLDOWN
+|--------------------------------------------------------------------------
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -196,23 +223,6 @@ function ActivateListViewButtons() {
 |--------------------------------------------------------------------------
 */
 
-function SetUpLoadingAnim(ParentDiv) {
-	$(ParentDiv).append('<div id="loading-div"><img src="tt_assets/kendoui/styles/Silver/loading-image.gif"><div>');
-	ParentDivHeight = $(ParentDiv).height();
-	$(ParentDiv+' #loading-div').css('height', ParentDivHeight+'px');
-}
-
-function getQueryVariable(variable){
-	var query = window.location.search.substring(1);
-	var vars = query.split("&");
-	for (var i=0;i<vars.length;i++) {
-		var pair = vars[i].split("=");
-		if(pair[0] == variable){return pair[1];}
-	}
-	return(false);
-}
-
-
 $(document).ready(function() {
 
 /*
@@ -226,14 +236,6 @@ $("#tabstrip").kendoTabStrip({
 			effects: "fadeIn"
 		}
 	}
-});
-
-$("#editor").kendoEditor({
-	tools: [
-		"bold",
-		"italic",
-		"underline"
-	]
 });
 
 $("#statusfilterlist").kendoDropDownList({
@@ -258,70 +260,6 @@ function StatusListSelected() {
 |--------------------------------------------------------------------------
 */
 
-/*
-|--------------------------------------------------------------------------
-|	BEGIN: GET ALL TEAMS FOR JUMP MENU
-|--------------------------------------------------------------------------
-*/
-function GetUsersTeams(UserID) {
-	$.get(
-		APPURL+'/api/user/'+UserID+'/teams',
-    	function(data) { 
-			TeamsOutput = { TeamsList: [] };
-			TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
-			for(i=0;i<data.length;i++) {
-				TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
-			}
-			$("#jumpMenu").kendoComboBox({
-				dataTextField: "TeamsListLabel",
-				dataValueField: "TeamsListValue",
-				dataSource: TeamsOutput.TeamsList,
-				index: 0
-			});
-			var TeamsListSelected = function(e) {
-				var dataItem = e.item.index()+1;
-				console.log(dataItem);
-                ThisTeamID = $('#jumpMenu :nth-child('+dataItem+')').attr('value');
-    			location.href = "./main.html?teamid="+ThisTeamID;
-			};
-			$("#jumpMenu").data("kendoComboBox").bind("select", TeamsListSelected);
-		}
-	);
-}
-GetUsersTeams(LoggedInUserID);
-/*
-|--------------------------------------------------------------------------
-|	END: GET ALL PUBLIC TEAMS FOR JUMP MENU
-|--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
-|	BEGIN: GET ALL TEAMS FOR CREATE TEAM PULLDOWN
-|--------------------------------------------------------------------------
-*/
-function GetUsersTeamsForCreate(UserID) {
-	$.get(
-		APPURL+'/api/user/'+UserID+'/teams',
-    	function(data) { 
-			TeamsOutput='<option></option>';
-			for(i=0;i<data.length;i++) {
-				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
-			}
-			$("#thingteamselect").append(TeamsOutput);
-			
-			$("#thingteamselect").kendoDropDownList({
-    			index: 0
-			});
-		}
-	);
-}
-GetUsersTeamsForCreate(LoggedInUserID);
-/*
-|--------------------------------------------------------------------------
-|	END: GET ALL TEAMS FOR CREATE TEAM PULLDOWN
-|--------------------------------------------------------------------------
-*/
 
 /*
 |--------------------------------------------------------------------------
@@ -483,57 +421,6 @@ GetMyThings(LoggedInUserID,'');
 /*
 |--------------------------------------------------------------------------
 |	END: GET MY THINGS AND LIST THEM OUT
-|--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
-|	BEGIN: GET LOGGED IN USER'S PROFILE DETAILS
-|--------------------------------------------------------------------------
-*/
-function UserProfile(UserID) {                   
-	$.get(
-		APPURL+'/api/user/'+UserID,
-    	function(UserInfo) {
-			console.log(UserInfo);
-			$('#userpic img').attr('src',UserInfo.imagePath);
-			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="#">View Profile</a> <a href="#">Sign Out</a></span>');
-		}
-	);
-}
-UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
-/*
-|--------------------------------------------------------------------------
-|	END: GET LOGGED IN USER'S PROFILE DETAILS
-|--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
-|	BEGIN: CREATE A TEAM
-|--------------------------------------------------------------------------
-*/
-function CreateTeam(TeamName,CreatedByID,IsPublic) {
-	
-	$.ajax({
-  		url: APPURL+'/api/team',
-  		type: 'POST',
-		data: {
-			'name':''+TeamName+'',
-			'createdById':CreatedByID,
-			'ispublic':IsPublic
-		},
-  		success: function(CreateTeamData) {
-    		console.log(CreateTeamData);
-			CreateTeamOutput = '';
-  		}
-	});
-	
-}
-//CreateTeam('Graham\'s Test Team', LoggedInUserID, true); // TO DO: Assign this function to all thing buttons
-/*
-|--------------------------------------------------------------------------
-|	END: CREATE A TEAM
 |--------------------------------------------------------------------------
 */
 
