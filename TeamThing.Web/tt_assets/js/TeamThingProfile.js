@@ -76,7 +76,7 @@ function GetTeamProperties(TeamID,TeamFilter,ThisDiv) {
 */
 function GetMyTeams(UserID,TeamFilter) {
 	
-	//SetUpLoadingAnim(MyTeamsListDiv);
+	SetUpLoadingAnim(MyTeamsListDiv);
 	
 	ThisQueryString = '';
 	ThisQueryString = APPURL+'/api/user/'+UserID+'/teams/'+TeamFilter;
@@ -118,7 +118,7 @@ function GetMyTeams(UserID,TeamFilter) {
           	UserTeamsOutput+='</div>';
 			}
 			
-			//$(MyTeamsListDiv).html(UserTeamsOutput);
+			$(MyTeamsListDiv).html('<div class="list-heading">Your Teams</div>'+UserTeamsOutput);
 			
 			ActivateListViewButtons();
 			
