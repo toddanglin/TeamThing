@@ -176,7 +176,7 @@ $(document).ready(function () {
 			},
 			dataType: 'json',
   			success: function(CreateTeamData) {
-    			location.href = './main.html?teamid='+CreateTeamData.id;
+    			location.href = './main.html?userid='+LoggedInUserID+'&teamid='+CreateTeamData.id;
   			}
 		});
 		

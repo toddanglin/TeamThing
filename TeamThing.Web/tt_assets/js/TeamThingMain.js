@@ -1,4 +1,5 @@
 
+LoggedInUserID = getQueryVariable('userid');
 CurrentTeamURLID = getQueryVariable('teamid');
 
 MyThingsListDiv = '.mythingslist .list';
