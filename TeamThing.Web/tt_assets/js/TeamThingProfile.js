@@ -73,11 +73,7 @@ function GetTeamProperties(TeamID,TeamFilter) {
 				for(i=0;i<TeamData.length;i++) {
 					TeamMembersForTray+='<div class="userpic">';
 					
-					if(TeamData[i].imagePath.substring(0, 4) == 'http') {
-						ThisUserImg = TeamData[i].imagePath;
-					} else {
-						ThisUserImg = APPURL+TeamData[i].imagePath;
-					}
+					ThisUserImg = ImageURIRemoteOrRelative(TeamData[i].imagePath);
 					
 					TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+TeamData[i].emailAddress+'" title="'+TeamData[i].emailAddress+'" id="userpic='+TeamData[i].id+'">';
 					TeamMembersForTray+='</div>';
@@ -213,12 +209,6 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
     	CreateWindow.open();
 	});
 	
-	$('a#add-user-btn').bind("click", function(event) {
-		event.preventDefault();
-		//CreateWindow = $("#createteamwindow").data("kendoWindow");
-    	//CreateWindow.center();
-    	//CreateWindow.open();
-	});
 /*
 |--------------------------------------------------------------------------
 |	END: CREATE A TEAM WINDOW
@@ -245,7 +235,6 @@ function LeaveTeam(TeamID,UserID) {
 	});
 	
 }
-
 /*
 |--------------------------------------------------------------------------
 |	END: LEAVE A TEAM

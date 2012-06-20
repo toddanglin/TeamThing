@@ -39,6 +39,25 @@ function getQueryVariable(variable){
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: IS IMAGE REFERENCE REMOTE OR RELATIVE
+|--------------------------------------------------------------------------
+*/
+function ImageURIRemoteOrRelative(ThisImageURI) {
+	
+	if(ThisImageURI.substring(0, 4) == 'http' || ThisImageURI.substring(0, 5) == 'https') {
+		return ThisImageURI;
+	} else {
+		return APPURL+ThisImageURI;
+	}
+}
+/*
+|--------------------------------------------------------------------------
+|	END: IS IMAGE REFERENCE REMOTE OR RELATIVE
+|--------------------------------------------------------------------------
+*/
+
 $(document).ready(function() {
 	
 /*
