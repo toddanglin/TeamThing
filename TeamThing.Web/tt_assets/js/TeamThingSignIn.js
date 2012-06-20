@@ -141,7 +141,7 @@ $(document).ready(function () {
 		var ThisLeft = $('li#signin-slide-2').offset().left;
         $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
 		
-		console.log("Hi my name is " + user + " user, and login have been SUCCESSFUL :) | User Data: " + user);
+		console.log("Hi my name is " + user.toString() + " user, and login have been SUCCESSFUL :) | User Data: " + user);
 
     }
 
