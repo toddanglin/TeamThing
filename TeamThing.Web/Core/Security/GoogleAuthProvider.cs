@@ -5,8 +5,9 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http.ModelBinding;
 using Newtonsoft.Json.Linq;
+using TeamThing.Web.Core.Security;
 
-namespace TeamThing.Web.Controllers
+namespace TeamThing.Web.Core.Security
 {
     public class GoogleAuthProvider : IOAuthProvider
     {
@@ -14,7 +15,8 @@ namespace TeamThing.Web.Controllers
         private static readonly Uri tokenValidatorBaseUrl = new Uri("https://www.googleapis.com/oauth2/v1/tokeninfo");
         private readonly string accessToken;
         //TODO: store in config
-        private string clientAppId = "1071592151045.apps.googleusercontent.com";
+        private readonly string clientAppId="1071592151045.apps.googleusercontent.com";
+
         public GoogleAuthProvider(string accessToken)
         {
             this.accessToken = accessToken;
@@ -24,7 +26,7 @@ namespace TeamThing.Web.Controllers
         {
             var tokenValidatorUrl = new UriBuilder(tokenValidatorBaseUrl)
             {
-                Query = string.Format("access_token={1}", accessToken)
+                Query = string.Format("access_token={0}", accessToken)
             };
 
             var client = new HttpClient();
@@ -32,17 +34,18 @@ namespace TeamThing.Web.Controllers
 
             var formatter = new JsonMediaTypeFormatter();
             formatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/javascript"));
-            var responseData = validationResponse.Content.ReadAsAsync<JsonValue>(new[] { formatter }).Result;
+            var responseData = validationResponse.Content.ReadAsAsync<JToken>(new[] { formatter }).Result;
 
-            var error = responseData["error"].ReadAs<string>(null);
-            var audience = responseData["audience"].ReadAs<string>(null);
+            var error = responseData.Value<string>("error");
+            var audience = responseData.Value<string>("audience");
+
 
             //if an error was returned, the token is invalid
             if (error != null)
             {
                 return false;
             }
-            //if the audience does not match our client id, then something is off (confused deputy) force re-auth
+            //ensure the token is valid for THIS app
             else if (audience == null || audience != clientAppId)
             {
                 return false;
@@ -51,6 +54,7 @@ namespace TeamThing.Web.Controllers
             {
                 return true;
             }
+
         }
 
         public BasicUserData GetUser()
@@ -70,11 +74,11 @@ namespace TeamThing.Web.Controllers
             return
             new BasicUserData
             {
-                UserId = userInfo["id"].Value<string>(),
-                UserName = userInfo["name"].Value<string>(),
-                PictureUrl = userInfo["picture"].Value<string>(),
-                Email = userInfo["email"].Value<string>()
+                UserId = userInfo.Value<string>("id"),
+                UserName = userInfo.Value<string>("name"),
+                PictureUrl = userInfo.Value<string>("picture"),
+                Email = userInfo.Value<string>("email")
             };
         }
     }
- }
+}

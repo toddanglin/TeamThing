@@ -1,47 +1,83 @@
 function OAuthProvider() {
-    var appUrl = "http://teamthing.net/"; //Change for PROD
 
-    var fbAuthBase = "https://www.facebook.com/dialog/oauth?client_id=YOUR_APP_ID &redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token";
-    var googleAuthBase = "https://accounts.google.com/o/oauth2/auth?state=authHandled&response_type=token&client_id=&redirect_uri="+ appUrl +"&scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email";
+    var appUrl = window.location.href; 
+
+
+    //var fbAuthBase = "https://www.facebook.com/dialog/oauth?client_id=YOUR_APP_ID &redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token";
+    //var googleAuthBase = "https://accounts.google.com/o/oauth2/auth?state=authHandled&response_type=token&client_id=&redirect_uri="+ appUrl +"&scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email";
 
     var providers = {
         google: {
             name: 'Google',
             url: 'https://accounts.google.com/o/oauth2/auth',
             clientId: '1071592151045.apps.googleusercontent.com',
-            scope: 'https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email'
+            scope: 'https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email',
+            getAuthUrl: function () {
+                var path = this.url;
+                path += '?response_type=token';
+                path += '&client_id=' + this.clientId;
+                path += '&scope=' + this.scope;
+                path += '&state=' + this.name;
+                path += '&redirect_uri=' + appUrl;
+
+                return path;
+            }
         },
         facebook: {
             name: 'Facebook',
             url: 'https://www.facebook.com/dialog/oauth',
             scope: 'email',
-            clientId: '384951088223271'
+            clientId: '384951088223271',
+            getAuthUrl: function () {
+                var path = this.url;
+                path += '?response_type=token';
+                path += '&client_id=' + this.clientId;
+                path += '&scope=' + this.scope;
+                path += '&state=' + this.name;
+                path += '&redirect_uri=' + appUrl;
+
+                return path;
+            }
         }
-    };
+    }
 
     function doSignIn(provider) {
         location.href = buildAuthPath(provider);
     }
 
     function buildAuthPath(provider) {
-        var path = provider.url;
-        path += '?response_type=token';
-        path += '&client_id=' + provider.clientId;
-        path += '&scope=' + provider.scope;
-        path += '&state=' + provider.name;
-        path += '&redirect_uri='+ appUrl;
+        //var path = provider.url;
+        //path += '?response_type=token';
+        //path += '&client_id=' + provider.clientId;
+        //path += '&scope=' + provider.scope;
+        //path += '&state=' + provider.name;
+        //path += '&redirect_uri='+ appUrl;
 
-        return path;
+        return provider.getAuthUrl();
     }
 
     function signIn(providerName, redirectUrl) {
         var provider;
 
-        if(redirectUrl !== undefined){
+        if (redirectUrl !== undefined) {
             appUrl = redirectUrl;
         }
 
-        switch (providerName) {
+        provider = getProvider(providerName);        
+
+        if (provider !== undefined) {
+            doSignIn(provider);
+        }
+        else {
+            console.log("Invalid Auth Provider");
+        }
+    }
+
+    function getProvider(providerName) {
+        var provider;
+
+
+        switch (providerName.toLowerCase()) {
             case "google":
                 provider = providers.google;
                 break;
@@ -50,12 +86,7 @@ function OAuthProvider() {
                 break;
         }
 
-        if (provider !== undefined) {
-            doSignIn(provider);
-        }
-        else {
-            console.log("Invalid Auth Provider");
-        }
+        return provider;
     }
 
     function getStatus() {
@@ -86,6 +117,8 @@ function OAuthProvider() {
 
     return {
         getStatus: getStatus,
-        signIn: signIn
+        signIn: signIn,
+        providers: providers,
+        getProvider: getProvider
     };
 }

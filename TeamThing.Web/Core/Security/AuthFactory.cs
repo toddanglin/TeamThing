@@ -1,6 +1,6 @@
 using System;
 
-namespace TeamThing.Web.Controllers
+namespace TeamThing.Web.Core.Security
 {
     public class AuthFactory
     {

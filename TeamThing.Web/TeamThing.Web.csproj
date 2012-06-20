@@ -148,6 +148,7 @@
     <Compile Include="Core\Security\BasicUserData.cs" />
     <Compile Include="Core\Security\FacebookAuthProvider.cs" />
     <Compile Include="Core\Security\GoogleAuthProvider.cs" />
+    <Compile Include="Core\Security\IAccessTokenValidator.cs" />
     <Compile Include="Core\Security\IOAuthProvider.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\ThingController.cs" />
@@ -201,6 +202,7 @@
     <Content Include="profile.html" />
     <Content Include="Scripts\endpointTest\testDataProvider.js" />
     <Content Include="Scripts\endpointTest\SpecRunner.html" />
+    <Content Include="Scripts\endpointTest\testSetup.js" />
     <Content Include="Scripts\endpointTest\ThingSpec.js" />
     <Content Include="Scripts\endpointTest\SpecHelper.js" />
     <Content Include="Scripts\jasmine\jasmine-html.js" />

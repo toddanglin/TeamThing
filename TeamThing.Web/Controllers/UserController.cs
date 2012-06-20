@@ -8,6 +8,7 @@ using System.Web.Security;
 using TeamThing.Model.Helpers;
 using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
+using TeamThing.Web.Core.Security;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
 
@@ -164,7 +165,7 @@ namespace TeamThing.Web.Controllers
                 context.SaveChanges();
             }
 
-            FormsAuthentication.SetAuthCookie(user.EmailAddress, true);
+            //FormsAuthentication.SetAuthCookie(user.EmailAddress, true);
             return Request.CreateResponse(HttpStatusCode.OK, user.MapToServiceModel());
         }
 

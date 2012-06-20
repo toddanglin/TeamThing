@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TeamThing.Model.Helpers;
+using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
+using TeamThing.Web.Core.Security;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
-using System.Net;
-using System.Json;
-using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
     //[Authorize]
+    //[RequireOAuthAuthorization]
     public class ThingController : TeamThingApiController
     {
         public ThingController()
@@ -62,7 +62,7 @@ namespace TeamThing.Web.Controllers
             }
 
             var team = context.GetAll<DomainModel.Team>()
-                                      .FirstOrDefault(u => u.Id == newThing.TeamId);
+                              .FirstOrDefault(u => u.Id == newThing.TeamId);
 
             if (team == null)
             {
@@ -77,7 +77,7 @@ namespace TeamThing.Web.Controllers
             foreach (var userId in newThing.AssignedTo)
             {
                 var assignedTo = context.GetAll<DomainModel.User>()
-                                          .FirstOrDefault(u => u.Id == userId);
+                                        .FirstOrDefault(u => u.Id == userId);
 
                 if (assignedTo == null)
                 {
