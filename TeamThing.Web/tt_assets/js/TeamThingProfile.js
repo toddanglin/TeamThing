@@ -20,7 +20,7 @@ function ActivateListViewButtons() {
 	$('a.leave-team-btn').bind("click", function(event) {
 		event.preventDefault();
 		ThisTeamID = $(this).attr('rel');
-		console.log(ThisTeamID);
+		//console.log(ThisTeamID);
 		LeaveTeam(ThisTeamID,LoggedInUserID);
 	});
 }
@@ -30,7 +30,7 @@ function UserProfileMain(UserID) {
 	$.get(
 		APPURL+'/api/user/'+UserID,
     	function(UserInfo) {
-			//console.log(UserInfo);
+			////console.log(UserInfo);
 			$('#userpic-profile img').attr('src',UserInfo.imagePath);
 			$('#userinfo-profile').html(UserInfo.emailAddress);
 		}
@@ -57,12 +57,12 @@ UserProfileMain(LoggedInUserID);
 |--------------------------------------------------------------------------
 */
 function GetTeamProperties(TeamID,TeamFilter) {
-	//console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
+	////console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
 	$.ajax({
   		url: APPURL+'/api/team/'+TeamID+'/members/'+TeamFilter,
   		type: 'GET',
   		success: function(TeamData) {
-			console.log(TeamData);
+			//console.log(TeamData);
 			TeamPropertiesOutput = TeamData.length; // How many Users on a Team
 			TeamPropertiesOutput == 1 ? MembersOutput = 'member' :  MembersOutput = 'members';
 			$('a.users-count-link#user-count-'+TeamID).text(TeamPropertiesOutput + ' ' + MembersOutput);
@@ -228,8 +228,8 @@ function LeaveTeam(TeamID,UserID) {
 		data: {'userId':UserID},
 		dataType: 'json',
   		success: function(LeaveTeamData) {
-			//console.log('User: ' + UserID + ' is leaving Team: ' + TeamID);
-			//console.log(LeaveTeamData);
+			////console.log('User: ' + UserID + ' is leaving Team: ' + TeamID);
+			////console.log(LeaveTeamData);
 			location.reload();
   		}
 	});

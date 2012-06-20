@@ -416,7 +416,7 @@ function GetMyThings(UserID,MyThingsFilter) {
     	function(TeamThingsData) { 
 			console.log(TeamThingsData);
 			TeamThingsOutput = '';
-			/*for(i=0;i<TeamThingsData.length;i++) {
+			for(i=0;i<TeamThingsData.length;i++) {
 	
 			if(TeamThingsData[i].teamId == CurrentTeamURLID) {
 				
@@ -465,7 +465,7 @@ function GetMyThings(UserID,MyThingsFilter) {
 			GetThingProperties(TeamThingsData[i].id,'assignedTo',MyThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
 			//GetTeamProperties(CurrentTeamURLID,'');
 			
-			}}*/
+			}}
 			
 			$(MyThingsListDiv).html(TeamThingsOutput);
 			
@@ -751,7 +751,7 @@ function InviteUser(UserEmail,TeamID,CreatedByID) {
         height: "400px",
         title: "Add A User To My Team",
         visible: false,
-        width: "500px"
+        width: "380px"
     }).data("kendoWindow");
 
 
