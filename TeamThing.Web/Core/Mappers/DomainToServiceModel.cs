@@ -85,7 +85,9 @@ namespace TeamThing.Web.Core.Mappers
                 Description = t.Description,
                 Status = t.Status.ToString(),
                 IsStarred = t.IsStarred,
-                TeamId = t.TeamId
+                TeamId = t.TeamId,
+                AssignedTo = t.AssignedTo.Select(a => a.AssignedToUser).Where(u => u.Id != t.OwnerId).MapToBasicServiceModel().ToList(),
+                Owner = t.Owner.MapToBasicServiceModel()
             };
         }
 
@@ -125,6 +127,7 @@ namespace TeamThing.Web.Core.Mappers
                 Id = t.Id,
                 Name = t.Name,
                 IsPublic = t.IsOpen,
+                ImagePath = t.ImagePath ?? "/images/GenericUserImage.gif",
                 TeamMembers = t.Members.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToBasicServiceModel).ToList(),
                 PendingTeamMembers = t.Members.Where(tm => tm.Status == DomainModel.TeamUserStatus.Pending).Select(MapToBasicServiceModel).ToList(),
                 Administrators = t.Members.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray(),
@@ -142,7 +145,8 @@ namespace TeamThing.Web.Core.Mappers
                 OwnerId = t.OwnerId,
                 IsPublic = t.IsOpen,
                 ImagePath = t.ImagePath ?? "/images/GenericUserImage.gif",
-                Administrators = t.Members.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray()
+                Administrators = t.Members.Where(tm => tm.Role == DomainModel.TeamUserRole.Administrator).Select(tm => tm.UserId).ToArray(),
+                TeamMembers = t.Members.Where(tm => tm.Status == DomainModel.TeamUserStatus.Approved).Select(MapToBasicServiceModel).ToList()
             };
         }
 

@@ -11,5 +11,6 @@ namespace TeamThing.Web.Models.API
         public IList<int> Administrators { get; set; }
         public bool IsPublic { get; set; }
         public string ImagePath { get; set; }
+        public IList<TeamMemberBasic> TeamMembers { get; set; }
     }
  }

@@ -197,7 +197,7 @@
     <Content Include="index_ORIG.html" />
     <Content Include="main.html" />
     <Content Include="Scripts\endpointTest\TeamSpec.js" />
-	<Content Include="profile.html" />
+    <Content Include="profile.html" />
     <Content Include="Scripts\endpointTest\testDataProvider.js" />
     <Content Include="Scripts\endpointTest\SpecRunner.html" />
     <Content Include="Scripts\endpointTest\ThingSpec.js" />
