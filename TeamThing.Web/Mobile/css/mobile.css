@@ -1,5 +1,3 @@
-.km-button {color: #292929!important;}
-
 .km-listview-link::after, .km-listview-label::after{
 	border-color: #358fff;	
 }
@@ -205,7 +203,7 @@ textarea{
 }
 
 #vwLogin .km-content{
-	background: #E8E8E8 url(http://teamthing.net/tt_assets/images/tt_logo.png) 50% 10% no-repeat;
+	background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 20% no-repeat;
 	
 }
 
@@ -221,8 +219,8 @@ textarea{
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2){
 	#vwLogin .km-content{
-		background: #E8E8E8 url(http://teamthing.net/tt_assets/images/tt_logo.png) 50% 10% no-repeat;
-		background-size: 320px, 12px;
+		background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 20% no-repeat;
+		background-size: 280px, 12px;
 	}
 
 	.tt .km-content, body {

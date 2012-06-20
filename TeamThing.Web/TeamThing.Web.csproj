@@ -261,6 +261,7 @@
     <Content Include="tt_assets\css\uniform.aristo.css" />
     <Content Include="tt_assets\css\_notes\dwsync.xml" />
 	<Content Include="tt_assets\images\add_team_btn.png" />
+	<Content Include="tt_assets\images\add_user_btn.png" />
     <Content Include="tt_assets\images\asterick.png" />
     <Content Include="tt_assets\images\complete.png" />
     <Content Include="tt_assets\images\delete.png" />
