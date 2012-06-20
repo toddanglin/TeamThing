@@ -112,6 +112,7 @@ function GetUsersTeams(UserID) {
 		}
 	);
 }
+GetUsersTeams(LoggedInUserID);
 /*
 |--------------------------------------------------------------------------
 |	END: GET ALL PUBLIC TEAMS FOR JUMP MENU

@@ -301,8 +301,6 @@ $("#statusfilterlist").kendoDropDownList({
 	change: StatusListSelected
 });
 
-GetUsersTeams(LoggedInUserID);
-
 function StatusListSelected() {
 	ThisFilter = $('#statusfilterlist').val();
 	if(ThisFilter != 'undefined' && ThisFilter != null) {

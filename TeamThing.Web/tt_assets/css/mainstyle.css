@@ -911,6 +911,8 @@ a.memberlistitem:hover, a.memberlistitem.over {
 
 .clear-float {
 	clear:both;
+	height:0;
+	display:block;
 }
 
 .k-combobox, #statusfilter #statusfilterlist {

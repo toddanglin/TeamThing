@@ -138,7 +138,6 @@ $(document).ready(function () {
     function loginSuccess(user) {
 		
 		//call methods to load user info here!
-        GetUsersTeams(user.id);
 		var ThisLeft = $('li#signin-slide-2').offset().left;
         $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
 		
