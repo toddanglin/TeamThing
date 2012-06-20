@@ -153,6 +153,7 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
 			'createdById':CreatedByID,
 			'ispublic':IsPublic
 		},
+		dataType: 'json',
   		success: function(CreateTeamData) {
     		$("#createteamwindow").data("kendoWindow").close();
 			location.reload();

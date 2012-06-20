@@ -95,14 +95,22 @@ $(document).ready(function(){
 	$("#google-signin-btn").click(function(event) {
   		event.preventDefault();
 		//connectUserWithGoogle(); // This will work when this page is harnessed with Kendo UI Team's current code.
-		onClose();
+		//onClose();
+		$.ajax({
+  			url: APPURL+'/api/user/oauth',
+  			type: 'POST',
+			data: {
+				'provider':'Google',
+				'authToken':''
+			},
+			dataType: 'json',
+  			success: function(TeamData) {
+				var ThisLeft = $('li#signin-slide-2').offset().left;
+			$("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
+  			}
+		});
 	});
-	
-	onClose = function() {
-		var ThisLeft = $('li#signin-slide-2').offset().left;
-		$("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
-	}
-	/*
+		/*
 
 	var SignInWindow = $("#signin-window").kendoWindow({
         visible: false,
