@@ -833,7 +833,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 */
 a.memberlistitem {
 	margin:0;
-	padding:7px 0;
+	padding:7px 4px;
 	position:relative;
 	display:block;
 	overflow:visible;
@@ -855,6 +855,10 @@ a.memberlistitem .imgwrap, a.memberlistitem .imgwrap img {
 	width: 32px;
 	height: 32px;
 	-webkit-border-radius:60px;
+}
+
+a.memberlistitem:hover, a.memberlistitem.over {
+	background-color:#bec5d0;
 }
 /*
 |--------------------------------------------------------------------------

@@ -445,14 +445,17 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 					console.log(TeamMembersData);
 			
 					TeamMembersDataOutput = '';
+					CurrentTeamMembersArray = [];
 					DraggableOutput = [];
 			
 					for(i=0;i<TeamMembersData.length;i++) {
-				
+						console.log('User ID: ' + TeamMembersData[i].id);
 						TeamMembersDataOutput+='<div class="member"><div class="userpic">';
 						TeamMembersDataOutput+='<img src="'+TeamMembersData[i].imagePath+'" width="55" height="55" alt="">';
 						TeamMembersDataOutput+='</div>';
 						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
+						
+						CurrentTeamMembersArray.push(TeamMembersData[i].id);
 				
 					}
 					TeamMembersDataOutput+='<div class="clear-float"></div>';
@@ -460,6 +463,8 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 					$(MyTeamMembersPanel).html(TeamMembersDataOutput);
 					//$('#myteam-members .member').addClass('float');
 					$('.sidebar-header').html();
+					
+					GetAllUsers('');
 
 				}
 			);
@@ -629,7 +634,6 @@ function GetAllUsers(UserFilter) {
   		url: APPURL+'/api/user/'+UserFilter,
   		type: 'GET',
   		success: function(UsersData) {
-			//console.log('Avaiable Users: ' + UsersData.length);
 			AllUsersOutput = '';
 			for(i=0;i<UsersData.length;i++) {
 				if(UsersData[i].imagePath.substring(0, 4) == 'http') {
@@ -637,14 +641,35 @@ function GetAllUsers(UserFilter) {
 				} else {
 					ThisUserImg = APPURL+UsersData[i].imagePath;
 				}
-				AllUsersOutput+='<a href="#" class="memberlistitem" rel="'+UsersData[i].id+'"><span class="imgwrap"><img src="'+ThisUserImg+'" width="32" height="32"></span>'+UsersData[i].emailAddress+'</a>';
+				
+				if($.inArray(UsersData[i].id, CurrentTeamMembersArray) < 0) {
+					//console.log('CU Array: ' + CurrentTeamMembersArray.toString());
+					//console.log(UsersData[i].id + ' not in array ' + CurrentTeamMembersArray);
+					AllUsersOutput+='<a href="#" class="memberlistitem" rel="'+UsersData[i].id+'"><span class="imgwrap"><img src="'+ThisUserImg+'" width="32" height="32"></span>'+UsersData[i].emailAddress+'</a>';
+				}
 			}
+			
 			$('#addtoteam').html(AllUsersOutput);
+			
+			$('a.memberlistitem').bind("click", function(event) {
+  				event.preventDefault();
+				ThisUserID = $(this).attr('rel');
+				
+				$.ajax({
+  					url: APPURL+'/api/team/'+ThisUserID+'/join',
+  					type: 'PUT',
+  					success: function(AddUserToTeamData) {
+    					console.log(AddUserToTeamData);
+						$("#addtoteam").data("kendoWindow").close();
+						location.reload();
+  					}
+				});
+				
+			});
   		}
 	});
 	
 }
-GetAllUsers('');
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: RENDER ALL USERS TO SIDEBAR POP UP WINDOW

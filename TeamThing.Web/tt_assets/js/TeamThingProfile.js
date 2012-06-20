@@ -24,12 +24,13 @@ function ActivateListViewButtons() {
 		LeaveTeam(ThisTeamID,LoggedInUserID);
 	});
 }
+
 // ---- Get User's Profile for Main Content Area ---- //
 function UserProfileMain(UserID) {                   
 	$.get(
 		APPURL+'/api/user/'+UserID,
     	function(UserInfo) {
-			console.log(UserInfo);
+			//console.log(UserInfo);
 			$('#userpic-profile img').attr('src',UserInfo.imagePath);
 			$('#userinfo-profile').html(UserInfo.emailAddress);
 		}
@@ -38,7 +39,6 @@ function UserProfileMain(UserID) {
 UserProfileMain(LoggedInUserID);
 // ---- / Get User's Profile for Main Content Area ---- //
 	
-//UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
 /*
 |--------------------------------------------------------------------------
 |	END: GET LOGGED IN USER'S PROFILE DETAILS
@@ -56,17 +56,20 @@ UserProfileMain(LoggedInUserID);
 |	BEGIN: GET ANY TEAM'S PROPERTIES
 |--------------------------------------------------------------------------
 */
-function GetTeamProperties(TeamID,TeamFilter,ThisDiv) {
-	console.log('Getting Team ID: ' + TeamID);
+function GetTeamProperties(TeamID,TeamFilter) {
+	console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
 	$.ajax({
   		url: APPURL+'/api/team/'+TeamID+'/members/'+TeamFilter,
   		type: 'GET',
   		success: function(TeamData) {
-			console.log(TeamData);
-				TeamPropertiesOutput = TeamData.length; // How many Users on a Team
-				TeamPropertiesOutput == 1 ? MembersOutput = 'member' :  MembersOutput = 'members';
-				$(ThisDiv).text(TeamPropertiesOutput + ' ' + MembersOutput);
+			//console.log(TeamData);
+			TeamPropertiesOutput = TeamData.length; // How many Users on a Team
+			TeamPropertiesOutput == 1 ? MembersOutput = 'member' :  MembersOutput = 'members';
+			$('a.users-count-link#user-count-'+TeamID).text(TeamPropertiesOutput + ' ' + MembersOutput);
 			
+			if(TeamPropertiesOutput > 0) {
+				$('#teamthing-'+TeamID).append('<div class="users-tray"><div class="clear-float"></div></div>');
+			}
   		}
 	});
 }
@@ -104,17 +107,9 @@ function GetMyTeams(UserID,TeamFilter) {
                     UserTeamsOutput+='</div>';
             		
 					UserTeamsOutput+='<div class="teamdesc">'+TeamsData[i].name+'</div>';
-					
-					ThisThingAssignedToCount = GetTeamProperties(TeamsData[i].id,'assignedTo','#teamthing-'+TeamsData[i].id+' a.users-count-link');
-					UserTeamsOutput+='<a class="users-count-link" href="#"></a>';
+					UserTeamsOutput+='<a class="users-count-link" id="user-count-'+TeamsData[i].id+'" href="#"></a>';
 					
 				UserTeamsOutput+='</span>';
-                
-				if(ThisThingAssignedToCount > 0) {
-					UserTeamsOutput+='<div class="users-tray">';
-                    	UserTeamsOutput+='<div class="clear-float"></div>';
-                	UserTeamsOutput+='</div>';
-				}
 				
 				if(TeamsData[i].ownerId == LoggedInUserID) {
 					UserTeamsOutput+='<div class="team-admin-tools"><span class="icon_delete"><a title="Delete Team" href="#"></a></span></div>';
@@ -123,6 +118,9 @@ function GetMyTeams(UserID,TeamFilter) {
 				}
 				
           	UserTeamsOutput+='</div>';
+			
+			GetTeamProperties(TeamsData[i].id,'assignedTo');
+			
 			}
 			
 			$(MyTeamsListDiv).html('<div class="list-heading">Your Teams</div>'+UserTeamsOutput);
@@ -213,9 +211,7 @@ function LeaveTeam(TeamID,UserID) {
 	$.ajax({
   		url: APPURL+'/api/team/'+TeamID+'/leave',
   		type: 'PUT',
-		data: {
-			'userId':UserID
-		},
+		data: {'userId':UserID},
 		dataType: 'json',
   		success: function(LeaveTeamData) {
 			//console.log('User: ' + UserID + ' is leaving Team: ' + TeamID);
