@@ -141,7 +141,7 @@ $(document).ready(function () {
 		var ThisLeft = $('li#signin-slide-2').offset().left;
         $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
 		
-		console.log("Hi my name is " + user.toString() + " user, and login have been SUCCESSFUL :) | User Data: " + user);
+		console.log("Hi my name is " + user.id + " user, and login have been SUCCESSFUL :) | User Data: " + user.nickname);
 
     }
 
@@ -164,9 +164,23 @@ $(document).ready(function () {
 
     $("submit").click(function () {
         if (validator.validate()) {
-            //status.text("Hooray! Your tickets has been booked!").addClass("valid");
+	
+		$.ajax({
+  			url: APPURL+'/api/team',
+  			type: 'POST',
+			data: {
+				'name':''+$('#teamname').val()+'',
+				'createdById':CreatedByID,
+				'ispublic':true
+			},
+			dataType: 'json',
+  			success: function(CreateTeamData) {
+    			location.href = './main.html?teamid='+CreateTeamData.id;
+  			}
+		});
+		
         } else {
-            //status.text("Oops! There is invalid data in the form.").addClass("invalid");
+           //
         }
     });
 
