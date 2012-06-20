@@ -45,50 +45,15 @@ $(document).ready(function () {
     //CHECK SIGN IN STATUS
     checkUserAuthStatus();
 
-    $.get(
+   /* $.get(
 		APPURL + '/api/user?$filter=EmailAddress ne null and tolower(EmailAddress) eq \'todd.anglin@telerik.com\'',
     	function (data) {
     	    console.log('Test Script: ' + data);
     	}
-	);
+	)*/;
     /*
     |--------------------------------------------------------------------------
     |	END: INIT FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    |	BEGIN: GET ALL PUBLIC TEAMS FOR PULLDOWN MENU
-    |--------------------------------------------------------------------------
-    */
-    $.get(
-		APPURL + '/api/team?$filter=IsPublic%20eq%20true',
-    	function (data) {
-    	    /*$('#jumpMenu').append(TeamsOutput, function() {
-				$("#jumpMenu").kendoComboBox();
-			});*/
-
-    	    TeamsOutput = { TeamsList: [] };
-    	    TeamsOutput.TeamsList.push({ "TeamsListLabel": "Select a Team...", "TeamsListValue": "" });
-    	    for (i = 0; i < data.length; i++) {
-    	        TeamsOutput.TeamsList.push({ "TeamsListLabel": "" + data[i].name + "", "TeamsListValue": "" + data[i].id + "" });
-    	    }
-
-    	    console.log('Teams Listing 2: ' + TeamsOutput.TeamsList);
-
-    	    $("#jumpMenu").kendoComboBox({
-    	        dataTextField: "TeamsListLabel",
-    	        dataValueField: "TeamsListValue",
-    	        dataSource: TeamsOutput.TeamsList,
-    	        index: 0
-    	    });
-    	}
-	);
-
-    /*
-    |--------------------------------------------------------------------------
-    |	END: GET ALL PUBLIC TEAMS FOR PULLDOWN MENU
     |--------------------------------------------------------------------------
     */
 
@@ -107,9 +72,12 @@ $(document).ready(function () {
         oAuthProvider.signIn("google", window.location.href);
     }
 
-    //this is fired once login has comleted successfully
+    //this is fired once login has completed successfully
     function onClose() {
-        var ThisLeft = $('li#signin-slide-2').offset().left;
+    
+	GetUsersTeams(user.id);
+	
+	var ThisLeft = $('li#signin-slide-2').offset().left;
         $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });      
     }
 
@@ -188,33 +156,6 @@ $(document).ready(function () {
     function loginFail(result) {
         console.log("Login FAILED:" + JSON.stringify(result));
     }
-
-
-    /*
-
-	var SignInWindow = $("#signin-window").kendoWindow({
-        visible: false,
-		width: "500px",
-		height: "400px",
-		title: "Sign In with Google",
-		content: authUrl,
-		iframe:true,
-		modal:true,
-		close: onClose
-    }).data("kendoWindow");
-
-	$("#google-signin-btn").click(function() {
-    	var SignInWindow = $("#signin-window").data("kendoWindow");
-		SignInWindow.center();
-    	SignInWindow.open();
-	});
-	
-	$.ajax({
-  		url: authUrl,
-  		success: function(data) {
-			console.log(data);
-		}
-	});*/
     /*
     |--------------------------------------------------------------------------
     |	END: GOOGLE SIGN-IN
