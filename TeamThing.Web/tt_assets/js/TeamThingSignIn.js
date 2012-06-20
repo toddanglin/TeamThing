@@ -179,7 +179,7 @@ $(document).ready(function () {
     function loginSuccess(user) {
 
         onClose();
-        console.log("Hi my name is " + user.name + " Auth, and login have been SUCCESSFUL :)");
+        console.log("Hi my name is " + user.email + " Auth, and login have been SUCCESSFUL :)");
 
         //call methods to load user info here!
        
