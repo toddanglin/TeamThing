@@ -37,20 +37,37 @@ GetUsersTeamsForCreate(LoggedInUserID);
 |--------------------------------------------------------------------------
 */
 function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
-	//console.log('Getting Thing ID: ' + ThingID);
 	$.ajax({
   		url: APPURL+'/api/thing/'+ThingID,
   		type: 'GET',
   		success: function(ThingData) {
 			
 			if(ThingFilter == 'assignedTo') {
- 				//console.log('assignedTo Length: ' + ThingData.assignedTo.length);
+ 				//console.log(ThingData.assignedTo);
 				ThingPropertiesOutput = ThingData.assignedTo.length; // How many Users are assigned to this Thing
-				$(ThisDiv).text(ThingPropertiesOutput);
+				$(ThisDiv+' a.users-count').text(ThingPropertiesOutput);
+				
+				// ---- Populate A Thing's Members Tray ----/
+				TeamMembersForTray = '';
+				if(ThingData.assignedTo.length > 0) {
+					for(i=0;i<ThingData.assignedTo.length;i++) {
+						TeamMembersForTray+='<div class="userpic">';
+					
+						if(ThingData.assignedTo[i].imagePath.substring(0, 4) == 'http') {
+							ThisUserImg = ThingData.assignedTo[i].imagePath;
+						} else {
+							ThisUserImg = APPURL+ThingData.assignedTo[i].imagePath;
+						}
+						//console.log(ThisUserImg);
+						TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+ThingData.assignedTo[i].emailAddress+'" title="'+ThingData.assignedTo[i].emailAddress+'" id="userpic='+ThingData.assignedTo[i].id+'">';
+						TeamMembersForTray+='</div>';
+					}
+				}
+				$(ThisDiv + ' .users-tray').prepend(TeamMembersForTray);
+				// ----/ Populate A Thing's Members Tray ----/
 			}
 			
 			if(ThingFilter == '') {
- 				//console.log('assignedTo Length: ' + ThingData);
 				ThingPropertiesOutput = ThingData;
 			}
 			
@@ -114,10 +131,48 @@ function StarThing(ThingID,NewStatus) {
 
 /*
 |--------------------------------------------------------------------------
+|	BEGIN: MAKE SIDEBAR TEAM MEMBERS DRAGGABLE
+|--------------------------------------------------------------------------
+*/
+function SidebarMembersDraggable() {
+	$('.member .userpic').bind('mouseenter', function(event) {
+		event.preventDefault();
+		ThisMemberDivID = $(this).attr('rel');
+						
+		$(this).kendoDraggable({
+        	hint: function(e) {
+				return $(e).clone();
+        	},
+			dragstart: UserDragStarted,
+   		});
+	});
+  
+  	$(".userpic-dropzone").kendoDropTarget({
+    	drop:UserDragDropped
+  	});
+					
+	function UserDragStarted(e) {
+    	
+	}
+				
+	function UserDragDropped(e){
+		//console.log($(e));
+   		alert('User ID: ' + ThisMemberDivID);
+	}
+}
+/*
+|--------------------------------------------------------------------------
+|	END: MAKE SIDEBAR TEAM MEMBERS DRAGGABLE
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
 |	BEGIN: ACTIVATE ALL THING INTERACTIONS (TRIGGERED AFTER THINGS ARE LOADED VIA API)
 |--------------------------------------------------------------------------
 */
 function ActivateListViewButtons() {
+	//alert('Activate All Buttons');
 	$('.users-tray').hide();
 	
 	$('a.users-count').bind("click", function(event) {
@@ -214,6 +269,8 @@ function ActivateListViewButtons() {
     	EditWindow.open();
 	});
 	// ----/ Edit A Thing ---- //
+	
+	SidebarMembersDraggable();
 	
 	$('#loading-div').remove();
 }
@@ -313,18 +370,16 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
                     TeamThingsOutput+='</div>';
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
-                TeamThingsOutput+='<div class="users-tray">';
-                	
-					// TO DO: RENDER OUT ALL ASSIGNEES FOR THIS THING
-					
-                    TeamThingsOutput+='<div class="userpic-dropzone" id="userpic-dropzone"></div>';
+                TeamThingsOutput+='<div class="users-tray">';					
+                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
                 TeamThingsOutput+='<a class="users-count" href="#"></a>';
           	TeamThingsOutput+='</div>';
 			
-			ThisThingAssignedToCount = GetThingProperties(TeamThingsData[i].id,'assignedTo','#teamthing-'+TeamThingsData[i].id+' a.users-count');
+			GetThingProperties(TeamThingsData[i].id,'assignedTo',MyTeamThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
+			//GetTeamProperties(getQueryVariable('teamid'),'');
 			
 			}
 			
@@ -397,18 +452,16 @@ function GetMyThings(UserID,MyThingsFilter) {
                     TeamThingsOutput+='</div>';
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
-                TeamThingsOutput+='<div class="users-tray">';
-                	
-					// TO DO: RENDER OUT ALL ASSIGNEES FOR THIS THING
-					
-                    TeamThingsOutput+='<div class="userpic-dropzone" id="userpic-dropzone"></div>';
+                TeamThingsOutput+='<div class="users-tray">';					
+                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
                 TeamThingsOutput+='<a class="users-count" href="#"></a>';
           	TeamThingsOutput+='</div>';
 			
-			GetThingProperties(TeamThingsData[i].id,'assignedTo','#teamthing-'+TeamThingsData[i].id+' a.users-count');
+			GetThingProperties(TeamThingsData[i].id,'assignedTo',MyThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
+			//GetTeamProperties(getQueryVariable('teamid'),'');
 			
 			}}
 			
@@ -454,7 +507,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 			
 					for(i=0;i<TeamMembersData.length;i++) {
 						//console.log('User ID: ' + TeamMembersData[i].id);
-						TeamMembersDataOutput+='<div class="member"><div class="userpic" rel="'+TeamMembersData[i].id+'">';
+						TeamMembersDataOutput+='<div class="member"><div class="userpic" id="userpic-'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
 						TeamMembersDataOutput+='<img src="'+TeamMembersData[i].imagePath+'" width="55" height="55" alt="">';
 						TeamMembersDataOutput+='</div>';
 						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
@@ -468,32 +521,8 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 					//$('#myteam-members .member').addClass('float');
 					$('.sidebar-header').html();
 					
-					// ---- Make All Team Members Draggable ---- //
-					$('.member .userpic').bind('mouseover', function(event) {
-						event.preventDefault();
-						ThisMemberDivID = $(this).attr('rel');
-						
-						$(this).kendoDraggable({
-        					hint: function(e) {
-            					return $(e).clone();
-        					},
-							dragstart: UserDragStarted,
-   						});
-					});
-  
-  					$("#userpic-dropzone").kendoDropTarget({
-    					drop:UserDragDropped
-  					});
-					
-					function UserDragStarted(e) {
-                    	$('.member .userpic#'+ThisMemberDivID).addClass('dragged');
-					}
-				
-					function UserDragDropped(e){
-   						alert('User ID: ' + ThisMemberDivID);
-					}
-					// ----/ Make All Team Members Draggable ---- //
-					
+					SidebarMembersDraggable();
+	
 					GetAllUsers('');
 
 				}
@@ -554,7 +583,7 @@ function EditThing(editedById,Description,assignedTo) {
 		},
 		dataType: 'json',
   		success: function(ThingData) {
-    		console.log(ThingData);
+    		//console.log(ThingData);
 			CurrentThingEditID = null;
 			$("#editthinginfo").data("kendoWindow").close();
 			location.reload();
@@ -673,8 +702,6 @@ function GetAllUsers(UserFilter) {
 				}
 				
 				if($.inArray(UsersData[i].id, CurrentTeamMembersArray) < 0) {
-					//console.log('CU Array: ' + CurrentTeamMembersArray.toString());
-					//console.log(UsersData[i].id + ' not in array ' + CurrentTeamMembersArray);
 					AllUsersOutput+='<a href="#" class="memberlistitem" rel="'+UsersData[i].id+'"><span class="imgwrap"><img src="'+ThisUserImg+'" width="32" height="32"></span>'+UsersData[i].emailAddress+'</a>';
 				}
 			}
@@ -689,7 +716,7 @@ function GetAllUsers(UserFilter) {
   					url: APPURL+'/api/team/'+ThisUserID+'/join',
   					type: 'PUT',
   					success: function(AddUserToTeamData) {
-    					console.log(AddUserToTeamData);
+    					//console.log(AddUserToTeamData);
 						$("#addtoteam").data("kendoWindow").close();
 						location.reload();
   					}
