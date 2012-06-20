@@ -121,7 +121,7 @@ $(document).ready(function () {
             data: userInfo,
             dataType: "JSON"
         })
-        .success(loginSuccess(data))
+        .success(loginSuccess)
         .error(loginFail);
     }
 
