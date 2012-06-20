@@ -1,3 +1,5 @@
+.km-button {color: #292929;}
+
 .km-listview-link::after, .km-listview-label::after{
 	border-color: #358fff;	
 }
