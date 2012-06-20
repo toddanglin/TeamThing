@@ -1,4 +1,6 @@
 
+CurrentTeamURLID = getQueryVariable('teamid');
+
 MyThingsListDiv = '.mythingslist .list';
 MyTeamThingsListDiv = '.myteamsthingslist .list';
 MyTeamMembersPanel = '.myteam #myteam-members';
@@ -307,7 +309,7 @@ function StatusListSelected() {
 			GetMyThings(LoggedInUserID,ThisFilter);
 		//}
 		//if ($(MyTeamThingsListDiv).is(':visible')){
-			GetTeamThings(getQueryVariable('teamid'),ThisFilter);
+			GetTeamThings(CurrentTeamURLID,ThisFilter);
 		//}
 	}
 };
@@ -379,7 +381,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
           	TeamThingsOutput+='</div>';
 			
 			GetThingProperties(TeamThingsData[i].id,'assignedTo',MyTeamThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
-			//GetTeamProperties(getQueryVariable('teamid'),'');
+			//GetTeamProperties(CurrentTeamURLID,'');
 			
 			}
 			
@@ -389,7 +391,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 	);
 }
 
-GetTeamThings(getQueryVariable('teamid'),'');
+GetTeamThings(CurrentTeamURLID,'');
 /*
 |--------------------------------------------------------------------------
 |	END: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
@@ -416,7 +418,7 @@ function GetMyThings(UserID,MyThingsFilter) {
 			TeamThingsOutput = '';
 			for(i=0;i<TeamThingsData.length;i++) {
 	
-			if(TeamThingsData[i].teamId == getQueryVariable('teamid')) {
+			if(TeamThingsData[i].teamId == CurrentTeamURLID) {
 				
 				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
           		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
@@ -461,7 +463,7 @@ function GetMyThings(UserID,MyThingsFilter) {
           	TeamThingsOutput+='</div>';
 			
 			GetThingProperties(TeamThingsData[i].id,'assignedTo',MyThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
-			//GetTeamProperties(getQueryVariable('teamid'),'');
+			//GetTeamProperties(CurrentTeamURLID,'');
 			
 			}}
 			
@@ -518,7 +520,6 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 					TeamMembersDataOutput+='<div class="clear-float"></div>';
 			
 					$(MyTeamMembersPanel).html(TeamMembersDataOutput);
-					//$('#myteam-members .member').addClass('float');
 					$('.sidebar-header').html();
 					
 					SidebarMembersDraggable();
@@ -531,7 +532,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 	});
 }
 
-GetSideBarTeamMembers(getQueryVariable('teamid'),'');
+GetSideBarTeamMembers(CurrentTeamURLID,'');
 /*
 |--------------------------------------------------------------------------
 |	END: TEAM MEMBERS FOR SIDEBAR PANEL
@@ -712,11 +713,16 @@ function GetAllUsers(UserFilter) {
   				event.preventDefault();
 				ThisUserID = $(this).attr('rel');
 				
+				console.log('Tried adding User ID: ' + ThisUserID + ' to Team ID: ' + CurrentTeamURLID);
+				
 				$.ajax({
-  					url: APPURL+'/api/team/'+ThisUserID+'/join',
+  					url: APPURL+'/api/team/'+CurrentTeamURLID+'/join',
   					type: 'PUT',
+					data: {
+						'userId': ThisUserID
+					},
+					dataType: 'json',
   					success: function(AddUserToTeamData) {
-    					//console.log(AddUserToTeamData);
 						$("#addtoteam").data("kendoWindow").close();
 						location.reload();
   					}
