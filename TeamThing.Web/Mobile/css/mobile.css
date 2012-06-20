@@ -241,3 +241,11 @@ textarea{
 	font-size: 20px;
 	margin-bottom: 15px;
 }
+
+/*CUSTOM ICONS*/
+.km-person{
+  -webkit-mask-box-image: url(images/iconPerson.png);
+}
+.km-team{
+  -webkit-mask-box-image: url(images/iconTeam.png);
+}
