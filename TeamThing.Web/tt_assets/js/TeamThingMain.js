@@ -360,6 +360,8 @@ function GetMyThings(UserID,MyThingsFilter) {
 			//console.log(TeamThingsData);
 			TeamThingsOutput = '';
 			for(i=0;i<TeamThingsData.length;i++) {
+	
+			if(TeamThingsData[i].teamId == getQueryVariable('teamid')) {
 				
 				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
           		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
@@ -408,7 +410,7 @@ function GetMyThings(UserID,MyThingsFilter) {
 			
 			GetThingProperties(TeamThingsData[i].id,'assignedTo','#teamthing-'+TeamThingsData[i].id+' a.users-count');
 			
-			}
+			}}
 			
 			$(MyThingsListDiv).html(TeamThingsOutput);
 			
@@ -484,7 +486,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
   					});
 					
 					function UserDragStarted(e) {
-                    	//console.log(ThisMemberDivID);
+                    	$('.member .userpic#'+ThisMemberDivID).addClass('dragged');
 					}
 				
 					function UserDragDropped(e){

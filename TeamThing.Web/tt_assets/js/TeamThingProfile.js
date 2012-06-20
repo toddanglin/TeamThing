@@ -57,19 +57,35 @@ UserProfileMain(LoggedInUserID);
 |--------------------------------------------------------------------------
 */
 function GetTeamProperties(TeamID,TeamFilter) {
-	console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
+	//console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
 	$.ajax({
   		url: APPURL+'/api/team/'+TeamID+'/members/'+TeamFilter,
   		type: 'GET',
   		success: function(TeamData) {
-			//console.log(TeamData);
+			console.log(TeamData);
 			TeamPropertiesOutput = TeamData.length; // How many Users on a Team
 			TeamPropertiesOutput == 1 ? MembersOutput = 'member' :  MembersOutput = 'members';
 			$('a.users-count-link#user-count-'+TeamID).text(TeamPropertiesOutput + ' ' + MembersOutput);
 			
+			TeamMembersForTray = '';
 			if(TeamPropertiesOutput > 0) {
-				$('#teamthing-'+TeamID).append('<div class="users-tray"><div class="clear-float"></div></div>');
+				TeamMembersForTray+='<div class="users-tray">';
+				for(i=0;i<TeamData.length;i++) {
+					TeamMembersForTray+='<div class="userpic">';
+					
+					if(TeamData[i].imagePath.substring(0, 4) == 'http') {
+						ThisUserImg = TeamData[i].imagePath;
+					} else {
+						ThisUserImg = APPURL+TeamData[i].imagePath;
+					}
+					
+					TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+TeamData[i].emailAddress+'" title="'+TeamData[i].emailAddress+'" id="userpic='+TeamData[i].id+'">';
+					TeamMembersForTray+='</div>';
+				}
+				TeamMembersForTray+='<div class="clear-float"></div></div>';
 			}
+			$('#teamthing-'+TeamID).append(TeamMembersForTray);
+			$('.users-tray').hide();
   		}
 	});
 }
@@ -119,7 +135,7 @@ function GetMyTeams(UserID,TeamFilter) {
 				
           	UserTeamsOutput+='</div>';
 			
-			GetTeamProperties(TeamsData[i].id,'assignedTo');
+			GetTeamProperties(TeamsData[i].id,'Approved');
 			
 			}
 			

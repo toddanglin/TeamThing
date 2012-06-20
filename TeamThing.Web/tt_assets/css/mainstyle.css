@@ -417,6 +417,7 @@ aside p {padding:5px 20px;}
 	position:relative;
 	display:inline;
 }
+
 .myteam #myteam-members .member.float {
 	float:left;
 }
@@ -449,6 +450,11 @@ aside p {padding:5px 20px;}
 	height: 55px;
 	display:block;
 	-webkit-border-radius: 30px;
+}
+
+.myteam #myteam-members .member .userpic.dragged {
+	-webkit-box-shadow: 0px 0px 8px 8px #006600;
+	box-shadow: 0px 0px 8px 8px #006600;
 }
 
 /*
