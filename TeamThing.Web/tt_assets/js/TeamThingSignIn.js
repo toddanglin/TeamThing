@@ -37,7 +37,7 @@ $(document).ready(function () {
         AdjustLayout($(window).width(), $(window).height())
     });
 
-    APPURL = "http://localhost:5079";//'http://teamthing.apphb.com';
+    APPURL = 'http://teamthing.net';
 
 
     var oAuthProvider = new OAuthProvider();
