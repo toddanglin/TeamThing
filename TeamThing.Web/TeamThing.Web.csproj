@@ -88,6 +88,7 @@
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20505.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -256,18 +257,18 @@
     <Content Include="tt_assets\css\form-elements.css" />
     <Content Include="tt_assets\css\login.css" />
     <Content Include="tt_assets\css\mainstyle.css" />
-	<Content Include="tt_assets\css\profile.css" />
+    <Content Include="tt_assets\css\profile.css" />
     <Content Include="tt_assets\css\style.css" />
     <Content Include="tt_assets\css\uniform.aristo.css" />
     <Content Include="tt_assets\css\_notes\dwsync.xml" />
-	<Content Include="tt_assets\images\add_team_btn.png" />
-	<Content Include="tt_assets\images\add_user_btn.png" />
+    <Content Include="tt_assets\images\add_team_btn.png" />
+    <Content Include="tt_assets\images\add_user_btn.png" />
     <Content Include="tt_assets\images\asterick.png" />
     <Content Include="tt_assets\images\complete.png" />
     <Content Include="tt_assets\images\delete.png" />
     <Content Include="tt_assets\images\edit.png" />
     <Content Include="tt_assets\images\google-signin-btn.jpg" />
-	<Content Include="tt_assets\images\icon_x.png" />
+    <Content Include="tt_assets\images\icon_x.png" />
     <Content Include="tt_assets\images\jquery-uniform-sprite-tt.png" />
     <Content Include="tt_assets\images\listpic.png" />
     <Content Include="tt_assets\images\listpic-default.png" />
@@ -297,8 +298,8 @@
     <Content Include="tt_assets\js\jquery.uniform.min.js" />
     <Content Include="tt_assets\js\oauth.js" />
     <Content Include="tt_assets\js\TeamThingGlobal.js" />
-	<Content Include="tt_assets\js\TeamThingMain.js" />
-	<Content Include="tt_assets\js\TeamThingProfile.js" />
+    <Content Include="tt_assets\js\TeamThingMain.js" />
+    <Content Include="tt_assets\js\TeamThingProfile.js" />
     <Content Include="tt_assets\js\TeamThingSignIn.js" />
     <Content Include="tt_assets\js\_notes\dwsync.xml" />
     <Content Include="tt_assets\kendoui\js\cultures\kendo.culture.af-ZA.min.js" />
