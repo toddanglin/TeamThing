@@ -141,8 +141,8 @@ $(document).ready(function () {
 		var ThisLeft = $('li#signin-slide-2').offset().left;
         $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
 		
-		ThisUserID = user.id;
-		console.log("Hi my name is " + user.id + " user, and login have been SUCCESSFUL :) | User Data: " + user.nickname);
+		LoggedInUserID = user.id;
+		console.log("Hi my ID is " + LoggedInUserID);
 
     }
 
@@ -171,7 +171,7 @@ $(document).ready(function () {
   			type: 'POST',
 			data: {
 				'name':''+$('#teamname').val()+'',
-				'createdById':ThisUserID,
+				'createdById':LoggedInUserID,
 				'ispublic':true
 			},
 			dataType: 'json',

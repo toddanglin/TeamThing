@@ -1,7 +1,7 @@
 
 APPURL = 'http://teamthing.net';
 //APPURL = 'http://teamthing.apphb.com';
-LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
+//LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
 
 /*
 |--------------------------------------------------------------------------
