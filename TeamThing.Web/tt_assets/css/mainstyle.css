@@ -835,8 +835,30 @@ font-family: Helvetica, helvetica; padding:10px;}
 |	BEGIN: ADD USERS POPUP LISTING
 |--------------------------------------------------------------------------
 */
+
 #addtoteam {
+	margin:0;
+	padding:10px;
 	background-color:#fff;
+}
+
+#addtoteam ul {
+	margin:5px;
+	padding:5px;
+	list-style:none;
+	position:relative;
+	display:block;
+}
+
+#addtoteam ul li {
+	margin-bottom:20px;
+}
+
+#big-bold-copy {
+	clear:both;
+	font-size:18px;
+	font-weight:bold;
+	padding-bottom:15px;
 }
 
 a.memberlistitem {

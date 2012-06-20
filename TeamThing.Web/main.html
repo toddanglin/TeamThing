@@ -89,7 +89,22 @@
     </div>
     
     <!-- BEGIN: ADD TEAM USERS WINDOW -->
-    <div id="addtoteam"></div>
+    <div id="addtoteam">
+    	<ul>
+    		<li>
+        		<label for="useremailinput" class="required">User's Email: </label>
+        		<input type="text" id="useremailinput" name="useremailinput" class="k-textbox" required validationMessage="Please enter User's email address" size="50" style="width:365px;" />
+        	</li>
+            <li>
+        		<label for="userteamselect" class="required">Add to Team: </label>
+                <select id="userteamselect" name="userteamselect" class="k-select" required validationMessage="Please choose a Team"></select>
+        	</li>
+        	<li>
+        		<button class="k-button" type="submit" id="inviteuserbtn">Invite User</button>
+        	</li>
+   	 	</ul>
+        <div id="big-bold-copy">Or choose a User from the list below.</div>
+    </div>
     <!-- END: ADD TEAM USERS WINDOW -->
     
     <!-- BEGIN: CREATE THING WINDOW -->

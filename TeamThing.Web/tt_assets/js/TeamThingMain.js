@@ -10,7 +10,7 @@ MyTeamMembersPanel = '.myteam #myteam-members';
 |	BEGIN: GET ALL TEAMS FOR CREATE THING PULLDOWN
 |--------------------------------------------------------------------------
 */
-function GetUsersTeamsForCreate(UserID) {
+function GetUsersTeamsForCreate(UserID,WhichSelector) {
 	$.get(
 		APPURL+'/api/user/'+UserID+'/teams',
     	function(data) { 
@@ -18,15 +18,15 @@ function GetUsersTeamsForCreate(UserID) {
 			for(i=0;i<data.length;i++) {
 				TeamsOutput+='<option value="'+data[i].id+'">'+data[i].name+'</option>';
 			}
-			$("#thingteamselect").append(TeamsOutput);
+			$('#'+WhichSelector).append(TeamsOutput);
 			
-			$("#thingteamselect").kendoDropDownList({
+			$('#'+WhichSelector).kendoDropDownList({
     			index: 0
 			});
 		}
 	);
 }
-GetUsersTeamsForCreate(LoggedInUserID);
+GetUsersTeamsForCreate(LoggedInUserID,'thingteamselect');
 /*
 |--------------------------------------------------------------------------
 |	END: GET ALL TEAMS FOR CREATE THING PULLDOWN
@@ -55,11 +55,7 @@ function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
 					for(i=0;i<ThingData.assignedTo.length;i++) {
 						TeamMembersForTray+='<div class="userpic">';
 					
-						if(ThingData.assignedTo[i].imagePath.substring(0, 4) == 'http') {
-							ThisUserImg = ThingData.assignedTo[i].imagePath;
-						} else {
-							ThisUserImg = APPURL+ThingData.assignedTo[i].imagePath;
-						}
+						ThisUserImg = ImageURIRemoteOrRelative(ThingData.assignedTo[i].imagePath);
 						//console.log(ThisUserImg);
 						TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+ThingData.assignedTo[i].emailAddress+'" title="'+ThingData.assignedTo[i].emailAddress+'" id="userpic='+ThingData.assignedTo[i].id+'">';
 						TeamMembersForTray+='</div>';
@@ -512,9 +508,11 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 					DraggableOutput = [];
 			
 					for(i=0;i<TeamMembersData.length;i++) {
-						//console.log('User ID: ' + TeamMembersData[i].id);
+						
+						ThisUserImg = ImageURIRemoteOrRelative(TeamMembersData[i].imagePath);
+						
 						TeamMembersDataOutput+='<div class="member"><div class="userpic" id="userpic-'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
-						TeamMembersDataOutput+='<img src="'+TeamMembersData[i].imagePath+'" width="55" height="55" alt="">';
+						TeamMembersDataOutput+='<img src="'+ThisUserImg+'" width="55" height="55" alt="">';
 						TeamMembersDataOutput+='</div>';
 						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
 						
@@ -599,32 +597,7 @@ function EditThing(editedById,Description,assignedTo) {
 |--------------------------------------------------------------------------
 |	BEGIN: EDIT A THING
 |--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
-|	BEGIN: ADD TO TEAM WINDOW AND FUNCTIONS
-|--------------------------------------------------------------------------
-*/
-
-    var window = $("#addtoteam").kendoWindow({
-        height: "220px",
-        title: "Add to My Team",
-        visible: false,
-        width: "400px"
-    }).data("kendoWindow");
-
-
-	$(".plus").click(function(){
-		var window = $("#addtoteam").data("kendoWindow");
-    	window.center();
-    	window.open();
-	}); 
-/*
-|--------------------------------------------------------------------------
-|	END: ADD TO TEAM WINDOW AND FUNCTIONS
-|--------------------------------------------------------------------------
-*/     
+*/   
 
 /*
 |--------------------------------------------------------------------------
@@ -700,18 +673,15 @@ function GetAllUsers(UserFilter) {
   		success: function(UsersData) {
 			AllUsersOutput = '';
 			for(i=0;i<UsersData.length;i++) {
-				if(UsersData[i].imagePath.substring(0, 4) == 'http') {
-					ThisUserImg = UsersData[i].imagePath;
-				} else {
-					ThisUserImg = APPURL+UsersData[i].imagePath;
-				}
+				
+				ThisUserImg = ImageURIRemoteOrRelative(UsersData[i].imagePath);
 				
 				if($.inArray(UsersData[i].id, CurrentTeamMembersArray) < 0) {
 					AllUsersOutput+='<a href="#" class="memberlistitem" rel="'+UsersData[i].id+'"><span class="imgwrap"><img src="'+ThisUserImg+'" width="32" height="32"></span>'+UsersData[i].emailAddress+'</a>';
 				}
 			}
 			
-			$('#addtoteam').html(AllUsersOutput);
+			$('#addtoteam').append(AllUsersOutput);
 			
 			$('a.memberlistitem').bind("click", function(event) {
   				event.preventDefault();
@@ -742,6 +712,73 @@ function GetAllUsers(UserFilter) {
 |	BEGIN: RENDER ALL USERS TO SIDEBAR POP UP WINDOW
 |--------------------------------------------------------------------------
 */
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: INVITE A USER
+|--------------------------------------------------------------------------
+*/
+function InviteUser(UserEmail,TeamID,CreatedByID) {
+	console.log(UserEmail+','+TeamID+','+CreatedByID);
+	$.ajax({
+  		url: APPURL+'/api/team/'+TeamID+'/addmember',
+  		type: 'PUT',
+		data: {
+			'addedByUserId':CreatedByID,
+			'emailAddress':UserEmail
+		},
+		dataType: 'json',
+  		success: function(CreateTeamData) {
+    		$("#addtoteam").data("kendoWindow").close();
+			location.reload();
+  		}
+	});
+	
+}
+/*
+|--------------------------------------------------------------------------
+|	END: INVITE A USER
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: ADD TO TEAM WINDOW AND FUNCTIONS
+|--------------------------------------------------------------------------
+*/
+
+    AddUserToTeamWindow = $("#addtoteam").kendoWindow({
+        height: "400px",
+        title: "Add A User To My Team",
+        visible: false,
+        width: "500px"
+    }).data("kendoWindow");
+
+
+	$(".plus").click(function(){
+		AddUserToTeamWindow = $("#addtoteam").data("kendoWindow");
+    	AddUserToTeamWindow.center();
+    	AddUserToTeamWindow.open();
+	});
+	
+	ValidateCreateWindow = $("#addtoteam").kendoValidator().data("kendoValidator"),
+
+    $("#inviteuserbtn").click(function() {
+		if (ValidateCreateWindow.validate()) {
+			ThisUserEmail = $('#useremailinput').val();
+			ThisUserTeamAssignment = $('#userteamselect').val();
+			InviteUser(ThisUserEmail, ThisUserTeamAssignment, LoggedInUserID);
+		} else {
+             //
+		}
+	});
+	
+	GetUsersTeamsForCreate(LoggedInUserID,'userteamselect'); // TeamsOutput contains all the Teams we gathered onLoad
+/*
+|--------------------------------------------------------------------------
+|	END: ADD TO TEAM WINDOW AND FUNCTIONS
+|--------------------------------------------------------------------------
+*/  
 
 
 });
