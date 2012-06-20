@@ -69,7 +69,10 @@ var TeamThing = function (kendoApp) {
                 $(ele).find("a").kendoMobileButton();
             });
         },
-        loadTeamView: function (tmpl, ele) {
+        loadTeamView: function(tmpl, ele){
+
+        },
+        loadTeamMemberView: function (tmpl, ele) {
             $.when(_data.getTeam(this.getCurrentTeam())).then(function (result) {
                 ele.html(tmpl(result));
 

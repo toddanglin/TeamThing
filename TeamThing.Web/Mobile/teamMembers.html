@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div data-role="view" id="vwTeam" data-show="initTeamView">
+<div data-role="view" id="vwTeam" data-show="initTeamMemberView">
      <div id="teamContainer"></div>
 </div>
 
@@ -26,14 +26,14 @@
 </script>
 
 <script>
-    function initTeamView() {
+    function initTeamMemberView() {
         //Hide Add button on main index view
         $(".btnAdd").css("visibility", "hidden");
 
 		var ele = $("#teamContainer"),
 			tmpl = kendo.template($("#tmplTeam").html());
 			
-		teamThingApp.loadTeamView(tmpl,ele);
+		//teamThingApp.loadTeamView(tmpl,ele);
 	}
 </script>
 </body>
