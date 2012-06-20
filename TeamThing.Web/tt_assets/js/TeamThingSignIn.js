@@ -72,16 +72,6 @@ $(document).ready(function () {
         oAuthProvider.signIn("google", window.location.href);
     }
 
-    //this is fired once login has completed successfully
-    function onClose() {
-    
-	//GetUsersTeams(user);
-	console.log(user);
-	
-	var ThisLeft = $('li#signin-slide-2').offset().left;
-        $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });      
-    }
-
     //This pretty will kick off all team thing end point specific things once the user's authStatus.signedIn = true;
     function checkUserAuthStatus() {
         var authStatus = getAuthStatus();
@@ -147,8 +137,11 @@ $(document).ready(function () {
 
     function loginSuccess(user) {
 
-        onClose();
-        console.log("Hi my name is " + user.email + " Auth, and login have been SUCCESSFUL :)");
+        GetUsersTeams(user.id);
+		var ThisLeft = $('li#signin-slide-2').offset().left;
+        $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
+		
+		console.log("Hi my name is " + user.email + " Auth, and login have been SUCCESSFUL :)");
 
         //call methods to load user info here!
        
