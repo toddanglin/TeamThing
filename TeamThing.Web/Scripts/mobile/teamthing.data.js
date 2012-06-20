@@ -4,7 +4,7 @@ var TeamThingData = function () {
 		_lastPollTime = null
     _private = {},
 		_isTest = false,
-		_endpoint = "http://teamthing.apphb.com/api/",
+		_endpoint = "http://teamthing.net/api/",
 		_onlinePaths = {
 		    searchTeam: { path: "team?$filter=substringof('{q}',Name)%20eq%20True", verb: "GET", token: false },
 		    getTeam: { path: "team/{key}", verb: "GET", token: false },
