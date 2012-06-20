@@ -60,6 +60,15 @@
 	right:0;
 	display:block;
 }
+
+#user-profile-details #add-user-btn {
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:30px;
+	right:0;
+	display:block;
+}
 /*
 |--------------------------------------------------------------------------
 |	END: USER PROFILE INFO

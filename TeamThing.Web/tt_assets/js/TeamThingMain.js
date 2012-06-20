@@ -139,7 +139,6 @@ function StarThing(ThingID,NewStatus) {
 function SidebarMembersDraggable() {
 	$('.member .userpic').bind('mouseenter', function(event) {
 		event.preventDefault();
-		ThisMemberDivID = $(this).attr('rel');
 						
 		$(this).kendoDraggable({
         	hint: function(e) {
@@ -147,6 +146,10 @@ function SidebarMembersDraggable() {
         	},
 			dragstart: UserDragStarted,
    		});
+	});
+	
+	$('.member .userpic').bind('mousedown', function(event) {
+		ThisMemberDivID = $(this).attr('rel');
 	});
   
   	$(".userpic-dropzone").kendoDropTarget({
@@ -408,15 +411,16 @@ function GetMyThings(UserID,MyThingsFilter) {
 	SetUpLoadingAnim(MyThingsListDiv);
 	
 	ThisQueryString = '';
-	ThisQueryString = APPURL+'/api/user/'+UserID+'/things/'+MyThingsFilter;
+	//ThisQueryString = APPURL+'/api/user/'+UserID+'/things/'+MyThingsFilter;
+	ThisQueryString = APPURL+'/api/team/'+CurrentTeamURLID;
 	//console.log(ThisQueryString);
 	
 	$.get(
 		ThisQueryString,
     	function(TeamThingsData) { 
-			//console.log(TeamThingsData);
+			console.log(TeamThingsData);
 			TeamThingsOutput = '';
-			for(i=0;i<TeamThingsData.length;i++) {
+			/*for(i=0;i<TeamThingsData.length;i++) {
 	
 			if(TeamThingsData[i].teamId == CurrentTeamURLID) {
 				
@@ -465,7 +469,7 @@ function GetMyThings(UserID,MyThingsFilter) {
 			GetThingProperties(TeamThingsData[i].id,'assignedTo',MyThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
 			//GetTeamProperties(CurrentTeamURLID,'');
 			
-			}}
+			}}*/
 			
 			$(MyThingsListDiv).html(TeamThingsOutput);
 			

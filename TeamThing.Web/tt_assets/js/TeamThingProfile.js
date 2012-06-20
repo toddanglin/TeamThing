@@ -212,6 +212,13 @@ function CreateTeam(TeamName,CreatedByID,IsPublic) {
     	CreateWindow.center();
     	CreateWindow.open();
 	});
+	
+	$('a#add-user-btn').bind("click", function(event) {
+		event.preventDefault();
+		//CreateWindow = $("#createteamwindow").data("kendoWindow");
+    	//CreateWindow.center();
+    	//CreateWindow.open();
+	});
 /*
 |--------------------------------------------------------------------------
 |	END: CREATE A TEAM WINDOW
