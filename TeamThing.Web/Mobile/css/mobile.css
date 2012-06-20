@@ -1,7 +1,3 @@
-.km-listview-link::after, .km-listview-label::after{
-	border-color: #358fff;	
-}
-
 /*Customize the Title Bar styles*/
 .km-ios .km-navbar{
 	background-color: #777;	
@@ -47,6 +43,11 @@
 
 .tt .things.km-listview li > a{
 	color: #358fff;
+}
+
+.things .km-listview-link::after, .things .km-listview-label::after{
+	border-color: #358fff;	
+	display:none;
 }
 
 .tt .km-content, body {
