@@ -75,7 +75,8 @@ $(document).ready(function () {
     //this is fired once login has completed successfully
     function onClose() {
     
-	GetUsersTeams(user.id);
+	//GetUsersTeams(user);
+	console.log(user);
 	
 	var ThisLeft = $('li#signin-slide-2').offset().left;
         $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });      
