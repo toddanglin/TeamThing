@@ -10,5 +10,8 @@ namespace TeamThing.Web.Models.API
         public IList<TeamBasic> Teams { get; set; }
         public IList<TeamBasic> PendingTeams { get; set; }
         public IList<Thing> Things { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Nickname { get; set; }
     }
 }
