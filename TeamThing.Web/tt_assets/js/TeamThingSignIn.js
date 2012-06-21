@@ -161,7 +161,7 @@ $(document).ready(function () {
     |--------------------------------------------------------------------------
     */
 
-    var validator = $("#create-team").kendoValidator().data("kendoValidator"), status = $(".status");
+    validator = $("#create-team").kendoValidator().data("kendoValidator"), status = $(".status");
 
     $("#teamnamebtn").live('click', function () {
         if (validator.validate()) {
@@ -176,6 +176,7 @@ $(document).ready(function () {
 			},
 			dataType: 'json',
   			success: function(CreateTeamData) {
+				console.log(CreateTeamData.id);
     			location.href = './main.html?teamid='+CreateTeamData.id;
   			}
 		});
