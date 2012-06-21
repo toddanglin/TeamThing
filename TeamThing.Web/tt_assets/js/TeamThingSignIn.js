@@ -13,12 +13,6 @@ function AdjustLayout(WindowWidth, WindowHeight) {
     $('#signin-slides').css('width', (NewCarouselWidth * 2) + 'px');
     $('#signin-slides li').css('width', NewCarouselWidth + 'px');
 }
-
-function JumpToMain(TeamID) {
-    if (TeamID != '' && TeamID.length > 0 && !isNaN(TeamID)) {
-        location.href = "main.html?teamid=" + TeamID;
-    }
-}
 /*
 |--------------------------------------------------------------------------
 |	END: FUNCTION JUNCTION
@@ -170,7 +164,7 @@ $(document).ready(function () {
 						var dataItem = e.item.index()+1;
 						console.log(dataItem);
                		 	ThisTeamID = $('#TeamsMenu :nth-child('+dataItem+')').attr('value');
-    					location.href = './main.html?teamid='+ThisTeamID;
+    					location.href = 'main.html?userid='+LoggedInUserID+'&teamid='+ThisTeamID;
 					};
 					$("#TeamsMenu").data("kendoComboBox").bind("select", TeamsListJump);
 				}
@@ -184,43 +178,41 @@ $(document).ready(function () {
 		*/
 		
 		/*
-    |--------------------------------------------------------------------------
-    |	BEGIN: CREATE TEAM FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
+    	|--------------------------------------------------------------------------
+   	 	|	BEGIN: CREATE TEAM FUNCTIONS
+   		|--------------------------------------------------------------------------
+   		*/
 
-    validator = $("#create-team").kendoValidator().data("kendoValidator"), status = $(".status");
+    	validator = $("#create-team").kendoValidator().data("kendoValidator"), status = $(".status");
 
-    $("#teamnamebtn").live('click', function () {
-        if (validator.validate()) {
+    	$("#teamnamebtn").live('click', function () {
+			if (validator.validate()) {
 	
-		$.ajax({
-  			url: APPURL+'/api/team',
-  			type: 'POST',
-			data: {
-				'name':''+$('#teamname').val()+'',
-				'createdById':LoggedInUserID,
-				'ispublic':true
-			},
-			dataType: 'json',
-  			success: function(CreateTeamData) {
-				console.log(CreateTeamData.id);
-    			location.href = './main.html?userid='+LoggedInUserID+'&teamid='+CreateTeamData.id;
-  			}
-		});
+			$.ajax({
+  				url: APPURL+'/api/team',
+  				type: 'POST',
+				data: {
+					'name':''+$('#teamname').val()+'',
+					'createdById':LoggedInUserID,
+					'ispublic':true
+				},
+				dataType: 'json',
+  				success: function(CreateTeamData) {
+					console.log(CreateTeamData.id);
+    				location.href = 'main.html?userid='+LoggedInUserID+'&teamid='+CreateTeamData.id;
+  				}
+			});
 		
-        } else {
-           //
-        }
-    });
+        	} else {
+         	  //
+			}
+    	});
 
-    /*
-    |--------------------------------------------------------------------------
-    |	END: CREATE TEAM FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-
+    	/*
+    	|--------------------------------------------------------------------------
+    	|	END: CREATE TEAM FUNCTIONS
+    	|--------------------------------------------------------------------------
+    	*/
 
     }
 
