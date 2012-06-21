@@ -160,19 +160,19 @@ $(document).ready(function () {
 					for(i=0;i<data.length;i++) {
 						TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
 					}
-					$("#jumpMenu").kendoComboBox({
+					$("#TeamsMenu").kendoComboBox({
 						dataTextField: "TeamsListLabel",
 						dataValueField: "TeamsListValue",
 						dataSource: TeamsOutput.TeamsList,
 						index: 0
 					});
-					var TeamsListSelected = function(e) {
+					var TeamsListJump = function(e) {
 						var dataItem = e.item.index()+1;
 						console.log(dataItem);
-               		 ThisTeamID = $('#jumpMenu :nth-child('+dataItem+')').attr('value');
+               		 	ThisTeamID = $('#TeamsMenu :nth-child('+dataItem+')').attr('value');
     					location.href = './main.html?teamid='+ThisTeamID;
 					};
-					$("#jumpMenu").data("kendoComboBox").bind("select", TeamsListSelected);
+					$("#TeamsMenu").data("kendoComboBox").bind("select", TeamsListJump);
 				}
 			);
 		}
@@ -205,7 +205,7 @@ $(document).ready(function () {
 			dataType: 'json',
   			success: function(CreateTeamData) {
 				console.log(CreateTeamData.id);
-    			location.href = './main.html?userid='+LoggedInUserID+'teamid='+CreateTeamData.id;
+    			location.href = './main.html?userid='+LoggedInUserID+'&teamid='+CreateTeamData.id;
   			}
 		});
 		
