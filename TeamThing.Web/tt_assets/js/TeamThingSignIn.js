@@ -163,7 +163,7 @@ $(document).ready(function () {
 
     var validator = $("#create-team").kendoValidator().data("kendoValidator"), status = $(".status");
 
-    $("submit").click(function () {
+    $("#teamnamebtn").live('click', function () {
         if (validator.validate()) {
 	
 		$.ajax({
