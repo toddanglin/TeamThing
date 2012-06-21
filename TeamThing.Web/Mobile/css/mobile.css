@@ -264,7 +264,7 @@ textarea{
 }
 
 #vwLogin .km-content{
-	background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 20% no-repeat;
+	background: #E8E8E8 url(http://teamthing.net/tt_assets/images/tt_logo.png) 50% 20% no-repeat;
 	
 }
 
@@ -280,7 +280,7 @@ textarea{
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2){
 	#vwLogin .km-content{
-		background: #E8E8E8 url(http://teamthing.apphb.com/tt_assets/images/tt_logo.png) 50% 20% no-repeat;
+		background: #E8E8E8 url(http://teamthing.net/tt_assets/images/tt_logo.png) 50% 20% no-repeat;
 		background-size: 280px, 12px;
 	}
 
