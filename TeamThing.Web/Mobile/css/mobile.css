@@ -12,6 +12,10 @@
     display:block; /*Bug?*/
 }
 
+.km-android .km-content{
+	color:#000;
+}
+
 .tt.km-ios .km-view-title{
 	font-family: Helvetica, sans-serif;
 	font-size:  1.6rem;
@@ -43,6 +47,11 @@
 
 .tt .km-listview {
 	box-shadow: 0px 3px 3px #111;
+}
+
+/*No shadow for Android*/
+.tt.km-android .km-listview{
+	box-shadow:none;
 }
 
 .tt .things.km-listview li > a{
@@ -90,6 +99,11 @@
 	border-radius: 0 0 10px 10px;
 }
 
+/*No rounding for Android*/
+.tt.km-android .teamChooseList li:first-of-type, .tt.km-android .teamChooseList li:last-of-type{
+	border-radius:0;
+}
+
 .teamChooseList .selected{
 	background-color: #73c1da;
 }
@@ -122,8 +136,15 @@
 	background-color: #999;
 }
 
-.km-android input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):not([type="checkbox"]):not([type="radio"]), .km-android select:not([multiple]), .km-android .k-dropdown
-{
+.km-android .km-button.delete{
+	color:#000;
+}
+
+.km-android .km-button:disabled{
+	color:#BBB;
+}
+
+.km-android input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]):not([type="file"]):not([type="checkbox"]):not([type="radio"]):not(.k-input):not(.k-button), .km-android select:not([multiple]), .km-android .k-dropdown {
     color:#000;
 }
 
