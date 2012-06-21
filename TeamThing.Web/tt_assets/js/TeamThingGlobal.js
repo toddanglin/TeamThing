@@ -1,7 +1,9 @@
 
 APPURL = 'http://teamthing.net';
+LoggedInUserID = getQueryVariable('userid');
+CurrentTeamURLID = getQueryVariable('teamid');
 //APPURL = 'http://teamthing.apphb.com';
-LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
+//LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +73,7 @@ function UserProfile(UserID) {
     	function(UserInfo) {
 			//console.log(UserInfo);
 			$('#userpic img').attr('src',UserInfo.imagePath);
-			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'">View Profile</a> <a href="#">Sign Out</a></span>');
+			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'teamid=">View Profile</a> <a href="#">Sign Out</a></span>');
 		}
 	);
 }

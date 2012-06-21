@@ -1,6 +1,4 @@
 
-CurrentTeamURLID = getQueryVariable('teamid');
-
 MyThingsListDiv = '.mythingslist .list';
 MyTeamThingsListDiv = '.myteamsthingslist .list';
 MyTeamMembersPanel = '.myteam #myteam-members';

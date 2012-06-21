@@ -1,3 +1,5 @@
+APPURL = 'http://teamthing.net';
+
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: FUNCTION JUNCTION
@@ -143,6 +145,44 @@ $(document).ready(function () {
 		
 		LoggedInUserID = user.id;
 		console.log("Hi my ID is " + LoggedInUserID);
+		
+		/*
+		|--------------------------------------------------------------------------
+		|	BEGIN: GET ALL TEAMS FOR JUMP MENU
+		|--------------------------------------------------------------------------
+		*/
+		function GetUsersTeams(UserID) {
+			$.get(
+				APPURL+'/api/user/'+UserID+'/teams',
+    			function(data) { 
+					TeamsOutput = { TeamsList: [] };
+					TeamsOutput.TeamsList.push({"TeamsListLabel":"Select a Team...","TeamsListValue":""});
+					for(i=0;i<data.length;i++) {
+						TeamsOutput.TeamsList.push({"TeamsListLabel":""+data[i].name+"","TeamsListValue":""+data[i].id+""});
+					}
+					$("#jumpMenu").kendoComboBox({
+						dataTextField: "TeamsListLabel",
+						dataValueField: "TeamsListValue",
+						dataSource: TeamsOutput.TeamsList,
+						index: 0
+					});
+					var TeamsListSelected = function(e) {
+						var dataItem = e.item.index()+1;
+						console.log(dataItem);
+               		 ThisTeamID = $('#jumpMenu :nth-child('+dataItem+')').attr('value');
+    					location.href = './main.html?teamid='+ThisTeamID;
+					};
+					$("#jumpMenu").data("kendoComboBox").bind("select", TeamsListSelected);
+				}
+			);
+		}
+		GetUsersTeams(LoggedInUserID);
+		/*
+		|--------------------------------------------------------------------------
+		|	END: GET ALL PUBLIC TEAMS FOR JUMP MENU
+		|--------------------------------------------------------------------------
+		*/
+
 
     }
 
@@ -177,7 +217,7 @@ $(document).ready(function () {
 			dataType: 'json',
   			success: function(CreateTeamData) {
 				console.log(CreateTeamData.id);
-    			location.href = './main.html?teamid='+CreateTeamData.id;
+    			location.href = './main.html?userid='+LoggedInUserID+'teamid='+CreateTeamData.id;
   			}
 		});
 		

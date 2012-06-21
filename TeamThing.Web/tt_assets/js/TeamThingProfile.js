@@ -1,5 +1,4 @@
 
-LoggedInUserID = getQueryVariable('userid');
 MyTeamsListDiv = '.myteamslist .list';
 
 $(document).ready(function() {
