@@ -6,11 +6,11 @@
 </head>
 <body class="tt">
 
-	<div data-role="view" id="vwTeamPick" data-layout="title" data-transition="slide" data-title="Pick a Team" data-show="viewLoad">
+	<div data-role="view" id="vwTeamPick" data-layout="title" data-transition="slide" data-title="Pick a Team" data-show="teamPickViewShow">
 		<div class="wrapper" style="margin-top:20px;">		
 			<p>Join an existing team.</p>
-			<p>You may immediately join Open teams. Private teams require approval.</p>
-			<input id="txtTeamAc" placeholder="Search existing teams..." style="width: 80%;font-size: 16px;color: #000;height: 30px;" />
+			<p>You may immediately join Open teams.<br />Private teams require approval.</p>
+			<input id="txtTeamAc" placeholder="Search existing teams..." style="width: 80%;font-size: 24px;color: #000;" />
 			<div id="pvtTeamMsg" style="margin:15px auto;color: #ffd04c;width: 60%;display: none;">
 			You selected a private team. The team owner must approve your 
 			membership.
@@ -37,14 +37,19 @@
 	  	  app = null,
 	  	  team = null;
 	  	  
-	  function viewLoad(){
+	  function teamPickViewShow(){
 		//Show the back button
 		$("#btnBack").css("visibility","visible");
 		
 		//Initially disable the confirm btn
 		var acEle = $("#txtTeamAc"),
-			tmpl = kendo.template($("#acItemTemp").html());
+			tmpl = kendo.template($("#acItemTemp").html()),
+			btnConfirm = $("#btnConfirm");
 			
+		//Disable confirm button on view show
+		btnConfirm.attr("disabled","disabled");
+		$("#pvtTeamMsg").hide();
+
 		app = teamThingApp;
 		dsTeamSearch = new kendo.data.DataSource({
 			transport:{
@@ -70,7 +75,8 @@
 	  	}
 	  	
 	  	//Bind button event
-	  	$("#btnConfirm").bind("click", confirmTeamPick);
+	  	btnConfirm.off("click");
+	  	btnConfirm.on("click", confirmTeamPick);
 	  }
 	  
 	  function teamPickChange(){
