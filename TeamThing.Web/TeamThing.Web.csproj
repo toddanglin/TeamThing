@@ -246,6 +246,7 @@
     <Content Include="Mobile\css\images\bkgndLogin.png" />
     <Content Include="Mobile\css\images\bkgndLogin_320.png" />
     <Content Include="Mobile\css\images\iconLock.png" />
+    <Content Include="Mobile\css\images\iconCornerStar.png" />
     <Content Include="Mobile\css\mobile.css" />
     <Content Include="Mobile\Default.png" />
     <Content Include="Mobile\img\defaultTeam.jpg" />
@@ -260,6 +261,8 @@
     <Content Include="Mobile\teamPick.html" />
     <Content Include="Mobile\thingDetail.html" />
     <Content Include="Mobile\wait.html" />
+    <Content Include="Mobile\teamCreate.html" />
+    <Content Include="Mobile\star.html" />
     <Content Include="tt_assets\css\form-elements.css" />
     <Content Include="tt_assets\css\login.css" />
     <Content Include="tt_assets\css\mainstyle.css" />
