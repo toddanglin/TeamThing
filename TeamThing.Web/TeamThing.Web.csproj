@@ -43,6 +43,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FiftyOne.Foundation">
+      <HintPath>..\packages\51Degrees.mobi.2.1.4.10\lib\NET40\FiftyOne.Foundation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -163,6 +166,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mobile\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mobile\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Models\API\AddMemberViewModel.cs" />
     <Compile Include="Models\API\AddTeamViewModel.cs" />
     <Compile Include="Models\API\AddThingViewModel.cs" />
@@ -201,6 +211,7 @@
     <Content Include="main.html" />
     <Content Include="Mobile\css\images\iconPerson.png" />
     <Content Include="Mobile\css\images\iconTeam.png" />
+    <Content Include="Mobile\Default.aspx" />
     <Content Include="Mobile\teamMembers.html" />
     <Content Include="Scripts\endpointTest\TeamSpec.js" />
     <Content Include="profile.html" />
@@ -834,6 +845,7 @@
     <Content Include="Views\Shared\_ThingListItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="51Degrees.mobi.config" />
     <None Include="Mobile\testdata\newUserLogin.json" />
     <None Include="Mobile\testdata\team.json" />
     <None Include="Mobile\testdata\teams.json" />
