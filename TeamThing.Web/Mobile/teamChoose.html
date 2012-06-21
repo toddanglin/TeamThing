@@ -2,10 +2,15 @@
 
 <html>
 <head>
-	<title>Team Thing</title>
+	<title>Choose Team</title>
 </head>
 <body class="tt">	
-	<div data-role="view" id="vwTeamChoose" data-layout="title" data-transition="slide" data-title="Choose Team" data-show="viewLoad">	
+	<div data-role="view" id="vwTeamChoose" data-layout="title" data-transition="slide" data-title="Choose Team" data-show="vwTeamChooseShow" data-init="vwTeamChooseInit">	
+		<header data-role="header">
+			<div data-role="navbar">
+				<a href="#teamPath.html" data-role="button" data-align="left">Join New Team</a>
+			</div>
+		</header>
 		<div class="wrapper" style="margin-top: 20px;">	
 			<ul class="teamChooseList" id="lstTeams" style="background:#FFF;">
 			</ul>	
@@ -22,8 +27,23 @@
 	
 	<script>
 	  var tmpTeam = null;
+
+	  function vwTeamChooseInit(){
+	  	var app = teamThingApp;
+
+	  	//Bind button click event
+	  	$("#btnChoose").bind("click", function(){
+	  		if(tmpTeam == null) return;
+	  		
+	  		$.when(app.changeTeam(tmpTeam.id)).then(function(result){
+	  			//TODO: Handle failure to assign
+	  			app.app.navigate("");
+	  			return;
+	  		});
+	  	});
+	  }
 	  
-	  function viewLoad(){
+	  function vwTeamChooseShow(){
 	  	//Hide the back button for this view
 	  	$("#btnBack").css("visibility","hidden");
 	  	
@@ -56,16 +76,7 @@
 	  		template: kendo.template($("#tmplTeamChoose").html()),
 			click: teamSelect	  		
 	  	});
-	  	
-	  	$("#btnChoose").bind("click", function(){
-	  		if(tmpTeam == null) return;
-	  		
-	  		$.when(app.changeTeam(tmpTeam.id)).then(function(result){
-	  			//TODO: Handle failure to assign
-	  			app.app.navigate("");
-	  			return;
-	  		});
-	  	});
+	  		  	
 	  }
 	  
 	  function teamSelect(e){

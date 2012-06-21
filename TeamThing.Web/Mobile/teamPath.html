@@ -5,29 +5,27 @@
 	<title>Team Thing</title>	
 </head>
 <body class="tt">	
-	<div data-role="view" id="vwTeamPath" data-layout="title" data-transition="slide" data-title="Pick a Team" data-show="viewLoad">	
+	<div data-role="view" id="vwTeamPath" data-layout="title" data-transition="slide" data-title="Pick a Team" data-show="viewTeamPickShow" data-init="viewTeamPickInit">	
 		<div class="wrapper">		
 			<button class="km-button" id="btnPick" style="margin-bottom: 20px;">Choose Existing Team</button>
-			<button class="km-button" id="btnCreate" disabled>Create Team</button>
+			<button class="km-button" id="btnCreate">Create Team</button>
 	    </div>
 	</div>
 	
 	<script>
-	  $(function(){
-	  	setTimeout(function(){
-            //Hide the login-in progress indicator (in case it's still visible)
-	  	    $(".km-loader").hide();
-	  	}, 100);
-	  });
-	  
-	  function viewLoad(){
-	  	//Hide the back button for this view
-	  	$("#btnBack").css("visibility","hidden");	  		  	
-	  	
-	  	$("#btnPick").bind("click", function(){
-	  		teamThingApp.app.navigate("teamPick.html");
-	  	});
-	  }
+		function viewTeamPickInit(){
+			$("#btnPick").on("click", function(){
+	  			teamThingApp.app.navigate("teamPick.html");
+	  		});
+	  		$("#btnCreate").on("click", function(){
+	  			teamThingApp.app.navigate("teamCreate.html");
+	  		});
+		}
+
+		function viewTeamPickShow(){
+			//Hide the back button for this view
+			$("#btnBack").css("visibility","hidden");	  		  		  	
+		}
 	</script>
 </body>
 </html>
