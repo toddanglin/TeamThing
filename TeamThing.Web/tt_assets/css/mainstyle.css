@@ -763,16 +763,15 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 /* ---------- USERS TRAY ---------- */
 .thing .users-tray {
+	height:60px;
 	margin:0 6px 5px 110px;
 	padding:8px;
 	background-color:#e6e6e6;
-	border:1px #999 solid;
+	border:1px #ccc solid;
 	-webkit-border-radius: 0px 0px 5px 5px;
 	border-radius: 0px 0px 5px 5px;
 	border-top:none;
 	position:relative;
-	display:block;
-	overflow:visible;
 	text-align:left;
 }
 
@@ -911,6 +910,8 @@ a.memberlistitem:hover, a.memberlistitem.over {
 
 .clear-float {
 	clear:both;
+	height:0;
+	display:block;
 }
 
 .k-combobox, #statusfilter #statusfilterlist {

@@ -106,7 +106,7 @@ function GetUsersTeams(UserID) {
 				var dataItem = e.item.index()+1;
 				console.log(dataItem);
                 ThisTeamID = $('#jumpMenu :nth-child('+dataItem+')').attr('value');
-    			location.href = APPURL+'/main.html?teamid='+ThisTeamID;
+    			location.href = './main.html?teamid='+ThisTeamID;
 			};
 			$("#jumpMenu").data("kendoComboBox").bind("select", TeamsListSelected);
 		}

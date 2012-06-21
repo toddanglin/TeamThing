@@ -136,15 +136,14 @@ $(document).ready(function () {
     }  
 
     function loginSuccess(user) {
-
-        GetUsersTeams(user.id);
+		
+		//call methods to load user info here!
 		var ThisLeft = $('li#signin-slide-2').offset().left;
         $("#signin-slides").animate({ left: $('#signin-slides').offset().left + 30 }, { 'duration': 100, 'easing': 'linear' }).animate({ left: $('#signin-slides').offset().left - ThisLeft }, { 'duration': 1000, 'easing': 'easeInOutBack' });
 		
-		console.log("Hi my name is " + user.email + " Auth, and login have been SUCCESSFUL :)");
+		LoggedInUserID = user.id;
+		console.log("Hi my ID is " + LoggedInUserID);
 
-        //call methods to load user info here!
-       
     }
 
     function loginFail(result) {
@@ -164,11 +163,25 @@ $(document).ready(function () {
 
     var validator = $("#create-team").kendoValidator().data("kendoValidator"), status = $(".status");
 
-    $("submit").click(function () {
+    $("#teamnamebtn").live('click', function () {
         if (validator.validate()) {
-            //status.text("Hooray! Your tickets has been booked!").addClass("valid");
+	
+		$.ajax({
+  			url: APPURL+'/api/team',
+  			type: 'POST',
+			data: {
+				'name':''+$('#teamname').val()+'',
+				'createdById':LoggedInUserID,
+				'ispublic':true
+			},
+			dataType: 'json',
+  			success: function(CreateTeamData) {
+    			location.href = './main.html?teamid='+CreateTeamData.id;
+  			}
+		});
+		
         } else {
-            //status.text("Oops! There is invalid data in the form.").addClass("invalid");
+           //
         }
     });
 

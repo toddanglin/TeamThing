@@ -62,6 +62,7 @@ function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
 					}
 				}
 				$(ThisDiv + ' .users-tray').prepend(TeamMembersForTray);
+				$('.users-tray').hide();
 				// ----/ Populate A Thing's Members Tray ----/
 			}
 			
@@ -176,7 +177,7 @@ function ActivateListViewButtons() {
 	//alert('Activate All Buttons');
 	$('.users-tray').hide();
 	
-	$('a.users-count').bind("click", function(event) {
+	$('a.users-count').live("click", function(event) {
   		event.preventDefault();
 		$(this).parent('.thing').children('.users-tray').slideToggle(250);
 	});
@@ -358,14 +359,19 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 						}
               				TeamThingsOutput+='<br />';
               				TeamThingsOutput+='<span class="iconcontrols">';
-              					if(TeamThingsData[i].status != 'Completed') {
+              					
+								if(TeamThingsData[i].status != 'Completed' && TeamThingsData[i].owner.id === LoggedInUserID) {
 									TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
 								}
+								
 								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
+								
 								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
-								if(TeamThingsData[i].status != 'Deleted') {
+								
+								if(TeamThingsData[i].status != 'Deleted' && TeamThingsData[i].owner.id === LoggedInUserID) {
 									TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
 								}
+								
               				TeamThingsOutput+='</span>';
                        TeamThingsOutput+='</span>';
                     TeamThingsOutput+='</div>';
@@ -407,9 +413,7 @@ function GetMyThings(UserID,MyThingsFilter) {
 	SetUpLoadingAnim(MyThingsListDiv);
 	
 	ThisQueryString = '';
-	//ThisQueryString = APPURL+'/api/user/'+UserID+'/things/'+MyThingsFilter;
-	ThisQueryString = APPURL+'/api/team/'+CurrentTeamURLID;
-	//console.log(ThisQueryString);
+	ThisQueryString = APPURL+'/api/team/'+CurrentTeamURLID+'/things/'+MyThingsFilter;
 	
 	$.get(
 		ThisQueryString,
@@ -417,8 +421,10 @@ function GetMyThings(UserID,MyThingsFilter) {
 			console.log(TeamThingsData);
 			TeamThingsOutput = '';
 			for(i=0;i<TeamThingsData.length;i++) {
-	
-			if(TeamThingsData[i].teamId == CurrentTeamURLID) {
+			
+			console.log(TeamThingsData[0].assignedTo);
+			
+			if($.inArray(UserID, TeamThingsData[0].assignedTo) >= 0) {
 				
 				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
           		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
@@ -687,7 +693,7 @@ function GetAllUsers(UserFilter) {
   				event.preventDefault();
 				ThisUserID = $(this).attr('rel');
 				
-				console.log('Tried adding User ID: ' + ThisUserID + ' to Team ID: ' + CurrentTeamURLID);
+				//console.log('Tried adding User ID: ' + ThisUserID + ' to Team ID: ' + CurrentTeamURLID);
 				
 				$.ajax({
   					url: APPURL+'/api/team/'+CurrentTeamURLID+'/join',
@@ -719,7 +725,7 @@ function GetAllUsers(UserFilter) {
 |--------------------------------------------------------------------------
 */
 function InviteUser(UserEmail,TeamID,CreatedByID) {
-	console.log(UserEmail+','+TeamID+','+CreatedByID);
+	//console.log(UserEmail+','+TeamID+','+CreatedByID);
 	$.ajax({
   		url: APPURL+'/api/team/'+TeamID+'/addmember',
   		type: 'PUT',
