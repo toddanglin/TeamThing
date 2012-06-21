@@ -18,27 +18,30 @@
 	<div data-role="view" id="vwThings" data-show="listThingsInit" data-title="Team Thing">
 	     <ul id="lstThings" class="things">      	
 	     </ul>
-         <ul data-role="actionsheet" id="thingActions" data-open="onOpenThingActionSheet">	
-            <li class="km-actionsheet-title">Status:</li>	            
+         <ul data-role="actionsheet" id="thingActions" style="visibility:hidden;" data-open="onOpenThingActionSheet">	
+            <li class="km-actionsheet-title">Update Status:</li>	            
             <li id="asBtnCompleted"><a data-status="Completed" data-action="updateThingStatusComplete">Complete</a></li>
             <li id="asBtnInProgress"><a  data-status="InProgress" data-action="updateThingStatusInProgress">In-Progress</a></li>	
             <li id="asBtnDelayed"><a data-status="Delayed" data-action="updateThingStatusDelay">Delay</a></li>
             <li id="asBtnDeleted"><a data-status="Deleted" data-action="updateThingStatusDelete" class="km-button delete">Delete</a></li>            
          </ul>
 	     <div id="msgNoThings" style="width: 250px;text-align:center;margin: 50px auto;display: none;">
-	     	<h2>No<b>thing</b> to do!</h2>
+	     	<h2>Nothing going on?</h2>
 	     	<p>
-	     	What are you doing here? Don't you have some mad birds to throw?
+	     	What's up?! Too much time throwing mad birds?
+	     	</p>
+	     	<p style="color:#777;">
+	     		Keep your team in the loop (and off your back) by clicking the 'ADD' button to share what you're working on.
 	     	</p>
 	     </div>
 	</div>
 
-	<div data-role="view" id="vwAdd" data-title="Add Thing" data-transition="overlay:down" data-layout="title" data-show="initAddView" style="visibility:hidden;">
+	<div data-role="view" id="vwAdd" data-title="Add Thing" data-transition="overlay:down" data-layout="title" data-show="vwAddShow" style="visibility:hidden;">
 		<div class="wrapper" style="margin-top:10%;">
 		<h2>What are you working on?</h2>
 	     <textarea style="width:90%;height: 175px;margin-bottom: 30px;" 
 	     	required
-	     	placeholder="Enter new thing" class="km-text" id="txtNewThing">
+	     	placeholder="Describe what you're doing for your team" class="km-text" id="txtNewThing">
 	     </textarea>
 	     <button class="km-button" id="btnAddCreate">Create</button>
 	     <button class="km-button" id="btnAddCancel">Cancel</button>
@@ -222,114 +225,123 @@
 
 	   		//Remove hidden visibility from "Add" view (hidden on load to prevent FOUJUI)
 	   		$("#vwAdd").css("visibility", "visible");	
+	   		$("#thingActions").css("visibility", "visible");	
 	   		
 	   		//Show install prompt
 	   		addToHome.show();
 	   }	
 	   
-	   function initAddView() {
-	   	//Hide the back button for this view
-	   	$("#btnBack").css("visibility","hidden");
-	   	
-	   	$("#btnAddCancel").bind("click", function(){
-	   		var app = teamThingApp,
-	   			history = window.history;
-	   		
-	   		if(history.length < 1){
-	   			app.app.navigate("");
-	   		}else{
-	   			history.back(-1);
-	   		}
-	   	});
-	   	
-	   	$("#btnAddCreate").bind("click", function(){
-	   		var app = teamThingApp,
-	   			textEle = $("#txtNewThing"),
-	   			txt = textEle.val();
-	   			
-	   		if(txt == ""){
-	   			alert("Oops! You've got to type something first.");
-	   			return;
-	   		}
-	   		
-	   		app.showLoading("Saving...");
-	   		
-	   		$.when(app.createThing(txt)).then(function(result) {
-		   		app.hideLoading();
-		   		
-		   		if(result){
-		   			app.app.navigate("");
-		   		}else{
-		   			alert("Technical glitch. Save failed.");
-		   		}
-	   		});
-	   	});
-}
+	   function vwAddShow() {
+			//Hide the back button for this view
+			$("#btnBack").css("visibility","hidden");
 
-var asThingId = null;
-function onOpenThingActionSheet(args) {
-    console.log("ACTION SHEET OPEN", args);
-    var container = args.sender.element,
-        contextArgs = args.context.split(";"),
-		status = contextArgs[1],
-        id = contextArgs[0];
+			var textEle = $("#txtNewThing");
 
-    //$(container).off("click", "a");
-    //$(container).on("click", "a", function (e) { updateThingStatus(e, id); });
-    asThingId = id;
+			//Clear contents of text area
+			if(textEle.val().trim() == "") textEle.val("");
 
-    if(status != "Deleted") {
-		$(container).children("#asBtnDeleted").show();
-    } else {
-        $(container).children("#asBtnDeleted").hide();
-    }
-    
-    if(status != "Completed" && status != "Deleted" && status != "Delayed") {
-		$(container).children("#asBtnCompleted").show();
-		$(container).children("#asBtnDelayed").show();
-		$(container).children("#asBtnInProgress").hide();
-	}else{
-    $(container).children("#asBtnInProgress").show();
-    $(container).children("#asBtnDelayed").hide();
-	}
-}
+			$("#btnAddCancel").off("click");
+			$("#btnAddCancel").on("click", function(){
+				var app = teamThingApp,
+					history = window.history;
+				
+				textEle.val(""); //Clear any entry
 
-//Need separate method handlers to distinguish action sheet events (BUG: Need to improve AS behavior)
-function updateThingStatusComplete(args) {
-    updateThingStatus("Completed", args.context.split(";")[0]);
-}
+				if(history.length < 1){
+					app.app.navigate("");
+				}else{
+					history.back(-1);
+				}
+			});
 
-function updateThingStatusDelay(args) {
-    updateThingStatus("Delayed", args.context.split(";")[0]);
-}
+			$("#btnAddCreate").off("click");
+			$("#btnAddCreate").on("click", function(){
+				var app = teamThingApp,
+					txt = textEle.val();
+					
+				if(txt == ""){
+					alert("Oops! You've got to type something first.");
+					return;
+				}
+				
+				app.showLoading("Saving...");
+				
+				$.when(app.createThing(txt)).then(function(result) {
+					app.hideLoading();
+					
+					if(result){
+						textEle.val(""); //Clear entry
+						app.app.navigate("");
+					}else{
+						alert("Technical glitch. Save failed.");
+					}
+				});
+			});
 
-function updateThingStatusInProgress(args) {
-    updateThingStatus("InProgress", args.context.split(";")[0]);
-}
+		}
 
-function updateThingStatusDelete(args) {
-    updateThingStatus("Deleted", args.context.split(";")[0]);
-}
+		function onOpenThingActionSheet(args) {
+		    console.log("ACTION SHEET OPEN", args);
+		    var container = args.sender.element,
+		        contextArgs = args.context.split(";"),
+				status = contextArgs[1],
+		        id = contextArgs[0];
 
-function updateThingStatus(action, id) {
-    var app = teamThingApp;
-        //action = args, //$(args.target.context).data("status"),
-        //id = asThingId;  //args.context.split(";")[0];
+		    //$(container).off("click", "a");
+		    //$(container).on("click", "a", function (e) { updateThingStatus(e, id); });
 
-    console.log("THING UPDATE", action, id);
+		    if(status != "Deleted") {
+				$(container).children("#asBtnDeleted").show();
+		    } else {
+		        $(container).children("#asBtnDeleted").hide();
+		    }
+		    
+		    if(status != "Completed" && status != "Deleted" && status != "Delayed") {
+				$(container).children("#asBtnCompleted").show();
+				$(container).children("#asBtnDelayed").show();
+				$(container).children("#asBtnInProgress").hide();
+			}else{
+		    $(container).children("#asBtnInProgress").show();
+		    $(container).children("#asBtnDelayed").hide();
+			}
+		}
 
-    app.showLoading("Updating...");
-    $.when(app.updateThingStatus(id, action)).then(function (result) {
-        app.hideLoading();
+		//Need separate method handlers to distinguish action sheet events (BUG: Need to improve AS behavior)
+		function updateThingStatusComplete(args) {
+		    updateThingStatus("Completed", args.context.split(";")[0]);
+		}
 
-        if (result || action == "Delete") {
-            app.setThingsRefreshFlag();
-            app.loadThingsView();
-        } else {
-            alert("Technical glitch. Check your connection and try again later.");
-        }
-    });
-}	   
+		function updateThingStatusDelay(args) {
+		    updateThingStatus("Delayed", args.context.split(";")[0]);
+		}
+
+		function updateThingStatusInProgress(args) {
+		    updateThingStatus("InProgress", args.context.split(";")[0]);
+		}
+
+		function updateThingStatusDelete(args) {
+		    updateThingStatus("Deleted", args.context.split(";")[0]);
+		}
+
+		function updateThingStatus(action, id) {
+		    var app = teamThingApp;
+		        //action = args, //$(args.target.context).data("status"),
+		        //id = asThingId;  //args.context.split(";")[0];
+
+		    console.log("THING UPDATE", action, id);
+
+		    app.showLoading("Updating...");
+		    $.when(app.updateThingStatus(id, action)).then(function (result) {
+		        app.hideLoading();
+
+		        if (result || action == "Delete") {
+		            app.setThingsRefreshFlag();
+		            app.loadThingsView();
+		        } else {
+		            alert("Technical glitch. Check your connection and try again later.");
+		        }
+		    });
+		}	   
 	</script>
 </body>
 </html>

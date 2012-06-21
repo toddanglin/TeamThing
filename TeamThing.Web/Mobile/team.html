@@ -6,13 +6,12 @@
 </head>
 <body>
 
-<div data-role="view" id="vwTeam" data-title="Team Things" data-show="initTeamView">
+<div data-role="view" id="vwTeam" data-title="Team Things" data-show="showTeamView" data-init="initTeamView">
      <ul id="lstTeamThings" class="things">      	
      </ul>
-     <ul data-role="actionsheet" id="thingStar" data-open="onOpenStarActionSheet">	
-        <li class="km-actionsheet-title">Star:</li>	            
-        <li id="btnStarThing"><a data-action="starItem">Star</a></li>
-        <li id="btnUnStarThing"><a data-action="unstarItem">Unstar</a></li>	         
+     <ul id="thingStar">	          
+        <li id="btnStarThing"><a data-action="starItem">Follow this Thing</a></li>
+        <li id="btnUnStarThing"><a data-action="unstarItem">Unfollow this Thing</a></li>	         
      </ul>
      <div id="msgNoThings" style="width: 250px;text-align:center;margin: 50px auto;display: none;">
      	<h2>Your team is lazy.</h2>
@@ -25,42 +24,57 @@
      	<p>
      	If you add members to your team, you'll see their things here. Teams are good.
      	</p>
+        <p style="font-style:italic;color:#777;margin-top:50px;font-size:10px;">
+            {We know, we know. You want to invite somone NOW from the app. That feature is coming. For now, give your teammates your team name and they can request to join.}
+        </p>
      </div>
 </div>
 
 <script type="text/x-kendo-template" id="tmplTeamThingItem">		
 		<a href="\\#thingStar" 
+            data-thing-id="#: data.id #"
             data-actionsheet-context="#:data.id#;#:data.isStarred#"
             data-rel="actionsheet">	
-			[STAR]
-		</a>
-		<div class="thingTitle">#= data.description #</div>
+            <img src="#: data.owner.imagePath #" class="avatar" />   
+            <div class="thingStatus #: data.status #">#: data.status #</div>         
+			<div class="thingTitle">#= data.description #</div>
+		</a>		
 </script>
 
 <script>
-    function initTeamView() {
+    function initTeamView(){
+        $("#thingStar").kendoMobileActionSheet({
+            open:onOpenStarActionSheet
+        });
+    }
+
+    function showTeamView() {
         //Hide Add button on main index view
         $(".btnAdd").css("visibility", "hidden");
 
 		var ele = $("#lstTeamThings"),
 			tmpl = kendo.template($("#tmplTeamThingItem").html()),
 			app = teamThingApp;
-		
-		if(app.getTeamSize() <= 1){
-			$("#msgNoTeam").show();
-		}else{
-			//Load things being done by your team members	
-			teamThingApp.loadTeamView(tmpl,ele);
-		}		
+        
+        $.when(app.getTeamMembers()).then(function(members){ 
+            console.log("MEMBERS", members);
+            if(members.length <= 1){
+                $("#msgNoTeam").show();
+            }else{
+                $("#msgNoTeam").hide();
+                //Load things being done by your team members   
+                teamThingApp.loadTeamView(tmpl,ele);
+            }
+        });		                      		
 	}
 
 	function onOpenStarActionSheet(args){
 		var container = args.sender.element,
         	contextArgs = args.context.split(";"),
-			isStarred = contextArgs[1],
+			isStarred = $(args.target.context.parentElement).hasClass("starred"),
         	id = contextArgs[0];
 
-        if(isStarred){
+        if(isStarred === true){
         	$(container).children("#btnUnStarThing").show();
         	$(container).children("#btnStarThing").hide();
         }else{
@@ -70,13 +84,26 @@
 	}
 
 	function starItem(args){
-		//TODO
-		var id = args.context.split(";")[0];
+        console.log("STAR", args);
+		var id = args.context.split(";")[0],
+            app = teamThingApp,
+            ele = args.target.context.parentElement;
+
+        app.updateThingStar(id, true);
+
+        //Update UI
+        $(ele).addClass("starred");
 	}
 
 	function unstarItem(args){
-		//TODO
-		var id = args.context.split(";")[0];
+		var id = args.context.split(";")[0],
+            app = teamThingApp,
+            ele = args.target.context.parentElement;
+
+        app.updateThingStar(id, false);
+
+        //Update UI
+        $(ele).removeClass("starred");
 	}
 </script>
 </body>
