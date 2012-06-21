@@ -312,6 +312,7 @@ var TeamThing = function (kendoApp) {
         clearTeam: function () {
             _currentTeamId.set(null);
             _currentTeamMembers.set(null);
+            this.setThingsRefreshFlag(); //Trigger a refresh when new team loaded
         },
         showLoading: function (txt) {
             if (txt != "") {
