@@ -105,7 +105,7 @@ namespace TeamThing.Web
         {
             if (Context.Request.FilePath == "/" && Context.Request.Browser.IsMobileDevice)
             {
-                Context.RewritePath("/mobile/index.html", true);
+                Response.Redirect("/mobile/index.html", true);
             }
         }
 
