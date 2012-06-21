@@ -141,6 +141,9 @@
 	            icon: 'apple-touch-icon.png'
 	        });
 
+	        //Hide the initial view while loading to avoid FOUJUI
+	        $("#vwThings").css("opacity", "0");
+
 	        window.teamThingApp = new TeamThing(app);
 	        teamThingApp.init();
 
@@ -183,12 +186,14 @@
 	            app.navigate("login.html");
 	        }
 	    });
-	   	   
+	   	
+
 	   function listThingsInit(){
 	       var app = teamThingApp,
 	   			user = app.getCurrentUser(),
 	   			team = app.getCurrentTeam(),
-                token = app.getAuthInfo();
+                token = app.getAuthInfo(),
+                vwEle = $("#vwThings");
 	   		
 	   		console.log("INDEX INIT", user, team, token);
 	   		
@@ -202,6 +207,10 @@
 	   			//User needs to select a team
 	   			app.app.navigate("teamChoose.html")
 	   			return;
+	   		}
+
+	   		if(vwEle.css("opacity") != 1){
+	   			vwEle.css("opacity", "1");
 	   		}
 
 	        //Load things for current user/team

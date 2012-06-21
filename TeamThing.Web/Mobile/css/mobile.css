@@ -315,3 +315,11 @@ textarea{
 .km-team{
   -webkit-mask-box-image: url(images/iconTeam.png);
 }
+
+/*CSS TRANSITIONS*/
+#vwThings{
+	/*opacity: 0;*/
+
+	-webkit-transition: opacity 1s;
+	transition: opacity 1s;
+}
