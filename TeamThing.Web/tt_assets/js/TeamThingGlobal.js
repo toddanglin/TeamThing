@@ -1,7 +1,7 @@
 
 APPURL = 'http://teamthing.net';
 //APPURL = 'http://teamthing.apphb.com';
-//LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
+LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +60,27 @@ function ImageURIRemoteOrRelative(ThisImageURI) {
 
 $(document).ready(function() {
 	
-
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: GET LOGGED IN USER'S PROFILE DETAILS
+|--------------------------------------------------------------------------
+*/
+function UserProfile(UserID) {                   
+	$.get(
+		APPURL+'/api/user/'+UserID,
+    	function(UserInfo) {
+			//console.log(UserInfo);
+			$('#userpic img').attr('src',UserInfo.imagePath);
+			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'">View Profile</a> <a href="#">Sign Out</a></span>');
+		}
+	);
+}
+UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
+/*
+|--------------------------------------------------------------------------
+|	END: GET LOGGED IN USER'S PROFILE DETAILS
+|--------------------------------------------------------------------------
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -86,30 +106,9 @@ function GetUsersTeams(UserID) {
 				var dataItem = e.item.index()+1;
 				console.log(dataItem);
                 ThisTeamID = $('#jumpMenu :nth-child('+dataItem+')').attr('value');
-    			location.href = './main.html?userid='+LoggedInUserID+'&teamid='+ThisTeamID;
+    			location.href = './main.html?teamid='+ThisTeamID;
 			};
 			$("#jumpMenu").data("kendoComboBox").bind("select", TeamsListSelected);
-			/*
-			|--------------------------------------------------------------------------
-			|	BEGIN: GET LOGGED IN USER'S PROFILE DETAILS
-			|--------------------------------------------------------------------------
-			*/
-			function UserProfile(UserID) {                   
-				$.get(
-					APPURL+'/api/user/'+UserID,
-    				function(UserInfo) {
-						//console.log(UserInfo);
-						$('#userpic img').attr('src',UserInfo.imagePath);
-						$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'">View Profile</a> <a href="#">Sign Out</a></span>');
-					}
-				);
-			}
-			UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
-			/*
-			|--------------------------------------------------------------------------
-			|	END: GET LOGGED IN USER'S PROFILE DETAILS
-			|--------------------------------------------------------------------------
-			*/
 		}
 	);
 }
