@@ -198,6 +198,9 @@
     <Content Include="Images\unlocked.png" />
     <Content Include="index_ORIG.html" />
     <Content Include="main.html" />
+    <Content Include="Mobile\css\images\iconPerson.png" />
+    <Content Include="Mobile\css\images\iconTeam.png" />
+    <Content Include="Mobile\teamMembers.html" />
     <Content Include="Scripts\endpointTest\TeamSpec.js" />
     <Content Include="profile.html" />
     <Content Include="Scripts\endpointTest\testDataProvider.js" />
