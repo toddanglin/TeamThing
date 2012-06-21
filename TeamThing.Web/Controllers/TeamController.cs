@@ -4,14 +4,16 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TeamThing.Model.Helpers;
+using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
+using TeamThing.Web.Core.Security;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
-using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
     //[Authorize]
+    //[RequireOAuthAuthorization]
     public class TeamController : TeamThingApiController
     {
 
@@ -260,7 +262,13 @@ namespace TeamThing.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
+            if (team.OwnerId == user.Id)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Owner can not leave team");
+            }
             var teamUser = user.Teams.FirstOrDefault(ut => ut.TeamId == team.Id);
+
+            
             if (teamUser != null)
             {
                 team.Members.Remove(teamUser);

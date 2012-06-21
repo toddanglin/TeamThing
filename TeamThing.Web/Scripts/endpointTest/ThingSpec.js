@@ -1,12 +1,8 @@
-
+r
 ///<reference path="../jquery-1.7.1.min.js"/>
-
-//var baseAddress = "http://localhost:5079/api/";
-var baseAddress = "http://teamthing.apphb.com/api/";
-
-
 describe("A thing", function () {
 
+    //baseAddress is defined in test set up
     var baseThingAddress = baseAddress + "thing/";
     var createdThing;
 
@@ -65,7 +61,6 @@ describe("A thing", function () {
 
         it("should be able to be retrived by its id", function () {
 
-
             var successCallback = jasmine.createSpy();
             get(createdThingBaseAddress(), successCallback, null);
 
@@ -85,7 +80,6 @@ describe("A thing", function () {
                 createdThing = result;
                 successCallback(result);
             };
-
 
             var data = {
                 editedById: 10,
@@ -133,7 +127,6 @@ describe("A thing", function () {
             });
         });
 
-
         it("should be able to have status updated by someone that is an admin on the team", function () {
             var successCallback = jasmine.createSpy();
 
@@ -148,7 +141,6 @@ describe("A thing", function () {
                 expect(successCallback).toHaveBeenCalled();
             });
         });
-
 
         it("should be able to be completed by someone it is assigned to", function () {
             var successCallback = jasmine.createSpy();
@@ -204,8 +196,6 @@ describe("A thing", function () {
                 expect(errorCallback).toHaveBeenCalled();
             });
         });
-
-      
 
         it("should be able to be unstarred by the owner", function () {
             var successCallback = jasmine.createSpy();
@@ -305,7 +295,6 @@ describe("A thing", function () {
             });
         });
     });
-
 
     //describe("should be able to updated", function() {
     //  beforeEach(function() {

@@ -5,6 +5,9 @@ namespace TeamThing.Web.Models.API
         public int Id { get; set; }
         public string ImagePath { get; set; }
         public string EmailAddress { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Nickname { get; set; }
     }
 
     public class UserStat

@@ -22,14 +22,14 @@ namespace TeamThing.Model
 
             configurations.Add(TeamMapping());
             configurations.Add(TeamUserMapping());
+            configurations.Add(ThingLogMapping());
             configurations.Add(ThingMapping());
             configurations.Add(UserThingMapping());
-            configurations.Add(ThingLogMapping());
             configurations.Add(UserMapping());
 
             return configurations;
         }
-  
+
         private MappingConfiguration UserMapping()
         {
             var mapping = new MappingConfiguration<User>();
@@ -47,6 +47,14 @@ namespace TeamThing.Model
                    .WithOpposite(m => m.AssignedToUser)
                    .IsManaged()
                    .ToColumn("AssignedToUserId");
+
+            mapping.HasAssociation(m => m.StarredThings)
+                   .MapJoinTable("UserStarredThings", (u, t) => new
+                   {
+                       UserId = u.Id,
+                       ThingId = t.Id
+                   }).CreatePrimaryKeyFromForeignKeys();
+
             mapping.HasAssociation(m => m.Teams)
                    .WithOpposite(t => t.User)
                    .IsManaged()
@@ -54,7 +62,7 @@ namespace TeamThing.Model
                    .ToColumn("UserId");
             return mapping;
         }
-  
+
         private MappingConfiguration ThingLogMapping()
         {
             var mapping = new MappingConfiguration<ThingLog>();
@@ -65,13 +73,25 @@ namespace TeamThing.Model
             mapping.HasProperty(m => m.Id)
                    .IsIdentity(KeyGenerator.Autoinc);
 
-            mapping.HasAssociation(m => m.Thing)
-                   .WithOpposite(t=>t.History)
-                   .IsManaged()
+            mapping.HasProperty(m => m.EditedByUserId)
+                   .ToColumn("EditedByUserId");
+
+            mapping.HasProperty(m => m.ThingId)
                    .ToColumn("ThingId");
 
+
+            mapping.HasAssociation(m => m.Thing)
+                  .WithOpposite(m => m.History)
+                  .IsManaged()
+                  .IsDependent()
+                  .IsRequired()
+                  .ToColumn("ThingId");
+
             mapping.HasAssociation(m => m.EditedBy)
-                .IsManaged()
+                   .WithOpposite(u => u.ThingLog)
+                   .IsManaged()
+                   .IsDependent()
+                   .IsRequired()
                    .ToColumn("EditedByUserId");
 
             mapping.HasProperty(m => m.Action)
@@ -89,11 +109,11 @@ namespace TeamThing.Model
             mapping.MapType()
                    .ToTable("UserThing");
 
-           mapping.HasIdentity(map => new
-                    {
-                        map.AssignedToUserId,
-                        map.ThingId
-                    });
+            mapping.HasIdentity(map => new
+                     {
+                         map.AssignedToUserId,
+                         map.ThingId
+                     });
 
             mapping.HasAssociation(m => m.Thing)
                    .IsManaged()
@@ -104,7 +124,7 @@ namespace TeamThing.Model
                    .ToColumn("AssignedByUserId");
 
             mapping.HasAssociation(m => m.AssignedToUser)
-                   .WithOpposite(ut=>ut.Things)
+                   .WithOpposite(ut => ut.Things)
                    .ToColumn("AssignedToUserId");
 
             return mapping;
@@ -123,11 +143,16 @@ namespace TeamThing.Model
             mapping.HasProperty(m => m.IsDeleted)
                    .HasColumnType("bit");
 
-            mapping.HasProperty(m => m.IsStarred)
-                   .HasColumnType("bit");
+            //mapping.HasProperty(m => m.IsStarred)
+            //       .HasColumnType("bit");
 
             mapping.HasAssociation(m => m.AssignedTo)
                    .WithOpposite(t => t.Thing)
+                   .IsManaged()
+                   .IsDependent();
+
+            mapping.HasAssociation(m => m.History)
+                   .WithOpposite(tl => tl.Thing)
                    .IsManaged()
                    .IsDependent();
 
@@ -136,7 +161,7 @@ namespace TeamThing.Model
                    .ToColumn("OwnerId");
 
             mapping.HasAssociation(m => m.Team)
-                   .WithOpposite(m=>m.Things)
+                   .WithOpposite(m => m.Things)
                    .ToColumn("TeamId");
 
             mapping.HasProperty(m => m.Status)
@@ -197,7 +222,7 @@ namespace TeamThing.Model
 
             mapping.HasProperty(m => m.IsOpen)
                    .HasColumnType("bit");
-         
+
 
             mapping.HasAssociation(m => m.Owner)
                    .IsManaged()

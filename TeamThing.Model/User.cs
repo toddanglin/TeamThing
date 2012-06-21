@@ -24,6 +24,8 @@ namespace TeamThing.Model
         {
             this.Things = new List<UserThing>();
             this.Teams = new List<TeamUser>();
+            this.ThingLog = new List<ThingLog>();
+            this.StarredThings = new List<Thing>();
         }
 
         public string OAuthProvider { get; set; }
@@ -39,6 +41,8 @@ namespace TeamThing.Model
         public DateTime DateCreated { get; private set; }
         public bool IsActive { get; set; }
         public IList<UserThing> Things { get; private set; }
+        public IList<Thing> StarredThings { get; private set; }
+        public IList<ThingLog> ThingLog { get; private set; }
         public IList<TeamUser> Teams { get; private set; }
         public int Color { get; set; }
     }

@@ -8,6 +8,7 @@ using System.Web.Security;
 using TeamThing.Model.Helpers;
 using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
+using TeamThing.Web.Core.Security;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
 
@@ -66,6 +67,22 @@ namespace TeamThing.Web.Controllers
                        .Active()
                        .MapToBasicServiceModel()
                        .AsQueryable();
+
+        }
+        
+        [HttpGet]
+        [Queryable]
+        public IQueryable<ServiceModel.ThingBasic> Starred(int id, int teamId)
+        {
+            var user = context.GetAll<DomainModel.User>().FirstOrDefault(u => u.Id == id);
+            if (user == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid User"));
+
+            var team = user.Teams.FirstOrDefault(t => t.TeamId == teamId);
+            if (team == null) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Team"));
+
+            var teamThingIds = team.Team.Things.Select(x => x.Id);
+
+            return user.StarredThings.Where(t => teamThingIds.Contains(t.Id)).MapToBasicServiceModel().AsQueryable();
 
         }
 
@@ -154,6 +171,8 @@ namespace TeamThing.Web.Controllers
 
                 user.EmailAddress = userInfo.Email;
                 user.ImagePath = userInfo.PictureUrl;
+                user.FirstName = userInfo.FirstName;
+                user.LastName = userInfo.LastName;
 
                 if (string.IsNullOrWhiteSpace(user.ImagePath))
                 {
@@ -164,7 +183,7 @@ namespace TeamThing.Web.Controllers
                 context.SaveChanges();
             }
 
-            FormsAuthentication.SetAuthCookie(user.EmailAddress, true);
+            //FormsAuthentication.SetAuthCookie(user.EmailAddress, true);
             return Request.CreateResponse(HttpStatusCode.OK, user.MapToServiceModel());
         }
 

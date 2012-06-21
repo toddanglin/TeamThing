@@ -1,4 +1,4 @@
-namespace TeamThing.Web.Controllers
+namespace TeamThing.Web.Core.Security
 {
     public interface IOAuthProvider
     {

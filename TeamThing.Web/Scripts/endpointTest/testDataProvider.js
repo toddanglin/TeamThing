@@ -1,4 +1,17 @@
-﻿
+﻿//Using Ajax.data would add this param to the message body on post events, so the most reliable way i found was just manually forcing this param to the query string
+//Example uses the hacky way
+$.ajaxPrefilter(function (options) {
+     options.url = options.url + "?noAuth=true";
+});
+
+//Using tokens
+//$.ajaxSetup({
+//    'beforeSend': function (xhr) {
+//        xhr.setRequestHeader("X-AuthProvider", "Google");
+//        xhr.setRequestHeader("X-AuthToken", "ya29.AHES6ZQNJ6iHeuSSCV8lc6-0ZMoljXWJOJbeH9MvfXRIzIaMf2GCNzBL");
+//    }
+//})
+
 function remove(url, data, successCallback, errorCallback) {
     $.ajax({
         url: url,

@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TeamThing.Model.Helpers;
+using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
+using TeamThing.Web.Core.Security;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
-using System.Net;
-using System.Json;
-using TeamThing.Web.Core.Helpers;
 
 namespace TeamThing.Web.Controllers
 {
     //[Authorize]
+    //[RequireOAuthAuthorization]
     public class ThingController : TeamThingApiController
     {
         public ThingController()
@@ -62,7 +62,7 @@ namespace TeamThing.Web.Controllers
             }
 
             var team = context.GetAll<DomainModel.Team>()
-                                      .FirstOrDefault(u => u.Id == newThing.TeamId);
+                              .FirstOrDefault(u => u.Id == newThing.TeamId);
 
             if (team == null)
             {
@@ -77,7 +77,7 @@ namespace TeamThing.Web.Controllers
             foreach (var userId in newThing.AssignedTo)
             {
                 var assignedTo = context.GetAll<DomainModel.User>()
-                                          .FirstOrDefault(u => u.Id == userId);
+                                        .FirstOrDefault(u => u.Id == userId);
 
                 if (assignedTo == null)
                 {
@@ -117,13 +117,21 @@ namespace TeamThing.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
-            if (thing.OwnerId != viewModel.UserId && !thing.AssignedTo.Any(at => at.AssignedToUserId == viewModel.UserId) && !thing.Team.Members.Admins().Any(a => a.Id == viewModel.UserId))            
+            var user = context.GetAll<DomainModel.User>()
+                             .FirstOrDefault(u => u.Id == viewModel.UserId);
+
+            if (user == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid user"));
+            }
+
+            if (thing.OwnerId != user.Id && !thing.AssignedTo.Any(at => at.AssignedToUserId == user.Id) && !thing.Team.Members.Admins().Any(a => a.Id == user.Id))            
             {
                 ModelState.AddModelError("", "A thing's status can only be completed by someone assigned to it, the thing's owner, or a team administrator.");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
-            thing.UpdateStatus(viewModel.UserId, realStatus);
+            thing.UpdateStatus(user, realStatus);
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
@@ -143,13 +151,21 @@ namespace TeamThing.Web.Controllers
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid thing"));
             }
+            
+            var user = context.GetAll<DomainModel.User>()
+                              .FirstOrDefault(u => u.Id == viewModel.UserId);
 
-            if (thing.OwnerId != viewModel.UserId && !thing.AssignedTo.Any(at => at.AssignedToUserId == viewModel.UserId) && !thing.Team.Members.Admins().Any(a => a.Id == viewModel.UserId))
+            if (user == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid user"));
+            }
+
+            if (thing.OwnerId != user.Id && !thing.AssignedTo.Any(at => at.AssignedToUserId == user.Id) && !thing.Team.Members.Admins().Any(a => a.Id == user.Id))
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Forbidden, "A thing can only be completed by someone assigned to it, the thing's owner, or a team administrator."));
             }
 
-            thing.Complete(viewModel.UserId);
+            thing.Complete(user);
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
@@ -159,7 +175,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Star(int id)
+        public HttpResponseMessage Star(int id, ServiceModel.StarThingViewModel viewModel)
         {
             var thing = context.GetAll<DomainModel.Thing>()
                                .FirstOrDefault(u => u.Id == id);
@@ -169,7 +185,16 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid thing"));
             }
 
-            thing.IsStarred = true;
+            var user = context.GetAll<DomainModel.User>()
+                              .FirstOrDefault(u => u.Id == viewModel.UserId);
+
+            if (user == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid user"));
+            }
+
+            user.StarredThings.Add(thing);
+
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
@@ -179,7 +204,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
-        public HttpResponseMessage Unstar(int id)
+        public HttpResponseMessage Unstar(int id, ServiceModel.StarThingViewModel viewModel)
         {
             var thing = context.GetAll<DomainModel.Thing>()
                                .FirstOrDefault(u => u.Id == id);
@@ -189,7 +214,16 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid thing"));
             }
 
-            thing.IsStarred = false;
+            var user = context.GetAll<DomainModel.User>()
+                              .FirstOrDefault(u => u.Id == viewModel.UserId);
+
+            if (user == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid user"));
+            }
+
+            user.StarredThings.Remove(thing);
+
             context.SaveChanges();
 
             var sThing = thing.MapToServiceModel();
@@ -277,12 +311,22 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Thing"));
             }
 
+
+            var user = context.GetAll<DomainModel.User>()
+                             .FirstOrDefault(u => u.Id == viewModel.DeletedById);
+
+            if (user == null)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid user"));
+            }
+
+
             if (thing.OwnerId != viewModel.DeletedById)
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "A thing can only be removed by its owner."));
             }
 
-            thing.Delete(viewModel.DeletedById);
+            thing.Delete(user);
             context.SaveChanges();
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);

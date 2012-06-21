@@ -22,7 +22,6 @@ namespace TeamThing.Model
             this.SetOwner(owner);
         }
 
-        public bool IsStarred { get; set; }
         public string Description { get; set; }
         public DateTime DateCreated { get; set; }
         public bool IsDeleted { get; private set; }
@@ -37,54 +36,71 @@ namespace TeamThing.Model
 
         public void Delete(User user)
         {
-            Delete(new ThingLog(user, this));
-        }
-
-        public void Delete(int userId)
-        {
-            Delete(new ThingLog(userId, this.Id));
-        }
-
-        public void Delete(ThingLog log)
-        {
-            log.Action = ThingAction.Deleted;
             this.IsDeleted = true;
             this.Status = ThingStatus.Deleted;
-            this.History.Add(log);
+            LogChange(user, ThingAction.Deleted);
         }
+
+        //public void Delete(int userId)
+        //{
+        //    this.IsDeleted = true;
+        //    this.Status = ThingStatus.Deleted;
+        //    LogChange(userId, ThingAction.Deleted);
+        //}
 
         public void Complete(User user)
         {
-            Complete(new ThingLog(user, this));
-        }
-
-        public void Complete(int userId)
-        {
-            Complete(new ThingLog(userId, this.Id));
-        }
-
-        private void Complete(ThingLog log)
-        {
-            log.Action = ThingAction.Completed;
             this.Status = ThingStatus.Completed;
-            this.History.Add(log);
+            LogStatusChange(user);
         }
 
-        public void UpdateStatus(int userId, ThingStatus status)
+        //public void Complete(int userId)
+        //{
+        //    this.Status = ThingStatus.Completed;
+        //    LogStatusChange(userId);
+        //}
+
+        //public void UpdateStatus(int userId, ThingStatus status)
+        //{
+        //    this.Status = status;
+        //    LogStatusChange(userId);
+        //}
+
+        public void UpdateStatus(User user, ThingStatus status)
         {
-            var log = new ThingLog(userId, this.Id);
-            log.Action = (status == ThingStatus.Completed) ? ThingAction.Completed : ThingAction.StatusChanged;
             this.Status = status;
+            LogStatusChange(user);
+        }
+
+        //private void LogStatusChange(int userId)
+        //{
+        //    LogChange(userId, (this.Status == ThingStatus.Completed) ? ThingAction.Completed : ThingAction.StatusChanged);
+        //}
+        private void LogStatusChange(User user)
+        {
+            LogChange(user, (this.Status == ThingStatus.Completed) ? ThingAction.Completed : ThingAction.StatusChanged);
+        }
+
+        //private void LogChange(int userId, ThingAction action)
+        //{
+        //    var log = new ThingLog(userId, this.Id);
+        //    log.Action = action;
+        //    this.History.Add(log);
+        //}
+        
+        private void LogChange(User user, ThingAction action)
+        {
+            var log = new ThingLog(user, this);
+            log.Action = action;
             this.History.Add(log);
         }
 
         public void ChangeOwner(User user, User newOwner)
         {
             SetOwner(newOwner);
-
-            this.History.Add(new ThingLog(user, this) { Action = ThingAction.OwnerChanged });
+            LogChange(user, ThingAction.OwnerChanged);
         }
-  
+
         private void SetOwner(User newOwner)
         {
             this.Owner = newOwner;

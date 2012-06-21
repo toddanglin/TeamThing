@@ -1,12 +1,7 @@
 
 ///<reference path="../jquery-1.7.1.min.js"/>
-
-//var baseAddress = "http://localhost:5079/api/";
-var baseAddress = "http://teamthing.apphb.com/api/";
-
-
 describe("A team", function () {
-
+    //baseAddress is defined in test set up
     var baseResourceAddress = baseAddress + "team/";
     var createdResource;
 
@@ -44,7 +39,7 @@ describe("A team", function () {
         /*Todo: this is a little hard coded at the moment, tests will break if user is ever deleted!*/
 
         var data = {
-            name: "My New Team - Test Jasmine 3",
+            name: "My New Team - Test Jasmine " + Math.random(),
             ispublic: false,
             createdById: 10
         };
@@ -60,6 +55,16 @@ describe("A team", function () {
     });
 
     describe("Once created", function () {
+
+        it("the creator should be the owner", function () {
+
+            expect(createdResource.ownerId).toEqual(10);
+        });
+
+        it("the creator should be a team admin", function () {
+
+            expect(createdResource.administrators).toEqual([10]);
+        });
 
         it("should be able to be retrived by its id", function () {
 
@@ -134,7 +139,23 @@ describe("A team", function () {
         });
 
         describe("Once a member joins they ", function () {
+            it("should NOT be able to be approved for a team they are not a member of - covers issue reported by graham", function () {
 
+                var errorCallback = jasmine.createSpy();
+
+                var data = {
+                    'userId': 0,
+                    statusChangedByUserId: createdResource.administrators[0]
+                };
+                put(createdResourceBaseAddress() + "/approvemember", data, null, errorCallback);
+
+                waitsFor(function () {
+                    return errorCallback.callCount > 0;
+                });
+                runs(function () {
+                    expect(errorCallback).toHaveBeenCalled();
+                });
+            });
             it("should be able to be approved by a team admin", function () {
 
                 var successCallback = jasmine.createSpy();
@@ -286,6 +307,21 @@ describe("A team", function () {
                     expect(successCallback).toHaveBeenCalled();
                 });
             });
+
+            it("should be able to be leave the team - tests grahams reported issue", function () {
+
+                var successCallback = jasmine.createSpy();
+
+                var data = { "userId": 22 };
+                put(baseResourceAddress + "10/leave", data, successCallback, null);
+
+                waitsFor(function () {
+                    return successCallback.callCount > 0;
+                });
+                runs(function () {
+                    expect(successCallback).toHaveBeenCalled();
+                });
+            });
         });
 
         it("should be able to have members invited by the owner using an email address", function () {
@@ -356,7 +392,7 @@ describe("A team", function () {
 
 
             var data = {
-                name: "My Updated Team - Test Jasmine 3",
+                name: "My Updated Team - Test Jasmine 3" + Math.random(),
                 ispublic: true,
                 updatedById: 10
             };

@@ -70,7 +70,6 @@ namespace TeamThing.Web.Core.Mappers
                 Description = t.Description,
                 Status = t.Status.ToString(),
                 DateCreated = t.DateCreated,
-                IsStarred = t.IsStarred,
                 AssignedTo = t.AssignedTo.Select(a => a.AssignedToUser).MapToBasicServiceModel().ToList(),
                 Owner = t.Owner.MapToBasicServiceModel(),
                 Team = t.Team.MapToBasicServiceModel()
@@ -84,7 +83,6 @@ namespace TeamThing.Web.Core.Mappers
                 Id = t.Id,
                 Description = t.Description,
                 Status = t.Status.ToString(),
-                IsStarred = t.IsStarred,
                 TeamId = t.TeamId,
                 AssignedTo = t.AssignedTo.Select(a => a.AssignedToUser).Where(u => u.Id != t.OwnerId).MapToBasicServiceModel().ToList(),
                 Owner = t.Owner.MapToBasicServiceModel()
@@ -161,7 +159,10 @@ namespace TeamThing.Web.Core.Mappers
                 EmailAddress = user.EmailAddress,
                 Teams = user.Teams.Where(t => t.Status == DomainModel.TeamUserStatus.Approved).Select(tu => tu.Team).MapToBasicServiceModel().ToList(),
                 PendingTeams = user.Teams.Where(t => t.Status == DomainModel.TeamUserStatus.Pending).Select(tu => tu.Team).MapToBasicServiceModel().ToList(),
-                Things = user.Things.MapToServiceModel().ToList()
+                Things = user.Things.MapToServiceModel().ToList(),
+                FirstName = user.FirstName ?? "Team",
+                LastName = user.LastName ?? "Member",
+                Nickname = (!String.IsNullOrEmpty(user.FirstName) && !String.IsNullOrEmpty(user.LastName)) ? user.FirstName + " " + user.LastName.Substring(0, 1).ToUpper() + "." : "User " + user.Id.ToString() + " (No Name)"
             };
         }
 
@@ -172,7 +173,10 @@ namespace TeamThing.Web.Core.Mappers
             {
                 Id = user.Id,
                 EmailAddress = user.EmailAddress,
-                ImagePath = user.ImagePath ?? "/images/GenericUserImage.gif"
+                ImagePath = user.ImagePath ?? "/images/GenericUserImage.gif",
+                FirstName = user.FirstName ?? "Team",
+                LastName = user.LastName ?? "Member",
+                Nickname = (!String.IsNullOrEmpty(user.FirstName) && !String.IsNullOrEmpty(user.LastName)) ? user.FirstName +" "+ user.LastName.Substring(0,1).ToUpper() + "." : "User "+ user.Id.ToString() +" (No Name)"
             };
         }
     }

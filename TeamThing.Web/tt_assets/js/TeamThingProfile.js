@@ -1,5 +1,4 @@
 
-LoggedInUserID = getQueryVariable('userid');
 MyTeamsListDiv = '.myteamslist .list';
 
 $(document).ready(function() {
@@ -20,7 +19,7 @@ function ActivateListViewButtons() {
 	$('a.leave-team-btn').bind("click", function(event) {
 		event.preventDefault();
 		ThisTeamID = $(this).attr('rel');
-		console.log(ThisTeamID);
+		//console.log(ThisTeamID);
 		LeaveTeam(ThisTeamID,LoggedInUserID);
 	});
 }
@@ -30,20 +29,16 @@ function UserProfileMain(UserID) {
 	$.get(
 		APPURL+'/api/user/'+UserID,
     	function(UserInfo) {
-			//console.log(UserInfo);
+			console.log(UserInfo);
 			$('#userpic-profile img').attr('src',UserInfo.imagePath);
 			$('#userinfo-profile').html(UserInfo.emailAddress);
+			ThisUserInfo = UserInfo;
+			GetMyTeams(LoggedInUserID,'');	
 		}
 	);
 }
 UserProfileMain(LoggedInUserID);
 // ---- / Get User's Profile for Main Content Area ---- //
-	
-/*
-|--------------------------------------------------------------------------
-|	END: GET LOGGED IN USER'S PROFILE DETAILS
-|--------------------------------------------------------------------------
-*/
 
 /*
 |--------------------------------------------------------------------------
@@ -57,32 +52,58 @@ UserProfileMain(LoggedInUserID);
 |--------------------------------------------------------------------------
 */
 function GetTeamProperties(TeamID,TeamFilter) {
-	//console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
+	////console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
 	$.ajax({
   		url: APPURL+'/api/team/'+TeamID+'/members/'+TeamFilter,
   		type: 'GET',
   		success: function(TeamData) {
-			console.log(TeamData);
+			TeamPropertiesOutput = '';
 			TeamPropertiesOutput = TeamData.length; // How many Users on a Team
-			TeamPropertiesOutput == 1 ? MembersOutput = 'member' :  MembersOutput = 'members';
-			$('a.users-count-link#user-count-'+TeamID).text(TeamPropertiesOutput + ' ' + MembersOutput);
+			TeamPropertiesOutput == 1 ? TeamPropertiesOutput+=' member' :  TeamPropertiesOutput+=' members';
+			$('a.users-count-link#user-count-'+TeamID).text(TeamPropertiesOutput);
 			
-			TeamMembersForTray = '';
-			if(TeamPropertiesOutput > 0) {
-				TeamMembersForTray+='<div class="users-tray">';
-				for(i=0;i<TeamData.length;i++) {
-					TeamMembersForTray+='<div class="userpic">';
+					TeamMembersForTray = '';
+					if(TeamData.length > 0) {
+						TeamMembersForTray+='<div class="users-tray">';
+						for(i=0;i<TeamData.length;i++) {
+							TeamMembersForTray+='<div class="userpic">';
 					
-					ThisUserImg = ImageURIRemoteOrRelative(TeamData[i].imagePath);
+							ThisUserImg = ImageURIRemoteOrRelative(TeamData[i].imagePath);
 					
-					TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+TeamData[i].emailAddress+'" title="'+TeamData[i].emailAddress+'" id="userpic='+TeamData[i].id+'">';
-					TeamMembersForTray+='</div>';
-				}
-				TeamMembersForTray+='<div class="clear-float"></div></div>';
-			}
-			$('#teamthing-'+TeamID).append(TeamMembersForTray);
-			$('.users-tray').hide();
+							TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+TeamData[i].emailAddress+'" title="'+TeamData[i].emailAddress+'" id="userpic='+TeamData[i].id+'">';
+							TeamMembersForTray+='</div>';
+						}
+						TeamMembersForTray+='<div class="clear-float"></div></div>';
+					}
+					$('#teamthing-'+TeamID).append(TeamMembersForTray);
+					$('.users-tray').hide();
+					
   		}
+	});
+}
+/*
+|--------------------------------------------------------------------------
+|	END: GET ANY TEAM'S PROPERTIES
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: GET ANY TEAM'S PROPERTIES
+|--------------------------------------------------------------------------
+*/
+function GetPendingUsers(TeamID) {
+	////console.log('Getting Team ID: ' + TeamID + ' to put into ' + TeamID);
+	$.ajax({
+  		url: APPURL+'/api/team/'+TeamID+'/members/pending',
+  		type: 'GET',
+  		success: function(PendingData) {
+					
+			TeamPropertiesOutput=''
+			TeamPropertiesOutput+=', <a href=#">' + PendingData.length + ' Pending</a>'; // How many Pending Users on a Team
+			$('a.users-count-link#user-count-'+TeamID).after(TeamPropertiesOutput);
+
+		}
 	});
 }
 /*
@@ -111,7 +132,7 @@ function GetMyTeams(UserID,TeamFilter) {
 			
 			for(i=0;i<TeamsData.length;i++) {
 				
-			UserTeamsOutput+='<div class="thing" id="teamthing-'+TeamsData[i].id+'">';
+				UserTeamsOutput+='<div class="thing" id="teamthing-'+TeamsData[i].id+'">';
           		UserTeamsOutput+='<div class="listpic"><img src="'+APPURL+'/'+TeamsData[i].imagePath+'" width="83" height="83" alt=""></div>';
                 UserTeamsOutput+='<span class="listitem">';
             		UserTeamsOutput+='<div class="thingcontrols">';
@@ -129,10 +150,13 @@ function GetMyTeams(UserID,TeamFilter) {
 					UserTeamsOutput+='<div class="team-admin-tools"><a class="leave-team-btn" href="#" rel="'+TeamsData[i].id+'"><img src="tt_assets/images/icon_x.png" alt="X"></a></div>'
 				}
 				
-          	UserTeamsOutput+='</div>';
+          		UserTeamsOutput+='</div>';
 			
-			GetTeamProperties(TeamsData[i].id,'Approved');
+				GetTeamProperties(TeamsData[i].id,'Approved');
 			
+				if(TeamsData[i].ownerId == LoggedInUserID) {
+					GetPendingUsers(TeamsData[i].id);
+				}
 			}
 			
 			$(MyTeamsListDiv).html('<div class="list-heading">Your Teams</div>'+UserTeamsOutput);
@@ -142,8 +166,6 @@ function GetMyTeams(UserID,TeamFilter) {
 		}
 	);
 }
-
-GetMyTeams(LoggedInUserID,'');
 /*
 |--------------------------------------------------------------------------
 |	END: GET A SPECIFIC USER'S TEAMS AND LIST THEM OUT
@@ -228,8 +250,8 @@ function LeaveTeam(TeamID,UserID) {
 		data: {'userId':UserID},
 		dataType: 'json',
   		success: function(LeaveTeamData) {
-			//console.log('User: ' + UserID + ' is leaving Team: ' + TeamID);
-			//console.log(LeaveTeamData);
+			////console.log('User: ' + UserID + ' is leaving Team: ' + TeamID);
+			////console.log(LeaveTeamData);
 			location.reload();
   		}
 	});
