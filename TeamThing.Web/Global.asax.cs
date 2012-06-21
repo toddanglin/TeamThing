@@ -103,7 +103,7 @@ namespace TeamThing.Web
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            if (Context.Request.FilePath == "/" && Context.Request.Browser.IsMobileDevice)
+            if (Context.Request.FilePath == "/")
             {
                 Response.Redirect("/mobile/index.html", true);
             }
