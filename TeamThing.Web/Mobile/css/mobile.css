@@ -28,8 +28,16 @@
 }
 
 .tt.km-ios .km-view-title{
-	font-family: Helvetica, sans-serif;
+	font-family: 'KameronBold', Helvetica, sans-serif;
 	font-size:  1.6rem;
+	color:#000;
+}
+
+.tt.km-ios .km-view-title mark{
+	color:#348fff;
+	background:none;
+	font-size:3rem;
+	vertical-align:middle;
 }
 
 /*Customize the navbar tabstrip styles*/
