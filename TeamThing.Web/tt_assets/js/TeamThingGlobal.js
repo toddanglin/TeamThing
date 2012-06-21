@@ -60,27 +60,7 @@ function ImageURIRemoteOrRelative(ThisImageURI) {
 
 $(document).ready(function() {
 	
-/*
-|--------------------------------------------------------------------------
-|	BEGIN: GET LOGGED IN USER'S PROFILE DETAILS
-|--------------------------------------------------------------------------
-*/
-function UserProfile(UserID) {                   
-	$.get(
-		APPURL+'/api/user/'+UserID,
-    	function(UserInfo) {
-			//console.log(UserInfo);
-			$('#userpic img').attr('src',UserInfo.imagePath);
-			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'">View Profile</a> <a href="#">Sign Out</a></span>');
-		}
-	);
-}
-UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
-/*
-|--------------------------------------------------------------------------
-|	END: GET LOGGED IN USER'S PROFILE DETAILS
-|--------------------------------------------------------------------------
-*/
+
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +89,27 @@ function GetUsersTeams(UserID) {
     			location.href = './main.html?userid='+LoggedInUserID+'&teamid='+ThisTeamID;
 			};
 			$("#jumpMenu").data("kendoComboBox").bind("select", TeamsListSelected);
+			/*
+			|--------------------------------------------------------------------------
+			|	BEGIN: GET LOGGED IN USER'S PROFILE DETAILS
+			|--------------------------------------------------------------------------
+			*/
+			function UserProfile(UserID) {                   
+				$.get(
+					APPURL+'/api/user/'+UserID,
+    				function(UserInfo) {
+						//console.log(UserInfo);
+						$('#userpic img').attr('src',UserInfo.imagePath);
+						$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'">View Profile</a> <a href="#">Sign Out</a></span>');
+					}
+				);
+			}
+			UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
+			/*
+			|--------------------------------------------------------------------------
+			|	END: GET LOGGED IN USER'S PROFILE DETAILS
+			|--------------------------------------------------------------------------
+			*/
 		}
 	);
 }
