@@ -262,7 +262,13 @@ namespace TeamThing.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
+            if (team.OwnerId == user.Id)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Owner can not leave team");
+            }
             var teamUser = user.Teams.FirstOrDefault(ut => ut.TeamId == team.Id);
+
+            
             if (teamUser != null)
             {
                 team.Members.Remove(teamUser);

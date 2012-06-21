@@ -76,6 +76,8 @@ namespace TeamThing.Web.Core.Security
             {
                 UserId = userInfo.Value<string>("id"),
                 UserName = userInfo.Value<string>("name"),
+                FirstName = userInfo.Value<string>("given_name"),
+                LastName = userInfo.Value<string>("family_name"),
                 PictureUrl = userInfo.Value<string>("picture"),
                 Email = userInfo.Value<string>("email")
             };

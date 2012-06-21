@@ -307,6 +307,21 @@ describe("A team", function () {
                     expect(successCallback).toHaveBeenCalled();
                 });
             });
+
+            it("should be able to be leave the team - tests grahams reported issue", function () {
+
+                var successCallback = jasmine.createSpy();
+
+                var data = { "userId": 22 };
+                put(baseResourceAddress + "10/leave", data, successCallback, null);
+
+                waitsFor(function () {
+                    return successCallback.callCount > 0;
+                });
+                runs(function () {
+                    expect(successCallback).toHaveBeenCalled();
+                });
+            });
         });
 
         it("should be able to have members invited by the owner using an email address", function () {
