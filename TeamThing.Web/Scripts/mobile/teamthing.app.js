@@ -3,8 +3,10 @@ var TeamThing = function (kendoApp) {
 		_app = kendoApp,
 		_currentUser = new localStore("cUser"),
 		_currentTeamId = new localStore("teamId"),
+        _currentTeamMembers = new localStore("teamMembers"),
 		_remember = new localStore("uRemember"),
         _refreshThings = new localStore("refreshThings"),
+        _refreshStarList = false;
     _showInstallPrompt = new localStore("installPrompt"),
         _authProvider = new OAuthProvider(),
         _authStatus = null,
@@ -17,7 +19,9 @@ var TeamThing = function (kendoApp) {
 		_tmplThingItem = kendo.template($("#tmplThingItem").html()),
     //_tmplThingDetail = kendo.template($("#tmplThingDetail").html()),
     //DATASOURCE CACHE
-		_dsThings = null;
+		_dsThings = null,
+        _dsTeamThings = null,
+        _dsStarThings = null;
 
     return {
         init: function () {
@@ -44,6 +48,36 @@ var TeamThing = function (kendoApp) {
                 },
                 group: "status"
             });
+
+            _dsTeamThings = new kendo.data.DataSource({
+                transport: {
+                    read: function (options) {
+                        that.showLoading();
+                        $.when(_data.getAllTeamThings(_currentTeamId.get())).then(function (data) {
+                            console.log("TEAM THINGS DATA", data);
+                            that.hideLoading();
+
+                            if (options != null) options.success(data);
+                        });
+                    }
+                },
+                group: "owner.nickname"
+            });
+
+            _dsStarThings = new kendo.data.DataSource({
+                transport: {
+                    read: function (options) {
+                        that.showLoading();
+                        $.when(_data.getStarredTeamThings(_currentTeamId.get(), _currentUser.get().id)).then(function (data) {
+                            console.log("STARRED THINGS DATA", data);
+                            that.hideLoading();
+
+                            if (options != null) options.success(data);
+                        });
+                    }
+                },
+                group: "owner.nickname"
+            });
         },
         loadThingsView: function () {
             _eleNoThingsMsg.hide();
@@ -59,6 +93,7 @@ var TeamThing = function (kendoApp) {
             console.log("REFRESH THINGS LIST", _refreshThings.get());
             if (_refreshThings.get()) {
                 _dsThings.read();
+                _refreshThings.set(false);
             }
         },
         loadDetail: function (thingId, tmpl, ele) {
@@ -70,7 +105,49 @@ var TeamThing = function (kendoApp) {
             });
         },
         loadTeamView: function(tmpl, ele){
+            var lv = ele.data("kendoMobileListView");
+            if (lv == undefined) {
+                lv = ele.kendoMobileListView({
+                    dataSource: _dsTeamThings,
+                    template: tmpl
+                }).data("kendoMobileListView");
+            }
 
+            _dsTeamThings.bind("change", function(){
+                //Try to highlight starred things
+                $.when(_data.getStarredTeamThings(_currentTeamId.get(), _currentUser.get().id)).then(function(data){
+                    if(data == null) return; //No starred things
+
+                    //For each starred thing, find element in ListView, apply CSS
+                    for (var i = 0; i < data.length; i++) {
+                        var thingId = data[i].id,
+                            selector = '*[data-thing-id="'+ thingId +'"]',
+                            row = $(ele).find(selector);
+
+                        if(row == []) continue; //Can't find this row
+
+                        //console.log("ROW FOUND", row, row.parent(), selector);
+
+                        row.parent().addClass("starred");
+                    };
+                });
+            });
+
+            //_dsTeamThings.read();
+        },
+        loadStarView: function(tmpl, ele){
+            var lv = ele.data("kendoMobileListView");
+            if (lv == undefined) {
+                lv = ele.kendoMobileListView({
+                    dataSource: _dsStarThings,
+                    template: tmpl
+                }).data("kendoMobileListView");
+            }
+
+            if(_refreshStarList){
+                _dsStarThings.read();
+                _refreshStarList = false;
+            }
         },
         loadTeamMemberView: function (tmpl, ele) {
             $.when(_data.getTeam(this.getCurrentTeam())).then(function (result) {
@@ -162,6 +239,19 @@ var TeamThing = function (kendoApp) {
                 }
             });
         },
+        updateThingStar: function (thingId, shouldStar){
+            var userId = _currentUser.get().id;
+
+            if(shouldStar){
+                $.when(_data.updateThingStar(thingId, userId)).then(function(){
+                    _refreshStarList = true;
+                });
+            }else{
+                $.when(_data.updateThingUnStar(thingId, userId)).then(function(){
+                    _refreshStarList = true;
+                });
+            }
+        },
         joinTeam: function (teamId) {
             var dfd = new $.Deferred(),
 				userId = this.getCurrentUser().id;
@@ -178,10 +268,33 @@ var TeamThing = function (kendoApp) {
 
             return dfd.promise();
         },
+        createAndJoinTeam: function(teamName, isPrivate){
+            var dfd = new $.Deferred(),
+                userId = this.getCurrentUser().id;
+
+            //Make sure any existing team cache is cleared        
+            this.clearTeam();
+
+            $.when(_data.createTeam(teamName, isPrivate, userId)).done(function (result) {
+                if (result) {
+                    _currentTeamId.set(result.id);
+                    dfd.resolve(true);
+                } else {
+                    //Missing team object; something went wrong
+                    dfd.reject("Failed to create team");
+                }
+            }).fail(function(msg){
+                //Error creating the team
+                dfd.reject(msg);
+            });
+
+            return dfd.promise();
+        },
         changeTeam: function (newTeamId) {
             //TODO: Check server for ability to change team before changing
             var dfd = new $.Deferred();
 
+            this.clearTeam();
             _currentTeamId.set(newTeamId);
             _eleNoThingsMsg.show();
             dfd.resolve(true);
@@ -189,12 +302,16 @@ var TeamThing = function (kendoApp) {
             return dfd.promise();
         },
         clearUser: function () {
+            //Clear all cached user values
+            _authStatus = null;
+            _authInfo.set(null);
             _currentUser.set(null);
-            _currentTeamId.set(null);
+            this.clearTeam();
             _remember.set(null);
         },
         clearTeam: function () {
             _currentTeamId.set(null);
+            _currentTeamMembers.set(null);
         },
         showLoading: function (txt) {
             if (txt != "") {
@@ -221,11 +338,27 @@ var TeamThing = function (kendoApp) {
         getRemember: function () { return _remember.get(); },
         getShowInstallPrompt: function () { return _showInstallPrompt.get(); },
         setThingsRefreshFlag: function () { _refreshThings.set(true); return; },
+        setStarRefreshFlag: function(){ _refreshStarList = true; return; },
         getAuthProvider: function () { return _authProvider; },
         getAuthStatus: function () { return _authStatus; },
         setAuthStatus: function (val) { _authStatus = val; return; },
         getAuthInfo: function () { return _authInfo.get(); },
         setAuthInfo: function (val) { _authInfo.set(val); return; },
+        getTeamMembers: function(){
+            var dfd = new $.Deferred();
+
+            if(_currentTeamMembers.get() == null){
+                $.when(_data.getTeamMembers(_currentTeamId.get())).then(function(data){
+                    _currentTeamMembers.set(data);
+
+                    dfd.resolve(data);
+                });
+            }else{
+                dfd.resolve(_currentTeamMembers.get());
+            }
+
+            return dfd.promise();
+        },
         app: _app,
         data: _data
     }
