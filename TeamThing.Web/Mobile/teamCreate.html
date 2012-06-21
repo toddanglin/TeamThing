@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Team Thing</title>	
+</head>
+<body class="tt">	
+	<div data-role="view" id="vwTeamCreate" data-layout="title" data-transition="slide" data-title="Create a Team" data-show="viewTeamCreateShow" data-init="viewTeamCreateInit">	
+		<div class="wrapper">		
+			<form id="frmCreateTeam">
+			<ul data-role="listview" data-style="inset" style="text-align:left;">
+				<li>
+					<input type="text" id="txtName" required />
+					<label for="txtName">Team Name*</label>
+				</li>
+				<li>
+					<input type="checkbox" data-role="switch" data-on-label="YES" data-off-label="NO" id="chkPrivate" />
+					<label for="chkPrivate">Private Team</label>
+				</li>
+			</ul>
+			<div id="errMsg" style="margin:15px auto;color: #e52d01;width: 60%;display: none;">
+				Oops! We couldn't create that team. Try a different team name 
+				or try again later. Sorry for the trouble.
+			</div>
+			<button class="km-button" id="btnCreateTeam" style="margin-top:10px;" disabled>Create &amp; Join Team</button>
+			</form>
+	    </div>
+	</div>
+	
+	<script>
+	  function viewTeamCreateInit(){
+	  		var btnCreate = $("#btnCreateTeam");
+
+	  		btnCreate.on("click", saveTeam);
+
+		  	$("#txtName").on("keyup", function(ele){
+		  		var txt = $(ele.target);
+		  		if(txt.val() != ""){
+		  			btnCreate.removeAttr("disabled")
+		  		}else{
+		  			btnCreate.attr("disabled","disabled");
+		  		}
+		  	});
+	  }
+
+	  function viewTeamCreateShow(){
+	  	//Hide the back button for this view
+	  	$("#btnBack").css("visibility","visible");	  		  		  	
+	  }
+
+	  function saveTeam(e){
+	  	//Prevent the default form posting
+	  	e.preventDefault();
+
+	  	console.log("SAVE TEAM");
+	  	var form = $("#frmCreateTeam")[0],
+	  		app = teamThingApp;
+
+	  	if(form.checkValidity()){
+	  		console.log("FORM VALID");
+	  		$("#errMsg").hide();
+
+	  		var name = $("#txtName").val(),
+	  		    isPrivate = $("#chkPrivate").is(':checked');
+
+	  		console.log("CREATE TEAM", name, isPrivate)
+	  		//Form is valid, try to save the team
+	  		$.when(app.createAndJoinTeam(name, isPrivate)).done(function(){
+	  			//Navigate to app with newly created team
+	  			app.app.navigate("");
+	  		}).fail(function(){
+	  			console.log("CREATE TEAM PROBLEM");
+	  			$("#errMsg").fadeIn();
+	  		});
+	  	}
+	  }
+	</script>
+</body>
+</html>

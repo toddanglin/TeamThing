@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Starred Things</title>
+</head>
+<body>
+
+<div data-role="view" id="vwTeam" data-title="Starred Things" data-show="showStarView" data-init="initStarView">
+     <ul id="lstStarThings" class="things">    
+        <li>Test</li>  	
+     </ul>
+     <ul id="asUnstar">	          
+        <li id="btnUnStarThing"><a data-action="asUnstarItem">Unfollow this Thing</a></li>         
+     </ul>
+     <div id="msgNoThings" style="width: 250px;text-align:center;margin: 50px auto;display: none;">
+     	<h2>You love all your things.</h2>
+     	<p>
+     	There are no starred things to review. If you star teammates' things, you'll be able to track them here to keep-up with the progress. These are things important to you that you aren't doing yourself!
+     	</p>
+     </div>
+</div>
+
+<script type="text/x-kendo-template" id="tmplStarThingItem">		
+		<a href="\\#asUnstar" 
+            data-actionsheet-context="#:data.id#;#:data.isStarred#"
+            data-rel="actionsheet">	
+            <img src="#: data.owner.imagePath #" class="avatar" />   
+            <div class="thingStatus #: data.status #">#: data.status #</div>         
+			<div class="thingTitle">#= data.description #</div>
+		</a>		
+</script>
+
+<script>
+    function initStarView(){
+        $("#asUnstar").kendoMobileActionSheet();
+    }
+
+    function showStarView() {
+        //Hide Add button on main index view
+        $(".btnAdd").css("visibility", "hidden");
+
+		loadStarView();                    		
+	}
+
+    function loadStarView(){
+        var ele = $("#lstStarThings"),
+            tmpl = kendo.template($("#tmplStarThingItem").html()),
+            app = teamThingApp;
+        
+  
+        app.loadStarView(tmpl,ele); 
+    }
+
+
+	function asUnstarItem(args){
+		var id = args.context.split(";")[0],
+            app = teamThingApp,
+            ele = args.target.context.parentElement;
+
+        app.updateThingStar(id, false);
+
+        //Update UI
+        $(ele).removeClass("starred");
+
+        //Set the fresh flag
+        app.setStarRefreshFlag();
+        
+        //Refresh the view
+        loadStarView();
+	}
+</script>
+</body>
+</html>
