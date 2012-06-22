@@ -51,7 +51,7 @@ describe("A thing", function () {
             teamId: testTeamId
         };
 
-        create(baseAddressThingAddress, data, successCallbackWrapper);
+        create(baseThingAddress, data, successCallbackWrapper);
 
         waitsFor(function () {
             return successCallback.callCount > 0;
