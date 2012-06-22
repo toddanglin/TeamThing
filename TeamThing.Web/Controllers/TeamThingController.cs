@@ -37,7 +37,8 @@ namespace TeamThing.Web.Controllers
             }
         }
 
-        public HttpResponseMessage ResourceOkResponse<T>(T item) where T : IServiceResource
+        [NonAction]
+        protected HttpResponseMessage ResourceOkResponse<T>(T item) where T : IServiceResource
         {
             var controller = this.Request.GetRouteData().Values["controller"];
             var response = Request.CreateResponse(HttpStatusCode.OK, item);

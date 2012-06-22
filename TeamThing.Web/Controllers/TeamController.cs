@@ -136,8 +136,8 @@ namespace TeamThing.Web.Controllers
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
-        [HttpPut]
         // PUT /api/team/5/AddMember
+        [HttpPut]
         public HttpResponseMessage AddMember(int id, ServiceModel.AddMemberViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson())); }
@@ -174,8 +174,9 @@ namespace TeamThing.Web.Controllers
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
-        [HttpPut]
+
         // PUT /api/team/5/Join
+        [HttpPut]
         public HttpResponseMessage Join(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson())); }
@@ -200,8 +201,9 @@ namespace TeamThing.Web.Controllers
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
-        [HttpPut]
+
         // PUT /api/team/5/Leave
+        [HttpPut]
         public HttpResponseMessage Leave(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -226,8 +228,9 @@ namespace TeamThing.Web.Controllers
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
-        [HttpPut]
+
         // PUT /api/team/5/ApproveMember
+        [HttpPut]
         public void ApproveMember(int id, ServiceModel.MemberApprovalViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -252,8 +255,9 @@ namespace TeamThing.Web.Controllers
             emailService.ApprovedForTeam(teamMember.User, team).Send();
         }
 
-        [HttpPut]
+
         // PUT /api/team/5/DenyMember
+        [HttpPut]
         public void DenyMember(int id, ServiceModel.MemberApprovalViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -279,8 +283,9 @@ namespace TeamThing.Web.Controllers
             emailService.DeniedTeam(teamMember.User, team).Send();
         }
 
-        [HttpPut]
+
         // PUT /api/team/5
+        [HttpPut]
         public HttpResponseMessage Put(int id, ServiceModel.UpdateTeamViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -306,8 +311,8 @@ namespace TeamThing.Web.Controllers
             return ResourceOkResponse(team.MapToServiceModel());
         }
 
-        [HttpDelete]
         // DELETE /api/team/5
+        [HttpDelete]
         public HttpResponseMessage Delete(int id, ServiceModel.DeleteTeamViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
