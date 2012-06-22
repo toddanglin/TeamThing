@@ -87,8 +87,8 @@ namespace TeamThing.Web.Controllers
 
                 thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingCreator));
 
-                var emailService = new Postal.EmailService();
-                emailService.Send(new Postal.Email("ThingAdded"));
+                //var emailService = new Postal.EmailService();
+                //emailService.Send(new Postal.Email("ThingAdded"));
             }
 
             context.Add(thing);

@@ -181,8 +181,8 @@ namespace TeamThing.Web.Controllers
                 newTeamMember.Status = DomainModel.TeamUserStatus.Approved;
             }
 
-            var emailService = new Postal.EmailService();
-            emailService.Send(new Postal.Email("AddedToTeam"));
+            //var emailService = new Postal.EmailService();
+            //emailService.Send(new Postal.Email("AddedToTeam"));
 
             team.Members.Add(newTeamMember);
             context.SaveChanges();

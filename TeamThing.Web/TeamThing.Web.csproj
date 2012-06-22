@@ -55,12 +55,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Postal">
-      <HintPath>..\packages\postal.0.7.3\lib\net40\Postal.dll</HintPath>
-    </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\packages\RazorEngine.3.0.8\lib\net40\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -864,7 +858,6 @@
     <None Include="Mobile\testdata\userteamthings.json" />
     <Content Include="Scripts\jasmine\MIT.LICENSE" />
     <Content Include="Views\Emails\AddedToTeam.cshtml" />
-    <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Views\Emails\ThingAdded.cshtml" />
   </ItemGroup>
   <PropertyGroup>
