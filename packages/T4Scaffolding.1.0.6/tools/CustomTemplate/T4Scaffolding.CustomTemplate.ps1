@@ -27,7 +27,7 @@ $customScaffoldersPath = [T4Scaffolding.Core.ScaffoldingConstants]::CustomScaffo
 $outputPath = Join-Path (Join-Path $customScaffoldersPath $resolvedScaffolder.Name) ([System.IO.Path]::GetFileName($sourceTemplateFile))
 $existingProjectItem = Get-ProjectItem $outputPath -Project $Project
 if ($existingProjectItem -and -not $Force) {
-	Write-Warning "$outputPath already exists! Skipping..."
+	Write-Warning "$outputPath already exists! Pass -Force to overwrite. Skipping..."
 	return
 }
 

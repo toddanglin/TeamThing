@@ -7,8 +7,10 @@ using TeamThing.Model.Helpers;
 using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
 using TeamThing.Web.Core.Security;
+using TeamThing.Web.Mailers;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
+using Mvc.Mailer;
 
 namespace TeamThing.Web.Controllers
 {
@@ -16,10 +18,13 @@ namespace TeamThing.Web.Controllers
     //[RequireOAuthAuthorization]
     public class TeamController : TeamThingApiController
     {
+        private IUserMailer emailService = new UserMailer();
 
         public TeamController()
             : base(new DomainModel.TeamThingContext())
         {
+
+
         }
 
         [Queryable]
@@ -181,8 +186,7 @@ namespace TeamThing.Web.Controllers
                 newTeamMember.Status = DomainModel.TeamUserStatus.Approved;
             }
 
-            //var emailService = new Postal.EmailService();
-            //emailService.Send(new Postal.Email("AddedToTeam"));
+            emailService.InvitedToTeam().Send();
 
             team.Members.Add(newTeamMember);
             context.SaveChanges();
@@ -238,7 +242,7 @@ namespace TeamThing.Web.Controllers
             response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return response;
         }
-        
+
         [HttpPut]
         public HttpResponseMessage Leave(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
@@ -271,7 +275,7 @@ namespace TeamThing.Web.Controllers
             }
             var teamUser = user.Teams.FirstOrDefault(ut => ut.TeamId == team.Id);
 
-            
+
             if (teamUser != null)
             {
                 team.Members.Remove(teamUser);
@@ -298,7 +302,7 @@ namespace TeamThing.Web.Controllers
 
             var authorizer = team.Members.FirstOrDefault(tm => tm.UserId == viewModel.StatusChangedByUserId);
 
-            if (authorizer == null || (authorizer.Role != DomainModel.TeamUserRole.Administrator && team.OwnerId != authorizer.UserId ))
+            if (authorizer == null || (authorizer.Role != DomainModel.TeamUserRole.Administrator && team.OwnerId != authorizer.UserId))
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Forbidden, "Only team owners, and admins can approve members."));
             }
@@ -312,6 +316,8 @@ namespace TeamThing.Web.Controllers
 
             teamMember.Status = DomainModel.TeamUserStatus.Approved;
             context.SaveChanges();
+
+            emailService.ApprovedForTeam().Send();
         }
 
         [HttpPut]
@@ -346,6 +352,9 @@ namespace TeamThing.Web.Controllers
 
             teamMember.Status = DomainModel.TeamUserStatus.Denied;
             context.SaveChanges();
+
+
+            emailService.DeniedTeam().Send();
         }
 
         [HttpPut]

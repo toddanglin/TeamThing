@@ -34,7 +34,10 @@ if ($Area) {
 if (!$NoChildItems) {
 	$dbContextScaffolderResult = Scaffold DbContext -ModelType $ModelType -DbContextType $DbContextType -Area $Area -Project $Project -CodeLanguage $CodeLanguage -BlockUi
 	$foundDbContextType = $dbContextScaffolderResult.DbContextType
+	if (!$foundDbContextType) { return }
 }
+if (!$foundDbContextType) { $foundDbContextType = Get-ProjectType $DbContextType -Project $Project }
+if (!$foundDbContextType) { return }
 
 $modelTypePluralized = Get-PluralizedWord $foundModelType.Name
 $defaultNamespace = (Get-Project $Project).Properties.Item("DefaultNamespace").Value
@@ -48,7 +51,7 @@ Add-ProjectItemViaTemplate $outputPath -Template Repository -Model @{
 	RepositoryNamespace = $repositoryNamespace; 
 	ModelTypeNamespace = $modelTypeNamespace; 
 	ModelTypePluralized = [string]$modelTypePluralized; 
-	DbContextType = if($foundDbContextType) { $foundDbContextType.Name } else { $DbContextType };
-	DbContextNamespace = if($foundDbContextType) { $foundDbContextType.Namespace.FullName } else { $repositoryNamespace };
+	DbContextNamespace = $foundDbContextType.Namespace.FullName;
+	DbContextType = [MarshalByRefObject]$foundDbContextType;
 } -SuccessMessage "Added repository '{0}'" -TemplateFolders $TemplateFolders -Project $Project -CodeLanguage $CodeLanguage -Force:$Force
 

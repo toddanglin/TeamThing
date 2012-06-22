@@ -173,6 +173,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mailers\IUserMailer.cs" />
+    <Compile Include="Mailers\UserMailer.cs" />
     <Compile Include="Mobile\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -215,6 +217,7 @@
     <Content Include="Images\locked.png" />
     <Content Include="Images\unlocked.png" />
     <Content Include="index_ORIG.html" />
+    <Content Include="InstallationDummyFile.txt" />
     <Content Include="main.html" />
     <Content Include="Mobile\css\fonts\kameron-bold-webfont.svg" />
     <Content Include="Mobile\css\images\iconPerson.png" />
@@ -866,6 +869,19 @@
     <Content Include="Scripts\jasmine\MIT.LICENSE" />
     <Content Include="Views\Emails\AddedToTeam.cshtml" />
     <Content Include="Views\Emails\ThingAdded.cshtml" />
+    <Content Include="Views\UserMailer\_Layout.cshtml" />
+    <Content Include="Views\UserMailer\Welcome.cshtml" />
+    <Content Include="Views\UserMailer\ThingAssigned.cshtml" />
+    <Content Include="Views\UserMailer\ApprovedForTeam.cshtml" />
+    <Content Include="Views\UserMailer\DeniedTeam.cshtml" />
+    <Content Include="Views\UserMailer\InvitedToTeam.cshtml" />
+    <Content Include="Views\UserMailer\ThingCompleted.cshtml" />
+    <Content Include="Views\UserMailer\_Layout.text.cshtml" />
+    <Content Include="Views\UserMailer\ThingAssigned.text.cshtml" />
+    <Content Include="Views\UserMailer\ApprovedForTeam.text.cshtml" />
+    <Content Include="Views\UserMailer\DeniedTeam.text.cshtml" />
+    <Content Include="Views\UserMailer\InvitedToTeam.text.cshtml" />
+    <Content Include="Views\UserMailer\ThingCompleted.text.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

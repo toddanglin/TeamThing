@@ -51,10 +51,29 @@ if (!$foundDbContextType) {
 # Add a new property on the DbContext class
 if ($foundDbContextType) {
 	$propertyName = Get-PluralizedWord $foundModelType.Name
-	Add-ClassMemberViaTemplate -Name $propertyName -CodeClass $foundDbContextType -Template DbContextEntityMember -Model @{
-		EntityType = $foundModelType;
-		EntityTypeNamePluralized = $propertyName;
-	} -SuccessMessage "Added '$propertyName' to database context '$($foundDbContextType.FullName)'" -TemplateFolders $TemplateFolders -Project $Project -CodeLanguage $CodeLanguage
+
+	# If this is not a DbContext, we can't add a new property, so ensure there is already one
+	# Unfortunately we have to use the awkward "PowerShellInvoke" calling mechanism otherwise
+	# the PowerShell COM wrapper objects can't be passed into the .NET code.
+	$isAssignableToParamTypes = New-Object System.Type[] 2
+	$isAssignableToParamTypes[0] = [EnvDTE.CodeType]
+	$isAssignableToParamTypes[1] = [System.String]
+	$isDbContext = [T4Scaffolding.Core.EnvDTE.EnvDTEExtensions]::PowerShellInvoke([T4Scaffolding.Core.EnvDTE.EnvDTEExtensions].GetMethod("IsAssignableTo", $isAssignableToParamTypes), $null, @($foundDbContextType, "System.Data.Entity.DbContext"))
+	if (!$isDbContext) {
+		$existingMembers = [T4Scaffolding.Core.EnvDTE.EnvDTEExtensions]::PowerShellInvoke([T4Scaffolding.Core.EnvDTE.EnvDTEExtensions].GetMethod("VisibleMembers"), $null, $foundDbContextType)
+		$hasExistingPropertyForModel = $existingMembers | ?{ ($_.Name -eq $propertyName) -and ($_.Kind -eq [EnvDTE.vsCMElement]::vsCMElementProperty) }
+		if ($hasExistingPropertyForModel) {
+			Write-Warning "$($foundDbContextType.Name) already contains a '$propertyName' property."
+		} else {
+			throw "$($foundDbContextType.FullName) is not a System.Data.Entity.DbContext class and does not contain a '$propertyName' property, so it cannot be used as the database context."
+		}
+	} else {
+		# This *is* a DbContext, so we can freely add a new property if there isn't already one for this model
+		Add-ClassMemberViaTemplate -Name $propertyName -CodeClass $foundDbContextType -Template DbContextEntityMember -Model @{
+			EntityType = $foundModelType;
+			EntityTypeNamePluralized = $propertyName;
+		} -SuccessMessage "Added '$propertyName' to database context '$($foundDbContextType.FullName)'" -TemplateFolders $TemplateFolders -Project $Project -CodeLanguage $CodeLanguage
+	}
 }
 
 return @{

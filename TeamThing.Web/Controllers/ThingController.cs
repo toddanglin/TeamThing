@@ -3,10 +3,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Mvc.Mailer;
 using TeamThing.Model.Helpers;
 using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
-using TeamThing.Web.Core.Security;
+using TeamThing.Web.Mailers;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
 
@@ -16,6 +17,7 @@ namespace TeamThing.Web.Controllers
     //[RequireOAuthAuthorization]
     public class ThingController : TeamThingApiController
     {
+        private IUserMailer emailService = new UserMailer();
         public ThingController()
             : base(new DomainModel.TeamThingContext())
         {
@@ -87,8 +89,8 @@ namespace TeamThing.Web.Controllers
 
                 thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingCreator));
 
-                //var emailService = new Postal.EmailService();
-                //emailService.Send(new Postal.Email("ThingAdded"));
+
+                emailService.ThingAssigned().Send();
             }
 
             context.Add(thing);
