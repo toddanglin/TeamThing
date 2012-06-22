@@ -8,6 +8,8 @@ describe("A thing", function () {
 
     var testUserId = 10;
     var userUser2Id = 12;
+    var testTeamId = 2;
+
     function createdThingBaseAddress() {
         if (createdThing) {
             return baseThingAddress + createdThing.id;
@@ -46,10 +48,10 @@ describe("A thing", function () {
             createdById: testUserId,
             description: "My New Thing",
             assignedTo: [testUserId], //only assigned to one user at first
-            teamId: 2
+            teamId: testTeamId
         };
 
-        create(baseAddress + "/thing", data, successCallbackWrapper);
+        create(baseAddressThingAddress, data, successCallbackWrapper);
 
         waitsFor(function () {
             return successCallback.callCount > 0;
