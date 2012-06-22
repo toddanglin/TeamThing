@@ -209,6 +209,7 @@
     <Content Include="Images\unlocked.png" />
     <Content Include="index_ORIG.html" />
     <Content Include="main.html" />
+    <Content Include="Mobile\css\fonts\kameron-bold-webfont.svg" />
     <Content Include="Mobile\css\images\iconPerson.png" />
     <Content Include="Mobile\css\images\iconTeam.png" />
     <Content Include="Mobile\Default.aspx" />
@@ -846,6 +847,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="51Degrees.mobi.config" />
+    <Content Include="Mobile\css\fonts\kameron-bold-webfont.eot" />
+    <Content Include="Mobile\css\fonts\kameron-bold-webfont.ttf" />
+    <Content Include="Mobile\css\fonts\kameron-bold-webfont.woff" />
     <None Include="Mobile\testdata\newUserLogin.json" />
     <None Include="Mobile\testdata\team.json" />
     <None Include="Mobile\testdata\teams.json" />
