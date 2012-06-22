@@ -14,8 +14,7 @@ namespace TeamThing.Web.Mailers
             MasterName = "_Layout";
         }
 
-
-        public virtual MailMessage ThingAssigned(User[] assignedTo, Thing thing)
+        public virtual MailMessage ThingAssigned(User[] assignedTo, Thing thing, User assignedBy)
         {
             var mailMessage = new MailMessage { Subject = "TeamThing - New Thing to Do!" };
 
@@ -27,6 +26,7 @@ namespace TeamThing.Web.Mailers
                 mailMessage.To.Add(string.Join(",", sendTo));
                 mailMessage.From = new MailAddress(fromAddress);
                 //ViewBag.Data = someObject;
+                ViewData.Model = new ThingChanged { Thing = thing, ChangeMadeBy = assignedBy };
                 PopulateBody(mailMessage, viewName: "ThingAssigned");
 
                 return mailMessage;
@@ -34,7 +34,7 @@ namespace TeamThing.Web.Mailers
 
             return null;
         }
-        public virtual MailMessage ThingUnassigned(User[] unassignedTo, Thing thing)
+        public virtual MailMessage ThingUnassigned(User[] unassignedTo, Thing thing, User remover)
         {
             var mailMessage = new MailMessage { Subject = "TeamThing - Something off your plate!" };
 
@@ -45,6 +45,7 @@ namespace TeamThing.Web.Mailers
                 mailMessage.To.Add(string.Join(",", sendTo));
                 mailMessage.From = new MailAddress(fromAddress);
                 //ViewBag.Data = someObject;
+                ViewData.Model = new ThingChanged { Thing = thing, ChangeMadeBy = remover };
                 PopulateBody(mailMessage, viewName: "ThingUnassigned");
 
                 return mailMessage;
@@ -53,7 +54,6 @@ namespace TeamThing.Web.Mailers
             return null;
         }
 
-
         public virtual MailMessage ApprovedForTeam(User user, Team team)
         {
             var mailMessage = new MailMessage { Subject = "TeamThing - Team Access Approved!" };
@@ -61,11 +61,12 @@ namespace TeamThing.Web.Mailers
             mailMessage.To.Add(user.EmailAddress);
             mailMessage.From = new MailAddress(fromAddress);
             //ViewBag.Data = someObject;
+
+            ViewData.Model = new TeamAccessChanged { Team = team};
             PopulateBody(mailMessage, viewName: "ApprovedForTeam");
 
             return mailMessage;
         }
-
 
         public virtual MailMessage DeniedTeam(User user, Team team)
         {
@@ -74,11 +75,12 @@ namespace TeamThing.Web.Mailers
             mailMessage.To.Add(user.EmailAddress);
             mailMessage.From = new MailAddress(fromAddress);
             //ViewBag.Data = someObject;
+
+            ViewData.Model = new TeamAccessChanged { Team = team };
             PopulateBody(mailMessage, viewName: "DeniedTeam");
 
             return mailMessage;
         }
-
 
         public virtual MailMessage InvitedToTeam(User sendTo, User inviter, Team team)
         {
@@ -87,11 +89,12 @@ namespace TeamThing.Web.Mailers
             mailMessage.To.Add(sendTo.EmailAddress);
             mailMessage.From = new MailAddress(fromAddress);
             //ViewBag.Data = someObject;
+
+            ViewData.Model = new TeamAccessChanged { Team = team };
             PopulateBody(mailMessage, viewName: "InvitedToTeam");
 
             return mailMessage;
         }
-
 
         private const string fromAddress = "no-reply@teamthing.net";
 
@@ -105,6 +108,7 @@ namespace TeamThing.Web.Mailers
                 mailMessage.To.Add(string.Join(",", sendTo));
                 mailMessage.From = new MailAddress(fromAddress);
                 //ViewBag.Data = someObject;
+                ViewData.Model = new ThingChanged { Thing = thing, ChangeMadeBy = completer };
                 PopulateBody(mailMessage, viewName: "ThingCompleted");
 
                 return mailMessage;
@@ -112,7 +116,17 @@ namespace TeamThing.Web.Mailers
 
             return null;
         }
+    }
+  
+    public class TeamAccessChanged : object
+    {
+        public Team Team { get; set; }
+    }
+  
+    public class ThingChanged : object
+    {
+        public Thing Thing { get; set; }
 
-
+        public User ChangeMadeBy { get; set; }
     }
 }

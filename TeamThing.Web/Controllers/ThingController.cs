@@ -89,7 +89,7 @@ namespace TeamThing.Web.Controllers
                 thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingCreator));
             }
 
-            emailService.ThingAssigned(thing.AssignedTo.Select(x => x.AssignedToUser).ToArray(), thing).Send();
+            emailService.ThingAssigned(thing.AssignedTo.Select(x => x.AssignedToUser).ToArray(), thing, thingCreator).Send();
 
             context.Add(thing);
             context.SaveChanges();
@@ -137,6 +137,11 @@ namespace TeamThing.Web.Controllers
             thing.UpdateStatus(user, realStatus);
             context.SaveChanges();
 
+            if (thing.Status == DomainModel.ThingStatus.Completed)
+            {
+                emailService.ThingCompleted(thing.AssignedTo.Select(x => x.AssignedToUser).ToArray(), user, thing).Send();
+            }
+
             var sThing = thing.MapToServiceModel();
             var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
             response.Headers.Location = new Uri(Request.RequestUri, "/api/thing/" + thing.Id.ToString());
@@ -170,6 +175,8 @@ namespace TeamThing.Web.Controllers
 
             thing.Complete(user);
             context.SaveChanges();
+
+            emailService.ThingCompleted(thing.AssignedTo.Select(x => x.AssignedToUser).ToArray(), user, thing).Send();
 
             var sThing = thing.MapToServiceModel();
             var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
@@ -294,8 +301,8 @@ namespace TeamThing.Web.Controllers
 
             context.SaveChanges();
 
-            emailService.ThingAssigned(newUserThings.Select(x=>x.AssignedToUser).ToArray(), thing).Send();
-            emailService.ThingUnassigned(newUserThings.Select(x=>x.AssignedToUser).ToArray(), thing).Send();
+            emailService.ThingAssigned(newUserThings.Select(x => x.AssignedToUser).ToArray(), thing, thingEditor).Send();
+            emailService.ThingUnassigned(newUserThings.Select(x => x.AssignedToUser).ToArray(), thing, thingEditor).Send();
 
             var sThing = thing.MapToServiceModel();
             var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
