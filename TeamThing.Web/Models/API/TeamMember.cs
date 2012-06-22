@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TeamThing.Web.Models.API
 {
-    public class TeamMember
+    public class TeamMember : IServiceResource
     {
         public int Id { get;set; }
         public string EmailAddress { get;set; }

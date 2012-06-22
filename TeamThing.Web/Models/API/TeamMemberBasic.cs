@@ -1,6 +1,6 @@
 namespace TeamThing.Web.Models.API
 {
-    public class TeamMemberBasic
+    public class TeamMemberBasic : IServiceResource
     {
         public int Id { get;set; }
         public string EmailAddress { get;set; }

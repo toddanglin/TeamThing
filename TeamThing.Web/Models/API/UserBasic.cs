@@ -1,6 +1,6 @@
 namespace TeamThing.Web.Models.API
 {
-    public class UserBasic
+    public class UserBasic : IServiceResource
     {
         public int Id { get; set; }
         public string ImagePath { get; set; }

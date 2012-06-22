@@ -6,7 +6,7 @@ using System.Web.Http;
 
 namespace TeamThing.Web.Models.API
 {
-    public class Team
+    public class Team : IServiceResource
     {
         public string Name { get; set; }
         public int Id { get; set; }
@@ -19,5 +19,10 @@ namespace TeamThing.Web.Models.API
         public UserBasic Owner { get; set; }
         //TODO: this should probably return a bool flag based on the current user's permissions, so that they don't know the admin's id!
         public int[] Administrators { get; set; }
+    }
+  
+    public interface IServiceResource
+    {
+        int Id { get; set; }
     }
 }

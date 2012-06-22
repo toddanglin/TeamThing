@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 namespace TeamThing.Web.Models.API
 {
-    public class ThingBasic
+    public class ThingBasic : IServiceResource
     {
         public int Id { get; set; }
         public string Description { get; set; }

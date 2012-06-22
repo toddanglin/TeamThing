@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TeamThing.Web.Models.API
 {
-    public class User
+    public class User : IServiceResource
     {
         public int Id { get; set; }
         public string EmailAddress { get; set; }
