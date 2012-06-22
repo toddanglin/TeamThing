@@ -21,6 +21,7 @@ namespace TeamThing.Web.Mailers
 			var mailMessage = new MailMessage{Subject = "ThingAssigned"};
 			
 			mailMessage.To.Add("jholt456@gmail.com");
+			mailMessage.From = new MailAddress("jholt456@gmail.com");
 			//ViewBag.Data = someObject;
 			PopulateBody(mailMessage, viewName: "ThingAssigned");
 
@@ -33,6 +34,7 @@ namespace TeamThing.Web.Mailers
 			var mailMessage = new MailMessage{Subject = "ApprovedForTeam"};
 
             mailMessage.To.Add("jholt456@gmail.com");
+            mailMessage.From = new MailAddress("jholt456@gmail.com");
 			//ViewBag.Data = someObject;
 			PopulateBody(mailMessage, viewName: "ApprovedForTeam");
 
@@ -45,6 +47,7 @@ namespace TeamThing.Web.Mailers
 			var mailMessage = new MailMessage{Subject = "DeniedTeam"};
 
             mailMessage.To.Add("jholt456@gmail.com");
+            mailMessage.From = new MailAddress("jholt456@gmail.com");
 			//ViewBag.Data = someObject;
 			PopulateBody(mailMessage, viewName: "DeniedTeam");
 
@@ -57,6 +60,7 @@ namespace TeamThing.Web.Mailers
 			var mailMessage = new MailMessage{Subject = "InvitedToTeam"};
 
             mailMessage.To.Add("jholt456@gmail.com");
+            mailMessage.From = new MailAddress("jholt456@gmail.com");
 			//ViewBag.Data = someObject;
 			PopulateBody(mailMessage, viewName: "InvitedToTeam");
 
@@ -69,6 +73,7 @@ namespace TeamThing.Web.Mailers
 			var mailMessage = new MailMessage{Subject = "ThingCompleted"};
 
             mailMessage.To.Add("jholt456@gmail.com");
+            mailMessage.From = new MailAddress("jholt456@gmail.com");
 			//ViewBag.Data = someObject;
 			PopulateBody(mailMessage, viewName: "ThingCompleted");
 
