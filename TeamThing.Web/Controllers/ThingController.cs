@@ -72,7 +72,6 @@ namespace TeamThing.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
             }
 
-
             var thing = new DomainModel.Thing(team, thingCreator);
             thing.Description = newThing.Description;
 
@@ -88,10 +87,9 @@ namespace TeamThing.Web.Controllers
                 }
 
                 thing.AssignedTo.Add(new DomainModel.UserThing(thing, assignedTo, thingCreator));
-
-
-                emailService.ThingAssigned().Send();
             }
+
+            emailService.ThingAssigned(thing.AssignedTo.Select(x => x.AssignedToUser).ToArray(), thing).Send();
 
             context.Add(thing);
             context.SaveChanges();
@@ -130,7 +128,7 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid user"));
             }
 
-            if (thing.OwnerId != user.Id && !thing.AssignedTo.Any(at => at.AssignedToUserId == user.Id) && !thing.Team.Members.Admins().Any(a => a.Id == user.Id))            
+            if (thing.OwnerId != user.Id && !thing.AssignedTo.Any(at => at.AssignedToUserId == user.Id) && !thing.Team.Members.Admins().Any(a => a.Id == user.Id))
             {
                 ModelState.AddModelError("", "A thing's status can only be completed by someone assigned to it, the thing's owner, or a team administrator.");
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson());
@@ -156,7 +154,7 @@ namespace TeamThing.Web.Controllers
             {
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid thing"));
             }
-            
+
             var user = context.GetAll<DomainModel.User>()
                               .FirstOrDefault(u => u.Id == viewModel.UserId);
 
@@ -285,13 +283,19 @@ namespace TeamThing.Web.Controllers
 
             //removed users
             var removedUserIds = thing.AssignedTo.Select(at => at.AssignedToUserId).Except(viewModel.AssignedTo);
+            var addedUserIds = viewModel.AssignedTo.Except(thing.AssignedTo.Select(at => at.AssignedToUserId));
+
             var removedUserThings = thing.AssignedTo.Where(at => removedUserIds.Contains(at.AssignedToUserId)).ToList();
+            var newUserThings = thing.AssignedTo.Where(at => addedUserIds.Contains(at.AssignedToUserId)).ToList();
 
             context.Delete(removedUserThings);
 
             thing.Description = viewModel.Description;
 
             context.SaveChanges();
+
+            emailService.ThingAssigned(newUserThings.Select(x=>x.AssignedToUser).ToArray(), thing).Send();
+            emailService.ThingUnassigned(newUserThings.Select(x=>x.AssignedToUser).ToArray(), thing).Send();
 
             var sThing = thing.MapToServiceModel();
             var response = Request.CreateResponse(HttpStatusCode.OK, sThing);

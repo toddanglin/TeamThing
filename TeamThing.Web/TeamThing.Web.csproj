@@ -882,6 +882,8 @@
     <Content Include="Views\UserMailer\DeniedTeam.text.cshtml" />
     <Content Include="Views\UserMailer\InvitedToTeam.text.cshtml" />
     <Content Include="Views\UserMailer\ThingCompleted.text.cshtml" />
+    <Content Include="Views\UserMailer\ThingUnassigned.cshtml" />
+    <Content Include="Views\UserMailer\ThingUnassigned.text.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

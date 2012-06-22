@@ -1,85 +1,118 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Mvc.Mailer;
 using System.Net.Mail;
+using Mvc.Mailer;
+using TeamThing.Model;
 
 namespace TeamThing.Web.Mailers
-{ 
-    public class UserMailer : MailerBase, IUserMailer     
-	{
-		public UserMailer():
-			base()
-		{
-			MasterName="_Layout";
-		}
+{
+    public class UserMailer : MailerBase, IUserMailer
+    {
+        public UserMailer() :
+            base()
+        {
+            MasterName = "_Layout";
+        }
 
-		
-		public virtual MailMessage ThingAssigned()
-		{
-			var mailMessage = new MailMessage{Subject = "ThingAssigned"};
-			
-			mailMessage.To.Add("jholt456@gmail.com");
-			mailMessage.From = new MailAddress("jholt456@gmail.com");
-			//ViewBag.Data = someObject;
-			PopulateBody(mailMessage, viewName: "ThingAssigned");
 
-			return mailMessage;
-		}
+        public virtual MailMessage ThingAssigned(User[] assignedTo, Thing thing)
+        {
+            var mailMessage = new MailMessage { Subject = "TeamThing - New Thing to Do!" };
 
-		
-		public virtual MailMessage ApprovedForTeam()
-		{
-			var mailMessage = new MailMessage{Subject = "ApprovedForTeam"};
 
-            mailMessage.To.Add("jholt456@gmail.com");
-            mailMessage.From = new MailAddress("jholt456@gmail.com");
-			//ViewBag.Data = someObject;
-			PopulateBody(mailMessage, viewName: "ApprovedForTeam");
+            var sendTo = assignedTo.Select(u => u.EmailAddress);
 
-			return mailMessage;
-		}
+            if (sendTo.Count() > 0)
+            {
+                mailMessage.To.Add(string.Join(",", sendTo));
+                mailMessage.From = new MailAddress(fromAddress);
+                //ViewBag.Data = someObject;
+                PopulateBody(mailMessage, viewName: "ThingAssigned");
 
-		
-		public virtual MailMessage DeniedTeam()
-		{
-			var mailMessage = new MailMessage{Subject = "DeniedTeam"};
+                return mailMessage;
+            }
 
-            mailMessage.To.Add("jholt456@gmail.com");
-            mailMessage.From = new MailAddress("jholt456@gmail.com");
-			//ViewBag.Data = someObject;
-			PopulateBody(mailMessage, viewName: "DeniedTeam");
+            return null;
+        }
+        public virtual MailMessage ThingUnassigned(User[] unassignedTo, Thing thing)
+        {
+            var mailMessage = new MailMessage { Subject = "TeamThing - Something off your plate!" };
 
-			return mailMessage;
-		}
+            var sendTo = unassignedTo.Select(u => u.EmailAddress);
 
-		
-		public virtual MailMessage InvitedToTeam()
-		{
-			var mailMessage = new MailMessage{Subject = "InvitedToTeam"};
+            if (sendTo.Count() > 0)
+            {
+                mailMessage.To.Add(string.Join(",", sendTo));
+                mailMessage.From = new MailAddress(fromAddress);
+                //ViewBag.Data = someObject;
+                PopulateBody(mailMessage, viewName: "ThingUnassigned");
 
-            mailMessage.To.Add("jholt456@gmail.com");
-            mailMessage.From = new MailAddress("jholt456@gmail.com");
-			//ViewBag.Data = someObject;
-			PopulateBody(mailMessage, viewName: "InvitedToTeam");
+                return mailMessage;
+            }
 
-			return mailMessage;
-		}
+            return null;
+        }
 
-		
-		public virtual MailMessage ThingCompleted()
-		{
-			var mailMessage = new MailMessage{Subject = "ThingCompleted"};
 
-            mailMessage.To.Add("jholt456@gmail.com");
-            mailMessage.From = new MailAddress("jholt456@gmail.com");
-			//ViewBag.Data = someObject;
-			PopulateBody(mailMessage, viewName: "ThingCompleted");
+        public virtual MailMessage ApprovedForTeam(User user, Team team)
+        {
+            var mailMessage = new MailMessage { Subject = "TeamThing - Team Access Approved!" };
 
-			return mailMessage;
-		}
+            mailMessage.To.Add(user.EmailAddress);
+            mailMessage.From = new MailAddress(fromAddress);
+            //ViewBag.Data = someObject;
+            PopulateBody(mailMessage, viewName: "ApprovedForTeam");
 
-		
-	}
+            return mailMessage;
+        }
+
+
+        public virtual MailMessage DeniedTeam(User user, Team team)
+        {
+            var mailMessage = new MailMessage { Subject = "TeamThing - Team Access Denied" };
+
+            mailMessage.To.Add(user.EmailAddress);
+            mailMessage.From = new MailAddress(fromAddress);
+            //ViewBag.Data = someObject;
+            PopulateBody(mailMessage, viewName: "DeniedTeam");
+
+            return mailMessage;
+        }
+
+
+        public virtual MailMessage InvitedToTeam(User sendTo, User inviter, Team team)
+        {
+            var mailMessage = new MailMessage { Subject = "TeamThing - Invited to Join Team" };
+
+            mailMessage.To.Add(sendTo.EmailAddress);
+            mailMessage.From = new MailAddress(fromAddress);
+            //ViewBag.Data = someObject;
+            PopulateBody(mailMessage, viewName: "InvitedToTeam");
+
+            return mailMessage;
+        }
+
+
+        private const string fromAddress = "no-reply@teamthing.net";
+
+        public virtual MailMessage ThingCompleted(User[] assignedTo, User completer, Thing thing)
+        {
+            var sendTo = assignedTo.Where(u => u.Id != completer.Id).Select(u => u.EmailAddress);
+
+            if (sendTo.Count() > 0)
+            {
+                var mailMessage = new MailMessage { Subject = "TeamThing - Thing Completed" };
+                mailMessage.To.Add(string.Join(",", sendTo));
+                mailMessage.From = new MailAddress(fromAddress);
+                //ViewBag.Data = someObject;
+                PopulateBody(mailMessage, viewName: "ThingCompleted");
+
+                return mailMessage;
+            }
+
+            return null;
+        }
+
+
+    }
 }

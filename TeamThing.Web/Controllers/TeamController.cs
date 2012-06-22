@@ -181,12 +181,13 @@ namespace TeamThing.Web.Controllers
             }
 
             var newTeamMember = new DomainModel.TeamUser(team, user);
-            if (team.IsOpen || team.Members.Admins().Any(x => x.Id == viewModel.AddedByUserId))
+            var adminInviter=team.Members.Admins().FirstOrDefault(x => x.Id == viewModel.AddedByUserId);
+            if (team.IsOpen || adminInviter!=null)
             {
                 newTeamMember.Status = DomainModel.TeamUserStatus.Approved;
             }
 
-            emailService.InvitedToTeam().Send();
+            emailService.InvitedToTeam(user, adminInviter, team).Send();
 
             team.Members.Add(newTeamMember);
             context.SaveChanges();
@@ -317,7 +318,7 @@ namespace TeamThing.Web.Controllers
             teamMember.Status = DomainModel.TeamUserStatus.Approved;
             context.SaveChanges();
 
-            emailService.ApprovedForTeam().Send();
+            emailService.ApprovedForTeam(teamMember.User, team).Send();
         }
 
         [HttpPut]
@@ -354,7 +355,7 @@ namespace TeamThing.Web.Controllers
             context.SaveChanges();
 
 
-            emailService.DeniedTeam().Send();
+            emailService.DeniedTeam(teamMember.User, team).Send();
         }
 
         [HttpPut]
