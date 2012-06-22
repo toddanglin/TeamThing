@@ -6,6 +6,8 @@ describe("A thing", function () {
     var baseThingAddress = baseAddress + "thing/";
     var createdThing;
 
+    var testUserId = 10;
+    var userUser2Id = 12;
     function createdThingBaseAddress() {
         if (createdThing) {
             return baseThingAddress + createdThing.id;
@@ -41,9 +43,9 @@ describe("A thing", function () {
         /* in the set up method we need to retrieve a team, and 2 users (second user will be added in the update test to), and use that info here*/
 
         var data = {
-            createdById: 10,
+            createdById: testUserId,
             description: "My New Thing",
-            assignedTo: [10], //only assigned to one user at first
+            assignedTo: [testUserId], //only assigned to one user at first
             teamId: 2
         };
 
@@ -82,9 +84,9 @@ describe("A thing", function () {
             };
 
             var data = {
-                editedById: 10,
+                editedById: testUserId,
                 description: "My Updated Thing",
-                assignedTo: [10, 12] //Adding a new user with the id of '12' to the assigned to list
+                assignedTo: [testUserId, userUser2Id] //Adding a new user with the id of 'testUser2' to the assigned to list
             };
 
             put(createdThingBaseAddress(), data, successCallbackWrapper, null);
@@ -131,7 +133,7 @@ describe("A thing", function () {
             var successCallback = jasmine.createSpy();
 
             /*TODO: we shouldn't hard code this*/
-            var data = { userId: 10, status: "delayed" };
+            var data = { userId: testUserId, status: "delayed" };
             put(createdThingBaseAddress() + "/updatestatus", data, successCallback, null);
 
             waitsFor(function () {
@@ -172,7 +174,7 @@ describe("A thing", function () {
             var successCallback = jasmine.createSpy();
 
             /*TODO: we shouldn't hard code this*/
-            var data = { userId: 10 }; 
+            var data = { userId: testUserId }; 
             put(createdThingBaseAddress() + "/complete", data, successCallback, null);
 
             waitsFor(function () {
@@ -256,7 +258,7 @@ describe("A thing", function () {
         it("should not be able to be deleted by someone it is assigned to if they are not the owner", function () {
             var errorCallback = jasmine.createSpy();
 
-            var data = { deletedById: createdThing.assignedTo[1].id };
+            var data = { deletedById: createdThing.assignedTo[0].id };
             remove(createdThingBaseAddress(), data, null, errorCallback);
 
             waitsFor(function () {

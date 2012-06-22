@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\TeamThingController.cs" />
+    <Compile Include="Core\MailExtensions.cs" />
     <Compile Include="Core\Security\AuthFactory.cs" />
     <Compile Include="Core\Security\BasicUserData.cs" />
     <Compile Include="Core\Security\FacebookAuthProvider.cs" />

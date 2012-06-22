@@ -4,13 +4,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TeamThing.Model.Helpers;
+using TeamThing.Web.Core;
 using TeamThing.Web.Core.Helpers;
 using TeamThing.Web.Core.Mappers;
 using TeamThing.Web.Core.Security;
 using TeamThing.Web.Mailers;
 using DomainModel = TeamThing.Model;
 using ServiceModel = TeamThing.Web.Models.API;
-using Mvc.Mailer;
+
 
 namespace TeamThing.Web.Controllers
 {
