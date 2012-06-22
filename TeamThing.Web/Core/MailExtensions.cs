@@ -12,7 +12,7 @@ namespace TeamThing.Web.Core
         {
             if (message != null)
             {
-                message.Send();
+                message.Send(null); //force MVC.Mailer
             }
         }
     }
