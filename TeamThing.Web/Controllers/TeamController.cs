@@ -14,7 +14,6 @@ using Mvc.Mailer;
 
 namespace TeamThing.Web.Controllers
 {
-    //[Authorize]
     //[RequireOAuthAuthorization]
     public class TeamController : TeamThingApiController
     {
@@ -61,6 +60,7 @@ namespace TeamThing.Web.Controllers
                        .AsQueryable();
         }
 
+        //TODO: Move to service
         private DomainModel.Team GetTeam(int id)
         {
             //get user
@@ -112,6 +112,7 @@ namespace TeamThing.Web.Controllers
 
         }
 
+        // POST /api/team/5
         public HttpResponseMessage Post(ServiceModel.AddTeamViewModel addTeamViewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -131,16 +132,12 @@ namespace TeamThing.Web.Controllers
             team.IsOpen = addTeamViewModel.IsPublic;
             context.Add(team);
             context.SaveChanges();
-
-            //var sTeam = team.MapToBasicServiceModel();
-            //var response = Request.CreateResponse(HttpStatusCode.Created, sTeam);
-            //response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
-            //return response;
-
+            
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
         [HttpPut]
+        // PUT /api/team/5/AddMember
         public HttpResponseMessage AddMember(int id, ServiceModel.AddMemberViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson())); }
@@ -160,26 +157,25 @@ namespace TeamThing.Web.Controllers
             if (user.Teams.Any(ut => ut.TeamId == team.Id)) throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "User already added to team"));
 
             var newTeamMember = new DomainModel.TeamUser(team, user);
-            var adminInviter = team.Members.Admins().FirstOrDefault(x => x.Id == viewModel.AddedByUserId);
-            if (team.IsOpen || adminInviter != null)
+            var inviter = team.Members.FirstOrDefault(x => x.UserId == viewModel.AddedByUserId);
+            
+            if (inviter == null) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "User Not Allowed to Invite Members to this Team")); }
+
+            if (team.IsOpen || (inviter != null && inviter.Role== DomainModel.TeamUserRole.Administrator))
             {
                 newTeamMember.Status = DomainModel.TeamUserStatus.Approved;
             }
 
-            emailService.InvitedToTeam(user, adminInviter, team).Send();
+            emailService.InvitedToTeam(user, inviter.User, team).Send();
 
             team.Members.Add(newTeamMember);
             context.SaveChanges();
-
-            //var sTeam = team.MapToBasicServiceModel();
-            //var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
-            //response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
-            //return response;
 
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
         [HttpPut]
+        // PUT /api/team/5/Join
         public HttpResponseMessage Join(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson())); }
@@ -201,15 +197,11 @@ namespace TeamThing.Web.Controllers
             team.Members.Add(newTeamMember);
             context.SaveChanges();
 
-            //var sTeam = team.MapToBasicServiceModel();
-            //var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
-            //response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
-            //return response;
-
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
         [HttpPut]
+        // PUT /api/team/5/Leave
         public HttpResponseMessage Leave(int id, ServiceModel.JoinTeamViewModel joinTeamViewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -231,15 +223,11 @@ namespace TeamThing.Web.Controllers
                 context.SaveChanges();
             }
 
-            //var sTeam = team.MapToBasicServiceModel();
-            //var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
-            //response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
-            //return response;
-
             return ResourceOkResponse(team.MapToBasicServiceModel());
         }
 
         [HttpPut]
+        // PUT /api/team/5/ApproveMember
         public void ApproveMember(int id, ServiceModel.MemberApprovalViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -265,6 +253,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
+        // PUT /api/team/5/DenyMember
         public void DenyMember(int id, ServiceModel.MemberApprovalViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -291,6 +280,7 @@ namespace TeamThing.Web.Controllers
         }
 
         [HttpPut]
+        // PUT /api/team/5
         public HttpResponseMessage Put(int id, ServiceModel.UpdateTeamViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
@@ -313,13 +303,11 @@ namespace TeamThing.Web.Controllers
 
             context.SaveChanges();
 
-            //var sTeam = team.MapToServiceModel();
-            //var response = Request.CreateResponse(HttpStatusCode.OK, sTeam);
-            //response.Headers.Location = new Uri(Request.RequestUri, "/api/team/" + sTeam.Id.ToString());
             return ResourceOkResponse(team.MapToServiceModel());
         }
 
         [HttpDelete]
+        // DELETE /api/team/5
         public HttpResponseMessage Delete(int id, ServiceModel.DeleteTeamViewModel viewModel)
         {
             if (!ModelState.IsValid) { throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, ModelState.ToJson().ToString())); }
