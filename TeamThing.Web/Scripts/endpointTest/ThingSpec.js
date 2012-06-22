@@ -260,7 +260,7 @@ describe("A thing", function () {
         it("should not be able to be deleted by someone it is assigned to if they are not the owner", function () {
             var errorCallback = jasmine.createSpy();
 
-            var data = { deletedById: createdThing.assignedTo[0].id };
+            var data = { deletedById: createdThing.assignedTo[1].id };
             remove(createdThingBaseAddress(), data, null, errorCallback);
 
             waitsFor(function () {

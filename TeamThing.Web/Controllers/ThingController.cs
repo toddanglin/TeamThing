@@ -203,9 +203,11 @@ namespace TeamThing.Web.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, "Invalid user"));
             }
 
-            user.StarredThings.Add(thing);
-
-            context.SaveChanges();
+            if (!user.StarredThings.Any(st => st.Id == thing.Id))
+            {
+                user.StarredThings.Add(thing);
+                context.SaveChanges();
+            }
 
             var sThing = thing.MapToServiceModel();
             var response = Request.CreateResponse(HttpStatusCode.OK, sThing);
