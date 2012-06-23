@@ -763,9 +763,9 @@ font-family: Helvetica, helvetica; padding:10px;}
 
 /* ---------- USERS TRAY ---------- */
 .thing .users-tray {
-	height:60px;
+	height:65px;
 	margin:0 6px 5px 110px;
-	padding:8px;
+	padding:8px 8px 0 8px;
 	background-color:#e6e6e6;
 	border:1px #ccc solid;
 	-webkit-border-radius: 0px 0px 5px 5px;
@@ -779,7 +779,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 .thing .users-tray .userpic {
 	/*-webkit-mask: url(../images/picmask.png);*/
 	float:left;
-	margin-right:8px;
+	margin:0 8px 8px 0;
 }
 
 .thing .users-tray .userpic, .thing .users-tray .userpic img {

@@ -111,12 +111,12 @@ function UpdateThing(ThingID,NewStatus) {
 |--------------------------------------------------------------------------
 */
 function StarThing(ThingID,NewStatus) {
-	//console.log('Updating ID: ' + ThingID + ' with Status: ' + NewStatus);
+	console.log('User: ' + LoggedInUserID + ' is starring/unstarring');
 	$.ajax({
   		url: APPURL+'/api/thing/'+ThingID+'/'+NewStatus,
   		type: 'PUT',
 		data: {
-			"userId": LoggedInUserID
+			'userId': LoggedInUserID
 		},
 		dataType: 'json',
   		success: function(TeamThingsData) {
@@ -516,7 +516,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 					DraggableOutput = [];
 			
 					for(i=0;i<TeamMembersData.length;i++) {
-						console.log('raw img: ' + TeamMembersData[i].imagePath);
+						
 						ThisUserImg = ImageURIRemoteOrRelative(TeamMembersData[i].imagePath);
 						
 						TeamMembersDataOutput+='<div class="member"><div class="userpic" id="userpic-'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
@@ -682,6 +682,7 @@ function GetAllUsers(UserFilter) {
 			AllUsersOutput = '';
 			for(i=0;i<UsersData.length;i++) {
 				
+				//console.log('raw img: ' + UsersData[i].imagePath);
 				ThisUserImg = ImageURIRemoteOrRelative(UsersData[i].imagePath);
 				
 				if($.inArray(UsersData[i].id, CurrentTeamMembersArray) < 0) {

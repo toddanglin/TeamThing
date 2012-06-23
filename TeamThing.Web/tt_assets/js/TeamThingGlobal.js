@@ -48,7 +48,7 @@ function getQueryVariable(variable){
 */
 function ImageURIRemoteOrRelative(ThisImageURI) {
 	
-	if(ThisImageURI.substring(0, 4) == 'http' || ThisImageURI.substring(0, 5) == 'https') {
+	if(ThisImageURI.substring(0, 4) == 'http' || ThisImageURI.substring(0, 5) == 'https' || ThisImageURI.indexOf("16167") >= 0) { // <-- Last condition inserted to keep legacy image references from that port # from breaking the page
 		return ThisImageURI;
 	} else {
 		return APPURL+ThisImageURI;

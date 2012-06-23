@@ -144,11 +144,12 @@ function GetMyTeams(UserID,TeamFilter) {
 					
 				UserTeamsOutput+='</span>';
 				
+				/* Phase 2
 				if(TeamsData[i].ownerId == LoggedInUserID) {
 					UserTeamsOutput+='<div class="team-admin-tools"><span class="icon_delete"><a title="Delete Team" href="#"></a></span></div>';
 				} else {
 					UserTeamsOutput+='<div class="team-admin-tools"><a class="leave-team-btn" href="#" rel="'+TeamsData[i].id+'"><img src="tt_assets/images/icon_x.png" alt="X"></a></div>'
-				}
+				}*/
 				
           		UserTeamsOutput+='</div>';
 			
