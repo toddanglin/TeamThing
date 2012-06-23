@@ -115,6 +115,10 @@ function StarThing(ThingID,NewStatus) {
 	$.ajax({
   		url: APPURL+'/api/thing/'+ThingID+'/'+NewStatus,
   		type: 'PUT',
+		data: {
+			"userId": LoggedInUserID
+		},
+		dataType: 'json',
   		success: function(TeamThingsData) {
     		//
   		}
@@ -175,7 +179,7 @@ function ActivateListViewButtons() {
 	//alert('Activate All Buttons');
 	$('.users-tray').hide();
 	
-	$('a.users-count').live("click", function(event) {
+	$('a.users-count').bind("click", function(event) {
   		event.preventDefault();
 		$(this).parent('.thing').children('.users-tray').slideToggle(250);
 	});
@@ -199,7 +203,7 @@ function ActivateListViewButtons() {
 	// ----/ Star A Thing ---- //
 	
 	// ---- Change Thing Status ---- //
-	$(".thingstatus").click(function() {
+	$(".thingstatus").bind("click", function(event) {
 		
 		ThisThingID = $(this).parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing').attr('id'); // traversing the divs
 		//console.log(ThisThingID);
@@ -390,6 +394,8 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 			
 			$(MyTeamThingsListDiv).html(TeamThingsOutput);
 			
+			ActivateListViewButtons();  // We're triggering this function once, procedurally because it's only necesarry to do so once.
+			
 		}
 	);
 }
@@ -472,8 +478,6 @@ function GetMyThings(UserID,MyThingsFilter) {
 			}}
 			
 			$(MyThingsListDiv).html(TeamThingsOutput);
-			
-			ActivateListViewButtons();  // We're triggering this function once, procedurally because it's only necesarry to do so once.
 
 		}
 	);

@@ -773,7 +773,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	border-top:none;
 	position:relative;
 	text-align:left;
-	overflow:visible;
+	overflow:scroll;
 }
 
 .thing .users-tray .userpic {
