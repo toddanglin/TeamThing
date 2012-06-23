@@ -141,10 +141,10 @@ function SidebarMembersDraggable() {
 						
 		//$(this).kendoDraggable({
 	    $('.member .userpic').kendoDraggable({
-        	hint: function(e) {
+			hint: function(e) {
 				return $(e).clone();
-        	}
-   		});
+			}
+		});
 	//});
 	
 	/*$('.member .userpic').bind('mousedown', function(event) {
@@ -155,12 +155,26 @@ function SidebarMembersDraggable() {
     	drop: UserDragDropped
   	});
 							
-	function UserDragDropped(e){
-		console.log($(e));
-		var DropTargetID = $(e.target).data("id");
-   		alert('User ID: ' + $(e.sender.element.context).data("id") + ' being added to Thing ID: ' + DropTargetID);
-	}
+	
 	// ----/ User to Thing Drop Target ---- //
+	
+}
+
+function UserDragDropped(e){
+	/*console.log(e);
+	DragTargetID = $(e.target).data("id");
+	DropTargetID = $(e.sender.element.context).data("id")
+   	alert('User ID: ' + DragTargetID + ' being added to Thing ID: ' + DropTargetID);*/
+	console.log(e);
+  
+    dropPoints = $(e.sender.element.context).data("id");
+    dragPoints = $(e.target).data("id");
+  
+  //To prove both values, add
+  totalPoints = parseInt(dropPoints) + parseInt(dragPoints);
+  console.log(dropPoints, dragPoints);
+  
+  $(e.sender.element.context).html(totalPoints);
 }
 /*
 |--------------------------------------------------------------------------
@@ -272,8 +286,6 @@ function ActivateListViewButtons() {
 	});
 	// ----/ Edit A Thing ---- //
 	
-	SidebarMembersDraggable();
-	
 	$('#loading-div').remove();
 }
 /*
@@ -379,7 +391,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
                 TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="dropzone-'+TeamThingsData[i].id+'"></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
@@ -392,6 +404,8 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 			}
 			
 			$(MyTeamThingsListDiv).html(TeamThingsOutput);
+			
+			GetSideBarTeamMembers(CurrentTeamURLID,'');
 			
 			ActivateListViewButtons();  // We're triggering this function once, procedurally because it's only necesarry to do so once.
 			
@@ -464,7 +478,7 @@ function GetMyThings(UserID,MyThingsFilter) {
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
                 TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="dropzone-'+TeamThingsData[i].id+'"></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
@@ -518,7 +532,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 						
 						ThisUserImg = ImageURIRemoteOrRelative(TeamMembersData[i].imagePath);
 						
-						TeamMembersDataOutput+='<div class="member"><div class="userpic" id="userpic-'+TeamMembersData[i].id+'" data-id="userpic-'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
+						TeamMembersDataOutput+='<div class="member"><div class="userpic" data-id="'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
 						TeamMembersDataOutput+='<img src="'+ThisUserImg+'" width="55" height="55" alt="">';
 						TeamMembersDataOutput+='</div>';
 						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
@@ -540,8 +554,6 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 		}
 	});
 }
-
-GetSideBarTeamMembers(CurrentTeamURLID,'');
 /*
 |--------------------------------------------------------------------------
 |	END: TEAM MEMBERS FOR SIDEBAR PANEL
