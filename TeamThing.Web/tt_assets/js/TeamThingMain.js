@@ -422,21 +422,31 @@ function GetThingsListings(UserID,ThingsFilter) {
           		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
                 TeamThingsOutput+='<span class="listitem">';
             		TeamThingsOutput+='<div class="thingcontrols">';
-                        if(TeamThingsData[i].isStarred == true) {
+                        
+						if(TeamThingsData[i].isStarred == true) {
 							TeamThingsOutput+='<a class="star active" href="#"></a>';
 						} else {
 							TeamThingsOutput+='<a class="star" href="#"></a>';
 						}
+						
                         TeamThingsOutput+='<span class="controls">';
-						if(TeamThingsData[i].status != 'Completed') {
-							if(TeamThingsData[i].status == 'Delayed') {
-             					TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
-							} else if(TeamThingsData[i].status == 'InProgress') {
-								TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+						
+						if(TeamThingsData[i].owner.id == UserID) {
+							if(TeamThingsData[i].status != 'Completed') {
+							
+								if(TeamThingsData[i].status == 'Delayed') {
+             						TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+								} else if(TeamThingsData[i].status == 'InProgress') {
+									TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+								}
+							
+							} else {
+								TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
 							}
 						} else {
 							TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
 						}
+						
               				TeamThingsOutput+='<br />';
               				TeamThingsOutput+='<span class="iconcontrols">';
               					if(TeamThingsData[i].status != 'Completed') {
@@ -494,15 +504,22 @@ function GetThingsListings(UserID,ThingsFilter) {
 									TeamThingsOutput+='<a class="star" href="#"></a>';
 								}
                        		 TeamThingsOutput+='<span class="controls">';
-								if(TeamThingsData[i].status != 'Completed') {
-									if(TeamThingsData[i].status == 'Delayed') {
-             							TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
-									} else if(TeamThingsData[i].status == 'InProgress') {
-										TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+								
+								
+								if(TeamThingsData[i].owner.id == UserID) {
+									if(TeamThingsData[i].status != 'Completed') {
+										if(TeamThingsData[i].status == 'Delayed') {
+             								TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+										} else if(TeamThingsData[i].status == 'InProgress') {
+											TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+										}
+									} else {
+										TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
 									}
 								} else {
 									TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
 								}
+								
               						TeamThingsOutput+='<br />';
               						TeamThingsOutput+='<span class="iconcontrols">';
 										if(TeamThingsData[i].status != 'Completed' && TeamThingsData[i].owner.id == LoggedInUserID) {
@@ -594,7 +611,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 						TeamMembersDataOutput+='<div class="member"><div class="userpic" data-id="'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
 						TeamMembersDataOutput+='<img src="'+ThisUserImg+'" width="55" height="55" alt="">';
 						TeamMembersDataOutput+='</div>';
-						TeamMembersDataOutput+=TeamMembersData[i].nickname+'</div>';
+						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
 						
 						CurrentTeamMembersArray.push(TeamMembersData[i].id);
 				
