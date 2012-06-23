@@ -516,7 +516,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 					DraggableOutput = [];
 			
 					for(i=0;i<TeamMembersData.length;i++) {
-						
+						console.log('raw img: ' + TeamMembersData[i].imagePath);
 						ThisUserImg = ImageURIRemoteOrRelative(TeamMembersData[i].imagePath);
 						
 						TeamMembersDataOutput+='<div class="member"><div class="userpic" id="userpic-'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
