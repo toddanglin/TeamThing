@@ -31,7 +31,7 @@ function UserProfileMain(UserID) {
     	function(UserInfo) {
 			console.log(UserInfo);
 			$('#userpic-profile img').attr('src',UserInfo.imagePath);
-			$('#userinfo-profile').html(UserInfo.emailAddress);
+			$('#userinfo-profile').html(UserInfo.nickname);
 			ThisUserInfo = UserInfo;
 			GetMyTeams(LoggedInUserID,'');	
 		}

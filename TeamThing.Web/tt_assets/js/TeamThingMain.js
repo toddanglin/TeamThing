@@ -43,22 +43,23 @@ function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
   		success: function(ThingData) {
 			
 			if(ThingFilter == 'assignedTo') {
- 				//console.log(ThingData.assignedTo);
+ 				////console.log(ThingData.assignedTo);
 				ThingPropertiesOutput = ThingData.assignedTo.length; // How many Users are assigned to this Thing
 				$(ThisDiv+' a.users-count').text(ThingPropertiesOutput);
 				
 				// ---- Populate A Thing's Members Tray ----/
 				TeamMembersForTray = '';
+				AssigneesArray = []; // Used later when we edit a Thing's description.  So we don't wipe out assignees and don't have to make another call to get that information.
 				if(ThingData.assignedTo.length > 0) {
 					for(i=0;i<ThingData.assignedTo.length;i++) {
 						TeamMembersForTray+='<div class="userpic">';
-					
 						ThisUserImg = ImageURIRemoteOrRelative(ThingData.assignedTo[i].imagePath);
-						//console.log(ThisUserImg);
-						TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+ThingData.assignedTo[i].emailAddress+'" title="'+ThingData.assignedTo[i].emailAddress+'" id="userpic='+ThingData.assignedTo[i].id+'">';
+						TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+ThingData.assignedTo[i].nickname+'" title="'+ThingData.assignedTo[i].nickname+'" id="userpic='+ThingData.assignedTo[i].id+'">';
 						TeamMembersForTray+='</div>';
+						AssigneesArray.push(ThingData.assignedTo[i].id);
 					}
 				}
+				TeamMembersForTray+='<input class="hidden-assignees-array" type="hidden" name="AssignedToVals-'+ThingID+'" id="AssignedToVals-'+ThingID+'" value="'+AssigneesArray+'" />';
 				$(ThisDiv + ' .users-tray').prepend(TeamMembersForTray);
 				$('.users-tray').hide();
 				// ----/ Populate A Thing's Members Tray ----/
@@ -79,39 +80,11 @@ function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: UPDATE A THING'S STATUS
-|--------------------------------------------------------------------------
-*/
-function UpdateThing(ThingID,NewStatus) {
-	//console.log('Updating ID: ' + ThingID + ' with Status: ' + NewStatus);
-	$.ajax({
-  		url: APPURL+'/api/thing/'+ThingID+'/updatestatus',
-  		type: 'PUT',
-		data: {
-			"UserId": LoggedInUserID,
-			'Status': NewStatus
-		},
-		dataType: 'json',
-  		success: function(TeamThingsData) {
-    		//console.log(TeamThingsData);
-			TeamThingsOutput = '';
-  		}
-	});
-	
-}
-/*
-|--------------------------------------------------------------------------
-|	END: UPDATE A THING'S STATUS
-|--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
 |	BEGIN: STAR A THING
 |--------------------------------------------------------------------------
 */
 function StarThing(ThingID,NewStatus) {
-	console.log('User: ' + LoggedInUserID + ' is starring/unstarring');
+	//console.log('User: ' + LoggedInUserID + ' is starring/unstarring');
 	$.ajax({
   		url: APPURL+'/api/thing/'+ThingID+'/'+NewStatus,
   		type: 'PUT',
@@ -159,7 +132,7 @@ function UserDragDropped(e){
     DropTargetDataID = $(e.sender.element.context).data("id");
 	DropTargetID = $(e.sender.element).attr("id");
 	$('#'+DropTargetID).addClass('processing');
-   	//console.log(DropTargetDataID, ThisMemberDivID);
+   	////console.log(DropTargetDataID, ThisMemberDivID);
 	AddMemberToTeam(CurrentTeamURLID,DropTargetDataID,ThisMemberDivID);
 }
 /*
@@ -168,13 +141,18 @@ function UserDragDropped(e){
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: ASSIGN USER TO THING ENDPOINT AND RESULTS
+|--------------------------------------------------------------------------
+*/
 function AddMemberToTeam(ThingTeamID,AddToThingID,AddMemberID) {
 	$.ajax({
   		url: APPURL+'/api/thing/'+AddToThingID,
   		type: 'GET',
   		success: function(ThisTeamData) {
-			console.log('GET A THING');
-			console.log(ThisTeamData);
+			//console.log('GET A THING');
+			//console.log(ThisTeamData);
 			
 			ThisThingAssignedTo = ThisTeamData.assignedTo;
 			ThisThingAssignedToArray = [];
@@ -186,18 +164,24 @@ function AddMemberToTeam(ThingTeamID,AddToThingID,AddMemberID) {
 			if($.inArray(AddMemberID, ThisThingAssignedToArray) < 0) {
 				ThisThingAssignedToArray.push(AddMemberID);
 			}
+			
+			ThisThing = $('#dropzone-'+AddToThingID).parent('.users-tray').parent('.thing').parent('.list').parent('div'); // traversing the divs
+			ThisThingID = ThisThing.attr('id');
+			//console.log(ThisThingID);
+			ThisUpdatedDescription = $('#'+ThisThingID+' .list .thing#teamthing-'+AddToThingID+ ' .listitem .thingdesc').text();
+			//console.log(ThisUpdatedDescription);
     		
 			$.ajax({
   				url: APPURL+'/api/thing/'+AddToThingID,
   				type: 'PUT',
 				data: {
 					'editedById': LoggedInUserID,
-					'description': 'Test Update', // TO DO: MAKE THIS DYNAMIC
+					'description': ThisUpdatedDescription,
 					'assignedTo': ThisThingAssignedToArray
 				},
 				dataType: 'json',
   				success: function(AddMemberToTeamData) {
-    				console.log(AddMemberToTeamData);
+    				//console.log(AddMemberToTeamData);
 					UpdateThingTray(AddMemberToTeamData,AddToThingID);
 				}
 			});
@@ -210,17 +194,65 @@ function UpdateThingTray(UpdatedMembersData,AddToThingID) {
 	
 	TeamMembersForTray = '';
 	TeamMembersAssignedTo = UpdatedMembersData.assignedTo;
+	AssigneesArray = []; // Used later when we edit a Thing's description.  So we don't wipe out assignees and don't have to make another call to get that information.
+	
 	for(i=0;i<TeamMembersAssignedTo.length;i++) {
 		TeamMembersForTray+='<div class="userpic">';
 		ThisUserImg = ImageURIRemoteOrRelative(TeamMembersAssignedTo[i].imagePath);
-		TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+TeamMembersAssignedTo[i].emailAddress+'" title="'+TeamMembersAssignedTo[i].emailAddress+'" id="userpic='+TeamMembersAssignedTo[i].id+'">';
+		TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+TeamMembersAssignedTo[i].nickname+'" title="'+TeamMembersAssignedTo[i].nickname+'" id="userpic='+TeamMembersAssignedTo[i].id+'">';
 		TeamMembersForTray+='</div>';
+		AssigneesArray.push(TeamMembersAssignedTo[i].id);
 	}
+	
+	TeamMembersForTray+='<input class="hidden-assignees-array" type="hidden" name="AssignedToVals-'+AddToThingID+'" id="AssignedToVals-'+AddToThingID+'" value="'+AssigneesArray+'" />';
+	
 	$('#teamthing-' + AddToThingID + ' .users-tray .userpic').remove();
+	$('#teamthing-' + AddToThingID + ' .users-tray .hidden-assignees-array').remove();
 	$('#teamthing-' + AddToThingID + ' .users-tray').prepend(TeamMembersForTray);
 	$('#teamthing-' + AddToThingID + ' .users-count').html(TeamMembersAssignedTo.length);
 	$('#'+DropTargetID).removeClass('processing');
 }
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: ASSIGN USER TO THING ENDPOINT AND RESULTS
+|--------------------------------------------------------------------------
+*/
+
+
+$(document).ready(function() {
+
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: INIT FUNCTIONS
+|--------------------------------------------------------------------------
+*/
+$("#tabstrip").kendoTabStrip({
+	animation:	{
+		open: {
+			effects: "fadeIn"
+		}
+	}
+});
+
+$("#statusfilterlist").kendoDropDownList({
+    index: 0,
+	change: StatusListSelected
+});
+
+function StatusListSelected() {
+	ThisFilter = $('#statusfilterlist').val();
+	
+	if(ThisFilter != 'undefined' && ThisFilter != null) {
+		GetThingsListings(LoggedInUserID,ThisFilter);
+		//GetTeamThings(CurrentTeamURLID,ThisFilter);
+	}
+	
+};
+/*
+|--------------------------------------------------------------------------
+|	END: INIT FUNCTIONS
+|--------------------------------------------------------------------------
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -258,7 +290,7 @@ function ActivateListViewButtons() {
 	$(".thingstatus").bind("click", function(event) {
 		
 		ThisThingID = $(this).parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing').attr('id'); // traversing the divs
-		//console.log(ThisThingID);
+		////console.log(ThisThingID);
 		ThisThingID = ThisThingID.replace('teamthing-','');
 		
 		if($(this).is(":checked")) {
@@ -276,7 +308,7 @@ function ActivateListViewButtons() {
 		ThisThing = $(this).parent('.icon_complete').parent('.iconcontrols').parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing'); // traversing the divs
 		ThisThingID = ThisThing.attr('id');
 		
-		//console.log(ThisThingID);
+		////console.log(ThisThingID);
 		ThisThingID = ThisThingID.replace('teamthing-','');
 		
 		UpdateThing(ThisThingID,'Completed');
@@ -293,7 +325,7 @@ function ActivateListViewButtons() {
 		ThisThing = $(this).parent('.icon_delete').parent('.iconcontrols').parent('.controls').parent('.thingcontrols').parent('.listitem').parent('.thing'); // traversing the divs
 		ThisThingID = ThisThing.attr('id');
 		
-		//console.log(ThisThingID);
+		////console.log(ThisThingID);
 		ThisThingID = ThisThingID.replace('teamthing-','');
 		
 		UpdateThing(ThisThingID,'Deleted');
@@ -311,12 +343,11 @@ function ActivateListViewButtons() {
 		ThisThingID = ThisThing.attr('id');
 		
 		CurrentThingEditID = ThisThingID.replace('teamthing-','');
-		
-		//console.log('Editing Thing ID: ' + ThisThingID);
+		ThingAssignees = $('#'+ThisThingID+' #AssignedToVals-'+CurrentThingEditID).val().split(',');
+		//alert(ThingAssignees);
 		
 		CurrentDesc = '';
 		CurrentDesc = $('#'+ThisThingID+' .thingdesc').html();
-		//console.log(CurrentDesc);
 		$('#thingdescriptionedit').val('');
 		$('#thingdescriptionedit').val(CurrentDesc);
 		
@@ -334,154 +365,58 @@ function ActivateListViewButtons() {
 |--------------------------------------------------------------------------
 */
 
-$(document).ready(function() {
-
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: INIT FUNCTIONS
+|	BEGIN: UPDATE A THING'S STATUS
 |--------------------------------------------------------------------------
 */
-$("#tabstrip").kendoTabStrip({
-	animation:	{
-		open: {
-			effects: "fadeIn"
-		}
-	}
-});
-
-$("#statusfilterlist").kendoDropDownList({
-    index: 0,
-	change: StatusListSelected
-});
-
-function StatusListSelected() {
-	ThisFilter = $('#statusfilterlist').val();
-	if(ThisFilter != 'undefined' && ThisFilter != null) {
-		//if ($(MyThingsListDiv).is(':visible')){
-			GetMyThings(LoggedInUserID,ThisFilter);
-		//}
-		//if ($(MyTeamThingsListDiv).is(':visible')){
-			GetTeamThings(CurrentTeamURLID,ThisFilter);
-		//}
-	}
-};
-/*
-|--------------------------------------------------------------------------
-|	END: INIT FUNCTIONS
-|--------------------------------------------------------------------------
-*/
-
-/*
-|--------------------------------------------------------------------------
-|	BEGIN: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
-|--------------------------------------------------------------------------
-*/
-function GetTeamThings(TeamID,TeamThingsFilter) {
+function UpdateThing(ThingID,NewStatus) {
+	////console.log('Updating ID: ' + ThingID + ' with Status: ' + NewStatus);
+	$.ajax({
+  		url: APPURL+'/api/thing/'+ThingID+'/updatestatus',
+  		type: 'PUT',
+		data: {
+			"UserId": LoggedInUserID,
+			'Status': NewStatus
+		},
+		dataType: 'json',
+  		success: function(TeamThingsData) {
+    		GetThingsListings(LoggedInUserID,'');
+  		}
+	});
 	
-	SetUpLoadingAnim(MyTeamThingsListDiv);
-	
-	ThisQueryString = '';
-	ThisQueryString = APPURL+'/api/team/'+TeamID+'/things/'+TeamThingsFilter;
-	
-	$.get(
-		ThisQueryString,
-    	function(TeamThingsData) { 
-			console.log(TeamThingsData);
-			TeamThingsOutput = '';
-			for(i=0;i<TeamThingsData.length;i++) {
-				
-				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
-          		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
-                TeamThingsOutput+='<span class="listitem">';
-            		TeamThingsOutput+='<div class="thingcontrols">';
-					console.log('Is Starred?: ' + TeamThingsData[i].isStarred);
-                        if(TeamThingsData[i].isStarred == true) {
-							TeamThingsOutput+='<a class="star active" href="#"></a>';
-						} else {
-							TeamThingsOutput+='<a class="star" href="#"></a>';
-						}
-                        TeamThingsOutput+='<span class="controls">';
-						if(TeamThingsData[i].status != 'Completed') {
-							if(TeamThingsData[i].status == 'Delayed') {
-             					TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
-							} else if(TeamThingsData[i].status == 'InProgress') {
-								TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
-							}
-						} else {
-							TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
-						}
-              				TeamThingsOutput+='<br />';
-              				TeamThingsOutput+='<span class="iconcontrols">';
-              					
-								if(TeamThingsData[i].status != 'Completed' && TeamThingsData[i].owner.id === LoggedInUserID) {
-									TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
-								}
-								
-								TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
-								
-								TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
-								
-								if(TeamThingsData[i].status != 'Deleted' && TeamThingsData[i].owner.id === LoggedInUserID) {
-									TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
-								}
-								
-              				TeamThingsOutput+='</span>';
-                       TeamThingsOutput+='</span>';
-                    TeamThingsOutput+='</div>';
-            		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
-				TeamThingsOutput+='</span>';
-                TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'"></div>';
-                    TeamThingsOutput+='<div class="clear-float"></div>';
-                TeamThingsOutput+='</div>';
-				
-                TeamThingsOutput+='<a class="users-count" href="#"></a>';
-          	TeamThingsOutput+='</div>';
-			
-			GetThingProperties(TeamThingsData[i].id,'assignedTo',MyTeamThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
-			//GetTeamProperties(CurrentTeamURLID,'');
-			
-			}
-			
-			$(MyTeamThingsListDiv).html(TeamThingsOutput);
-			
-			GetSideBarTeamMembers(CurrentTeamURLID,'');
-			
-			ActivateListViewButtons();  // We're triggering this function once, procedurally because it's only necesarry to do so once.
-			
-		}
-	);
 }
-
-GetTeamThings(CurrentTeamURLID,'');
 /*
 |--------------------------------------------------------------------------
-|	END: GET A SPECIFIC TEAM'S THINGS AND LIST THEM OUT
+|	END: UPDATE A THING'S STATUS
 |--------------------------------------------------------------------------
 */
 
 /*
 |--------------------------------------------------------------------------
-|	BEGIN: GET MY THINGS AND LIST THEM OUT
+|	BEGIN: GET THINGS LISTINGS (PROCEDURALLY FROM LEFT-TO-RIGHT
 |--------------------------------------------------------------------------
 */
-function GetMyThings(UserID,MyThingsFilter) {
+function GetThingsListings(UserID,ThingsFilter) {
 	
+	// ---- Get My Things ---- //
+	$(MyThingsListDiv).html('');
 	SetUpLoadingAnim(MyThingsListDiv);
 	
 	ThisQueryString = '';
-	ThisQueryString = APPURL+'/api/team/'+CurrentTeamURLID+'/things/'+MyThingsFilter;
+	ThisQueryString = APPURL+'/api/team/'+CurrentTeamURLID+'/things/'+ThingsFilter;
 	
 	$.get(
 		ThisQueryString,
     	function(TeamThingsData) { 
-			console.log(TeamThingsData);
+			//console.log('MY THINGS');
+			//console.log(TeamThingsData);
 			TeamThingsOutput = '';
 			for(i=0;i<TeamThingsData.length;i++) {
 			
-			console.log(TeamThingsData[0].assignedTo);
+			//console.log(TeamThingsData[0].assignedTo);
 			
-			if($.inArray(UserID, TeamThingsData[0].assignedTo) >= 0) {
+			if($.inArray(UserID, TeamThingsData[i].assignedTo) >= 0 || TeamThingsData[i].owner.id == UserID) {
 				
 				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
           		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
@@ -531,15 +466,99 @@ function GetMyThings(UserID,MyThingsFilter) {
 			}}
 			
 			$(MyThingsListDiv).html(TeamThingsOutput);
+			// ----/ Get My Things ---- //
+				
+			// ---- Then Get My Team's Things ---- //
+			$(MyTeamThingsListDiv).html('');
+			SetUpLoadingAnim(MyTeamThingsListDiv);
+			
+			ThisQueryString = '';
+			ThisQueryString = APPURL+'/api/team/'+CurrentTeamURLID+'/things/'+ThingsFilter;
+	
+			$.get(
+				ThisQueryString,
+    			function(TeamThingsData) { 
+					//console.log('MY TEAM THINGS');
+					//console.log(TeamThingsData);
+					TeamThingsOutput = '';
+					for(i=0;i<TeamThingsData.length;i++) {
+				
+						TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
+          				TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
+                		TeamThingsOutput+='<span class="listitem">';
+            				TeamThingsOutput+='<div class="thingcontrols">';
+								//console.log('Is Starred?: ' + TeamThingsData[i].isStarred);
+                        		if(TeamThingsData[i].isStarred == true) {
+									TeamThingsOutput+='<a class="star active" href="#"></a>';
+								} else {
+									TeamThingsOutput+='<a class="star" href="#"></a>';
+								}
+                       		 TeamThingsOutput+='<span class="controls">';
+								if(TeamThingsData[i].status != 'Completed') {
+									if(TeamThingsData[i].status == 'Delayed') {
+             							TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" checked="checked" />';
+									} else if(TeamThingsData[i].status == 'InProgress') {
+										TeamThingsOutput+='<input class="thingstatus" type="checkbox" data-icon1="In Progress" data-icon2="Delayed" />';
+									}
+								} else {
+									TeamThingsOutput+='<div class="completed-status">'+TeamThingsData[i].status+'</div>';
+								}
+              						TeamThingsOutput+='<br />';
+              						TeamThingsOutput+='<span class="iconcontrols">';
+										if(TeamThingsData[i].status != 'Completed' && TeamThingsData[i].owner.id == LoggedInUserID) {
+											TeamThingsOutput+='<div class="icon_complete"><a href="#"></a></div>';
+										}
+								
+										TeamThingsOutput+='<div class="icon_share"><a href="#"></a></div>';
+								
+										if($.inArray(UserID, TeamThingsData[i].assignedTo) >= 0 || TeamThingsData[i].owner.id == UserID) {
+											TeamThingsOutput+='<div class="icon_edit"><a href="#"></a></div>';
+										}
+								
+										if(TeamThingsData[i].status != 'Deleted' && TeamThingsData[i].owner.id == LoggedInUserID) {
+											TeamThingsOutput+='<div class="icon_delete"><a href="#"></a></div>';
+										}
+								
+              						TeamThingsOutput+='</span>';
+                       		TeamThingsOutput+='</span>';
+                   		 TeamThingsOutput+='</div>';
+            				TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
+						TeamThingsOutput+='</span>';
+               		TeamThingsOutput+='<div class="users-tray">';					
+                    		TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'"></div>';
+                    		TeamThingsOutput+='<div class="clear-float"></div>';
+                		TeamThingsOutput+='</div>';
+				
+                		TeamThingsOutput+='<a class="users-count" href="#"></a>';
+          			TeamThingsOutput+='</div>';
+			
+					GetThingProperties(TeamThingsData[i].id,'assignedTo',MyTeamThingsListDiv+' #teamthing-'+TeamThingsData[i].id);
+					//GetTeamProperties(CurrentTeamURLID,'');
+			
+					}
+			
+					$(MyTeamThingsListDiv).html(TeamThingsOutput);
+			// ----/ Then Get My Team's Things ---- //
+			
+			// ---- Set Up Team Members In Sidebar ---- //
+					GetSideBarTeamMembers(CurrentTeamURLID,'');
+			// ----/ Set Up Team Members In Sidebar ---- //
+			
+			// ---- Trigger All Functional Thing Buttons, Now That They Are Rendered ---- //
+					ActivateListViewButtons();
+			// ----/ Trigger All Functional Thing Buttons, Now That They Are Rendered ---- //
+			
+				}
+			);
 
 		}
 	);
 }
 
-GetMyThings(LoggedInUserID,'');
+GetThingsListings(LoggedInUserID,'');
 /*
 |--------------------------------------------------------------------------
-|	END: GET MY THINGS AND LIST THEM OUT
+|	END: GET THINGS LISTINGS (PROCEDURALLY FROM LEFT-TO-RIGHT
 |--------------------------------------------------------------------------
 */
 
@@ -562,7 +581,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 			$.get(
 				ThisQueryString,
     			function(TeamMembersData) { 
-					//console.log(TeamMembersData);
+					////console.log(TeamMembersData);
 			
 					TeamMembersDataOutput = '';
 					CurrentTeamMembersArray = [];
@@ -575,7 +594,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 						TeamMembersDataOutput+='<div class="member"><div class="userpic" data-id="'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
 						TeamMembersDataOutput+='<img src="'+ThisUserImg+'" width="55" height="55" alt="">';
 						TeamMembersDataOutput+='</div>';
-						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
+						TeamMembersDataOutput+=TeamMembersData[i].nickname+'</div>';
 						
 						CurrentTeamMembersArray.push(TeamMembersData[i].id);
 				
@@ -617,8 +636,9 @@ function CreateThing(CreatedById,Description,AssignedTo,teamId) {
 			'teamId': teamId
 		},
   		success: function(CreateThingData) {
+			GetThingsListings(LoggedInUserID,'');
 			$("#createthinginfo").data("kendoWindow").close();
-			location.reload();
+			//location.reload();
   		}
 	});
 	
@@ -635,20 +655,22 @@ function CreateThing(CreatedById,Description,AssignedTo,teamId) {
 |--------------------------------------------------------------------------
 */
 function EditThing(editedById,Description,assignedTo) {
+	console.log('Assignees: ' + ThingAssignees);
 	$.ajax({
   		url: APPURL+'/api/thing/'+CurrentThingEditID,
   		type: 'PUT',
 		data: {
 			'editedById': editedById,
 			'description': Description,
-			'assignedTo': assignedTo
+			'assignedTo': ThingAssignees
 		},
 		dataType: 'json',
   		success: function(ThingData) {
-    		//console.log(ThingData);
+    		////console.log(ThingData);
 			CurrentThingEditID = null;
+			GetThingsListings(LoggedInUserID,'');
 			$("#editthinginfo").data("kendoWindow").close();
-			location.reload();
+			//location.reload();
   		}
 	});
 }
@@ -708,7 +730,7 @@ function EditThing(editedById,Description,assignedTo) {
     $("#updatethingbtn").click(function() {
 		if (ValidateEditThing.validate()) {
 			ThisUpdatedDescription = $('#thingdescriptionedit').val();
-			EditThing(LoggedInUserID,ThisUpdatedDescription,LoggedInUserID);
+			EditThing(LoggedInUserID,ThisUpdatedDescription,ThingAssignees);
 		} else {
              //
 		}
@@ -718,7 +740,7 @@ function EditThing(editedById,Description,assignedTo) {
 |	END: EDIT THING WINDOW
 |--------------------------------------------------------------------------
 */
-	
+
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: RENDER ALL USERS TO SIDEBAR POP UP WINDOW
@@ -733,11 +755,11 @@ function GetAllUsers(UserFilter) {
 			AllUsersOutput = '';
 			for(i=0;i<UsersData.length;i++) {
 				
-				//console.log('raw img: ' + UsersData[i].imagePath);
+				////console.log('raw img: ' + UsersData[i].imagePath);
 				ThisUserImg = ImageURIRemoteOrRelative(UsersData[i].imagePath);
 				
 				if($.inArray(UsersData[i].id, CurrentTeamMembersArray) < 0) {
-					AllUsersOutput+='<a href="#" class="memberlistitem" rel="'+UsersData[i].id+'"><span class="imgwrap"><img src="'+ThisUserImg+'" width="32" height="32"></span>'+UsersData[i].emailAddress+'</a>';
+					AllUsersOutput+='<a href="#" class="memberlistitem" rel="'+UsersData[i].id+'"><span class="imgwrap"><img src="'+ThisUserImg+'" width="32" height="32"></span>'+UsersData[i].nickname+'</a>';
 				}
 			}
 			
@@ -747,7 +769,7 @@ function GetAllUsers(UserFilter) {
   				event.preventDefault();
 				ThisUserID = $(this).attr('rel');
 				
-				//console.log('Tried adding User ID: ' + ThisUserID + ' to Team ID: ' + CurrentTeamURLID);
+				////console.log('Tried adding User ID: ' + ThisUserID + ' to Team ID: ' + CurrentTeamURLID);
 				
 				$.ajax({
   					url: APPURL+'/api/team/'+CurrentTeamURLID+'/join',
@@ -757,8 +779,9 @@ function GetAllUsers(UserFilter) {
 					},
 					dataType: 'json',
   					success: function(AddUserToTeamData) {
+						GetThingsListings(LoggedInUserID,'');
 						$("#addtoteam").data("kendoWindow").close();
-						location.reload();
+						//location.reload();
   					}
 				});
 				
@@ -779,7 +802,7 @@ function GetAllUsers(UserFilter) {
 |--------------------------------------------------------------------------
 */
 function InviteUser(UserEmail,TeamID,CreatedByID) {
-	//console.log(UserEmail+','+TeamID+','+CreatedByID);
+	console.log(UserEmail+','+TeamID+','+CreatedByID);
 	$.ajax({
   		url: APPURL+'/api/team/'+TeamID+'/addmember',
   		type: 'PUT',
@@ -789,8 +812,9 @@ function InviteUser(UserEmail,TeamID,CreatedByID) {
 		},
 		dataType: 'json',
   		success: function(CreateTeamData) {
+			GetThingsListings(LoggedInUserID,'');
     		$("#addtoteam").data("kendoWindow").close();
-			location.reload();
+			//location.reload();
   		}
 	});
 	

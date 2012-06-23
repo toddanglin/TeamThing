@@ -73,7 +73,7 @@ function UserProfile(UserID) {
     	function(UserInfo) {
 			//console.log(UserInfo);
 			$('#userpic img').attr('src',UserInfo.imagePath);
-			$('#userinfo').html(UserInfo.emailAddress+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'&teamid=">View Profile</a> <a href="#">Sign Out</a></span>');
+			$('#userinfo').html(UserInfo.nickname+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'&teamid=">View Profile</a>&nbsp;|&nbsp;<a href="#">Sign Out</a></span>');
 		}
 	);
 }

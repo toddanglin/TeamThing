@@ -405,6 +405,7 @@ aside p {padding:5px 20px;}
 .myteam #myteam-members .member {
 	/*-webkit-mask: url(../images/picmask.png);*/
 	width: 60px;
+	height:62px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	float:left;
@@ -792,7 +793,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	width: 55px;
 	height: 55px;
 	float:left;
-	margin:0 8px 0 0;
+	margin:4px 8px 0 0;
 	background:url(../images/add-team-member.png) 0 0 no-repeat;
 }
 
