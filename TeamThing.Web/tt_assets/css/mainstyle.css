@@ -795,6 +795,10 @@ font-family: Helvetica, helvetica; padding:10px;}
 	margin:0 8px 0 0;
 	background:url(../images/add-team-member.png) 0 0 no-repeat;
 }
+
+.thing .users-tray .userpic-dropzone.processing {
+	background:url(../kendoui/styles/Silver/loading-image.gif) 0 0 no-repeat;
+}
 /*
 |--------------------------------------------------------------------------
 |	END: THING POD

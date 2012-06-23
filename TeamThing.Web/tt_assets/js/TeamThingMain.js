@@ -136,51 +136,91 @@ function StarThing(ThingID,NewStatus) {
 |--------------------------------------------------------------------------
 */
 function SidebarMembersDraggable() {
-	//$('.member .userpic').bind('mouseenter', function(event) {
-		//event.preventDefault();
+	$('.member .userpic').bind('mouseenter', function(event) {
+		event.preventDefault();
 						
-		//$(this).kendoDraggable({
-	    $('.member .userpic').kendoDraggable({
+		$(this).kendoDraggable({
 			hint: function(e) {
 				return $(e).clone();
 			}
 		});
-	//});
+	});
 	
-	/*$('.member .userpic').bind('mousedown', function(event) {
-		ThisMemberDivID = $(this).attr('rel');
-	});*/
-	// ---- User to Thing Drop Target ---- //
+	$('.member .userpic').bind('mousedown', function(event) {
+		ThisMemberDivID = $(this).attr('data-id');
+	});
+	
 	$(".userpic-dropzone").kendoDropTarget({
     	drop: UserDragDropped
-  	});
-							
-	
-	// ----/ User to Thing Drop Target ---- //
-	
+  	});	
 }
 
 function UserDragDropped(e){
-	/*console.log(e);
-	DragTargetID = $(e.target).data("id");
-	DropTargetID = $(e.sender.element.context).data("id")
-   	alert('User ID: ' + DragTargetID + ' being added to Thing ID: ' + DropTargetID);*/
-	console.log(e);
-  
-    dropPoints = $(e.sender.element.context).data("id");
-    dragPoints = $(e.target).data("id");
-  
-  //To prove both values, add
-  totalPoints = parseInt(dropPoints) + parseInt(dragPoints);
-  console.log(dropPoints, dragPoints);
-  
-  $(e.sender.element.context).html(totalPoints);
+    DropTargetDataID = $(e.sender.element.context).data("id");
+	DropTargetID = $(e.sender.element).attr("id");
+	$('#'+DropTargetID).addClass('processing');
+   	//console.log(DropTargetDataID, ThisMemberDivID);
+	AddMemberToTeam(CurrentTeamURLID,DropTargetDataID,ThisMemberDivID);
 }
 /*
 |--------------------------------------------------------------------------
 |	END: MAKE SIDEBAR TEAM MEMBERS DRAGGABLE
 |--------------------------------------------------------------------------
 */
+
+function AddMemberToTeam(ThingTeamID,AddToThingID,AddMemberID) {
+	$.ajax({
+  		url: APPURL+'/api/thing/'+AddToThingID,
+  		type: 'GET',
+  		success: function(ThisTeamData) {
+			console.log('GET A THING');
+			console.log(ThisTeamData);
+			
+			ThisThingAssignedTo = ThisTeamData.assignedTo;
+			ThisThingAssignedToArray = [];
+			
+			for(i=0;i<ThisThingAssignedTo.length;i++) {
+				ThisThingAssignedToArray.push(ThisThingAssignedTo[i].id);
+			}
+			
+			if($.inArray(AddMemberID, ThisThingAssignedToArray) < 0) {
+				ThisThingAssignedToArray.push(AddMemberID);
+			}
+    		
+			$.ajax({
+  				url: APPURL+'/api/thing/'+AddToThingID,
+  				type: 'PUT',
+				data: {
+					'editedById': LoggedInUserID,
+					'description': 'Test Update', // TO DO: MAKE THIS DYNAMIC
+					'assignedTo': ThisThingAssignedToArray
+				},
+				dataType: 'json',
+  				success: function(AddMemberToTeamData) {
+    				console.log(AddMemberToTeamData);
+					UpdateThingTray(AddMemberToTeamData,AddToThingID);
+				}
+			});
+			
+		}
+	});
+}
+
+function UpdateThingTray(UpdatedMembersData,AddToThingID) {
+	
+	TeamMembersForTray = '';
+	TeamMembersAssignedTo = UpdatedMembersData.assignedTo;
+	for(i=0;i<TeamMembersAssignedTo.length;i++) {
+		TeamMembersForTray+='<div class="userpic">';
+		ThisUserImg = ImageURIRemoteOrRelative(TeamMembersAssignedTo[i].imagePath);
+		TeamMembersForTray+='<img src="'+ThisUserImg+'" width="55" height="55" alt="'+TeamMembersAssignedTo[i].emailAddress+'" title="'+TeamMembersAssignedTo[i].emailAddress+'" id="userpic='+TeamMembersAssignedTo[i].id+'">';
+		TeamMembersForTray+='</div>';
+	}
+	$('#teamthing-' + AddToThingID + ' .users-tray .userpic').remove();
+	$('#teamthing-' + AddToThingID + ' .users-tray').prepend(TeamMembersForTray);
+	$('#teamthing-' + AddToThingID + ' .users-count').html(TeamMembersAssignedTo.length);
+	$('#'+DropTargetID).removeClass('processing');
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -391,7 +431,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
                 TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="'+TeamThingsData[i].id+'"></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
@@ -478,7 +518,7 @@ function GetMyThings(UserID,MyThingsFilter) {
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
                 TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="'+TeamThingsData[i].id+'"></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
