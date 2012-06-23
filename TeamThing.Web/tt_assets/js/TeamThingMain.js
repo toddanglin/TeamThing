@@ -136,33 +136,31 @@ function StarThing(ThingID,NewStatus) {
 |--------------------------------------------------------------------------
 */
 function SidebarMembersDraggable() {
-	$('.member .userpic').bind('mouseenter', function(event) {
-		event.preventDefault();
+	//$('.member .userpic').bind('mouseenter', function(event) {
+		//event.preventDefault();
 						
-		$(this).kendoDraggable({
+		//$(this).kendoDraggable({
+	    $('.member .userpic').kendoDraggable({
         	hint: function(e) {
 				return $(e).clone();
-        	},
-			dragstart: UserDragStarted,
+        	}
    		});
-	});
+	//});
 	
-	$('.member .userpic').bind('mousedown', function(event) {
+	/*$('.member .userpic').bind('mousedown', function(event) {
 		ThisMemberDivID = $(this).attr('rel');
-	});
-  
-  	$(".userpic-dropzone").kendoDropTarget({
-    	drop:UserDragDropped
+	});*/
+	// ---- User to Thing Drop Target ---- //
+	$(".userpic-dropzone").kendoDropTarget({
+    	drop: UserDragDropped
   	});
-					
-	function UserDragStarted(e) {
-    	
-	}
-				
+							
 	function UserDragDropped(e){
-		//console.log($(e));
-   		alert('User ID: ' + ThisMemberDivID);
+		console.log($(e));
+		var DropTargetID = $(e.target).data("id");
+   		alert('User ID: ' + $(e.sender.element.context).data("id") + ' being added to Thing ID: ' + DropTargetID);
 	}
+	// ----/ User to Thing Drop Target ---- //
 }
 /*
 |--------------------------------------------------------------------------
@@ -381,7 +379,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
                 TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'"></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="dropzone-'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
@@ -466,7 +464,7 @@ function GetMyThings(UserID,MyThingsFilter) {
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
                 TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'"></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" data-id="dropzone-'+TeamThingsData[i].id+'"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
@@ -520,7 +518,7 @@ function GetSideBarTeamMembers(TeamID,TeamMembersFilter) {
 						
 						ThisUserImg = ImageURIRemoteOrRelative(TeamMembersData[i].imagePath);
 						
-						TeamMembersDataOutput+='<div class="member"><div class="userpic" id="userpic-'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
+						TeamMembersDataOutput+='<div class="member"><div class="userpic" id="userpic-'+TeamMembersData[i].id+'" data-id="userpic-'+TeamMembersData[i].id+'" rel="'+TeamMembersData[i].id+'">';
 						TeamMembersDataOutput+='<img src="'+ThisUserImg+'" width="55" height="55" alt="">';
 						TeamMembersDataOutput+='</div>';
 						TeamMembersDataOutput+=TeamMembersData[i].emailAddress+'</div>';
