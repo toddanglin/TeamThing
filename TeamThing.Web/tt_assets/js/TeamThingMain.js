@@ -336,7 +336,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
 	$.get(
 		ThisQueryString,
     	function(TeamThingsData) { 
-			//console.log(TeamThingsData);
+			console.log(TeamThingsData);
 			TeamThingsOutput = '';
 			for(i=0;i<TeamThingsData.length;i++) {
 				
@@ -344,6 +344,7 @@ function GetTeamThings(TeamID,TeamThingsFilter) {
           		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
                 TeamThingsOutput+='<span class="listitem">';
             		TeamThingsOutput+='<div class="thingcontrols">';
+					console.log('Is Starred?: ' + TeamThingsData[i].isStarred);
                         if(TeamThingsData[i].isStarred == true) {
 							TeamThingsOutput+='<a class="star active" href="#"></a>';
 						} else {
