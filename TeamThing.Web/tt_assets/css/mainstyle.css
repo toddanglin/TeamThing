@@ -328,11 +328,12 @@ width:960px;}
 	margin-left:auto;
 	margin-right:auto;
 	width:960px;
+	position:relative;
 }
 
-aside {float:right; width: 260px;}
+#main aside#myteam-teammembers {position:fixed; margin-left:700px; width: 260px;}
 
-aside p {padding:5px 20px;}
+#main aside p {padding:5px 20px;}
 
 /*
 |--------------------------------------------------------------------------
@@ -380,7 +381,11 @@ aside p {padding:5px 20px;}
 	margin-top: -14px;
 }
 
-.plus {float:right; border-left: 1px solid #cccccc; padding:1px 8px 0 15px;}
+.plus {float:right; border-left: 1px solid #cccccc; padding:0 7px 0 14px;margin:0;}
+
+.plus img {
+	padding:0 0 3px 0;
+}
 
 .myteam {
 	color:#cccccc;

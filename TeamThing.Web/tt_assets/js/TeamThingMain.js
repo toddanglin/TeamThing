@@ -704,7 +704,7 @@ function EditThing(editedById,Description,assignedTo) {
 |	BEGIN: CREATE THING WINDOW
 |--------------------------------------------------------------------------
 */
-    var window = $("#createthinginfo").kendoWindow({
+    var CreateThingWindow = $("#createthinginfo").kendoWindow({
         height: "220px",
         title: "Create a Thing",
         visible: false,
@@ -712,9 +712,9 @@ function EditThing(editedById,Description,assignedTo) {
     }).data("kendoWindow");
 
 	$("#creatething").click(function(){
-    	var window = $("#createthinginfo").data("kendoWindow");
-    	window.center();
-    	window.open();
+    	var CreateThingWindow = $("#createthinginfo").data("kendoWindow");
+    	CreateThingWindow.center();
+    	CreateThingWindow.open();
 	});
 	
 	ValidateCreateThing = $("#createthinginfo").kendoValidator().data("kendoValidator"),
@@ -883,5 +883,32 @@ function InviteUser(UserEmail,TeamID,CreatedByID) {
 |--------------------------------------------------------------------------
 */  
 
-
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: KEEP SIDEBAR TEAM MEMBERS IN VIEW WHEN SCROLLING
+|--------------------------------------------------------------------------
+*/ 
+	$sidebar   = $("#myteam-teammembers"), 
+	$window    = $(window),
+	offset     = $sidebar.offset(),
+	topPadding = 15;
+	
+	//console.log('Offset: ' + offset);
+    $window.scroll(function() {
+		console.log($window.scrollTop() + ' and ' + offset.top);
+        if ($window.scrollTop() > offset.top) {
+            $sidebar.stop().animate({
+                marginTop: $window.scrollTop() - $window.scrollTop()
+            });
+        } else {
+            $sidebar.stop().animate({
+                marginTop: 0
+            });
+        }
+    });
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: KEEP SIDEBAR TEAM MEMBERS IN VIEW WHEN SCROLLING
+|--------------------------------------------------------------------------
+*/ 
 });
