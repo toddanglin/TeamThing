@@ -749,6 +749,7 @@ font-family: Helvetica, helvetica; padding:10px;}
 	/*text-indent:-9999px;*/
 	float:left;
 	margin-right:13px;
+	display:none;
 }
 
 .icon_share a {
