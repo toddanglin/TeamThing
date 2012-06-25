@@ -2,8 +2,6 @@
 APPURL = 'http://teamthing.net';
 LoggedInUserID = getQueryVariable('userid');
 CurrentTeamURLID = getQueryVariable('teamid');
-//APPURL = 'http://teamthing.apphb.com';
-//LoggedInUserID = 22; // TO DO: Make this dynamic based on Google Sign In
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +49,7 @@ function ImageURIRemoteOrRelative(ThisImageURI) {
 	if(ThisImageURI.substring(0, 4) == 'http' || ThisImageURI.substring(0, 5) == 'https') {
 		return ThisImageURI;
 	} else if (ThisImageURI.indexOf("16167") >= 0) { // <-- Added to keep legacy image references from that port #16167 from breaking the page
+		console.log('BAD IMAGE REFERENCE');
 		return ThisImageURI.replace(':16167','');
 	} else {
 		return APPURL+ThisImageURI;
@@ -74,12 +73,12 @@ function UserProfile(UserID) {
 		APPURL+'/api/user/'+UserID,
     	function(UserInfo) {
 			//console.log(UserInfo);
-			$('#userpic img').attr('src',UserInfo.imagePath);
-			$('#userinfo').html(UserInfo.nickname+'<br /><span class="usernav"><a href="profile.html?userid='+UserInfo.id+'&teamid=">View Profile</a>&nbsp;|&nbsp;<a href="../">Sign Out</a></span>');
+			$('#userpic img').attr('src',ImageURIRemoteOrRelative(UserInfo.imagePath));
+			$('#userinfo').html(UserInfo.nickname+'<br /><span class="usernav"><a href="profile.html?userid='+LoggedInUserID+'&teamid='+CurrentTeamURLID+'">View Profile</a>&nbsp;|&nbsp;<a href="../">Sign Out</a></span>');
 		}
 	);
 }
-UserProfile(LoggedInUserID); //TO DO: This number needs to be dynamic
+UserProfile(LoggedInUserID,CurrentTeamURLID);
 /*
 |--------------------------------------------------------------------------
 |	END: GET LOGGED IN USER'S PROFILE DETAILS

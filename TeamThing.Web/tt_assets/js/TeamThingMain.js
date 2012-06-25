@@ -92,8 +92,8 @@ function StarThing(ThingID,NewStatus) {
 			'userId': LoggedInUserID
 		},
 		dataType: 'json',
-  		success: function(TeamThingsData) {
-    		//
+  		success: function(StarThingData) {
+    		console.log(StarThingData);
   		}
 	});
 }
@@ -260,13 +260,41 @@ function StatusListSelected() {
 |--------------------------------------------------------------------------
 */
 function ActivateListViewButtons() {
-	//alert('Activate All Buttons');
 	$('.users-tray').hide();
 	
+	// ---- Indicate Starred Things ---- //
+	$.ajax({
+  		url: APPURL+'/api/user/'+LoggedInUserID+'/starred?teamid='+CurrentTeamURLID,
+  		type: 'GET',
+  		success: function(StarredThingsData) {
+			//console.log('MY STARRED THINGS');
+			//console.log(StarredThingsData);
+			MyStarredThingsArray = [];
+			for(i=0;i<StarredThingsData.length;i++) {
+				MyStarredThingsArray.push(''+StarredThingsData[i].id+'');
+			}
+			
+			//console.log(MyStarredThingsArray);
+			
+			$('.list .thing').each(function(index) {
+				ThisThingElementID = $(this).attr('id');
+				ThisThingID = ThisThingElementID.replace('teamthing-','');
+				//console.log($.inArray(ThisThingID, MyStarredThingsArray));
+				if($.inArray(ThisThingID, MyStarredThingsArray) >= 0) {
+					$('#'+ThisThingElementID+ ' .listitem .thingcontrols .star').addClass('active');
+				}
+			});
+		}
+		
+	});
+	// ----/ Indicate Starred Things ---- //
+	
+	// ---- Open/Close Assigned Users Tray ---- //
 	$('a.users-count').bind("click", function(event) {
   		event.preventDefault();
 		$(this).parent('.thing').children('.users-tray').slideToggle(250);
 	});
+	// ----/ Open/Close Assigned Users Tray ---- //
 	
 	// ---- Star A Thing ---- //
 	$('a.star').bind("click", function(event) {
@@ -278,9 +306,11 @@ function ActivateListViewButtons() {
 		if($(this).hasClass('active')) {
 			$(this).removeClass('active');
 			StarThing(ThisThingID,'unstar');
+			$('#teamthing-'+ThisThingID+ ' .listitem .thingcontrols .star').removeClass('active');
 		} else {
 			$(this).addClass('active');
 			StarThing(ThisThingID,'star');
+			$('#teamthing-'+ThisThingID+ ' .listitem .thingcontrols .star').addClass('active');
 		}
 
 	});
@@ -422,13 +452,7 @@ function GetThingsListings(UserID,ThingsFilter) {
           		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
                 TeamThingsOutput+='<span class="listitem">';
             		TeamThingsOutput+='<div class="thingcontrols">';
-                        
-						if(TeamThingsData[i].isStarred == true) {
-							TeamThingsOutput+='<a class="star active" href="#"></a>';
-						} else {
-							TeamThingsOutput+='<a class="star" href="#"></a>';
-						}
-						
+						TeamThingsOutput+='<a class="star" href="#"></a>';						
                         TeamThingsOutput+='<span class="controls">';
 						
 						if(TeamThingsData[i].owner.id == UserID) {
@@ -497,12 +521,7 @@ function GetThingsListings(UserID,ThingsFilter) {
           				TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
                 		TeamThingsOutput+='<span class="listitem">';
             				TeamThingsOutput+='<div class="thingcontrols">';
-								//console.log('Is Starred?: ' + TeamThingsData[i].isStarred);
-                        		if(TeamThingsData[i].isStarred == true) {
-									TeamThingsOutput+='<a class="star active" href="#"></a>';
-								} else {
-									TeamThingsOutput+='<a class="star" href="#"></a>';
-								}
+							TeamThingsOutput+='<a class="star" href="#"></a>';
                        		 TeamThingsOutput+='<span class="controls">';
 								
 								
@@ -911,4 +930,7 @@ function InviteUser(UserEmail,TeamID,CreatedByID) {
 |	BEGIN: KEEP SIDEBAR TEAM MEMBERS IN VIEW WHEN SCROLLING
 |--------------------------------------------------------------------------
 */ 
+
+$('.displaylogo').parent('a').attr('href','main.html?userid='+LoggedInUserID+'&teamid='+CurrentTeamURLID);
+
 });

@@ -264,4 +264,6 @@ function LeaveTeam(TeamID,UserID) {
 |--------------------------------------------------------------------------
 */
 
+$('.displaylogo').parent('a').attr('href','main.html?userid='+LoggedInUserID+'&teamid='+CurrentTeamURLID);
+
 });
