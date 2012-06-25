@@ -48,8 +48,10 @@ function getQueryVariable(variable){
 */
 function ImageURIRemoteOrRelative(ThisImageURI) {
 	
-	if(ThisImageURI.substring(0, 4) == 'http' || ThisImageURI.substring(0, 5) == 'https' || ThisImageURI.indexOf("16167") >= 0) { // <-- Last condition inserted to keep legacy image references from that port # from breaking the page
+	if(ThisImageURI.substring(0, 4) == 'http' || ThisImageURI.substring(0, 5) == 'https') {
 		return ThisImageURI;
+	} else if (ThisImageURI.indexOf("16167") >= 0) { // <-- Added to keep legacy image references from that port #16167 from breaking the page
+		return APPURL+'/images/GenericUserImage.gif';
 	} else {
 		return APPURL+ThisImageURI;
 	}

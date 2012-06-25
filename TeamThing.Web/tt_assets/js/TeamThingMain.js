@@ -895,7 +895,7 @@ function InviteUser(UserEmail,TeamID,CreatedByID) {
 	
 	//console.log('Offset: ' + offset);
     $window.scroll(function() {
-		console.log($window.scrollTop() + ' and ' + offset.top);
+		//console.log($window.scrollTop() + ' and ' + offset.top);
         if ($window.scrollTop() > offset.top) {
             $sidebar.stop().animate({
                 marginTop: $window.scrollTop() - $window.scrollTop()
