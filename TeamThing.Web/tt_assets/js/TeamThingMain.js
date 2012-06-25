@@ -84,7 +84,7 @@ function GetThingProperties(ThingID,ThingFilter,ThisDiv) {
 |--------------------------------------------------------------------------
 */
 function StarThing(ThingID,NewStatus) {
-	//console.log('User: ' + LoggedInUserID + ' is starring/unstarring');
+	console.log('User: ' + LoggedInUserID + ' is trying to ' + NewStatus + ' a thing');
 	$.ajax({
   		url: APPURL+'/api/thing/'+ThingID+'/'+NewStatus,
   		type: 'PUT',
