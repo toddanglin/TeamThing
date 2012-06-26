@@ -45,7 +45,8 @@ function getQueryVariable(variable){
 |--------------------------------------------------------------------------
 */
 function ImageURIRemoteOrRelative(ThisImageURI) {
-	
+	console.log('HAS BAD PORT REFERNCE');
+	console.log(ThisImageURI.indexOf("16167"));
 	if(ThisImageURI.substring(0, 4) == 'http' || ThisImageURI.substring(0, 5) == 'https') {
 		return ThisImageURI;
 	} else if (ThisImageURI.indexOf("16167") >= 0) { // <-- Added to keep legacy image references from that port #16167 from breaking the page
