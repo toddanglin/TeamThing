@@ -217,6 +217,7 @@
     <Content Include="EndPointTester.html" />
     <Content Include="Images\locked.png" />
     <Content Include="Images\unlocked.png" />
+    <Content Include="Images\logoKendo.png" />
     <Content Include="index_ORIG.html" />
     <Content Include="InstallationDummyFile.txt" />
     <Content Include="main.html" />
