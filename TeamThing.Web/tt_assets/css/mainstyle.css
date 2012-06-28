@@ -66,6 +66,16 @@
 	height: 39px;
 	padding:10px;
 }
+
+#tabstrip .k-tabstrip-items .k-link{
+	padding:0;
+} 
+
+#tabstrip .k-content{
+	padding:0;
+	border:none;
+}
+
 /*
 |--------------------------------------------------------------------------
 |	END: TABS
