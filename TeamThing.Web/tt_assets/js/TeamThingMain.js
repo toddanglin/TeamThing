@@ -449,9 +449,9 @@ function GetThingsListings(UserID,ThingsFilter) {
 			//console.log(TeamThingsData[0].assignedTo);
 			
 			if($.inArray(UserID, TeamThingsData[i].assignedTo) >= 0 || TeamThingsData[i].owner.id == UserID) {
-				
+				console.log("THING DATA", TeamThingsData[i]);
 				TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
-          		TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
+          		TeamThingsOutput+='<div class="listpic"><img src="'+ TeamThingsData[i].owner.imagePath +'" width="83" height="83" alt=""></div>';
                 TeamThingsOutput+='<span class="listitem">';
             		TeamThingsOutput+='<div class="thingcontrols">';
 						TeamThingsOutput+='<a class="star" href="#"></a>';						
@@ -520,7 +520,7 @@ function GetThingsListings(UserID,ThingsFilter) {
 					for(i=0;i<TeamThingsData.length;i++) {
 				
 						TeamThingsOutput+='<div class="thing" id="teamthing-'+TeamThingsData[i].id+'">';
-          				TeamThingsOutput+='<div class="listpic"><img src="tt_assets/images/listpic.png" width="83" height="83" alt=""></div>';
+          				TeamThingsOutput+='<div class="listpic"><img src="'+ TeamThingsData[i].owner.imagePath +'" width="83" height="83" alt=""></div>';
                 		TeamThingsOutput+='<span class="listitem">';
             				TeamThingsOutput+='<div class="thingcontrols">';
 							TeamThingsOutput+='<a class="star" href="#"></a>';
