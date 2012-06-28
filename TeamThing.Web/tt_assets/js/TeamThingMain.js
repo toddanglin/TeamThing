@@ -388,6 +388,8 @@ function ActivateListViewButtons() {
 	// ----/ Edit A Thing ---- //
 	
 	$('#loading-div').remove();
+
+	$('#main').css("opacity", "1");
 }
 /*
 |--------------------------------------------------------------------------

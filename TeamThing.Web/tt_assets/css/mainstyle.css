@@ -1,6 +1,11 @@
 @charset "UTF-8";
 /* CSS Document */
 
+*{
+	-webkit-transition:opacity .5s;
+	transition:opacity .5s;
+}
+
 /*
 |--------------------------------------------------------------------------
 |	BEGIN: TABS
