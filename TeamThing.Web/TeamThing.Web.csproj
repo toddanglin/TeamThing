@@ -224,6 +224,7 @@
     <Content Include="Mobile\css\fonts\kameron-bold-webfont.svg" />
     <Content Include="Mobile\css\images\iconPerson.png" />
     <Content Include="Mobile\css\images\iconTeam.png" />
+    <Content Include="Mobile\css\images\iconCornerStar.png" />
     <Content Include="Mobile\Default.aspx" />
     <Content Include="Mobile\teamMembers.html" />
     <Content Include="Scripts\endpointTest\TeamSpec.js" />
