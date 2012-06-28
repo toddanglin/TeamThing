@@ -37,9 +37,6 @@ $(document).ready(function () {
         AdjustLayout($(window).width(), $(window).height())
     });
 
-    APPURL = 'http://teamthing.net';
-
-
     var oAuthProvider = new OAuthProvider();
 
     //CHECK SIGN IN STATUS
