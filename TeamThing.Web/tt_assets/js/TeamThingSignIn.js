@@ -29,6 +29,10 @@ $(document).ready(function () {
 
     AdjustLayout($(window).width(), $(window).height());
 
+    //Show UI after all initialization complete
+    //(HACK: TODO, refactor)
+    $("#wrapper").css("opacity", "1");
+
     $(window).resize(function () {
         AdjustLayout($(window).width(), $(window).height())
     });
