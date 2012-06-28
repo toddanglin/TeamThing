@@ -489,7 +489,7 @@ function GetThingsListings(UserID,ThingsFilter) {
             		TeamThingsOutput+='<div class="thingdesc">'+TeamThingsData[i].description+'</div>';
 				TeamThingsOutput+='</span>';
                 TeamThingsOutput+='<div class="users-tray">';					
-                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'"></div>';
+                    TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'" title="Drag and drop a team member on to this icon to assign"></div>';
                     TeamThingsOutput+='<div class="clear-float"></div>';
                 TeamThingsOutput+='</div>';
 				
@@ -564,7 +564,7 @@ function GetThingsListings(UserID,ThingsFilter) {
 						TeamThingsOutput+='</span>';
                			TeamThingsOutput+='<div class="users-tray">';
 						if($.inArray(UserID, TeamThingsData[i].assignedTo) >= 0 || TeamThingsData[i].owner.id == UserID) {				
-                    		TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'"></div>';
+                    		TeamThingsOutput+='<div class="userpic-dropzone" id="dropzone-'+TeamThingsData[i].id+'" data-id="'+TeamThingsData[i].id+'" title="Drag and drop a team member on to this icon to assign"></div>';
 						}
                     	TeamThingsOutput+='<div class="clear-float"></div>';
                 		TeamThingsOutput+='</div>';
