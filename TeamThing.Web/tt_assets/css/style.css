@@ -79,5 +79,15 @@ padding-bottom:10px;
 
 h1 {font-family: 'Oleo Script', cursive; color:#348fff; font-size: 40px; padding:0; margin:0;}
 p{font-family: 'Cabin Condensed', sans-serif;}
+footer{ text-align:center; color:#CCC; position:relative; margin:25px 0 0 -115px; }
+footer img { width:115px; opacity:.2; position:absolute; margin: -13px 0 0 5px; -webkit-transition:opacity .5s;transition:opacity .5s;}
+footer img:hover { opacity:1; }
 
+.k-picker-wrap .k-input, .k-numeric-wrap .k-input, .k-dropdown-wrap .k-input, .k-selectbox .k-input, .k-list .k-item {
+	font-family: 'Cabin Condensed', sans-serif;
+}
 
+*{
+	-webkit-transition:opacity .5s;
+	transition:opacity .5s;
+}
