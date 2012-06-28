@@ -17,28 +17,6 @@
 <link href="tt_assets/css/login.css" rel="stylesheet" type="text/css">
 <link href="tt_assets/css/form-elements.css" rel="stylesheet" type="text/css">
 <!-- END: PAGE PRESENTATION FILES -->
-
-<script src="Scripts/path.min.js"></script> 
-<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-
-<!-- BEGIN: KENDO UI FILES -->
-<link href="tt_assets/kendoui/styles/kendo.common.min.css" rel="stylesheet">
-<link href="tt_assets/kendoui/styles/kendo.default.min.css" rel="stylesheet">
-<link href="tt_assets/kendoui/styles/kendo.silver.min.css" rel="stylesheet">
-<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
-<!-- END: KENDO UI FILES -->
-
-<!-- BEGIN: PAGE TOOLS -->
-<script type="text/javascript" src="tt_assets/js/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="tt_assets/js/oauth.js"></script>
-<!-- END: PAGE TOOLS -->
-
-<!-- BEGIN: KENDO UI INSERTED FILES -->
-<script src="Scripts/oAuthProvider.js"></script>
-<!--<script src="Scripts/dataProvider.js"></script>
-<script src="Scripts/teamThing.js"></script>-->
-<!-- BEGIN: KENDO UI INSERTED FILES -->
-
 </head>
 
 <body>
@@ -74,19 +52,37 @@
 		<div class="signin">
 			<h1>Select A Team</h1>
             <div style="height:18px;">&nbsp;</div>
-            <select id="TeamsMenu"></select>
+            <select id="TeamsMenu" tabindex="-1"></select>
         </div>
 		<div class="intro" id="create-team">
 			<h1>Create a Team</h1>
-			<input type="text" name="teamname" id="teamname" value="" required validationMessage="Please provide Team name"/><span class="k-invalid-msg" data-for="teamname"></span><label for="teamname"></label>
-            <input type="submit" name="submit" id="teamnamebtn" value="Create Team">
+			<input type="text" name="teamname" id="teamname" value="" required validationMessage="Please provide Team name" tabindex="-1" placeholder="Enter Team Name" /><span class="k-invalid-msg" data-for="teamname"></span><label for="teamname"></label>
+            <input type="submit" name="submit" id="teamnamebtn" value="Create Team" tabindex="-1">
         </div>
 	</div>
 </div>
 </li>
 </ul>
+<footer>
+	<p>Created with<a href="http://kendoui.com" target="_blank"><img src="/images/logoKendo.png" alt="Kendo UI"/></a></p>
+</footer>
 <div class="clear-float"></div>
 </div>
+
+<script src="Scripts/path.min.js"></script> 
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://cdn.kendostatic.com/2012.1.515/js/kendo.all.min.js"></script>
+
+<!-- BEGIN: PAGE TOOLS -->
+<script type="text/javascript" src="tt_assets/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="tt_assets/js/oauth.js"></script>
+<!-- END: PAGE TOOLS -->
+
+<!-- BEGIN: KENDO UI INSERTED FILES -->
+<script src="Scripts/oAuthProvider.js"></script>
+<!--<script src="Scripts/dataProvider.js"></script>
+<script src="Scripts/teamThing.js"></script>-->
+<!-- BEGIN: KENDO UI INSERTED FILES -->
 
     <script type="text/javascript" src="tt_assets/js/TeamThingSignIn.js"></script>
     
