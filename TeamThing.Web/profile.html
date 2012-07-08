@@ -1,29 +1,21 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Team*Thing | Profile</title>
 
-<!-- BEGIN: PAGE PRESENTATION FILES -->
-<link href='http://fonts.googleapis.com/css?family=Cabin+Condensed|Oleo+Script:700' rel='stylesheet' type='text/css'>
-<link href="tt_assets/css/mainstyle.css" rel="stylesheet" type="text/css">
-<link href="tt_assets/css/profile.css" rel="stylesheet" type="text/css">
-<!-- END: PAGE PRESENTATION FILES -->
 
-
-<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Cabin+Condensed|Oleo+Script:700' rel='stylesheet'>
 
 <!-- BEGIN: KENDO UI FILES -->
-<link href="tt_assets/kendoui/styles/kendo.common.min.css" rel="stylesheet">
-<link href="tt_assets/kendoui/styles/kendo.default.min.css" rel="stylesheet">
-<link href="tt_assets/kendoui/styles/kendo.silver.min.css" rel="stylesheet">
-<script src="http://cdn.kendostatic.com/2012.1.322/js/kendo.all.min.js"></script>
+<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.common.min.css" rel="stylesheet">
+<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.silver.min.css" rel="stylesheet">
 <!-- END: KENDO UI FILES -->
 
-<!-- BEGIN: KENDO UI INSERTED FILES -->
-<script src="Scripts/oAuthProvider.js"></script>
-<!-- BEGIN: KENDO UI INSERTED FILES -->
-
+<!-- BEGIN: PAGE PRESENTATION FILES -->
+<link href="content/mainstyle.css" rel="stylesheet">
+<link href="content/profile.css" rel="stylesheet">
+<!-- END: PAGE PRESENTATION FILES -->
 </head>
 
 <body>
@@ -31,12 +23,12 @@
 <!-- BEGIN: HEADER BAR -->
 <div id="headercontainer">
 	<header class="mainheader">
-    	<div id="userpic"><img src="tt_assets/images/toddpic.png" width="55" height="55" alt=""></div>
+    	<div id="userpic"><img src="/images/toddpic.png" width="55" height="55" alt=""></div>
     	<div id="userinfo">John Doe<br />
       		<span class="usernav"></span>
         </div>
     	<div id="teamlist"><select id="jumpMenu"></select></div>
-    	<a href=""><img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo"></a>
+    	<a href=""><img src="/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo"></a>
     </header>
 </div>
 <!-- END: HEADER BAR -->
@@ -51,7 +43,7 @@
         	<div id="userpic-profile"><img></div>
         	<div id="userinfo-profile"></div>
         	<div class="clear-float"></div>
-            <a href="" id="add-team-btn"><img src="tt_assets/images/add_team_btn.png" alt="Add A Team"></a>
+            <a href="" id="add-team-btn"><img src="/images/add_team_btn.png" alt="Add A Team"></a>
         </div>
         <!-- END: USER PROFILE DETAILS -->
         
@@ -78,8 +70,15 @@
 </div>
 <!-- END: MAIN CONTENT -->
 
-<script src="tt_assets/js/TeamThingGlobal.js"></script>
-<script src="tt_assets/js/TeamThingProfile.js"></script>
+<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://cdn.kendostatic.com/2012.1.515/js/kendo.all.min.js"></script>
+
+<!-- BEGIN: KENDO UI INSERTED FILES -->
+<script src="Scripts/oAuthProvider.js"></script>
+<!-- BEGIN: KENDO UI INSERTED FILES -->
+
+<script src="scripts/TeamThingGlobal.js"></script>
+<script src="scripts/TeamThingProfile.js"></script>
 
 </body>
 </html>

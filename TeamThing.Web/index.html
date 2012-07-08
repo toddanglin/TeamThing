@@ -1,33 +1,31 @@
-﻿<!DOCTYPE HTML>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Team*Thing</title>
 
 
-
 <!-- BEGIN: KENDO UI FILES -->
-<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.common.min.css" rel="stylesheet" type="text/css">
-<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.silver.min.css" rel="stylesheet" type="text/css">
+<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.common.min.css" rel="stylesheet">
+<link href="http://cdn.kendostatic.com/2012.1.515/styles/kendo.silver.min.css" rel="stylesheet">
 <!-- END: KENDO UI FILES -->
 
 <!-- BEGIN: PAGE PRESENTATION FILES -->
-<link href='http://fonts.googleapis.com/css?family=Cabin+Condensed|Oleo+Script:700' rel='stylesheet' type='text/css'>
-<link href="tt_assets/css/style.css" rel="stylesheet" type="text/css">
-<link href="tt_assets/css/login.css" rel="stylesheet" type="text/css">
-<link href="tt_assets/css/form-elements.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Cabin+Condensed|Oleo+Script:700' rel='stylesheet'>
+<link href="content/style.css" rel="stylesheet">
+<link href="content/login.css" rel="stylesheet">
+<link href="content/form-elements.css" rel="stylesheet">
 <!-- END: PAGE PRESENTATION FILES -->
 </head>
 
 <body>
 
 <div id="wrapper" style="opacity:0;">
-<img src="tt_assets/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo">
+<img src="/images/tt_logo.png" width="281" height="48" alt="team*thing" class="displaylogo">
 <ul id="signin-slides">
 <li id="signin-slide-1">
 <div id="displaybox">
 	<div class="arrow_box">
-		<!--<div id="login-divet"><img src="tt_assets/images/login-panel-divet-top.jpg" width="358" height="26"></div>-->
 		<div class="signin">
 			<h1>Sign-In</h1>
             <p>Just sign-in with your existing Google ID. Don't have a Google ID? <a href="https://accounts.google.com/NewAccount" target="_blank">Create one for free</a>.</p>
@@ -48,7 +46,6 @@
 <li id="signin-slide-2">
 <div id="displaybox">
 	<div class="arrow_box">
-		<!--<div id="login-divet"><img src="tt_assets/images/login-panel-divet-top.jpg" width="358" height="26"></div>-->
 		<div class="signin">
 			<h1>Select A Team</h1>
             <div style="height:18px;">&nbsp;</div>
@@ -69,22 +66,19 @@
 <div class="clear-float"></div>
 </div>
 
-<script src="Scripts/path.min.js"></script> 
+<script src="scripts/path.min.js"></script> 
 <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script src="http://cdn.kendostatic.com/2012.1.515/js/kendo.all.min.js"></script>
 
 <!-- BEGIN: PAGE TOOLS -->
-<script type="text/javascript" src="tt_assets/js/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="tt_assets/js/oauth.js"></script>
+<script src="scripts/jquery.easing.1.3.js"></script>
 <!-- END: PAGE TOOLS -->
 
 <!-- BEGIN: KENDO UI INSERTED FILES -->
-<script src="Scripts/oAuthProvider.js"></script>
-<!--<script src="Scripts/dataProvider.js"></script>
-<script src="Scripts/teamThing.js"></script>-->
+<script src="scripts/oAuthProvider.js"></script>
 <!-- BEGIN: KENDO UI INSERTED FILES -->
 
-    <script type="text/javascript" src="tt_assets/js/TeamThingSignIn.js"></script>
+<script src="scripts/TeamThingSignIn.js"></script>
     
 </body>
 </html>

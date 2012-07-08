@@ -1,0 +1,63 @@
+/*
+|--------------------------------------------------------------------------
+|	BEGIN: SIGN IN STYLES
+|--------------------------------------------------------------------------
+*/
+#google-signin-btn {
+	width:212px;
+	position:relative;
+	display:block;
+	margin:30px auto 0 auto;
+	padding:0;
+}
+
+.displaylogo {
+	width:281px;
+	height:48px;
+	margin:0 auto;
+	z-index:0;
+	position:relative;
+	display:block;
+}
+
+#wrapper {
+	clear:both;
+	width:100%;
+	height:auto;
+	margin:0;
+	padding:0;
+	position:relative;
+	display:block;
+	overflow:hidden;
+	list-style:none;
+}
+
+#wrapper #signin-slides {
+	width:100%;
+	margin:0;
+	padding:0;
+	position:relative;
+	display:block;
+	overflow:visible;
+	list-style:none;
+}
+
+#wrapper #signin-slides li {
+	width:650px;
+	min-width:650px;
+	height:auto;
+	margin:0 auto;
+	padding:0;
+	position:relative;
+	float:left;
+	overflow:visible;
+}
+
+.clear-float {
+	clear:both;
+}
+/*
+|--------------------------------------------------------------------------
+|	END: SIGN IN STYLES
+|--------------------------------------------------------------------------
+*/
