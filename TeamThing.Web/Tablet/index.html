@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+	<title>team*thing</title>
+
+	<link href="http://cdn.kendostatic.com/2012.2.621/styles/kendo.mobile.all.min.css" rel="stylesheet"/> 
+	<link href="../Mobile/css/mobile.css" rel="stylesheet" />
+	<link href="css/tablet.css" rel="stylesheet" />
+</head>
+<body class="tt">
+	<div data-role="splitview">
+		<div data-role="pane" data-layout="layoutLeftPane">
+			<div data-role="view">
+				LEFT
+			</div>		
+
+			<section data-role="layout" data-id="layoutLeftPane">
+			<header data-role="header">			
+				<div data-role="navbar">
+				team<mark>*</mark>thing
+				</div>
+			</header>
+			</section>	
+		</div>
+		<div data-role="pane" data-layout="layoutRightPane">
+			<div data-role="view">
+				RIGHT
+			</div>
+
+			<section data-role="layout" data-id="layoutRightPane">
+			<header data-role="header">			
+				<div data-role="navbar">
+				&nbsp;			
+				</div>
+			</header>
+		</section>
+		</div>
+
+		
+	<div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="http://cdn.kendostatic.com/2012.2.621/js/kendo.all.min.js"></script> 
+
+	<script>
+		var app = new kendo.mobile.Application();
+	</script>
+</body>
+</html>
